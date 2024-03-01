@@ -1,0 +1,37 @@
+name: Build and Release APK
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.19.0'  # Specify your desired Flutter version
+
+    - name: Install Dependencies
+      run: flutter pub get
+
+    - name: Build APK
+      run: flutter build apk
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: build/app/outputs/flutter-apk/app-release.apk
+        name: Jel-Music-Player-release.apk
+        label: Release APK
