@@ -144,9 +144,9 @@ class MusicController extends ChangeNotifier{
         playPause(false,true);
         
 
-      }on PlayerException catch(e){
+      }on PlayerException {
        //log error
-      }on PlayerInterruptedException catch(e){
+      }on PlayerInterruptedException {
         //log error
       }
 
@@ -210,6 +210,7 @@ class MusicController extends ChangeNotifier{
     tempAlbum = value.title;
     tempArtist = value.composer;
     tempPicture = value.picture;
+    tempFavourite = value.isFavourite;
     resume();
   }
 

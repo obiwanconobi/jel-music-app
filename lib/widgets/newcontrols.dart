@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/music_controller.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
-import 'package:jel_music/widgets/songs_page.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
 class Controls extends StatefulWidget {

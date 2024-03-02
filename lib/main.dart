@@ -14,8 +14,8 @@ Future<void> main() async{
   ); 
 
   await GetStorage.init();
-  runApp(MusicControllerProvider(
-    child: const MyApp(),
+  runApp(const MusicControllerProvider(
+    child: MyApp(),
     ));
 }
 
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       statusBarColor: Color(0xFF1C1B1B),
     ));
     return Sizer(builder: (context, orientation, deviceType) {
-      return  MaterialApp(
+      return  const MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Material App',
         home: MyHomePage(),

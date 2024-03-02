@@ -37,7 +37,7 @@ class _ControlsState extends State<Controls> {
   @override
   Widget build(BuildContext context) {
     onInit();
-    return  Container(
+    return  SizedBox(
       height: 7.h,
       child: Column(
         children: [

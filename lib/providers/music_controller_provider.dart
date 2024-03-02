@@ -6,7 +6,7 @@ import 'package:jel_music/controllers/music_controller.dart';
 class MusicControllerProvider extends StatelessWidget {
   final Widget child;
 
-  MusicControllerProvider({required this.child});
+  const MusicControllerProvider({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {

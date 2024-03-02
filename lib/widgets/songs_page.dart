@@ -33,7 +33,7 @@ class _SongsPageState extends State<SongsPage> {
   }
 
   _addToQueue(Songs song){
-    MusicControllerProvider.of(context, listen: false).addToQueue(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title));
+    MusicControllerProvider.of(context, listen: false).addToQueue(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite));
   }
 
   _shuffleQueue(){
@@ -223,7 +223,7 @@ class _SongsPageState extends State<SongsPage> {
                                                         mainAxisAlignment:
                                                             MainAxisAlignment.start,
                                                         children: [
-                                                          Text(songsList[index].trackNumber.toString() + '. ', style: TextStyle(
+                                                          Text('${songsList[index].trackNumber}. ', style: TextStyle(
                                                                 fontSize: 13.sp,
                                                                 color: const Color(0xFFACACAC),
                                                                 fontWeight: FontWeight.w300,
