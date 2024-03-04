@@ -107,7 +107,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                                 width: 90.sp,
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.all(
-                                                      Radius.circular(60.sp)),
+                                                      Radius.circular(5.sp)),
                                                   child: Image.network( 
                                                     albumsList[index].picture ?? "",
                                                     cacheHeight: 150,

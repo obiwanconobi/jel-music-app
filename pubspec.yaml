@@ -42,6 +42,8 @@ dependencies:
   cached_network_image: ^3.3.1
   shared_preferences: ^2.2.2
   uuid: ^3.0.4
+  audio_video_progress_bar: ^2.0.2
+  rxdart: ^0.27.7
 
 
 

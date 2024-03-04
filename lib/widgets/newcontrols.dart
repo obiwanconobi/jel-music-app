@@ -1,9 +1,13 @@
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/music_controller.dart';
+import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:just_audio/just_audio.dart';
 
 class Controls extends StatefulWidget {
   const Controls({super.key});
@@ -14,6 +18,7 @@ class Controls extends StatefulWidget {
 
 class _ControlsState extends State<Controls> {
   ApiController apiController = ApiController();
+  final Conversions _conversions = Conversions();
 
   void onInit(){
 
@@ -45,6 +50,10 @@ class _ControlsState extends State<Controls> {
         
   }
 
+  _seekSong(Duration seek){
+    MusicControllerProvider.of(context, listen: false).seekInSong(seek);
+  }
+
   _returnHome(){
     Navigator.popUntil(context, ModalRoute.withName('/'));
   }
@@ -60,6 +69,8 @@ class _ControlsState extends State<Controls> {
   void _testClck(){
 
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +155,38 @@ class _ControlsState extends State<Controls> {
                                   Text(musicController.currentSource?.tag.album, style: const TextStyle(color: Colors.white)) 
                                 ],
                               ),
-                              
+                              StreamBuilder<Duration>(
+                                stream: musicController.durationStream,
+                                builder: (context, snapshot) {    
+                                  final duration = snapshot.data ?? Duration.zero;
+                                  var total = musicController.currentSource!.tag.duration;
+                                  return 
+                                    Column(
+                                      children: [
+                                        Container(
+                                          width: 200,
+                                          child:
+                                              ProgressBar(
+                                                progress: Duration(seconds: duration.inSeconds),
+                                                total: musicController.currentSource!.tag.duration,
+                                                onSeek: (duration) {
+                                                  _seekSong(duration);
+                                                 // print('User selected a new time: $duration');
+                                                },
+                                              ),
+                                        
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(duration.inMinutes.remainder(60).toString() + ":" + duration.inSeconds.remainder(60).toString()  + " : ", style:TextStyle(color:Colors.white),),
+                                            Text(musicController.currentSource!.tag.duration.inMinutes.remainder(60).toString() + ":"+ musicController.currentSource!.tag.duration.inSeconds.remainder(60).toString() , style:TextStyle(color:Colors.white)),
+                                          ],
+                                        )
+                                      ],
+                                    );
+                                }                    
+                              )     
                             ],
                           ),
                         );

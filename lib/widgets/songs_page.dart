@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/songs_controller.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
@@ -19,6 +20,7 @@ class SongsPage extends StatefulWidget {
 
 class _SongsPageState extends State<SongsPage> {
   SongsController controller = SongsController();
+  ApiController apiController = ApiController();
   late Future<List<Songs>> songsFuture;
 
   StreamModel returnStream(Songs song){
@@ -33,7 +35,7 @@ class _SongsPageState extends State<SongsPage> {
   }
 
   _addToQueue(Songs song){
-    MusicControllerProvider.of(context, listen: false).addToQueue(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite));
+    MusicControllerProvider.of(context, listen: false).addToQueue(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length));
   }
 
   _shuffleQueue(){
@@ -48,6 +50,16 @@ class _SongsPageState extends State<SongsPage> {
         }
         MusicControllerProvider.of(context, listen: false).addPlaylistToQueue(playList);
     }
+    
+  }
+
+  _favouriteSong(String songId, bool current){
+    if(current){
+      apiController.unFavouriteItem(songId);
+    }else{
+      apiController.favouriteItem(songId);
+    }
+    
     
   }
 
@@ -158,7 +170,7 @@ class _SongsPageState extends State<SongsPage> {
                                       Radius.circular(10.sp),
                                     ),
                                     child: Container(
-                                        height: 52.sp,
+                                        height: 55.sp,
                                         decoration: BoxDecoration(
                                           color: (const Color(0xFF1C1B1B)),
                                           borderRadius: BorderRadius.all(
@@ -243,7 +255,17 @@ class _SongsPageState extends State<SongsPage> {
                                                           ),
                                                         ],
                                                       ),
-                                                      Text(songsList[index].length.toString())
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        children: [
+                                                          Container(
+                                                            margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                                            child: Text(songsList[index].length.toString(), style: TextStyle(color: Colors.white))),
+                                                          Container(
+                                                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                                            child: IconButton(icon: Icon(Icons.favorite, color: ((songsList[index].favourite ?? false) ? Colors.red : Colors.blueGrey), size:30), onPressed: () { setState(){ } _favouriteSong(songsList[index].id!, songsList[index].favourite!); },))
+                                                        ],
+                                                      )
                                                     ],
                                                   ),
                                                 ],
