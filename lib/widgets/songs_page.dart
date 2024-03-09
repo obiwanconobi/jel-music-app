@@ -170,7 +170,7 @@ class _SongsPageState extends State<SongsPage> {
                                       Radius.circular(10.sp),
                                     ),
                                     child: Container(
-                                        height: 55.sp,
+                                        height: 69.sp,
                                         decoration: BoxDecoration(
                                           color: (const Color(0xFF1C1B1B)),
                                           borderRadius: BorderRadius.all(
@@ -179,48 +179,6 @@ class _SongsPageState extends State<SongsPage> {
                                         ),
                                         child: Row(
                                           children: [
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.symmetric(horizontal: 13.sp),
-                                              child: SizedBox(
-                                                height: 35.sp,
-                                                width: 35.sp,
-                                                child: ClipRRect(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(15.sp)),
-                                                  child: Image.network(
-                                                    songsList[index].albumPicture ?? "",
-                                                    cacheHeight: 50,
-                                                    cacheWidth: 50,
-                                                    frameBuilder: (BuildContext context,
-                                                        Widget child,
-                                                        int? frame,
-                                                        bool wasSynchronouslyLoaded) {
-                                                      return (frame != null)
-                                                          ? child
-                                                          : Padding(
-                                                              padding:
-                                                                  EdgeInsets.all(8.sp),
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                strokeWidth: 5.sp,
-                                                                color: const Color(0xFF71B77A),
-                                                              ),
-                                                            );
-                                                    },
-                                                    errorBuilder:
-                                                        (context, error, stackTrace) {
-                                                      return Container(
-                                                        color: const Color(0xFF71B77A),
-                                                        child: const Center(
-                                                          child: Text("404"),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
                                             Expanded(
                                               child: Column(
                                                 mainAxisAlignment:
@@ -230,32 +188,39 @@ class _SongsPageState extends State<SongsPage> {
                                                 children: [
                                                   Column(
                                                     children: [
-                                                      Row(
-                                                        mainAxisSize: MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment.start,
-                                                        children: [
-                                                          Text('${songsList[index].trackNumber}. ', style: TextStyle(
-                                                                fontSize: 13.sp,
-                                                                color: const Color(0xFFACACAC),
-                                                                fontWeight: FontWeight.w300,
-                                                                fontFamily: "Segoe UI",
-                                                              ),),
-                                                          Flexible(
-                                                            child: Text(songsList[index].title!,
-                                                              style: TextStyle(
-                                                                fontSize: 13.sp,
-                                                                color: const Color(0xFFACACAC),
-                                                                fontWeight: FontWeight.w300,
-                                                                fontFamily: "Segoe UI",
+                                                      Padding(
+                                                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                                        child: Row(
+                                                          mainAxisSize: MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment.start,
+                                                          children: [
+                                                            Text('${songsList[index].trackNumber}. ', style: TextStyle(
+                                                                  fontSize: 13.sp,
+                                                                  color: const Color(0xFFACACAC),
+                                                                  fontWeight: FontWeight.w300,
+                                                                  fontFamily: "Segoe UI",
+                                                                )),
+                                                            Flexible(
+                                                              child: Text(songsList[index].title!,
+                                                                style: TextStyle(
+                                                                  fontSize: 13.sp,
+                                                                  color: const Color(0xFFACACAC),
+                                                                  fontWeight: FontWeight.w300,
+                                                                  fontFamily: "Segoe UI",
+                                                                ),
+                                                                softWrap: true,
+                                                                overflow: TextOverflow.ellipsis, // Set overflow property
+                                                                maxLines: 1, // Set the maximum number of lines
                                                               ),
-                                                              overflow: TextOverflow.ellipsis, // Set overflow property
-                                                              maxLines: 2, // Set the maximum number of lines
                                                             ),
-                                                          ),
-                                                        ],
+                                                          ],
+                                                        ),
                                                       ),
-                                                      Row(
+                                                      
+                                                    ],
+                                                  ),
+                                                  Row(
                                                         mainAxisAlignment: MainAxisAlignment.end,
                                                         children: [
                                                           Container(
@@ -265,16 +230,21 @@ class _SongsPageState extends State<SongsPage> {
                                                             margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                                                             child: IconButton(icon: Icon(Icons.favorite, color: ((songsList[index].favourite ?? false) ? Colors.red : Colors.blueGrey), size:30), onPressed: () { setState(){ } _favouriteSong(songsList[index].id!, songsList[index].favourite!); },))
                                                         ],
-                                                      )
-                                                    ],
-                                                  ),
+                                                      ),
+                                                      Divider(color: Color.fromARGB(255, 65, 65, 65), indent: 40, endIndent: 40,),
+                                                          
                                                 ],
                                               ),
-                                            )
+                                              
+                                            ),
+                                            
                                           ],
                                         ),
+                                        
                                       ),
+                                      
                                     ),
+                                    
                                   );
                               },
                             ),

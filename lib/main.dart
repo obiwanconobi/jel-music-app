@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:jel_music/hive/classes/albums.dart';
+import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/homepage.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:sizer/sizer.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+
+
 
 Future<void> main() async{
    await JustAudioBackground.init(
@@ -12,8 +19,11 @@ Future<void> main() async{
     androidNotificationChannelName: 'Audio playback',
     androidNotificationOngoing: true,
   ); 
-
+ // Hive.init('/');
+  await Hive.initFlutter();
   await GetStorage.init();
+  Hive.registerAdapter(ArtistsAdapter());
+  Hive.registerAdapter(AlbumsAdapter());
   runApp(const MusicControllerProvider(
     child: MyApp(),
     ));
