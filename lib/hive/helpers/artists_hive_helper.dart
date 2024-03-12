@@ -32,7 +32,14 @@ class ArtistsHelper{
       var artists = await fetchArtists();
 
       for(var artist in artists){
-        artistBox.put(artist.id,artist);
+
+        try{
+          artistBox.put(artist.id,artist);
+        }catch(e){
+          //log errr
+          print("error");
+        }
+        
       }     
 
     //var testx = artistBox.values.where((Artists) => Artists.name == "Jeff Rosenstock");
