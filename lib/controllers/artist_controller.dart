@@ -1,28 +1,45 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:get_storage/get_storage.dart';
 
 
 
 class ArtistController {
-    var artists = <Artists>[];
+    var artistsList = <Artists>[];
     Future<List<Artists>>? futureList;
     final int currentArtistIndex = 0;
     String? baseServerUrl;
-    
+    ArtistsHelper artistHelper = ArtistsHelper();
 
     Future<List<Artists>> onInit() async {
     try {
       baseServerUrl = GetStorage().read('serverUrl');
-      artists = await fetchArtists();
-      return artists;
+      await artistHelper.openBox();
+      artistsList = _getArtistsFromBox();
+      return artistsList;
     } catch (error) {
       // Handle errors if needed
        rethrow;
     }
   }
 
+
+    List<Artists> _getArtistsFromBox(){
+       var artistsRaw = artistHelper.returnArtists();
+
+      for(var artist in artistsRaw){
+          String artistId = artist.id;
+         var pictureUrl = "$baseServerUrl/Items/$artistId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+        artistsList.add(Artists(id: artist.id, name: artist.name, picture: pictureUrl));
+      }
+
+     // artists = await fetchArtists();
+   //  songsList.sort((a, b) => a.trackNumber!.compareTo(b.trackNumber ?? 0));
+      artistsList.sort((a, b) => a.name!.compareTo(b.name!));
+      return artistsList;
+    }
 
 
 
@@ -49,10 +66,10 @@ class ArtistController {
 
   Future<List<Artists>> fetchArtists() async{
 
-      var artistRaw = await _getArtistData();
+    //  var artistRaw = await _getArtistData();
 
 
-      List<Artists> artistList = [];
+      /* List<Artists> artistList = [];
 
       for(var artist in artistRaw["Items"]){
 
@@ -68,9 +85,11 @@ class ArtistController {
           
           artistList.add(Artists(id: artist["Id"], name: artist["Name"], picture: pictureUrl));
       }
+ */
+      
 
-      artists = artistList;
-      return artists;
+
+      return _getArtistsFromBox();
   }
 
 }
