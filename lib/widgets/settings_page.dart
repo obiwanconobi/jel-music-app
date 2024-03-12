@@ -88,6 +88,26 @@ class _MyWidgetState extends State<SettingsPage> {
     albumsHelper.getAllAlbums();
   }
 
+  void check(){
+
+    var artistList = helper.returnArtists();
+
+    for(var artistr in artistList){
+      var artist = artistr.name;
+      var id = artistr.id;
+
+    }
+  
+
+    var albumsList = albumsHelper.returnAlbums();
+    
+
+    for(var album in albumsList){
+      var albumname = album.name;
+      var artist = album.artist;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +127,8 @@ class _MyWidgetState extends State<SettingsPage> {
                 TextField(obscureText: false, style: const TextStyle(color:Colors.white), controller: _serverUrlTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_saveUrl),)),),
                 TextField(obscureText: false, style: const TextStyle(color:Colors.white), controller: _usernameTextController,),
                 TextField(obscureText: false, style: const TextStyle(color:Colors.white), controller: _passwordTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_login),)),),
-                TextButton(onPressed: () { sync(); }, child: Text('test', style: TextStyle(color: Colors.white)),)
+                TextButton(onPressed: () { sync(); }, child: Text('Sync', style: TextStyle(color: Colors.white)),),
+                TextButton(onPressed: () { check(); }, child: Text('Check', style: TextStyle(color: Colors.white)),)
               ],
             ),
                 

@@ -19,6 +19,10 @@ class AlbumsHelper{
      albumsBox = Hive.box('albums');
   }
 
+  List<Albums> returnAlbums(){
+      return albumsBox.values.toList();
+  }
+
 
   void getAllAlbums()async{
 
@@ -35,9 +39,6 @@ class AlbumsHelper{
 
    _getAlbumData() async{
       try {
-
-        
-        
           Map<String, String> requestHeaders = {
           'Content-type': 'application/json',
           'X-MediaBrowser-Token': '$accessToken',
@@ -61,7 +62,13 @@ class AlbumsHelper{
     for(var album in albumsRaw["Items"]){
       String albumId = album["Id"];
       var imgUrl = "$baseServerUrl/Items/$albumId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
-      albumsList.add(Albums(id: album["Id"], name: album["Name"],artist: album["AlbumArtist"], year: album["ProductionYear"].toString(), picture: imgUrl, favourite: album["UserData"]["IsFavorite"], artistId: album["ArtistItems"][0]["Id"] ?? ""));
+      try{
+        albumsList.add(Albums(id: album["Id"], name: album["Name"],artist: album["AlbumArtist"], year: album["ProductionYear"].toString(), picture: imgUrl, favourite: album["UserData"]["IsFavorite"], artistId: album["ArtistItems"][0]["Id"] ?? ""));
+      }catch(e){
+        //log error
+        print("error");
+      }
+      
     }
 
     return albumsList;

@@ -20,14 +20,11 @@ class ArtistsHelper{
   }
 
 
-  void getAllAlbums()async{
-      var albums = await fetchAlbums();
-
-      for(var album in albums){
-        
-      }
+  List<Artists> returnArtists(){
+    return artistBox.values.toList();
   }
   
+
   
   void getAllArtists()async {
 
@@ -38,15 +35,8 @@ class ArtistsHelper{
         artistBox.put(artist.id,artist);
       }     
 
-    var testx = artistBox.values.where((Artists) => Artists.name == "Jeff Rosenstock");
-    for(var test in testx){
-      var ttt = test.name;
-      var ff = test.id;
-      var tf = test.favourite;
-      print(ttt);
-      print(ff);
-      print(tf);
-    } 
+    //var testx = artistBox.values.where((Artists) => Artists.name == "Jeff Rosenstock");
+    
 
 
    
