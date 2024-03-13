@@ -23,6 +23,11 @@ class AlbumsHelper{
       return albumsBox.values.toList();
   }
 
+  List<Albums> returnAlbumsForArtist(String artist){
+    //var testx = artistBox.values.where((Artists) => Artists.name == "Jeff Rosenstock");
+      return albumsBox.values.where((Albums) => Albums.artistId == artist).toList();
+  }
+
 
   void getAllAlbums()async{
 

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/models/album.dart';
@@ -108,36 +109,21 @@ class _AlbumPageState extends State<AlbumPage> {
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.all(
                                                       Radius.circular(5.sp)),
-                                                  child: Image.network( 
-                                                    albumsList[index].picture ?? "",
-                                                    cacheHeight: 150,
-                                                    cacheWidth: 150,
-                                                    frameBuilder: (BuildContext context,
-                                                        Widget child,
-                                                        int? frame,
-                                                        bool wasSynchronouslyLoaded) {
-                                                      return (frame != null)
-                                                          ? child
-                                                          : Padding(
-                                                              padding:
-                                                                  EdgeInsets.all(8.sp),
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                strokeWidth: 5.sp,
-                                                                color: const Color(0xFF71B77A),
-                                                              ),
-                                                            );
-                                                    },
-                                                    errorBuilder:
-                                                        (context, error, stackTrace) {
-                                                      return Container(
-                                                        color: const Color(0xFF71B77A),
-                                                        child: const Center(
-                                                          child: Text("404"),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: albumsList[index].picture ?? "",
+                                                    memCacheHeight: 150,
+                                                    memCacheWidth: 150,
+                                                    placeholder: (context, url) => const CircularProgressIndicator(
+                                                      strokeWidth: 5,
+                                                      color: Color.fromARGB(255, 60, 60, 60),
+                                                    ),
+                                                    errorWidget: (context, url, error) => Container(
+                                                      color: const Color(0xFF71B77A),
+                                                      child: const Center(
+                                                        child: Text("404"),
+                                                      ),
+                                                    ),
+                                                  )
                                                 ),
                                               ),
                                             ),

@@ -42,7 +42,7 @@ class ArtistsHelper{
         
       }     
 
-    //var testx = artistBox.values.where((Artists) => Artists.name == "Jeff Rosenstock");
+    
     
 
 
