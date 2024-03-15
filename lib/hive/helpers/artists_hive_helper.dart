@@ -24,6 +24,17 @@ class ArtistsHelper{
     return artistBox.values.toList();
   }
   
+  clearArtists(){
+    artistBox.clear();
+  }
+
+  addArtistToBox(Artists artist){
+    artistBox.add(artist);
+  }
+
+  returnArtist(String name){
+    return artistBox.values.where((Artists) => Artists.name == name);
+  }
 
   
   void getAllArtists()async {
@@ -42,20 +53,20 @@ class ArtistsHelper{
         
       }     
 
-    
-    
-
-
-   
     }
 
   Future<List<Artists>> fetchArtists()async{
 
       var artistRaw = await _getArtistData();
+      
 
       List<Artists> artistList = [];
 
-      for(var artist in artistRaw["Items"]){         
+      for(var artist in artistRaw["Items"]){  
+        String test = artist["Name"];
+          if(test.contains('blink')){
+            print('stop');
+          }    
           artistList.add(Artists(id: artist["Id"], name: artist["Name"], favourite: artist["UserData"]["IsFavorite"], picture: artist["Id"]));
       }
       return artistList;
@@ -81,13 +92,8 @@ class ArtistsHelper{
     }
   }
 
-    
-
        _getAlbumData() async{
       try {
-
-        
-        
           Map<String, String> requestHeaders = {
           'Content-type': 'application/json',
           'X-MediaBrowser-Token': '$accessToken',

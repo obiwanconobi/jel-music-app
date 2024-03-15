@@ -7,13 +7,16 @@ import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:sizer/sizer.dart';
 String? albumIds;
+String? artistIds;
 
 class SongsPage extends StatefulWidget {
-  SongsPage({super.key, required this.albumId}){
+  SongsPage({super.key, required this.albumId, required this.artistId}){
     albumIds = albumId;
+    artistIds = artistId;
   }
 
   final String albumId;
+  final String artistId;
   @override
   State<SongsPage> createState() => _SongsPageState();
 }
@@ -31,6 +34,7 @@ class _SongsPageState extends State<SongsPage> {
   void initState() {
     super.initState();
     controller.albumId = albumIds;
+    controller.artistId = artistIds;
     songsFuture = controller.onInit();
   }
 

@@ -50,7 +50,7 @@ class LikedController {
     List<Songs> songsList = [];
 
     for(var song in songsRaw["Items"]){
-      String songId = song["Id"];
+      String songId = song["AlbumId"];
       int trackNumber = song["IndexNumber"] ?? 0;
       String length = _ticksToTimestampString(song["RunTimeTicks"]);
       var imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";

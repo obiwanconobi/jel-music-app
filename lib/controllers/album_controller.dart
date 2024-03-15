@@ -14,7 +14,6 @@ class AlbumController {
 
      Future<List<Album>> onInit() async {
     try {
-   //   albums = await fetchAlbums(artistId!);
       await albumHelper.openBox();
       albums = await _getAlbumsFromBox(artistId!);
       return albums;
@@ -33,6 +32,7 @@ class AlbumController {
         var imgUrl = "$baseServerUrl/Items/$albumId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
         albumsList.add(Album(id: album.id, title: album.name,artist: album.artist, year: int.parse(album.year!), picture: imgUrl));
       }
+  
       albumsList.sort((a, b) => a.year!.compareTo(b.year!));
       return albumsList;
   }

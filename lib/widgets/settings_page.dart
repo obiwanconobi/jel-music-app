@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
+import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
+import 'package:jel_music/hive/helpers/sync_helper.dart';
 
 
 
@@ -21,6 +23,7 @@ class _MyWidgetState extends State<SettingsPage> {
   final TextEditingController _usernameTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
   AlbumsHelper albumsHelper = AlbumsHelper();
+  SyncHelper syncHelper = SyncHelper();
   ArtistsHelper helper = ArtistsHelper();
   _login() async{
 
@@ -54,9 +57,6 @@ class _MyWidgetState extends State<SettingsPage> {
       
   }
 
-
-
-
   _saveUrl() async {
 
     GetStorage().write('serverUrl', _serverUrlTextController.text);
@@ -67,6 +67,7 @@ class _MyWidgetState extends State<SettingsPage> {
    void  initState() {
     super.initState();
     GetStorage.init();
+    syncHelper.songsHelper.openBox();
     helper.openBox();
     albumsHelper.openBox();
     // Set the initial value of the TextField
@@ -84,8 +85,16 @@ class _MyWidgetState extends State<SettingsPage> {
 
   
   void sync(){
-    helper.getAllArtists();
-    albumsHelper.getAllAlbums();
+    /* helper.getAllArtists();
+    albumsHelper.getAllAlbums(); */
+
+    syncHelper.runSync();
+  }
+
+  void clear(){
+    helper.clearArtists();
+    albumsHelper.clearAlbums();
+    syncHelper.songsHelper.clearSongs();
   }
 
   void check(){
@@ -128,7 +137,8 @@ class _MyWidgetState extends State<SettingsPage> {
                 TextField(obscureText: false, style: const TextStyle(color:Colors.white), controller: _usernameTextController,),
                 TextField(obscureText: false, style: const TextStyle(color:Colors.white), controller: _passwordTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_login),)),),
                 TextButton(onPressed: () { sync(); }, child: Text('Sync', style: TextStyle(color: Colors.white)),),
-                TextButton(onPressed: () { check(); }, child: Text('Check', style: TextStyle(color: Colors.white)),)
+                TextButton(onPressed: () { check(); }, child: Text('Check', style: TextStyle(color: Colors.white)),),
+                TextButton(onPressed: () { clear(); }, child: Text('Clear', style: TextStyle(color: Colors.white)),)
               ],
             ),
                 

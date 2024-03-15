@@ -84,14 +84,14 @@ class _ArtistPageState extends State<ArtistPage> {
                       // Data is available, build the list
                       List<Artists> artistController = snapshot.data!;
                       return GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 5, mainAxisExtent: 250),
                     itemCount: artistController.length,
                     physics: const BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap:() => {
                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => AlbumPage(artistId: artistController[index].id!)),
+                              MaterialPageRoute(builder: (context) => AlbumPage(artistId: artistController[index].name!)),
                       )},     
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 6.sp),
@@ -113,12 +113,11 @@ class _ArtistPageState extends State<ArtistPage> {
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 13.sp),
                                       child: SizedBox(
-                                        height: 80.sp,
-                                        width: 80.sp,
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(50.sp)),
+                                        height: 110.sp,
+                                        width: 110.sp,
+                                        child: ClipOval(
                                           child: CachedNetworkImage(
+                                            fit: BoxFit.cover,
                                             imageUrl: artistController[index].picture ?? "",
                                             memCacheHeight: 150,
                                             memCacheWidth: 150,

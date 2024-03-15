@@ -75,23 +75,22 @@ class _AlbumPageState extends State<AlbumPage> {
                                                             fontFamily: "Segoe UI",
                                                           ),),
                             GridView.builder(
-                              gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                              gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 10, mainAxisExtent: 245),
                               shrinkWrap: true,
                               itemCount: albumsList.length,
                               physics: const BouncingScrollPhysics(),
                               itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 8.sp),
+                                return SizedBox(
                                   child: InkWell(
                                     onTap:() => {
                                       Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => SongsPage(albumId: albumsList[index].id!)),
-                                      )},
+                                        MaterialPageRoute(builder: (context) => SongsPage(albumId: albumsList[index].title!, artistId: albumsList[index].artist!,)),
+                                      )}, 
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.sp),
                                     ),
                                     child: Container(
-                                        height: 52.sp,
+                                        height: 152.sp,
                                         decoration: BoxDecoration(
                                           color: (const Color(0xFF1C1B1B)),
                                           borderRadius: BorderRadius.all(
@@ -102,17 +101,17 @@ class _AlbumPageState extends State<AlbumPage> {
                                           children: [
                                             Padding(
                                               padding:
-                                                  EdgeInsets.symmetric(horizontal: 13.sp),
+                                                  EdgeInsets.fromLTRB(5, 5, 5, 5),
                                               child: SizedBox(
-                                                height: 90.sp,
-                                                width: 90.sp,
+                                                height: 180,
+                                                width: 180,
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.all(
-                                                      Radius.circular(5.sp)),
+                                                      Radius.circular(10.sp)),
                                                   child: CachedNetworkImage(
                                                     imageUrl: albumsList[index].picture ?? "",
-                                                    memCacheHeight: 150,
-                                                    memCacheWidth: 150,
+                                                    memCacheHeight: 180,
+                                                    memCacheWidth: 180,
                                                     placeholder: (context, url) => const CircularProgressIndicator(
                                                       strokeWidth: 5,
                                                       color: Color.fromARGB(255, 60, 60, 60),
@@ -127,7 +126,8 @@ class _AlbumPageState extends State<AlbumPage> {
                                                 ),
                                               ),
                                             ),
-                                            Expanded(
+                                            Padding(
+                                              padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                                               child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
@@ -163,7 +163,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                         ),
                                       ),
                                     ),
-                                  );
+                                );
                               },
                             ),
                           ],

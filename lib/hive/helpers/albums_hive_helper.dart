@@ -25,9 +25,20 @@ class AlbumsHelper{
 
   List<Albums> returnAlbumsForArtist(String artist){
     //var testx = artistBox.values.where((Artists) => Artists.name == "Jeff Rosenstock");
-      return albumsBox.values.where((Albums) => Albums.artistId == artist).toList();
+      return albumsBox.values.where((Albums) => Albums.artist == artist).toList();
   }
 
+  returnAlbum(String artist, String album){
+    return albumsBox.values.where((Albums) => Albums.artist == artist && Albums.name == album).toList();
+  }
+
+  addAlbumToBox(Albums album){
+    albumsBox.add(album);
+  }
+
+  void clearAlbums(){
+    albumsBox.clear();
+  }
 
   void getAllAlbums()async{
 
@@ -66,6 +77,19 @@ class AlbumsHelper{
 
     for(var album in albumsRaw["Items"]){
       String albumId = album["Id"];
+      String artistname = album["AlbumArtist"];
+      String artt = album["ArtistItems"][0]["Id"];
+
+      String albumNamme = album["Name"];
+      if(albumNamme == "California"){
+        print("stop");
+      }
+      if(albumNamme == "Dude Ranch"){
+        print("stop");
+      }
+      if(artistname.contains("link")){
+        print('stop');
+      }
       var imgUrl = "$baseServerUrl/Items/$albumId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
       try{
         albumsList.add(Albums(id: album["Id"], name: album["Name"],artist: album["AlbumArtist"], year: album["ProductionYear"].toString(), picture: imgUrl, favourite: album["UserData"]["IsFavorite"], artistId: album["ArtistItems"][0]["Id"] ?? ""));

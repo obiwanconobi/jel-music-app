@@ -138,6 +138,7 @@ class MusicController extends ChangeNotifier{
   resume() async {
     await getToken();
     baseServerUrl = GetStorage().read('serverUrl');
+    
     String baseUrl =  "$baseServerUrl/Items/$tempId/Download?api_key=$accessToken";
 
     List<String> timeParts = tempDuration!.split(':');

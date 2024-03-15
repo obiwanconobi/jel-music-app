@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -7,18 +8,35 @@ import 'package:get_storage/get_storage.dart';
 class SongsController {
     var songs = <Songs>[];
     String? albumId;
+    String? artistId;
+    SongsHelper songsHelper = SongsHelper();
     final int currentArtistIndex = 0;
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
 
      Future<List<Songs>> onInit() async {
     try {
-      songs = await fetchSongs(albumId!);
+     // songs = await fetchSongs(albumId!);
+     songs = await _getSongsFromBox(artistId!, albumId!);
       return songs;
     } catch (error) {
       // Handle errors if needed
      
       rethrow; // Rethrow the error if necessary
     }
+  }
+
+  _getSongsFromBox(String artist, String album)async{
+      await songsHelper.openBox();
+      var songsRaw = songsHelper.returnSongsFromAlbum(artist, album);
+      List<Songs> songsList = [];
+      for(var song in songsRaw){
+             String songId = song.albumId;
+             var imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+        songsList.add(Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length, favourite: song.favourite));
+      }
+      songsList.sort((a, b) => a.trackNumber!.compareTo(b.trackNumber ?? 0));
+      songsHelper.closeBox();
+      return songsList;
   }
 
    _getSongsData(String albumIdVal) async{
@@ -42,6 +60,7 @@ class SongsController {
       }
     } catch (e) {
       //log error
+      print("error");
     }
    }
 
@@ -51,12 +70,16 @@ class SongsController {
     List<Songs> songsList = [];
 
     for(var song in songsRaw["Items"]){
-      String songId = song["Id"];
-      int trackNumber = song["IndexNumber"] ?? 0;
-      String length = _ticksToTimestampString(song["RunTimeTicks"]);
-      var imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
-      var test = song["UserData"]["IsFavorite"];
-      songsList.add(Songs(id: song["Id"], trackNumber: trackNumber, artistId: song["ArtistItems"][0]["Id"], title: song["Name"],artist: song["ArtistItems"][0]["Name"], albumPicture: imgUrl, album: song["Album"], albumId: song["AlbumId"], length: length, favourite: song["UserData"]["IsFavorite"]));
+        try{
+          String songId = song["Id"];
+          int trackNumber = song["IndexNumber"] ?? 0;
+          String length = _ticksToTimestampString(song["RunTimeTicks"] ?? 0);
+          var imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+          var test = song["UserData"]["IsFavorite"];
+          songsList.add(Songs(id: song["Id"], trackNumber: trackNumber, artistId: song["ArtistItems"][0]["Id"], title: song["Name"],artist: song["ArtistItems"][0]["Name"], albumPicture: imgUrl, album: song["Album"], albumId: song["AlbumId"], length: length, favourite: song["UserData"]["IsFavorite"]));
+        }catch(e){
+          print(e);
+        }
     }
     songsList.sort((a, b) => a.trackNumber!.compareTo(b.trackNumber ?? 0));
     return songsList;
