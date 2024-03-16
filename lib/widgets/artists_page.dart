@@ -15,7 +15,7 @@ class ArtistPage extends StatefulWidget {
 
 class _ArtistPageState extends State<ArtistPage> {
   ArtistController controller = ArtistController();
-  
+  double mainAxis = 250.h;
 
   late Future<List<Artists>> artistsFuture;
 
@@ -84,7 +84,7 @@ class _ArtistPageState extends State<ArtistPage> {
                       // Data is available, build the list
                       List<Artists> artistController = snapshot.data!;
                       return GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 5, mainAxisExtent: 250),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 5, mainAxisExtent: 26.h),
                     itemCount: artistController.length,
                     physics: const BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
@@ -95,81 +95,67 @@ class _ArtistPageState extends State<ArtistPage> {
                       )},     
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 6.sp),
-                          child: InkWell(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10.sp),
-                            ),
-                            child: Container(
-                                height: 52.sp,
-                                decoration: BoxDecoration(
-                                  color: (const Color(0xFF1C1B1B)),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10.sp),
-                                  ),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 13.sp),
-                                      child: SizedBox(
-                                        height: 110.sp,
-                                        width: 110.sp,
-                                        child: ClipOval(
-                                          child: CachedNetworkImage(
-                                            fit: BoxFit.cover,
-                                            imageUrl: artistController[index].picture ?? "",
-                                            memCacheHeight: 150,
-                                            memCacheWidth: 150,
-                                            placeholder: (context, url) => const CircularProgressIndicator(
-                                              strokeWidth: 5,
-                                              color: Color.fromARGB(255, 60, 60, 60),
-                                            ),
-                                            errorWidget: (context, url, error) => Container(
-                                              color: const Color(0xFF71B77A),
-                                              child: const Center(
-                                                child: Text("404"),
-                                              ),
-                                            ),
-                                          ),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 3.sp),
+                                child: SizedBox(
+                                  height: 40.w,
+                                  width: 40.w,
+                                  child: ClipOval(
+                                    child: CachedNetworkImage(
+                                      fit: BoxFit.cover,
+                                      imageUrl: artistController[index].picture ?? "",
+                                      memCacheHeight: 150,
+                                      memCacheWidth: 150,
+                                      placeholder: (context, url) => const CircularProgressIndicator(
+                                        strokeWidth: 5,
+                                        color: Color.fromARGB(255, 60, 60, 60),
+                                      ),
+                                      errorWidget: (context, url, error) => Container(
+                                        color: const Color(0xFF71B77A),
+                                        child: const Center(
+                                          child: Text("404"),
                                         ),
                                       ),
                                     ),
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Flexible(
-                                                child: Center(
-                                                  child: Text(
-                                                    artistController[index].name!,
-                                                    style: TextStyle(
-                                                      fontSize: 12.sp,
-                                                      color: const Color(0xFFACACAC),
-                                                      fontWeight: FontWeight.bold,
-                                                      fontFamily: "Segoe UI",
-                                                      
-                                                    ),
-                                                    overflow: TextOverflow.ellipsis, // Set overflow property
-                                                    maxLines: 2, 
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
+                                  ),
                                 ),
                               ),
-                            ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Flexible(
+                                          child: Center(
+                                            child: Text(
+                                              artistController[index].name!,
+                                              style: TextStyle(
+                                                fontSize: 10.sp,
+                                                color: const Color(0xFFACACAC),
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: "Segoe UI",
+                                                
+                                              ),
+                                              overflow: TextOverflow.ellipsis, // Set overflow property
+                                              maxLines: 2, 
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                           ),
                       );
                     },

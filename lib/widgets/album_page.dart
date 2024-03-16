@@ -75,8 +75,12 @@ class _AlbumPageState extends State<AlbumPage> {
                                                             fontFamily: "Segoe UI",
                                                           ),),
                             GridView.builder(
-                              gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 10, mainAxisExtent: 245),
-                              shrinkWrap: true,
+                              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 250, // Adjust this value according to your needs
+                                  mainAxisSpacing: 18,
+                                  mainAxisExtent: 25.h
+                                ),
+                             shrinkWrap: true,
                               itemCount: albumsList.length,
                               physics: const BouncingScrollPhysics(),
                               itemBuilder: (context, index) {
@@ -90,7 +94,6 @@ class _AlbumPageState extends State<AlbumPage> {
                                       Radius.circular(10.sp),
                                     ),
                                     child: Container(
-                                        height: 152.sp,
                                         decoration: BoxDecoration(
                                           color: (const Color(0xFF1C1B1B)),
                                           borderRadius: BorderRadius.all(
@@ -103,12 +106,12 @@ class _AlbumPageState extends State<AlbumPage> {
                                               padding:
                                                   EdgeInsets.fromLTRB(5, 5, 5, 5),
                                               child: SizedBox(
-                                                height: 180,
-                                                width: 180,
+                                                height:40.w,
+                                                width: 42.w,
                                                 child: ClipRRect(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(10.sp)),
+                                                  borderRadius: BorderRadius.circular(4.w),
                                                   child: CachedNetworkImage(
+                                                    fit: BoxFit.fill,
                                                     imageUrl: albumsList[index].picture ?? "",
                                                     memCacheHeight: 180,
                                                     memCacheWidth: 180,
@@ -127,12 +130,12 @@ class _AlbumPageState extends State<AlbumPage> {
                                               ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                                               child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                    CrossAxisAlignment.end,
                                                 children: [
                                                   Row(
                                                     mainAxisSize: MainAxisSize.max,
