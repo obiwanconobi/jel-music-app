@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:jel_music/widgets/all_albums_page.dart';
 import 'package:jel_music/widgets/artists_page.dart';
+import 'package:jel_music/widgets/favourite_albums.dart';
+import 'package:jel_music/widgets/favourite_artists.dart';
 import 'package:jel_music/widgets/liked_songs.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/settings_page.dart';
@@ -44,13 +47,20 @@ class _StartPageState extends State<StartPage> {
                         children: <Widget>[
                           const SizedBox(width: 8),
                           TextButton(
-                            child: const Text('VIEW ALL'),
+                            child: const Text('ARTISTS'),
                             onPressed: () {Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => const ArtistPage()),
                               );},
                           ),
                           const SizedBox(width: 8),
+                          TextButton(
+                            child: const Text('ALBUMS'),
+                            onPressed: () {Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => AllAlbumsPage(favourite: false)),
+                              );},
+                          ),
                         ],
                       ),
                     ],
@@ -89,11 +99,15 @@ class _StartPageState extends State<StartPage> {
                     ],
                   ),
                 ),
+                Text('Favourite Albums', style: TextStyle(color: Colors.grey,  fontSize: 20)),
+                const FavouriteAlbums(),
+                Text('Favourite Artists', style: TextStyle(color: Colors.grey, )),
+                const FavouriteArtists(),
               ],
         )
       ),
       bottomSheet: const Controls()
-    )
+          )
     );
   }
 }

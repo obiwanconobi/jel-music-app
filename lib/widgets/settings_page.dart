@@ -99,7 +99,7 @@ class _MyWidgetState extends State<SettingsPage> {
 
   void check(){
 
-    var artistList = helper.returnArtists();
+    var artistList = helper.returnArtists(false);
 
     for(var artistr in artistList){
       var artist = artistr.name;
@@ -108,7 +108,7 @@ class _MyWidgetState extends State<SettingsPage> {
     }
   
 
-    var albumsList = albumsHelper.returnAlbums();
+    var albumsList = albumsHelper.returnAlbums(false);
     
 
     for(var album in albumsList){

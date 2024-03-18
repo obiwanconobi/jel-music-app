@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:sorted/sorted.dart';
 
 
 
@@ -12,13 +11,14 @@ class ArtistController {
     Future<List<Artists>>? futureList;
     final int currentArtistIndex = 0;
     String? baseServerUrl;
+    bool? favourite;
     ArtistsHelper artistHelper = ArtistsHelper();
 
     Future<List<Artists>> onInit() async {
     try {
       baseServerUrl = GetStorage().read('serverUrl');
       await artistHelper.openBox();
-      artistsList = _getArtistsFromBox();
+      artistsList = _getArtistsFromBox(favourite);
       return artistsList;
     } catch (error) {
       // Handle errors if needed
@@ -27,8 +27,9 @@ class ArtistController {
   }
 
 
-    List<Artists> _getArtistsFromBox(){
-       var artistsRaw = artistHelper.returnArtists();
+    List<Artists> _getArtistsFromBox(bool? favourite){
+      favourite ??= false;
+       var artistsRaw = artistHelper.returnArtists(favourite);
 
       for(var artist in artistsRaw){
           String name = artist.name;
@@ -108,7 +109,7 @@ class ArtistController {
       
 
 
-      return _getArtistsFromBox();
+      return _getArtistsFromBox(false);
   }
 
 }

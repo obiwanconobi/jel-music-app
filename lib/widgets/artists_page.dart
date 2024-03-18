@@ -22,6 +22,7 @@ class _ArtistPageState extends State<ArtistPage> {
   @override
   void initState() {
     super.initState();
+    controller.favourite = false;
     artistsFuture = controller.onInit();
   }
 

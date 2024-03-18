@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:jel_music/hive/classes/albums.dart';
-import 'package:jel_music/hive/classes/artists.dart';
 import 'package:http/http.dart' as http;
 
 class AlbumsHelper{
@@ -19,8 +18,12 @@ class AlbumsHelper{
      albumsBox = Hive.box('albums');
   }
 
-  List<Albums> returnAlbums(){
-      return albumsBox.values.toList();
+  bool isFavourite(String artist, String title){
+      return albumsBox.values.where((Albums) => Albums.artist == artist && Albums.name == title).first.favourite ?? false;
+  }
+
+  List<Albums> returnAlbums(bool favourite){
+      return albumsBox.values.where((Albums) => Albums.favourite == favourite).toList();
   }
 
   List<Albums> returnAlbumsForArtist(String artist){
@@ -28,8 +31,12 @@ class AlbumsHelper{
       return albumsBox.values.where((Albums) => Albums.artist == artist).toList();
   }
 
-  returnAlbum(String artist, String album){
-    return albumsBox.values.where((Albums) => Albums.artist == artist && Albums.name == album).toList();
+  Albums? returnAlbum(String artist, String album){
+    return albumsBox.values.where((Albums) => Albums.artist == artist && Albums.name == album).firstOrNull;
+  }
+
+  updateAlbum(Albums album, int key){
+    albumsBox.put(key,album);
   }
 
   addAlbumToBox(Albums album){
@@ -51,7 +58,9 @@ class AlbumsHelper{
 
   }
   
-
+  getAlbumDataFavourite()async{
+    return _getAlbumData();
+  }
 
    _getAlbumData() async{
       try {
@@ -60,7 +69,7 @@ class AlbumsHelper{
           'X-MediaBrowser-Token': '$accessToken',
           'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
         };
-      String url = "$baseServerUrl/Users/D8B7A1C3-8440-4C88-80A1-04F7119FAA7A/Items?recursive=true&includeItemTypes=MusicAlbum&videoTypes=&enableTotalRecordCount=true&enableImages=true";
+      String url = "$baseServerUrl/Users/D8B7A1C3-8440-4C88-80A1-04F7119FAA7A/Items?recursive=true&includeItemTypes=MusicAlbum&videoTypes=&enableTotalRecordCount=true&enableImages=true&isFavorite=true";
       http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
       if (res.statusCode == 200) {
         return json.decode(res.body);

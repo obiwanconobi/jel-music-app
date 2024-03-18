@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/songs_controller.dart';
+import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
@@ -24,18 +27,29 @@ class SongsPage extends StatefulWidget {
 class _SongsPageState extends State<SongsPage> {
   SongsController controller = SongsController();
   ApiController apiController = ApiController();
+  AlbumsHelper albumHelper = AlbumsHelper();
+  AlbumController albumController = AlbumController();
+  late Future<bool> favourite;
   late Future<List<Songs>> songsFuture;
 
   StreamModel returnStream(Songs song){
     return StreamModel(id: song.id, composer: song.artist, music: song.id, picture: song.albumPicture, title: song.title, long: song.length, isFavourite: song.favourite);
   }
 
+  _openBox()async{
+     await albumHelper.openBox();
+     return albumHelper.isFavourite(artistIds!, albumIds!);
+
+  }
+
   @override
-  void initState() {
+  void initState(){
     super.initState();
+    favourite = albumController.returnFavourite(artistIds!, albumIds!);
     controller.albumId = albumIds;
     controller.artistId = artistIds;
     songsFuture = controller.onInit();
+    
   }
 
   _addToQueue(Songs song){
@@ -57,21 +71,22 @@ class _SongsPageState extends State<SongsPage> {
     
   }
 
+  _favouriteAlbum(String albumName, String artistName, bool favourite){
+    albumController.toggleFavourite(artistName, albumName, !favourite);
+  }
+
   _favouriteSong(String songId, bool current){
     if(current){
       apiController.unFavouriteItem(songId);
     }else{
       apiController.favouriteItem(songId);
     }
-    
-    
   }
 
   
 
   @override
   Widget build(BuildContext context) {
-    
     controller.albumId = albumIds;
     var songsList = controller.songs;
     return SafeArea(
@@ -93,19 +108,36 @@ class _SongsPageState extends State<SongsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              OutlinedButton(onPressed: () => _addAllToQueue(songsList), child: const Text('Play All')),
-                              OutlinedButton(onPressed: () => _shuffleQueue(), child: const Text('Shuffle')),
-                              OutlinedButton(onPressed: () => _shuffleQueue(), child: const Text('Add queue')),
-                            ],
+                      child: 
+                      FutureBuilder<bool>(
+                          future: favourite,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text('Error: ${snapshot.error}'),
+                              );
+                            } else {
+                              return         
+                            Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    OutlinedButton(onPressed: () => _addAllToQueue(songsList), child: const Text('Play All')),
+                                    IconButton(icon: Icon(Icons.favorite, color: ((snapshot.data ?? false) ? Colors.red : Colors.blueGrey), size:30), onPressed: () { setState(){}_favouriteAlbum(albumIds!, artistIds!, snapshot.data!); },),
+                                    OutlinedButton(onPressed: () => _shuffleQueue(), child: const Text('Shuffle')),
+                                  //  OutlinedButton(onPressed: () => _shuffleQueue(), child: const Text('Add queue')),
+                                  ],
+                                ),
+                              ],
+                            );
+                          }
+                          }
                           ),
-                          
-                        ],
-                      ),
                     ),
                   ],
                 ),

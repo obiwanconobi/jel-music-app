@@ -34,8 +34,8 @@ class ApiController{
     }
 
     Future<void> unFavouriteItem(String itemId) async {
-        var accessToken = GetStorage().read('accessToken');
-              var baseServerUrl = GetStorage().read('baseServerUrl');
+        var accessToken = await GetStorage().read('accessToken');
+              var baseServerUrl = await GetStorage().read('serverUrl');
                 
                   Map<String, String> requestHeaders = {
                   'Content-type': 'application/json',

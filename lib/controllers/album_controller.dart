@@ -1,8 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:jel_music/controllers/api_controller.dart';
+import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:jel_music/widgets/album_page.dart';
+import 'package:jel_music/widgets/songs_page.dart';
 
 
 class AlbumController {
@@ -10,8 +14,8 @@ class AlbumController {
     String? artistId;
     final int currentArtistIndex = 0;
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+    ApiController apiController = ApiController();
     AlbumsHelper albumHelper = AlbumsHelper();
-
      Future<List<Album>> onInit() async {
     try {
       await albumHelper.openBox();
@@ -24,15 +28,32 @@ class AlbumController {
     }
   }
 
+  toggleFavourite(String artist, String title, bool favourite)async{
+    await albumHelper.openBox();
+    Albums? album = albumHelper.returnAlbum(artist, title);
+    album!.favourite = favourite;
+    albumHelper.updateAlbum(album, album.key);
+    apiController.updateFavouriteStatus(album.id, favourite);
+  }
+
+  Future<bool> returnFavourite(String artist, String album)async{
+    await albumHelper.openBox();
+    return albumHelper.isFavourite(artist, album);
+    
+  }
+
   List<Album> _getAlbumsFromBox(String artistIdVal){
-      var albumsRaw = albumHelper.returnAlbumsForArtist(artistIdVal);
+
+      List<Albums> albumsRaw = [];
+      albumsRaw = albumHelper.returnAlbumsForArtist(artistIdVal);
+     
       List<Album> albumsList = [];
       for(var album in albumsRaw){
         String albumId = album.id;
         var imgUrl = "$baseServerUrl/Items/$albumId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
         albumsList.add(Album(id: album.id, title: album.name,artist: album.artist, year: int.parse(album.year!), picture: imgUrl));
       }
-  
+
       albumsList.sort((a, b) => a.year!.compareTo(b.year!));
       return albumsList;
   }

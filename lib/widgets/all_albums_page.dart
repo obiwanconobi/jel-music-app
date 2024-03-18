@@ -1,34 +1,33 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:jel_music/controllers/album_controller.dart';
+import 'package:jel_music/controllers/all_albums_controller.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/songs_page.dart';
 import 'package:sizer/sizer.dart';
-String? artistIds;
+bool? favouriteBool;
 
-class AlbumPage extends StatefulWidget {
-  AlbumPage({super.key, required this.artistId}){
-    artistIds = artistId;
+class AllAlbumsPage extends StatefulWidget {
+  AllAlbumsPage({super.key, required this.favourite}){
+    favouriteBool = favourite;
   }
 
-  final String artistId;
+  final bool favourite;
   @override
-  State<AlbumPage> createState() => _AlbumPageState();
+  State<AllAlbumsPage> createState() => _AlbumPageState();
 }
 
-class _AlbumPageState extends State<AlbumPage> {
-  AlbumController controller = AlbumController();
+class _AlbumPageState extends State<AllAlbumsPage> {
+  AllAlbumsController controller = AllAlbumsController();
   late Future<List<Album>> albumsFuture;
 
 
   @override
   void initState() {
     super.initState();
-    controller.artistId = artistIds;
+    controller.favouriteVal = favouriteBool;
     albumsFuture = controller.onInit();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +65,6 @@ class _AlbumPageState extends State<AlbumPage> {
                     } else {
                       // Data is available, build the list
                       List<Album> albumsList = snapshot.data!;
-                      if(artistIds != ""){
-                        title = albumsList[0].artist!;
-                      }
                       return SingleChildScrollView(
                         child: Column(
                           children: [
@@ -108,7 +104,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                           children: [
                                             Padding(
                                               padding:
-                                                  EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                                  const EdgeInsets.fromLTRB(5, 5, 5, 5),
                                               child: SizedBox(
                                                 height:40.w,
                                                 width: 42.w,
