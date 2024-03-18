@@ -33,7 +33,7 @@ class AlbumController {
     Albums? album = albumHelper.returnAlbum(artist, title);
     album!.favourite = favourite;
     albumHelper.updateAlbum(album, album.key);
-    apiController.updateFavouriteStatus(album.id, favourite);
+    apiController.updateFavouriteStatus(album.id, !favourite);
   }
 
   Future<bool> returnFavourite(String artist, String album)async{
