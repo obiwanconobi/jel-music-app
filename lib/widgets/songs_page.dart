@@ -8,6 +8,7 @@ import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
+import 'package:jel_music/widgets/similar_albums.dart';
 import 'package:sizer/sizer.dart';
 String? albumIds;
 String? artistIds;
@@ -284,6 +285,7 @@ class _SongsPageState extends State<SongsPage> {
                                   );
                               },
                             ),
+                            SimilarAlbums(albumId: albumIds!, artistId: artistIds!,),
                           ],
                         ),
                       );

@@ -27,84 +27,99 @@ class _StartPageState extends State<StartPage> {
         body: Padding(
           padding: EdgeInsets.only(
             top: 5.h,
-            left: 16.sp,
+            left: 0.sp,
             bottom: 10.sp,
-            right: 16.sp,
+            right: 0.sp,
           ),
-          child: Column(
-              children: [
-                Card(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      const ListTile(
-                        leading: Icon(Icons.album),
-                        title: Text('All Artists'),
-                        subtitle: Text('All your music, sorted by artists'),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          const SizedBox(width: 8),
-                          TextButton(
-                            child: const Text('ARTISTS'),
-                            onPressed: () {Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const ArtistPage()),
-                              );},
+          child: SingleChildScrollView(
+            child: Column(
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        height:20.h,
+                        width: 50.w,
+                        child: Card(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              const ListTile(
+                                leading: Icon(Icons.album),
+                                title: Text('All Music'),
+                                subtitle: Text('All your music'),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  const SizedBox(width: 8),
+                                  TextButton(
+                                    child: const Text('ARTISTS'),
+                                    onPressed: () {Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const ArtistPage()),
+                                      );},
+                                  ),
+                                  const SizedBox(width: 8),
+                                  TextButton(
+                                    child: const Text('ALBUMS'),
+                                    onPressed: () {Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => AllAlbumsPage(favourite: false)),
+                                      );},
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          const SizedBox(width: 8),
-                          TextButton(
-                            child: const Text('ALBUMS'),
-                            onPressed: () {Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => AllAlbumsPage(favourite: false)),
-                              );},
-                          ),
-                        ],
+                        ),
                       ),
+                      SizedBox(
+                        height:20.h,
+                        width: 50.w,
+                        child: Card(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              const ListTile(
+                                leading: Icon(Icons.album),
+                                title: Text('Liked Songs'),
+                                subtitle: Text('Your liked songs'),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  TextButton(
+                                    child: const Text('VIEW'),
+                                    onPressed: () {Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const LikedSongs()),
+                                      );},
+                                  ),
+                                  const SizedBox(width: 8),
+                                  TextButton(
+                                    child: const Text('LISTEN'),
+                                    onPressed: () {Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const ArtistPage( )),
+                                      );},
+                                  ),
+                                  const SizedBox(width: 8),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
                     ],
                   ),
-                ),
-                Card(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      const ListTile(
-                        leading: Icon(Icons.album),
-                        title: Text('Favourite Songs'),
-                        subtitle: Text('All your favourite songs'),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          TextButton(
-                            child: const Text('VIEW'),
-                            onPressed: () {Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const LikedSongs()),
-                              );},
-                          ),
-                          const SizedBox(width: 8),
-                          TextButton(
-                            child: const Text('LISTEN'),
-                            onPressed: () {Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const ArtistPage( )),
-                              );},
-                          ),
-                          const SizedBox(width: 8),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Text('Favourite Albums', style: TextStyle(color: Colors.grey,  fontSize: 20)),
-                const FavouriteAlbums(),
-                Text('Favourite Artists', style: TextStyle(color: Colors.grey, )),
-                const FavouriteArtists(),
-              ],
-        )
+                  const Text('Favourite Albums', style: TextStyle(color: Colors.grey,  fontSize: 20)),
+                  const FavouriteAlbums(),
+                  const Text('Favourite Artists', style: TextStyle(color: Colors.grey, fontSize: 20)),
+                  const FavouriteArtists(),
+                ],
+                    ),
+          )
       ),
       bottomSheet: const Controls()
           )

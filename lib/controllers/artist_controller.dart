@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:get_storage/get_storage.dart';
@@ -12,7 +13,33 @@ class ArtistController {
     final int currentArtistIndex = 0;
     String? baseServerUrl;
     bool? favourite;
+    String? artistId;
     ArtistsHelper artistHelper = ArtistsHelper();
+    ApiController apiController = ApiController();
+
+  Future<List<Artists>> returnSimilar()async{
+    baseServerUrl = GetStorage().read('serverUrl');
+    await artistHelper.openBox();
+    var artistFromBox = artistHelper.returnArtist(artistId!);
+
+    
+
+    var artistRaw = await apiController.getSimilarItems(artistFromBox!.id);
+    List<Artists> artistsList = [];
+
+
+
+      for(var artist in artistRaw["Items"]){
+
+          String artistId = artist["Id"];
+          var pictureUrl = "$baseServerUrl/Items/$artistId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+          
+          artistsList.add(Artists(id: artist["Id"], name: artist["Name"], picture: pictureUrl));
+      }
+    
+    return artistsList;
+
+  }
 
     Future<List<Artists>> onInit() async {
     try {
@@ -89,9 +116,9 @@ class ArtistController {
     //  var artistRaw = await _getArtistData();
 
 
-      /* List<Artists> artistList = [];
+      List<Artists> artistList = [];
 
-      for(var artist in artistRaw["Items"]){
+     /*  for(var artist in artistRaw["Items"]){
 
           //could be used to minimise image errors 
           /* String? pictureTag;

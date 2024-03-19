@@ -11,6 +11,8 @@ class AllAlbumsController {
     final int currentArtistIndex = 0;
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
     AlbumsHelper albumHelper = AlbumsHelper();
+
+
      Future<List<Album>> onInit() async {
     try {
       await albumHelper.openBox();
@@ -22,6 +24,8 @@ class AllAlbumsController {
       rethrow; // Rethrow the error if necessary
     }
   }
+
+  
 
   List<Album> _getAlbumsFromBox(bool favourite){
 

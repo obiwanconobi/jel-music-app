@@ -11,7 +11,9 @@ class AlbumsHelper{
   var baseServerUrl = GetStorage().read('serverUrl');
   
 
-
+  Future<void> closeBox()async{
+   
+  }
 
   Future<void> openBox()async{
      await Hive.openBox<Albums>('albums');
@@ -57,6 +59,8 @@ class AlbumsHelper{
 
 
   }
+
+
   
   getAlbumDataFavourite()async{
     return _getAlbumData();

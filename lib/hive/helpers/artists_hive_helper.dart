@@ -32,8 +32,8 @@ class ArtistsHelper{
     artistBox.add(artist);
   }
 
-  returnArtist(String name){
-    return artistBox.values.where((Artists) => Artists.name == name);
+  Artists? returnArtist(String name){
+    return artistBox.values.where((Artists) => Artists.name == name).firstOrNull;
   }
 
   

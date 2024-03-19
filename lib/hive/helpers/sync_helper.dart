@@ -48,7 +48,7 @@ class SyncHelper{
       
       var artist = await artistsHelper.returnArtist(song.artist);
       bool artistFavourite = false;
-      if(artist.isEmpty){
+      if(artist == null){
         if(favArtists.contains(song.artist)){
           artistFavourite = true;
         }

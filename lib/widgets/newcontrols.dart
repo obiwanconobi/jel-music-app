@@ -55,7 +55,8 @@ class _ControlsState extends State<Controls> {
   }
 
   _returnHome(){
-    Navigator.popUntil(context, ModalRoute.withName('/'));
+    Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+  //  Navigator.popUntil(context, ModalRoute.withName('/'));
   }
 
   _favouriteSong(String itemId, bool current){

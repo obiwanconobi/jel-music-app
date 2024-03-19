@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
+import 'package:jel_music/widgets/similar_artists.dart';
 import 'package:jel_music/widgets/songs_page.dart';
 import 'package:sizer/sizer.dart';
 String? artistIds;
@@ -173,6 +174,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                 );
                               },
                             ),
+                            SimilarArtists(artistId: artistIds!,),
                           ],
                         ),
                       );

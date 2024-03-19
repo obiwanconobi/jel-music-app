@@ -30,7 +30,7 @@ class _FavouriteArtistsState extends State<FavouriteArtists> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: Text('Offline'),
           );
         } else if (snapshot.hasError) {
           return Center(

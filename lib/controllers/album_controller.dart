@@ -5,27 +5,44 @@ import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:jel_music/widgets/album_page.dart';
-import 'package:jel_music/widgets/songs_page.dart';
-
 
 class AlbumController {
     var albums = <Album>[];
     String? artistId;
     final int currentArtistIndex = 0;
+    String? albumId;
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
     ApiController apiController = ApiController();
     AlbumsHelper albumHelper = AlbumsHelper();
+
      Future<List<Album>> onInit() async {
     try {
       await albumHelper.openBox();
-      albums = await _getAlbumsFromBox(artistId!);
+      albums =  _getAlbumsFromBox(artistId!);
       return albums;
     } catch (error) {
       // Handle errors if needed
     //  print('Error fetching artists: $error');
       rethrow; // Rethrow the error if necessary
     }
+  }
+
+  Future<List<Album>> returnSimilar()async{
+    await albumHelper.openBox();
+    var album = albumHelper.returnAlbum(artistId!, albumId!);
+    
+    var albumsRaw = await apiController.getSimilarItems(album!.id);
+    //Future<List<Album>> returnList;
+    List<Album> albumsList = [];
+    for(var album in albumsRaw["Items"]){
+          String albumId = album["Id"];
+        //  Albums? albumGot = albumHelper.returnAlbum(artist, title);
+      var imgUrl = "$baseServerUrl/Items/$albumId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+      albumsList.add(Album(id: album["Id"], title: album["Name"],artist: album["AlbumArtist"], year: album["ProductionYear"] ?? 1900, picture: imgUrl));
+  
+    }
+    return albumsList;
+
   }
 
   toggleFavourite(String artist, String title, bool favourite)async{
