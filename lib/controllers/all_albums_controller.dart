@@ -19,8 +19,6 @@ class AllAlbumsController {
       albums = _getAlbumsFromBox(favouriteVal ?? false);
       return albums;
     } catch (error) {
-      // Handle errors if needed
-    //  print('Error fetching artists: $error');
       rethrow; // Rethrow the error if necessary
     }
   }
@@ -30,7 +28,14 @@ class AllAlbumsController {
   List<Album> _getAlbumsFromBox(bool favourite){
 
       List<Albums> albumsRaw = [];
-      albumsRaw = albumHelper.returnAlbums(favourite);
+
+      if(favourite == true){
+        albumsRaw = albumHelper.returnFavouriteAlbums(true);
+      }else{
+        albumsRaw = albumHelper.returnAlbums();
+      }
+
+      
       List<Album> albumsList = [];
       for(var album in albumsRaw){
         String albumId = album.id;

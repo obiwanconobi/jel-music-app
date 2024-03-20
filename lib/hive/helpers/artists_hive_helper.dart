@@ -19,8 +19,12 @@ class ArtistsHelper{
      artistBox = Hive.box('artists');
   }
 
+  List<Artists> returnArtists(){
+    return artistBox.values.toList();
+  }
 
-  List<Artists> returnArtists(bool favourite){
+
+  List<Artists> returnFavouriteArtists(bool favourite){
     return artistBox.values.where((Artists) => Artists.favourite == favourite).toList();
   }
   
@@ -48,7 +52,7 @@ class ArtistsHelper{
           artistBox.put(artist.id,artist);
         }catch(e){
           //log errr
-          print("error");
+         
         }
         
       }     
@@ -65,7 +69,7 @@ class ArtistsHelper{
       for(var artist in artistRaw["Items"]){  
         String test = artist["Name"];
           if(test.contains('blink')){
-            print('stop');
+          
           }    
           artistList.add(Artists(id: artist["Id"], name: artist["Name"], favourite: artist["UserData"]["IsFavorite"], picture: artist["Id"]));
       }
@@ -78,7 +82,7 @@ class ArtistsHelper{
 
      _getArtistData() async{
     try {
-      var userId = "D8B7A1C3-8440-4C88-80A1-04F7119FAA7A";
+      var userId = GetStorage().read('userId');
     
       Map<String, String> requestHeaders = {
        'Content-type': 'application/json',
@@ -96,13 +100,14 @@ class ArtistsHelper{
   }
 
        _getAlbumData() async{
+        var userId = GetStorage().read('userId');
       try {
           Map<String, String> requestHeaders = {
           'Content-type': 'application/json',
           'X-MediaBrowser-Token': '$accessToken',
           'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
         };
-      String url = "$baseServerUrl/Users/D8B7A1C3-8440-4C88-80A1-04F7119FAA7A/Items?recursive=true&includeItemTypes=MusicAlbum&videoTypes=&enableTotalRecordCount=true&enableImages=true";
+      String url = "$baseServerUrl/Users/$userId/Items?recursive=true&includeItemTypes=MusicAlbum&videoTypes=&enableTotalRecordCount=true&enableImages=true";
       http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
       if (res.statusCode == 200) {
         return json.decode(res.body);

@@ -186,7 +186,7 @@ class _AlbumPageState extends State<AlbumPage> {
             ],
           ),
         ),
-        bottomNavigationBar: const Controls()
+        bottomNavigationBar: const Controls(),
       ),
     );
     

@@ -56,23 +56,20 @@ class ArtistController {
 
     List<Artists> _getArtistsFromBox(bool? favourite){
       favourite ??= false;
-       var artistsRaw = artistHelper.returnArtists(favourite);
-
+      var artistsRaw = [];
+      if(favourite == true){
+         artistsRaw = artistHelper.returnFavouriteArtists(true);
+      }else{
+        artistsRaw = artistHelper.returnArtists();
+      }
       for(var artist in artistsRaw){
           String name = artist.name;
-          if(name.contains("link")){
-            print("tee");
-          }
           String artistId = artist.id;
          var pictureUrl = "$baseServerUrl/Items/$artistId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
         artistsList.add(Artists(id: artist.id, name: artist.name, picture: pictureUrl));
       }
 
-     // albumsList.sort((a, b) => a.year!.compareTo(b.year!));
-     // artistsList.sort((a, b) => a.name!.substring(0,2).compareTo(b.name!.substring(0,2)));
-      
-    
-     // artistsList.sorted((a, b) => a.name.compareTo(b.name));
+   
       artistsList.sort((a, b) =>
       _removeSpecialCharacters(a.name!).compareTo(_removeSpecialCharacters(b.name!)));
   
@@ -81,7 +78,7 @@ class ArtistController {
 
     String _removeSpecialCharacters(String str){
         if(str.contains("blink")){
-          print("ss");
+         
         }
         return str.replaceAll("‐", "").replaceAll(".", "").replaceAll("-", "").toLowerCase();
        // return str;

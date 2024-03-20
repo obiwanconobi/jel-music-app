@@ -121,7 +121,20 @@ class _StartPageState extends State<StartPage> {
                     ),
           )
       ),
-      bottomSheet: const Controls()
+      bottomSheet: const Controls(),
+      /* floatingActionButton: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 80),
+        child: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              
+            });
+          },
+          foregroundColor: Colors.blueGrey,
+          backgroundColor: const Color.fromARGB(255, 59, 59, 59),
+          child: const Icon(Icons.search),
+        ),
+      ), */
           )
     );
   }

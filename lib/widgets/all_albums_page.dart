@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/all_albums_controller.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
@@ -18,15 +19,36 @@ class AllAlbumsPage extends StatefulWidget {
 }
 
 class _AlbumPageState extends State<AllAlbumsPage> {
+  TextEditingController _searchController = TextEditingController();
   AllAlbumsController controller = AllAlbumsController();
   late Future<List<Album>> albumsFuture;
-
+  List<Album> _filteredAlbums = []; // List to hold filtered albums
+  List<Album> albumsList = [];
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
     controller.favouriteVal = favouriteBool;
     albumsFuture = controller.onInit();
+    _searchController.addListener(_filterAlbums);
+  }
+
+   void _filterAlbums() {
+      String searchText = _searchController.text.toLowerCase();
+      setState(() {
+        if (searchText.isNotEmpty) {
+          _filteredAlbums = albumsList
+              .where((album) => album.title!.toLowerCase().contains(searchText))
+              .toList();
+        } else {
+          _filteredAlbums = List.from(albumsList); // Reset to original list if search text is empty
+        }
+      });
   }
 
   @override
@@ -64,7 +86,10 @@ class _AlbumPageState extends State<AllAlbumsPage> {
                       );
                     } else {
                       // Data is available, build the list
-                      List<Album> albumsList = snapshot.data!;
+                      albumsList = snapshot.data!;
+                      if(_searchController.text.isEmpty){
+                        _filteredAlbums = albumsList;
+                      }
                       return SingleChildScrollView(
                         child: Column(
                           children: [
@@ -81,14 +106,14 @@ class _AlbumPageState extends State<AllAlbumsPage> {
                                   mainAxisExtent: 25.h,
                                 ),
                              shrinkWrap: true,
-                              itemCount: albumsList.length,
+                              itemCount: _filteredAlbums.length,
                               physics: const BouncingScrollPhysics(),
                               itemBuilder: (context, index) {
                                 return SizedBox(
                                   child: InkWell(
                                     onTap:() => {
                                       Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => SongsPage(albumId: albumsList[index].title!, artistId: albumsList[index].artist!,)),
+                                        MaterialPageRoute(builder: (context) => SongsPage(albumId: _filteredAlbums[index].title!, artistId: _filteredAlbums[index].artist!,)),
                                       )}, 
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.sp),
@@ -112,7 +137,7 @@ class _AlbumPageState extends State<AllAlbumsPage> {
                                                   borderRadius: BorderRadius.circular(4.w),
                                                   child: CachedNetworkImage(
                                                     fit: BoxFit.fill,
-                                                    imageUrl: albumsList[index].picture ?? "",
+                                                    imageUrl: _filteredAlbums[index].picture ?? "",
                                                     memCacheHeight: 180,
                                                     memCacheWidth: 180,
                                                     placeholder: (context, url) => const CircularProgressIndicator(
@@ -145,7 +170,7 @@ class _AlbumPageState extends State<AllAlbumsPage> {
                                                       Flexible(
                                                         child: Center(
                                                           child: Text(
-                                                            albumsList[index].title!,
+                                                            _filteredAlbums[index].title!,
                                                             style: TextStyle(
                                                               fontSize: 13.sp,
                                                               color: const Color(0xFFACACAC),
@@ -177,12 +202,17 @@ class _AlbumPageState extends State<AllAlbumsPage> {
                 )
 
               ),
+              Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: TextField(controller: _searchController, decoration: const InputDecoration.collapsed(hintText: 'Search',hintStyle:  TextStyle(color: Colors.grey, fontSize: 18)), style: const TextStyle(color: Colors.grey, fontSize: 18)),
+              ),
             ],
           ),
         ),
-        bottomNavigationBar: const Controls()
+        bottomNavigationBar: const Controls(),
       ),
     );
     
   }
 }
+

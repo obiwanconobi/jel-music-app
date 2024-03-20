@@ -116,7 +116,6 @@ class _LikedSongsState extends State<LikedSongs> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Column(
-                                  
                                   children: [
                                     CachedNetworkImage(
                                                         imageUrl: songsList[0].albumPicture ?? "",

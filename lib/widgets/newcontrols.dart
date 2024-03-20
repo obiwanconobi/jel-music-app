@@ -84,30 +84,45 @@ class _ControlsState extends State<Controls> {
       //  minHeight: 40,
         headerBar: Container(
           color: const Color.fromARGB(255, 37, 37, 37),
-          height:50,
+          height:70,
           child:  Center(
-            child: Container(
-            decoration: const BoxDecoration(borderRadius: BorderRadius.only(
-            topRight: Radius.circular(40.0),
-          //  bottomRight: Radius.circular(40.0),
-            topLeft: Radius.circular(40.0),)),
-              margin: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-             // padding: EdgeInsets.fromLTRB(10, 10, 10, 50),
-              child: Consumer<MusicController>(
-                builder: (context, musicController, child) {
-                  return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    IconButton(onPressed: () => { _returnHome() }, icon: const Icon(Icons.home, color: Colors.blueGrey, size:30)),
-                    IconButton(onPressed: () => { _onItemTapped(0) }, icon: const Icon(Icons.skip_previous,color: Colors.blueGrey, size:30)),
-                    IconButton(onPressed: () => { _onItemTapped(1) }, icon: Icon((musicController.isPlaying ?? false) ? Icons.pause : Icons.play_arrow, color: ((musicController.isCompleted) ? Colors.grey : Colors.blueGrey), size: 30, )),
-                    IconButton(onPressed: () => { _onItemTapped(2) }, icon: const Icon(Icons.skip_next, size:30, color: Colors.blueGrey)),
-                    IconButton(onPressed: () => { _favouriteSong(musicController.currentSource!.tag.id, musicController.currentSource!.tag.extras["favourite"]) }, icon: Icon(Icons.favorite, color: ((musicController.currentSource!.tag.extras["favourite"]) ? Colors.red : Colors.blueGrey), size:30),)
-                
-                  ],
-                );
-                }
-              ),
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  child:  Divider(
+                    height: 2,
+                    thickness: 5,
+                    indent: 160,
+                    endIndent: 160,
+                    color: Colors.blueGrey,
+                    
+                  ),
+                ),
+                Container(
+                decoration: const BoxDecoration(borderRadius: BorderRadius.only(
+                topRight: Radius.circular(40.0),
+                          //  bottomRight: Radius.circular(40.0),
+                topLeft: Radius.circular(40.0),)),
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                 // padding: EdgeInsets.fromLTRB(10, 10, 10, 50),
+                  child: Consumer<MusicController>(
+                    builder: (context, musicController, child) {
+                      return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(onPressed: () => { _returnHome() }, icon: const Icon(Icons.home, color: Colors.blueGrey, size:30)),
+                        IconButton(onPressed: () => { _onItemTapped(0) }, icon: const Icon(Icons.skip_previous,color: Colors.blueGrey, size:30)),
+                        IconButton(onPressed: () => { _onItemTapped(1) }, icon: Icon((musicController.isPlaying ?? false) ? Icons.pause : Icons.play_arrow, color: ((musicController.isCompleted) ? Colors.grey : Colors.blueGrey), size: 30, )),
+                        IconButton(onPressed: () => { _onItemTapped(2) }, icon: const Icon(Icons.skip_next, size:30, color: Colors.blueGrey)),
+                        IconButton(onPressed: () => { _favouriteSong(musicController.currentSource!.tag.id, musicController.currentSource!.tag.extras["favourite"]) }, icon: Icon(Icons.favorite, color: ((musicController.currentSource!.tag.extras["favourite"]) ? Colors.red : Colors.blueGrey), size:30),)
+                    
+                      ],
+                    );
+                    }
+                  ),
+                ),
+              ],
             ),
           ),
         ), // Your header here

@@ -43,13 +43,13 @@ class SongsController {
       try {
         var accessToken = GetStorage().read('accessToken');
         String albumId = albumIdVal;
-        
+        var userId = GetStorage().read('userId');
           Map<String, String> requestHeaders = {
           'Content-type': 'application/json',
           'X-MediaBrowser-Token': '$accessToken',
           'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
         };
-      String url = "$baseServerUrl/Users/D8B7A1C3-8440-4C88-80A1-04F7119FAA7A/Items?recursive=true&excludeItemTypes=&includeItemTypes=&albumIds=$albumId&enableTotalRecordCount=true&enableImages=true";
+      String url = "$baseServerUrl/Users/$userId/Items?recursive=true&excludeItemTypes=&includeItemTypes=&albumIds=$albumId&enableTotalRecordCount=true&enableImages=true";
       
       http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
       if (res.statusCode == 200) {
@@ -60,7 +60,7 @@ class SongsController {
       }
     } catch (e) {
       //log error
-      print("error");
+
     }
    }
 
@@ -78,7 +78,7 @@ class SongsController {
           var test = song["UserData"]["IsFavorite"];
           songsList.add(Songs(id: song["Id"], trackNumber: trackNumber, artistId: song["ArtistItems"][0]["Id"], title: song["Name"],artist: song["ArtistItems"][0]["Name"], albumPicture: imgUrl, album: song["Album"], albumId: song["AlbumId"], length: length, favourite: song["UserData"]["IsFavorite"]));
         }catch(e){
-          print(e);
+         
         }
     }
     songsList.sort((a, b) => a.trackNumber!.compareTo(b.trackNumber ?? 0));

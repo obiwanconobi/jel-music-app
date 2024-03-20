@@ -28,7 +28,7 @@ class SyncHelper{
         favAlbums.add(FavAlbums(title: album["Name"], artist: album["AlbumArtist"]));
        }catch(e){
         //log error
-        print("error");
+      
       }
       
     }
@@ -45,6 +45,8 @@ class SyncHelper{
     List<Songs> listOfSongs = await songsHelper.returnSongs();
 
     for(var song in listOfSongs){
+
+      
       
       var artist = await artistsHelper.returnArtist(song.artist);
       bool artistFavourite = false;
@@ -52,6 +54,8 @@ class SyncHelper{
         if(favArtists.contains(song.artist)){
           artistFavourite = true;
         }
+
+       
         await artistsHelper.addArtistToBox(Artists(id: song.artistId, name: song.artist, picture: song.artistId, favourite: artistFavourite));
       }
 
@@ -62,6 +66,7 @@ class SyncHelper{
           //FavAlbums targetAlbum = FavAlbums(title: song.album, artist: song.artist);
           FavAlbums targetAlbum = FavAlbums(artist: song.artist, title: song.album);
 
+
           bool containsTargetAlbum = favAlbums.contains(targetAlbum);
           for(var album in favAlbums){
             if(album.artist == song.artist && album.title == song.album){
@@ -70,10 +75,10 @@ class SyncHelper{
             }
           }
           if (containsTargetAlbum) {
-            print("The list contains the target album.");
+         
             favourite = true;
           } else {
-            print("The list does not contain the target album.");
+           
           }
          
          await albumsHelper.addAlbumToBox(Albums(id: song.albumId, name: song.album, picture: song.albumId, favourite: favourite, artist: song.artist, artistId: song.artistId, year: song.year.toString()));

@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
+import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
-import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
 
 
@@ -24,6 +24,7 @@ class _MyWidgetState extends State<SettingsPage> {
   final TextEditingController _passwordTextController = TextEditingController();
   AlbumsHelper albumsHelper = AlbumsHelper();
   SyncHelper syncHelper = SyncHelper();
+  ApiController apiController = ApiController();
   ArtistsHelper helper = ArtistsHelper();
   _login() async{
 
@@ -51,10 +52,19 @@ class _MyWidgetState extends State<SettingsPage> {
             }else{
               //log error
             }
+
+        await _getUserId();
+
       }catch(e){
         //log error
       }
       
+  }
+
+  _getUserId()async{
+    var user = await apiController.getUser();
+    GetStorage().write('userId', user["Id"]);
+
   }
 
   _saveUrl() async {
@@ -99,7 +109,7 @@ class _MyWidgetState extends State<SettingsPage> {
 
   void check(){
 
-    var artistList = helper.returnArtists(false);
+    var artistList = helper.returnArtists();
 
     for(var artistr in artistList){
       var artist = artistr.name;
@@ -108,7 +118,7 @@ class _MyWidgetState extends State<SettingsPage> {
     }
   
 
-    var albumsList = albumsHelper.returnAlbums(false);
+    var albumsList = albumsHelper.returnAlbums();
     
 
     for(var album in albumsList){

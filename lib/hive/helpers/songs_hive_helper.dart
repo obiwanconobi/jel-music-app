@@ -48,6 +48,10 @@ class SongsHelper{
     return songsBox.values.toList();
   }
 
+  returnFavouriteSongs()async{
+    return songsBox.values.where((Songs) => Songs.favourite == true).toList();
+  }
+
   
 
    addSongsToBox()async{
@@ -58,7 +62,7 @@ class SongsHelper{
         try{
           songsList.add(Songs(id: song["Id"], name: song["Name"], artist: song["ArtistItems"][0]["Name"], artistId: song["ArtistItems"][0]["Id"], album: song["Album"], albumId: song["AlbumId"], index: song["IndexNumber"] ?? 0, year: song["ProductionYear"] ?? 0, length: _ticksToTimestampString(song["RunTimeTicks"] ?? 0), favourite: song["UserData"]["IsFavorite"]));
         }catch(e){
-          print(e);
+         
         }
      }
      for(var song in songsList){
@@ -68,13 +72,14 @@ class SongsHelper{
   }
 
   _getSongsDataRaw() async{
+    var userId = GetStorage().read('userId');
       try {
           Map<String, String> requestHeaders = {
           'Content-type': 'application/json',
           'X-MediaBrowser-Token': '$accessToken',
           'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
         };
-      String url = "$baseServerUrl/Users/D8B7A1C3-8440-4C88-80A1-04F7119FAA7A/Items?recursive=true&includeItemTypes=Audio&enableUserData=true&enableTotalRecordCount=true&enableImages=true";
+      String url = "$baseServerUrl/Users/$userId/Items?recursive=true&includeItemTypes=Audio&enableUserData=true&enableTotalRecordCount=true&enableImages=true";
       http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
       if (res.statusCode == 200) {
         return json.decode(res.body);
