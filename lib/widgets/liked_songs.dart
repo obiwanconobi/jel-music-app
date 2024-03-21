@@ -55,7 +55,7 @@ class _LikedSongsState extends State<LikedSongs> {
     var songsList = controller.songs;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xFF1C1B1B),
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
             top: 5.h,
@@ -77,9 +77,9 @@ class _LikedSongsState extends State<LikedSongs> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              OutlinedButton(onPressed: () => _addAllToQueue(songsList), child: const Text('Play All')),
-                              OutlinedButton(onPressed: () => _shuffleQueue(), child: const Text('Shuffle')),
-                              OutlinedButton(onPressed: () => _shuffleQueue(), child: const Text('Add queue')),
+                              OutlinedButton(onPressed: () => _addAllToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor, foregroundColor: Theme.of(context).canvasColor), child: Text('Play All', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                              OutlinedButton(onPressed: () => _shuffleQueue(), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child: Text('Shuffle', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                              OutlinedButton(onPressed: () => _shuffleQueue(), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child: Text('Add queue', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
                             ],
                           ),
                           
@@ -280,7 +280,7 @@ class _LikedSongsState extends State<LikedSongs> {
                                     child: Container(
                                         height: 52.sp,
                                         decoration: BoxDecoration(
-                                          color: (const Color(0xFF1C1B1B)),
+                                          color: (Theme.of(context).colorScheme.background),
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10.sp),
                                           ),
@@ -332,8 +332,8 @@ class _LikedSongsState extends State<LikedSongs> {
                                                             child: Text(songsList[index].title!,
                                                               style: TextStyle(
                                                                 fontSize: 12.sp,
-                                                                color: const Color(0xFFACACAC),
-                                                                fontWeight: FontWeight.w300,
+                                                                color: Theme.of(context).textTheme.bodySmall!.color,
+                                                                fontWeight: FontWeight.w400,
                                                                 fontFamily: "Segoe UI",
                                                               ),
                                                               overflow: TextOverflow.ellipsis, // Set overflow property
@@ -346,8 +346,8 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         alignment: Alignment.centerLeft,
                                                         child: Text(songsList[index].artist.toString(), style: TextStyle(
                                                                   fontSize: 10.sp,
-                                                                  color: const Color(0xFFACACAC),
-                                                                  fontWeight: FontWeight.w300,
+                                                                  color: Theme.of(context).textTheme.bodySmall!.color,
+                                                                  fontWeight: FontWeight.w400,
                                                                   fontFamily: "Segoe UI",
                                                                 ),),
                                                       ),

@@ -83,20 +83,19 @@ class _ControlsState extends State<Controls> {
       smoothness: Smoothness.high,
       //  minHeight: 40,
         headerBar: Container(
-          color: const Color.fromARGB(255, 37, 37, 37),
+          color: Theme.of(context).canvasColor,
           height:70,
           child:  Center(
             child: Column(
               children: [
-                const Padding(
+                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                   child:  Divider(
                     height: 2,
                     thickness: 5,
                     indent: 160,
                     endIndent: 160,
-                    color: Colors.blueGrey,
-                    
+                    color: Theme.of(context).colorScheme.secondary
                   ),
                 ),
                 Container(
@@ -111,11 +110,11 @@ class _ControlsState extends State<Controls> {
                       return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        IconButton(onPressed: () => { _returnHome() }, icon: const Icon(Icons.home, color: Colors.blueGrey, size:30)),
-                        IconButton(onPressed: () => { _onItemTapped(0) }, icon: const Icon(Icons.skip_previous,color: Colors.blueGrey, size:30)),
-                        IconButton(onPressed: () => { _onItemTapped(1) }, icon: Icon((musicController.isPlaying ?? false) ? Icons.pause : Icons.play_arrow, color: ((musicController.isCompleted) ? Colors.grey : Colors.blueGrey), size: 30, )),
-                        IconButton(onPressed: () => { _onItemTapped(2) }, icon: const Icon(Icons.skip_next, size:30, color: Colors.blueGrey)),
-                        IconButton(onPressed: () => { _favouriteSong(musicController.currentSource!.tag.id, musicController.currentSource!.tag.extras["favourite"]) }, icon: Icon(Icons.favorite, color: ((musicController.currentSource!.tag.extras["favourite"]) ? Colors.red : Colors.blueGrey), size:30),)
+                        IconButton(onPressed: () => { _returnHome() }, icon:  Icon(Icons.home, color: Theme.of(context).colorScheme.secondary, size:30)),
+                        IconButton(onPressed: () => { _onItemTapped(0) }, icon: Icon(Icons.skip_previous,color: Theme.of(context).colorScheme.secondary, size:30)),
+                        IconButton(onPressed: () => { _onItemTapped(1) }, icon: Icon((musicController.isPlaying ?? false) ? Icons.pause : Icons.play_arrow, color: ((musicController.isCompleted) ? Theme.of(context).colorScheme.background : Theme.of(context).colorScheme.secondary), size: 30, )),
+                        IconButton(onPressed: () => { _onItemTapped(2) }, icon: Icon(Icons.skip_next, size:30, color: Theme.of(context).colorScheme.secondary)),
+                        IconButton(onPressed: () => { _favouriteSong(musicController.currentSource!.tag.id, musicController.currentSource!.tag.extras["favourite"]) }, icon: Icon(Icons.favorite, color: ((musicController.currentSource!.tag.extras["favourite"]) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30),)
                     
                       ],
                     );
@@ -128,7 +127,7 @@ class _ControlsState extends State<Controls> {
         ), // Your header here
         body:
          Container(
-          color: const Color(0xFF1C1B1B),
+          color: Theme.of(context).colorScheme.background,
           child: ListView(
             shrinkWrap: true,
             children: [
@@ -139,9 +138,9 @@ class _ControlsState extends State<Controls> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                      ElevatedButton(onPressed: () => { _testClck() }, child: const Text('Clear')),
-                      ElevatedButton(onPressed: () => _testClck(), child: const Text('Play All')),
-                      ElevatedButton(onPressed: () => _shuffleSongs(), child: const Text('Shuffle')),
+                      ElevatedButton(onPressed: () => { _testClck() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Clear', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                      ElevatedButton(onPressed: () => _testClck(), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Play All', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                      ElevatedButton(onPressed: () => _shuffleSongs(), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Shuffle',style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
                     ],),
                   ),
                   Consumer<MusicController>(
@@ -167,8 +166,8 @@ class _ControlsState extends State<Controls> {
                                       );
                                     },
                                   ),
-                                  Text(musicController.currentSource?.tag.title, style: const TextStyle(color: Colors.white, fontSize: 17)),
-                                  Text(musicController.currentSource?.tag.album, style: const TextStyle(color: Colors.white)) 
+                                  Text(musicController.currentSource?.tag.title, style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 17)),
+                                  Text(musicController.currentSource?.tag.album, style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)) 
                                 ],
                               ),
                               StreamBuilder<Duration>(
@@ -195,8 +194,8 @@ class _ControlsState extends State<Controls> {
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
-                                            Text(duration.inMinutes.remainder(60).toString() + ":" + duration.inSeconds.remainder(60).toString()  + " : ", style:TextStyle(color:Colors.white),),
-                                            Text(musicController.currentSource!.tag.duration.inMinutes.remainder(60).toString() + ":"+ musicController.currentSource!.tag.duration.inSeconds.remainder(60).toString() , style:TextStyle(color:Colors.white)),
+                                            Text(duration.inMinutes.remainder(60).toString() + ":" + duration.inSeconds.remainder(60).toString()  + " : ", style:TextStyle(color:Theme.of(context).textTheme.bodySmall!.color),),
+                                            Text(musicController.currentSource!.tag.duration.inMinutes.remainder(60).toString() + ":"+ musicController.currentSource!.tag.duration.inSeconds.remainder(60).toString() , style:TextStyle(color:Theme.of(context).textTheme.bodySmall!.color)),
                                           ],
                                         )
                                       ],

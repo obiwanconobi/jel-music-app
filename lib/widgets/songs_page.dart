@@ -92,7 +92,7 @@ class _SongsPageState extends State<SongsPage> {
     var songsList = controller.songs;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xFF1C1B1B),
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
             top: 5.h,
@@ -141,14 +141,14 @@ class _SongsPageState extends State<SongsPage> {
                               ),
                                 Text(songsList[0].album.toString(), style: TextStyle(
                                                                 fontSize: 13.sp,
-                                                                color: const Color(0xFFACACAC),
-                                                                fontWeight: FontWeight.w300,
+                                                                color: Theme.of(context).textTheme.bodySmall!.color,
+                                                                fontWeight: FontWeight.w400,
                                                                 fontFamily: "Segoe UI",
                                                               ),),
                                 Text(songsList[0].artist.toString(), style: TextStyle(
                                                                 fontSize: 11.sp,
-                                                                color: const Color(0xFFACACAC),
-                                                                fontWeight: FontWeight.w300,
+                                                                color: Theme.of(context).textTheme.bodySmall!.color,
+                                                                fontWeight: FontWeight.w400,
                                                                 fontFamily: "Segoe UI",
                                                               ),),
                                                               Center(
@@ -171,9 +171,9 @@ class _SongsPageState extends State<SongsPage> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    OutlinedButton(onPressed: () => _addAllToQueue(songsList), child: const Text('Play All')),
-                                    IconButton(icon: Icon(Icons.favorite, color: ((snapshot.data ?? false) ? Colors.red : Colors.blueGrey), size:30), onPressed: () { setState(){}_favouriteAlbum(albumIds!, artistIds!, snapshot.data!); },),
-                                    OutlinedButton(onPressed: () => _shuffleQueue(), child: const Text('Shuffle')),
+                                    OutlinedButton(onPressed: () => _addAllToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor), child: Text('Play All', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                                    IconButton(icon: Icon(Icons.favorite, color: ((snapshot.data ?? false) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30), onPressed: () { setState(){}_favouriteAlbum(albumIds!, artistIds!, snapshot.data!); },),
+                                    OutlinedButton(onPressed: () => _shuffleQueue(), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor), child: Text('Shuffle',style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
                                   //  OutlinedButton(onPressed: () => _shuffleQueue(), child: const Text('Add queue')),
                                   ],
                                 ),
@@ -201,7 +201,7 @@ class _SongsPageState extends State<SongsPage> {
                                     child: Container(
                                         height: 69.sp,
                                         decoration: BoxDecoration(
-                                          color: (const Color(0xFF1C1B1B)),
+                                          color: Theme.of(context).colorScheme.background,
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10.sp),
                                           ),
@@ -226,16 +226,16 @@ class _SongsPageState extends State<SongsPage> {
                                                           children: [
                                                             Text('${songsList[index].trackNumber}. ', style: TextStyle(
                                                                   fontSize: 13.sp,
-                                                                  color: const Color(0xFFACACAC),
-                                                                  fontWeight: FontWeight.w300,
+                                                                  color: Theme.of(context).textTheme.bodySmall!.color,
+                                                                  fontWeight: FontWeight.w400,
                                                                   fontFamily: "Segoe UI",
                                                                 )),
                                                             Flexible(
                                                               child: Text(songsList[index].title!,
                                                                 style: TextStyle(
                                                                   fontSize: 13.sp,
-                                                                  color: const Color(0xFFACACAC),
-                                                                  fontWeight: FontWeight.w300,
+                                                                  color: Theme.of(context).textTheme.bodySmall!.color,
+                                                                  fontWeight: FontWeight.w400,
                                                                   fontFamily: "Segoe UI",
                                                                 ),
                                                                 softWrap: true,
@@ -254,13 +254,13 @@ class _SongsPageState extends State<SongsPage> {
                                                         children: [
                                                           Container(
                                                             margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                                            child: Text(songsList[index].length.toString(), style: TextStyle(color: Colors.white))),
+                                                            child: Text(songsList[index].length.toString(), style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
                                                           Container(
                                                             margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                                                             child: IconButton(icon: Icon(Icons.favorite, color: ((songsList[index].favourite ?? false) ? Colors.red : Colors.blueGrey), size:30), onPressed: () { setState(){ } _favouriteSong(songsList[index].id!, songsList[index].favourite!); },))
                                                         ],
                                                       ),
-                                                      Divider(color: Color.fromARGB(255, 65, 65, 65), indent: 40, endIndent: 40,),
+                                                      Divider(color: Theme.of(context).colorScheme.secondary, indent: 40, endIndent: 40,),
                                                           
                                                 ],
                                               ),

@@ -13,17 +13,20 @@ class StartPage extends StatefulWidget {
 
   @override
   State<StartPage> createState() => _StartPageState();
+  
+
 }
 
 class _StartPageState extends State<StartPage> {
   @override
   Widget build(BuildContext context) {
+    // sets theme mode to dark
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(actions: [Padding(padding: const EdgeInsets.fromLTRB(0, 0, 15, 0), child: IconButton(icon: const Icon(Icons.settings), 
                   onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage()),);}))],
-                  backgroundColor: const Color(0xFF1C1B1B)),
-        backgroundColor: const Color(0xFF1C1B1B),
+                  backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('panaudio', style: Theme.of(context).textTheme.bodyLarge),),
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
             top: 5.h,
@@ -40,20 +43,21 @@ class _StartPageState extends State<StartPage> {
                         height:20.h,
                         width: 50.w,
                         child: Card(
+                          color: Theme.of(context).colorScheme.background,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              const ListTile(
-                                leading: Icon(Icons.album),
-                                title: Text('All Music'),
-                                subtitle: Text('All your music'),
+                              ListTile(
+                                leading: const Icon(Icons.album),
+                                title: Text('All Music', style: Theme.of(context).textTheme.bodySmall),
+                                subtitle: Text('All your music', style: Theme.of(context).textTheme.bodySmall),
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: <Widget>[
                                   const SizedBox(width: 8),
                                   TextButton(
-                                    child: const Text('ARTISTS'),
+                                    child: Text('ARTISTS', style: Theme.of(context).textTheme.bodySmall),
                                     onPressed: () {Navigator.push(
                                         context,
                                         MaterialPageRoute(builder: (context) => const ArtistPage()),
@@ -61,7 +65,7 @@ class _StartPageState extends State<StartPage> {
                                   ),
                                   const SizedBox(width: 8),
                                   TextButton(
-                                    child: const Text('ALBUMS'),
+                                    child:  Text('ALBUMS', style: Theme.of(context).textTheme.bodySmall),
                                     onPressed: () {Navigator.push(
                                         context,
                                         MaterialPageRoute(builder: (context) => AllAlbumsPage(favourite: false)),
@@ -77,19 +81,20 @@ class _StartPageState extends State<StartPage> {
                         height:20.h,
                         width: 50.w,
                         child: Card(
+                          color: Theme.of(context).colorScheme.background,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              const ListTile(
-                                leading: Icon(Icons.album),
-                                title: Text('Liked Songs'),
-                                subtitle: Text('Your liked songs'),
+                              ListTile(
+                                leading: const Icon(Icons.album),
+                                title: Text('Liked Songs', style: Theme.of(context).textTheme.bodySmall),
+                                subtitle: Text('Your liked songs', style: Theme.of(context).textTheme.bodySmall),
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: <Widget>[
                                   TextButton(
-                                    child: const Text('VIEW'),
+                                    child: Text('VIEW', style: Theme.of(context).textTheme.bodySmall),
                                     onPressed: () {Navigator.push(
                                         context,
                                         MaterialPageRoute(builder: (context) => const LikedSongs()),
@@ -97,7 +102,7 @@ class _StartPageState extends State<StartPage> {
                                   ),
                                   const SizedBox(width: 8),
                                   TextButton(
-                                    child: const Text('LISTEN'),
+                                    child: Text('LISTEN', style: Theme.of(context).textTheme.bodySmall),
                                     onPressed: () {Navigator.push(
                                         context,
                                         MaterialPageRoute(builder: (context) => const ArtistPage( )),
@@ -113,9 +118,9 @@ class _StartPageState extends State<StartPage> {
 
                     ],
                   ),
-                  const Text('Favourite Albums', style: TextStyle(color: Colors.grey,  fontSize: 20)),
+                  Text('Favourite Albums', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 20)),
                   const FavouriteAlbums(),
-                  const Text('Favourite Artists', style: TextStyle(color: Colors.grey, fontSize: 20)),
+                  Text('Favourite Artists', style: Theme.of(context).textTheme.bodySmall),
                   const FavouriteArtists(),
                 ],
                     ),

@@ -33,7 +33,7 @@ class MusicController extends ChangeNotifier{
  IndexedAudioSource? currentSource;
  String baseServerUrl = "";
   List<IndexedAudioSource>? currentQueue = [];
- 
+  int currentIndexSource = 0;
 
   
    var playlist = ConcatenatingAudioSource(
@@ -51,16 +51,15 @@ class MusicController extends ChangeNotifier{
     _durationController.add(position);
     });
 
+    _advancedPlayer.currentIndexStream.listen((event) {
 
-    _advancedPlayer.playerStateStream.listen((playerState) {
-        if(playerState == ProcessingState.completed) {
           setUiElements();
-        }
-      }); 
+    });
 
-  }
 
-    Stream<Duration> get durationStream => _durationController.stream;
+  }    
+  
+  Stream<Duration> get durationStream => _durationController.stream;
 
    
     void onInit()async{

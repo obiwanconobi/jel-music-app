@@ -60,7 +60,7 @@ class _SimilarArtistsState extends State<SimilarArtists> {
             scrollDirection: Axis.horizontal,
             child: Column(
               children: [
-                const Text('Similar Artists', style: TextStyle(color: Colors.grey, fontSize: 20)),
+                Text('Similar Artists', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 20)),
                 Row(
                   children: [
                     Container(
@@ -82,7 +82,7 @@ class _SimilarArtistsState extends State<SimilarArtists> {
                               ),
                               child: Container(
                                   decoration: BoxDecoration(
-                                    color: (const Color(0xFF1C1B1B)),
+                                    color: Theme.of(context).colorScheme.background,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.sp),
                                     ),
@@ -117,7 +117,7 @@ class _SimilarArtistsState extends State<SimilarArtists> {
                                       ),
                                        SizedBox(
                                         width: 33.w,
-                                        child: Text(artistsList[index].name!, overflow: TextOverflow.ellipsis, maxLines: 1, style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16))),
+                                        child: Text(artistsList[index].name!, overflow: TextOverflow.ellipsis, maxLines: 1, style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontWeight: FontWeight.bold, fontSize: 16))),
                                     ],
                                   ),
                                 ),

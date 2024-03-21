@@ -34,10 +34,10 @@ class _AlbumPageState extends State<AlbumPage> {
   @override
   Widget build(BuildContext context) {
     controller.artistId = artistIds;
-    String title = "All Albums";
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xFF1C1B1B),
+        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text(artistIds!, style: Theme.of(context).textTheme.bodyLarge),),
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
             top: 5.h,
@@ -67,18 +67,9 @@ class _AlbumPageState extends State<AlbumPage> {
                     } else {
                       // Data is available, build the list
                       List<Album> albumsList = snapshot.data!;
-                      if(artistIds != ""){
-                        title = albumsList[0].artist!;
-                      }
                       return SingleChildScrollView(
                         child: Column(
                           children: [
-                            Text(title, style: TextStyle(
-                                                            fontSize: 20.sp,
-                                                            color: const Color(0xFFACACAC),
-                                                            fontWeight: FontWeight.bold,
-                                                            fontFamily: "Segoe UI",
-                                                          ),),
                             GridView.builder(
                               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                                   maxCrossAxisExtent: 250, // Adjust this value according to your needs
@@ -100,7 +91,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                     ),
                                     child: Container(
                                         decoration: BoxDecoration(
-                                          color: (const Color(0xFF1C1B1B)),
+                                          color: Theme.of(context).colorScheme.background,
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10.sp),
                                           ),
@@ -153,7 +144,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                                             albumsList[index].title!,
                                                             style: TextStyle(
                                                               fontSize: 13.sp,
-                                                              color: const Color(0xFFACACAC),
+                                                              color: Theme.of(context).textTheme.bodySmall!.color,
                                                               fontWeight: FontWeight.bold,
                                                               fontFamily: "Segoe UI",
                                                             ),

@@ -34,7 +34,8 @@ class _ArtistPageState extends State<ArtistPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xFF1C1B1B),
+        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('artists', style: Theme.of(context).textTheme.bodyLarge),),
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
             top: 5.h,
@@ -45,25 +46,6 @@ class _ArtistPageState extends State<ArtistPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Padding(
-                padding: EdgeInsets.only(left: 10.sp, bottom: 10.sp),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                       child: Text(
-                        "Artists",
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontFamily: "Segoe UI",
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ), 
-                    ),
-                  ],
-                ),
-              ),
               Expanded(
                 child:
                 FutureBuilder<List<Artists>>(
@@ -142,7 +124,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                                 artistController[index].name!,
                                                 style: TextStyle(
                                                   fontSize: 10.sp,
-                                                  color: const Color(0xFFACACAC),
+                                                  color: Theme.of(context).textTheme.bodySmall!.color,
                                                   fontWeight: FontWeight.bold,
                                                   fontFamily: "Segoe UI",
                                                   

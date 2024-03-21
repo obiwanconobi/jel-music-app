@@ -57,13 +57,14 @@ class _AlbumPageState extends State<AllAlbumsPage> {
     String title = "All Albums";
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xFF1C1B1B),
+        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('albums', style: Theme.of(context).textTheme.bodyLarge),),
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
-            top: 5.h,
-            left: 16.sp,
+            top: 0.h,
+            left: 5.sp,
             bottom: 10.sp,
-            right: 16.sp,
+            right: 5.sp,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -93,12 +94,6 @@ class _AlbumPageState extends State<AllAlbumsPage> {
                       return SingleChildScrollView(
                         child: Column(
                           children: [
-                            Text(title, style: TextStyle(
-                                                            fontSize: 20.sp,
-                                                            color: const Color(0xFFACACAC),
-                                                            fontWeight: FontWeight.bold,
-                                                            fontFamily: "Segoe UI",
-                                                          ),),
                             GridView.builder(
                               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                                   maxCrossAxisExtent: 250, // Adjust this value according to your needs
@@ -120,7 +115,7 @@ class _AlbumPageState extends State<AllAlbumsPage> {
                                     ),
                                     child: Container(
                                         decoration: BoxDecoration(
-                                          color: (const Color(0xFF1C1B1B)),
+                                          color: Theme.of(context).colorScheme.background,
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10.sp),
                                           ),
@@ -173,7 +168,7 @@ class _AlbumPageState extends State<AllAlbumsPage> {
                                                             _filteredAlbums[index].title!,
                                                             style: TextStyle(
                                                               fontSize: 13.sp,
-                                                              color: const Color(0xFFACACAC),
+                                                              color: Theme.of(context).textTheme.bodySmall!.color,
                                                               fontWeight: FontWeight.bold,
                                                               fontFamily: "Segoe UI",
                                                             ),
@@ -204,7 +199,7 @@ class _AlbumPageState extends State<AllAlbumsPage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(3.0),
-                child: TextField(controller: _searchController, decoration: const InputDecoration.collapsed(hintText: 'Search',hintStyle:  TextStyle(color: Colors.grey, fontSize: 18)), style: const TextStyle(color: Colors.grey, fontSize: 18)),
+                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle:  TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)), style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)),
               ),
             ],
           ),

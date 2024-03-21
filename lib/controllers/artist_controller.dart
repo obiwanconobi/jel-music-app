@@ -77,9 +77,6 @@ class ArtistController {
     }
 
     String _removeSpecialCharacters(String str){
-        if(str.contains("blink")){
-         
-        }
         return str.replaceAll("‐", "").replaceAll(".", "").replaceAll("-", "").toLowerCase();
        // return str;
        // return returnStr.replaceAll('.', '');

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
@@ -107,6 +108,11 @@ class _MyWidgetState extends State<SettingsPage> {
     syncHelper.songsHelper.clearSongs();
   }
 
+  void toggleTheme(){
+      AdaptiveTheme.of(context).toggleThemeMode();
+
+  }
+
   void check(){
 
     var artistList = helper.returnArtists();
@@ -130,10 +136,10 @@ class _MyWidgetState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1C1B1B),
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1C1B1B),
-        title: const Center(child: Text("Jel Settings", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white))),
+        backgroundColor: Theme.of(context).colorScheme.background,
+        title: Center(child: Text("Jel Settings", style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.bodySmall!.color))),
       ),
       body:
         Container(
@@ -142,13 +148,14 @@ class _MyWidgetState extends State<SettingsPage> {
             Column(
               children: 
               [
-                const Text('Server URL', style: TextStyle(color:Colors.white)),
-                TextField(obscureText: false, style: const TextStyle(color:Colors.white), controller: _serverUrlTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_saveUrl),)),),
-                TextField(obscureText: false, style: const TextStyle(color:Colors.white), controller: _usernameTextController,),
-                TextField(obscureText: false, style: const TextStyle(color:Colors.white), controller: _passwordTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_login),)),),
-                TextButton(onPressed: () { sync(); }, child: Text('Sync', style: TextStyle(color: Colors.white)),),
-                TextButton(onPressed: () { check(); }, child: Text('Check', style: TextStyle(color: Colors.white)),),
-                TextButton(onPressed: () { clear(); }, child: Text('Clear', style: TextStyle(color: Colors.white)),)
+                 Text('Server URL', style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color)),
+                TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _serverUrlTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_saveUrl),)),),
+                TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _usernameTextController,),
+                TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _passwordTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_login),)),),
+                TextButton(onPressed: () { sync(); }, child: Text('Sync', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
+                TextButton(onPressed: () { check(); }, child: Text('Check', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
+                TextButton(onPressed: () { clear(); }, child: Text('Clear', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
+                TextButton(onPressed: () { toggleTheme(); }, child: Text('Toggle Theme', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),)
               ],
             ),
                 
