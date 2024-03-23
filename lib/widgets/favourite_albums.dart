@@ -47,8 +47,8 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                Container(
-                  height: 180,
+                SizedBox(
+                  height: 200,
                   width: MediaQuery.of(context).size.width,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -65,6 +65,7 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
                             Radius.circular(10.sp),
                           ),
                           child: Container(
+                              width: 38.w,
                               decoration: BoxDecoration(
                                 color: (Theme.of(context).colorScheme.background),
                                 borderRadius: BorderRadius.all(
@@ -77,8 +78,8 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
                                     padding:
                                         const EdgeInsets.fromLTRB(5, 5, 5, 5),
                                     child: SizedBox(
-                                      height:40.w,
-                                      width: 42.w,
+                                      height:35.w,
+                                      width: 37.w,
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(4.w),
                                         child: CachedNetworkImage(
@@ -100,6 +101,8 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
                                       ),
                                     ),
                                   ),
+                                  Text(albumsList[index].title ?? "", overflow: TextOverflow.clip, maxLines: 1, style: Theme.of(context).textTheme.bodySmall),
+                                  Text(albumsList[index].artist ?? "",  overflow: TextOverflow.clip, maxLines: 1 , style: Theme.of(context).textTheme.bodySmall)
                                 ],
                               ),
                             ),

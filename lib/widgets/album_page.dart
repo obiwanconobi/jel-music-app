@@ -40,7 +40,7 @@ class _AlbumPageState extends State<AlbumPage> {
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
-            top: 5.h,
+            top: 0.h,
             left: 16.sp,
             bottom: 10.sp,
             right: 16.sp,
@@ -165,6 +165,11 @@ class _AlbumPageState extends State<AlbumPage> {
                                 );
                               },
                             ),
+                             Container(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
+                            alignment: Alignment.centerLeft,
+                            child:  const Text('Similar Artists', style: TextStyle(color: Colors.grey, fontSize: 20))),
+                           
                             SimilarArtists(artistId: artistIds!,),
                           ],
                         ),

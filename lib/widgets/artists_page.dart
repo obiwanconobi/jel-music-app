@@ -38,7 +38,7 @@ class _ArtistPageState extends State<ArtistPage> {
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
-            top: 5.h,
+            top: 0.h,
             left: 16.sp,
             bottom: 10.sp,
             right: 16.sp,
@@ -119,7 +119,8 @@ class _ArtistPageState extends State<ArtistPage> {
                                       Row(
                                         children: [
                                           Flexible(
-                                            child: Center(
+                                            child: Padding(
+                                              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                               child: Text(
                                                 artistController[index].name!,
                                                 style: TextStyle(

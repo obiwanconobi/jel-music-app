@@ -233,7 +233,40 @@ class MusicController extends ChangeNotifier{
     setUiElements();
   }
 
-  void addToQueue(StreamModel value){
+   void addToQueue(StreamModel value){
+    
+    tempId = value.id;
+    tempAlbum = value.title;
+    tempArtist = value.composer;
+    tempPicture = value.picture;
+    tempFavourite = value.isFavourite;
+    tempDuration = value.long;
+    _addSongToQueue(value);
+  }
+
+   _addSongToQueue(StreamModel stream)async{
+      String pictureUrl = stream.picture!;
+      String id = stream.id!;
+      String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
+      List<String> timeParts = stream.long!.split(':');
+      var source = AudioSource.uri(
+                        Uri.parse(baseUrl),
+                        tag: MediaItem(
+                          // Specify a unique ID for each media item:
+                          id: stream.id!,
+                          // Metadata to display in the notification:
+                          album: stream.composer ?? "Error",
+                          title: stream.title ?? "Error",
+                          extras: {"favourite": stream.isFavourite},
+                          duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
+                          artUri: Uri.parse(pictureUrl),
+                        ),
+                      );   
+    playlist.add(source);      
+  }
+
+
+  void playSong(StreamModel value){
     
     tempId = value.id;
     tempAlbum = value.title;

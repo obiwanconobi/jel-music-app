@@ -15,6 +15,7 @@
       required this.year,
       required this.length,
       this.favourite, // marked as nullable
+      this.downloaded
     });
 
     @HiveField(0)
@@ -46,6 +47,9 @@
 
     @HiveField(9)
     bool? favourite; // marked as nullable
+
+    @HiveField(10)
+    bool? downloaded;
 
     @override
     String toString() {

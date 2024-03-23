@@ -47,8 +47,8 @@ class _FavouriteArtistsState extends State<FavouriteArtists> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                Container(
-                  height: 200,
+                SizedBox(
+                  height: 180,
                   width: MediaQuery.of(context).size.width,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -77,8 +77,8 @@ class _FavouriteArtistsState extends State<FavouriteArtists> {
                                     padding:
                                         const EdgeInsets.fromLTRB(5, 5, 5, 5),
                                     child: SizedBox(
-                                      height:40.w,
-                                      width: 42.w,
+                                      height:35.w,
+                                      width: 37.w,
                                       child: ClipOval(
                                         child: CachedNetworkImage(
                                           fit: BoxFit.fill,
@@ -99,6 +99,7 @@ class _FavouriteArtistsState extends State<FavouriteArtists> {
                                       ),
                                     ),
                                   ),
+                                  Text(artistsList[index].name ?? "", style: Theme.of(context).textTheme.bodySmall)
                                 ],
                               ),
                             ),

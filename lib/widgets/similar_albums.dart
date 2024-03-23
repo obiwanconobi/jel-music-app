@@ -64,7 +64,6 @@ class _SimilarAlbumsState extends State<SimilarAlbums> {
             scrollDirection: Axis.horizontal,
             child: Column(
               children: [
-                const Text('Similar Albums', style: TextStyle(color: Colors.grey, fontSize: 20)),
                 Row(
                   children: [
                     Container(

@@ -55,10 +55,11 @@ class _LikedSongsState extends State<LikedSongs> {
     var songsList = controller.songs;
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('liked songs', style: Theme.of(context).textTheme.bodyLarge),),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
-            top: 5.h,
+            top: 0.h,
             left: 16.sp,
             bottom: 10.sp,
             right: 16.sp,
@@ -66,29 +67,6 @@ class _LikedSongsState extends State<LikedSongs> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Padding(
-                padding: EdgeInsets.only(left: 10.sp, bottom: 10.sp),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              OutlinedButton(onPressed: () => _addAllToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor, foregroundColor: Theme.of(context).canvasColor), child: Text('Play All', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
-                              OutlinedButton(onPressed: () => _shuffleQueue(), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child: Text('Shuffle', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
-                              OutlinedButton(onPressed: () => _shuffleQueue(), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child: Text('Add queue', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
-                            ],
-                          ),
-                          
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               Expanded(
                 child: FutureBuilder<List<Songs>>(
                   future: songsFuture,
@@ -263,6 +241,19 @@ class _LikedSongsState extends State<LikedSongs> {
                                   ],
                                 ),
                               ],
+                            ),
+                            Center(
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      OutlinedButton(onPressed: () => _addAllToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor, foregroundColor: Theme.of(context).canvasColor), child: Text('Play All', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                                    ],
+                                  ),
+                                  
+                                ],
+                              ),
                             ),
                             const SizedBox(height: 16.0),
                             ListView.builder(

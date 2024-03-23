@@ -27,13 +27,14 @@ class SongsAdapter extends TypeAdapter<Songs> {
       year: fields[7] as int,
       length: fields[8] as String,
       favourite: fields[9] as bool?,
+      downloaded: fields[10] as bool?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Songs obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -53,7 +54,9 @@ class SongsAdapter extends TypeAdapter<Songs> {
       ..writeByte(8)
       ..write(obj.length)
       ..writeByte(9)
-      ..write(obj.favourite);
+      ..write(obj.favourite)
+      ..writeByte(10)
+      ..write(obj.downloaded);
   }
 
   @override

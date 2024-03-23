@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/controllers/api_controller.dart';
+import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/controllers/songs_controller.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
+import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
@@ -30,8 +32,11 @@ class _SongsPageState extends State<SongsPage> {
   ApiController apiController = ApiController();
   AlbumsHelper albumHelper = AlbumsHelper();
   AlbumController albumController = AlbumController();
+  DownloadController downloadController = DownloadController();
   late Future<bool> favourite;
   late Future<List<Songs>> songsFuture;
+  SongsHelper songsHelper = SongsHelper();
+  bool? fave;
 
   StreamModel returnStream(Songs song){
     return StreamModel(id: song.id, composer: song.artist, music: song.id, picture: song.albumPicture, title: song.title, long: song.length, isFavourite: song.favourite);
@@ -57,8 +62,16 @@ class _SongsPageState extends State<SongsPage> {
     MusicControllerProvider.of(context, listen: false).addToQueue(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length));
   }
 
+  _playSong(Songs song){
+    MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length));
+  }
+
   _shuffleQueue(){
     MusicControllerProvider.of(context, listen: false).shuffleQueue();
+  }
+
+  _downloadFile(Songs song){
+    downloadController.downloadSingleFile(song);
   }
 
   _addAllToQueue(List<Songs> allSongs){
@@ -72,15 +85,32 @@ class _SongsPageState extends State<SongsPage> {
     
   }
 
-  _favouriteAlbum(String albumName, String artistName, bool favourite){
-    albumController.toggleFavourite(artistName, albumName, !favourite);
+  _addToNextInQueue(){
+
   }
 
-  _favouriteSong(String songId, bool current){
+  _favouriteAlbum(String albumName, String artistName, bool favourite)async{
+    albumController.toggleFavourite(artistName, albumName, !favourite);
+    setState(() {
+        favourite = !favourite;
+    });
+  }
+
+  _favouriteSong(String songId, bool current, String artist, String title)async{
+    await songsHelper.openBox();
+
     if(current){
       apiController.unFavouriteItem(songId);
+      songsHelper.likeSong(artist, title, !current);
+      setState(() {
+        songsFuture = controller.onInit();
+      });
     }else{
       apiController.favouriteItem(songId);
+      songsHelper.likeSong(artist, title, !current);
+       setState(() {
+        songsFuture = controller.onInit();
+      });
     }
   }
 
@@ -92,10 +122,11 @@ class _SongsPageState extends State<SongsPage> {
     var songsList = controller.songs;
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text(albumIds!, style: Theme.of(context).textTheme.bodyLarge),),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
-            top: 5.h,
+            top: 0.h,
             left: 16.sp,
             bottom: 10.sp,
             right: 16.sp,
@@ -165,14 +196,15 @@ class _SongsPageState extends State<SongsPage> {
                                 child: Text('Error: ${snapshot.error}'),
                               );
                             } else {
-                              return         
+                              fave = snapshot.data;
+                              return  
                             Column(
                               children: [
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     OutlinedButton(onPressed: () => _addAllToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor), child: Text('Play All', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
-                                    IconButton(icon: Icon(Icons.favorite, color: ((snapshot.data ?? false) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30), onPressed: () { setState(){}_favouriteAlbum(albumIds!, artistIds!, snapshot.data!); },),
+                                    IconButton(icon: Icon(Icons.favorite, color: ((snapshot.data ?? false) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30), onPressed: () { setState(){ fave = !fave!;}_favouriteAlbum(albumIds!, artistIds!, snapshot.data!); },),
                                     OutlinedButton(onPressed: () => _shuffleQueue(), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor), child: Text('Shuffle',style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
                                   //  OutlinedButton(onPressed: () => _shuffleQueue(), child: const Text('Add queue')),
                                   ],
@@ -194,7 +226,7 @@ class _SongsPageState extends State<SongsPage> {
                                 return Padding(
                                   padding: EdgeInsets.symmetric(vertical: 8.sp),
                                   child: InkWell(
-                                    onTap:() => _addToQueue(songsList[index]),
+                                    onTap:() => _playSong(songsList[index]),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.sp),
                                     ),
@@ -255,9 +287,17 @@ class _SongsPageState extends State<SongsPage> {
                                                           Container(
                                                             margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                                             child: Text(songsList[index].length.toString(), style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                                                            Container(
+                                                            margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                                            child: IconButton(icon: const Icon(Icons.download, size: 30, color: Colors.blueGrey), onPressed: () { _downloadFile(songsList[index]); }),
+                                                          ),
+                                                          Container(
+                                                            margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                                            child: IconButton(icon: const Icon(Icons.add, size: 30, color: Colors.blueGrey), onPressed: () { _addToQueue(songsList[index]); }),
+                                                          ),
                                                           Container(
                                                             margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                                            child: IconButton(icon: Icon(Icons.favorite, color: ((songsList[index].favourite ?? false) ? Colors.red : Colors.blueGrey), size:30), onPressed: () { setState(){ } _favouriteSong(songsList[index].id!, songsList[index].favourite!); },))
+                                                            child: IconButton(icon: Icon(Icons.favorite, color: ((songsList[index].favourite ?? false) ? Colors.red : Colors.blueGrey), size:30), onPressed: () {_favouriteSong(songsList[index].id!, songsList[index].favourite!, songsList[index].artist!, songsList[index].title!); },))
                                                         ],
                                                       ),
                                                       Divider(color: Theme.of(context).colorScheme.secondary, indent: 40, endIndent: 40,),
@@ -277,6 +317,10 @@ class _SongsPageState extends State<SongsPage> {
                                   );
                               },
                             ),
+                            Container(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
+                            alignment: Alignment.centerLeft,
+                            child:  const Text('Similar Albums', style: TextStyle(color: Colors.grey, fontSize: 20))),
                             SimilarAlbums(albumId: albumIds!, artistId: artistIds!,),
                           ],
                         ),

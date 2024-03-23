@@ -31,6 +31,16 @@ class SongsHelper{
     return songsBox.values.where((Songs) => Songs.artist == artist && Songs.album == album).toList();
   }
 
+  Songs returnSong(String artist, String title){
+    return songsBox.values.where((Songs) => Songs.artist == artist && Songs.name == title).first;
+  }
+
+  likeSong(String artist, String title, bool value){
+      var song = returnSong(artist, title);
+      song.favourite = value;
+      songsBox.put(song.key,song);
+  }
+
   clearSongs(){
     songsBox.clear();
   }

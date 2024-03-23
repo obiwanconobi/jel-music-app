@@ -71,6 +71,7 @@ class _StartPageState extends State<StartPage> {
                                         MaterialPageRoute(builder: (context) => AllAlbumsPage(favourite: false)),
                                       );},
                                   ),
+                                  
                                 ],
                               ),
                             ],
@@ -118,9 +119,15 @@ class _StartPageState extends State<StartPage> {
 
                     ],
                   ),
-                  Text('Favourite Albums', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 20)),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    alignment: Alignment.centerLeft,
+                    child: Text('Favourite Albums', style: Theme.of(context).textTheme.bodyLarge,)),
                   const FavouriteAlbums(),
-                  Text('Favourite Artists', style: Theme.of(context).textTheme.bodySmall),
+                  Container(
+                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    alignment: Alignment.centerLeft,
+                    child: Text('Favourite Artists', style: Theme.of(context).textTheme.bodyLarge)),
                   const FavouriteArtists(),
                 ],
                     ),

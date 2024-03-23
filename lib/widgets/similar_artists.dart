@@ -50,9 +50,11 @@ class _SimilarArtistsState extends State<SimilarArtists> {
             child: Text("Error")
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(
-            child: Text('No artists available.'),
-          );
+          return 
+              const Center(
+                child: Text('No artists available.'),
+              );
+            
         } else {
           // Data is available, build the list
           List<Artists> artistsList = snapshot.data!;
@@ -60,7 +62,6 @@ class _SimilarArtistsState extends State<SimilarArtists> {
             scrollDirection: Axis.horizontal,
             child: Column(
               children: [
-                Text('Similar Artists', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 20)),
                 Row(
                   children: [
                     Container(
@@ -115,9 +116,7 @@ class _SimilarArtistsState extends State<SimilarArtists> {
                                           ),
                                         ),
                                       ),
-                                       SizedBox(
-                                        width: 33.w,
-                                        child: Text(artistsList[index].name!, overflow: TextOverflow.ellipsis, maxLines: 1, style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontWeight: FontWeight.bold, fontSize: 16))),
+                                       Text(artistsList[index].name!, overflow: TextOverflow.ellipsis, maxLines: 1, style: Theme.of(context).textTheme.bodySmall),
                                     ],
                                   ),
                                 ),

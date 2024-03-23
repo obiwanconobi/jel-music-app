@@ -9,12 +9,16 @@ import 'package:jel_music/homepage.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:sizer/sizer.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
+import 'package:flutter_downloader/flutter_downloader.dart';
 
 
 Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterDownloader.initialize(
+    debug: true, // optional: set to false to disable printing logs to console (default: true)
+    ignoreSsl: true // option: set to false to disable working with http links (default: false)
+  );
    await JustAudioBackground.init(
     androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
     androidNotificationChannelName: 'Audio playback',
@@ -45,7 +49,8 @@ static ThemeData lightTheme = ThemeData(
       backgroundColor: Color.fromARGB(255, 238, 238, 238), // Your secondary color
     ), // Your accent color for dark mode
     textTheme: TextTheme(
-      bodyLarge: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'League Spartan', fontWeight: FontWeight.w400), // Text color for dark theme
+      bodyLarge: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'League Spartan', fontWeight: FontWeight.w600), // Text color for dark theme
+      bodyMedium: TextStyle(color: Color(0xFFACACAC), fontSize: 16),
       bodySmall: TextStyle(color: Colors.black, fontSize: 14),
     ),
     // Add other dark theme properties here
@@ -63,7 +68,8 @@ static ThemeData lightTheme = ThemeData(
       backgroundColor: const Color(0xFF1C1B1B), // Your secondary color
     ), // Your accent color for dark mode
     textTheme: TextTheme(
-      bodyLarge: TextStyle(color: Color(0xFFACACAC), fontSize: 20, fontFamily: 'League Spartan', fontWeight: FontWeight.w400), // Text color for dark theme
+      bodyLarge: TextStyle(color: Color(0xFFACACAC), fontSize: 20, fontFamily: 'League Spartan', fontWeight: FontWeight.w600), // Text color for dark theme
+      bodyMedium: TextStyle(color: Color(0xFFACACAC), fontSize: 16),
       bodySmall: TextStyle(color: Color(0xFFACACAC), fontSize: 14),
     ),
     // Add other dark theme properties here
