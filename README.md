@@ -2,17 +2,7 @@
 
 ![panaudio header](https://github.com/obiwanconobi/obiwanconobi/blob/main/panaudio.png?raw=true)
 
-A new Flutter project.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## panaudio
+panaudio is a music streaming apps currently compatiable with Jellyfin. It is currently in development and not currently for general use, however, you're free to build it and try if you wish!
