@@ -10,6 +10,7 @@ import 'package:rxdart/rxdart.dart';
 
 
 
+
 class MusicController extends ChangeNotifier{
   final AudioPlayer _advancedPlayer = AudioPlayer();
   StreamController<Duration> _durationController = BehaviorSubject();
@@ -61,7 +62,8 @@ class MusicController extends ChangeNotifier{
   
   Stream<Duration> get durationStream => _durationController.stream;
 
-   
+  
+
     void onInit()async{
       currentSource = getCurrentSong();
      
