@@ -280,7 +280,9 @@ class MusicController extends ChangeNotifier{
   }
 
   void clearQueue(){
-    queue.clear();
+    playlist.clear();
+    setUiElements();
+  //  queue.clear();
   }
 
   playlistPlay()async{
