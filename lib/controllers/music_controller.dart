@@ -7,6 +7,7 @@ import 'package:jel_music/models/stream.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:just_audio_cache/just_audio_cache.dart';
 
 
 
@@ -36,6 +37,8 @@ class MusicController extends ChangeNotifier{
   List<IndexedAudioSource>? currentQueue = [];
   int currentIndexSource = 0;
 
+
+   
   
    var playlist = ConcatenatingAudioSource(
     // Start loading next item just before reaching it
@@ -91,7 +94,9 @@ class MusicController extends ChangeNotifier{
 
     if(!ignore){
       if(_advancedPlayer.audioSource == null){
-      _advancedPlayer.setAudioSource(playlist);
+
+       _advancedPlayer.setAudioSource(playlist);
+      
       }
     
       isPlaying = _advancedPlayer.playing;
@@ -144,6 +149,8 @@ class MusicController extends ChangeNotifier{
 
     List<String> timeParts = tempDuration!.split(':');
 
+    
+
     var source = AudioSource.uri(
                   Uri.parse(baseUrl),
                   tag: MediaItem(
@@ -160,10 +167,13 @@ class MusicController extends ChangeNotifier{
  
       try{
         List<AudioSource> list = [];
+
+        
         list.add(source);
         playlist.addAll(list);
         if(_advancedPlayer.playing){
           var countPlaylist = playlist.length;
+          //_advancedPlayer.dynamicSet(url: baseUrl);
           _advancedPlayer.setAudioSource(playlist, initialIndex: countPlaylist-1);
             playlistPlay();
 
@@ -280,7 +290,9 @@ class MusicController extends ChangeNotifier{
   }
 
   void clearQueue(){
-    queue.clear();
+    playlist.clear();
+    setUiElements();
+  //  queue.clear();
   }
 
   playlistPlay()async{
