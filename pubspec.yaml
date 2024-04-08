@@ -49,6 +49,7 @@ dependencies:
   sorted: ^2.1.0
   adaptive_theme: ^3.6.0
   google_fonts: ^6.2.1
+  just_audio_cache: ^0.1.2
   
 
   # The following adds the Cupertino Icons font to your application.
