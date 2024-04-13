@@ -60,6 +60,10 @@ class MusicController extends ChangeNotifier{
           setUiElements();
     });
 
+    _advancedPlayer.playingStream.listen((event){
+          setUiElements();
+    });
+
 
   }    
   
@@ -146,7 +150,7 @@ class MusicController extends ChangeNotifier{
     baseServerUrl = GetStorage().read('serverUrl');
     
     String baseUrl =  "$baseServerUrl/Items/$tempId/Download?api_key=$accessToken";
-
+   // String baseUrl = "$baseServerUrl/Audio/$tempId/stream";
     List<String> timeParts = tempDuration!.split(':');
 
     
@@ -260,6 +264,7 @@ class MusicController extends ChangeNotifier{
       String pictureUrl = stream.picture!;
       String id = stream.id!;
       String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
+  // String baseUrl = "$baseServerUrl/Audio/$id/stream";
       List<String> timeParts = stream.long!.split(':');
       var source = AudioSource.uri(
                         Uri.parse(baseUrl),
@@ -314,6 +319,7 @@ class MusicController extends ChangeNotifier{
       for(var stream in listOfStreams){
               String pictureUrl = stream.picture!;
               String id = stream.id!;
+             // String baseUrl = "$baseServerUrl/Audio/$id/stream";
               String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
               List<String> timeParts = stream.long!.split(':');
               var source = AudioSource.uri(
