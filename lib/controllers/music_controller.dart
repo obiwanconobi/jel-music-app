@@ -61,7 +61,7 @@ class MusicController extends ChangeNotifier{
     });
 
     _advancedPlayer.playingStream.listen((event){
-          setUiElements();
+            setUiElements();
     });
 
 
