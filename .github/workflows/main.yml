@@ -2,39 +2,61 @@ name: Flutter_Android
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
- build_android:
-   runs-on: ubuntu-latest
+  build_android:
+    runs-on: ubuntu-latest
 
-   steps:
-    - name: Checkout the code
-      uses: actions/checkout@v2
-      
-    - name: Setup Java to compile Android project
-      uses: actions/setup-java@v1
-      with:
-        java-version: '12.x'
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
 
-    - name: Install and set Flutter version
-      uses: subosito/flutter-action@v2
-      with:
-        channel: stable # or: beta, master (or main)
-    - run: flutter --version 
+      - name: Setup Java to compile Android project
+        uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
 
-    - name: Restore packages
-      run: flutter pub get
+      - name: Install and set Flutter version
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable # or: beta, master (or main)
 
-    - name: Build Android App Bundle
-      run: flutter build appbundle --release
+      - name: Restore packages
+        run: flutter pub get
 
-    # Debugging step: List contents of the directory
-    - name: List Directory Contents
-      run: ls -R build/app/outputs/bundle/release/
+      - name: Build Android App Bundle
+        run: flutter build appbundle --release
 
-    - name: Publish Android Artefacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: release-aab-signed
-        path: build/app/outputs/bundle/release/*.aab
+      - name: Publish Android Artefacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-aab-signed
+          path: build/app/outputs/bundle/release/*.aab
+
+      - name: Get the latest tag
+        id: get_tag
+        run: echo ::set-output name=tag::$(git describe --tags $(git rev-list --tags --max-count=1))
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
+        with:
+          tag_name: ${{ steps.get_tag.outputs.tag }}
+          release_name: Release ${{ steps.get_tag.outputs.tag }}
+          draft: false
+          prerelease: false
+
+      - name: Upload artifact to release
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/app/outputs/bundle/release/*.aab
+          asset_name: app-release-${{ steps.get_tag.outputs.tag }}.aab
+          asset_content_type: application/octet-stream
