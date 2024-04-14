@@ -74,7 +74,7 @@ class MusicController extends ChangeNotifier{
     void onInit()async{
       currentSource = getCurrentSong();
      
-      baseServerUrl = GetStorage().read('serverUrl');
+      baseServerUrl = GetStorage().read('serverUrl') ?? "";
 
       
         

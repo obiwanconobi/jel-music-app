@@ -1,4 +1,4 @@
-package com.example.jel_music
+package com.pansoft.jel_music
 
 import io.flutter.embedding.android.FlutterActivity
 
