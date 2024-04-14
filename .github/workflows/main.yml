@@ -27,10 +27,14 @@ jobs:
       run: flutter pub get
 
     - name: Build Android App Bundle
-      run: flutter build apk --release
+      run: flutter build appbundle --release
+
+    # Debugging step: List contents of the directory
+    - name: List Directory Contents
+      run: ls -R build/app/outputs/bundle/release/
 
     - name: Publish Android Artefacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v2
       with:
-        name: release-apk
-        path: build/app/outputs/bundle/release/app-release.apk  
+        name: release-aab-signed
+        path: build/app/outputs/bundle/release/*.aab
