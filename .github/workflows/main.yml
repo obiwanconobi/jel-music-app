@@ -27,7 +27,8 @@ jobs:
         run: flutter pub get
 
       - name: Save keystore to file
-        run: echo "$KEYSTORE_CONTENT" | base64 -d > keystore.jks        
+        run: echo "$KEYSTORE_CONTENT" | base64 -d > /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks
+       
 
       - name: Build Android App Bundle
         run: flutter build apk --release
