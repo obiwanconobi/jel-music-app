@@ -26,11 +26,11 @@ jobs:
       - name: Restore packages
         run: flutter pub get
 
+      - name: Save keystore to file
+        run: echo "$KEYSTORE_CONTENT" | base64 -d > keystore.jks        
+
       - name: Build Android App Bundle
         run: flutter build apk --release
-
-      - name: Save keystore to file
-        run: echo "$KEYSTORE_CONTENT" | base64 -d > keystore.jks
 
       - name: Sign APK
         run: |
