@@ -33,12 +33,12 @@ jobs:
       - name: Build Android App Bundle
         run: flutter build apk --release
 
-      - name: Sign APK
+      - name: Generate key.properties file
         run: |
-              echo "storePassword=$KEYSTORE_PASSWORD" >> key.properties
-              echo "keyAlias=$KEY_ALIAS" >> key.properties
-              echo "keyPassword=$KEY_PASSWORD" >> key.properties
-              jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore keystore.jks build/app/outputs/flutter-apk/app-release.apk $KEY_ALIAS
+          echo "storePassword=$KEYSTORE_PASSWORD" >> /home/runner/work/jel-music-app/jel-music-app/android/app/key.properties
+          echo "keyAlias=$KEY_ALIAS" >> /home/runner/work/jel-music-app/jel-music-app/android/app/key.properties
+          echo "keyPassword=$KEY_PASSWORD" >> /home/runner/work/jel-music-app/jel-music-app/android/app/key.properties
+          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore keystore.jks build/app/outputs/flutter-apk/app-release.apk $KEY_ALIAS
     
 
       - name: Publish Android Artefacts
