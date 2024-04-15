@@ -29,6 +29,9 @@ jobs:
       - name: Save keystore to file
         run: echo "$KEYSTORE_CONTENT" | base64 -d > /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks
       
+      - name: Debug store password
+        run: echo "Store password: ${{ secrets.STORE_PASSWORD }}"
+      
       - name: Build Android App Bundle
         run: flutter build apk --release
       
