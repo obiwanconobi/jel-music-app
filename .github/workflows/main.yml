@@ -42,18 +42,6 @@ jobs:
       - name: Build Android App Bundle
         run: flutter build apk --release
 
-      - name: Debug file path
-        run: |
-          ls -la /home/runner/work/jel-music-app/jel-music-app/app/build/outputs/flutter-apk/
-
-      - name: Debug file path
-        run: |
-          ls -la build/app/outputs/flutter-apk/ 
-
-      - name: Modify file permissions
-        run: |
-          chmod 644 /home/runner/work/jel-music-app/jel-music-app/app/build/outputs/flutter-apk/app-release.apk        
-
       - name: Sign APK
         run: |
           jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
