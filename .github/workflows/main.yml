@@ -28,17 +28,14 @@ jobs:
 
       - name: Save keystore to file
         run: echo "$KEYSTORE_CONTENT" | base64 -d > /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks
-       
-
+      
       - name: Build Android App Bundle
         run: flutter build apk --release
-
-      - name: Generate key.properties file
+      
+      - name: Sign APK
         run: |
-          echo "storePassword=$KEYSTORE_PASSWORD" >> /home/runner/work/jel-music-app/jel-music-app/android/app/key.properties
-          echo "keyAlias=$KEY_ALIAS" >> /home/runner/work/jel-music-app/jel-music-app/android/app/key.properties
-          echo "keyPassword=$KEY_PASSWORD" >> /home/runner/work/jel-music-app/jel-music-app/android/app/key.properties
-          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore keystore.jks build/app/outputs/flutter-apk/app-release.apk $KEY_ALIAS
+          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks -storepass ${{ secrets.STORE_PASSWORD }} build/app/outputs/flutter-apk/app-release.apk $KEY_ALIAS
+
     
 
       - name: Publish Android Artefacts
