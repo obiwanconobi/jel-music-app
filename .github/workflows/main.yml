@@ -29,6 +29,17 @@ jobs:
       - name: Build Android App Bundle
         run: flutter build apk --release
 
+      - name: Save keystore to file
+        run: echo "$KEYSTORE_CONTENT" | base64 -d > keystore.jks
+
+      - name: Sign APK
+        run: |
+              echo "storePassword=$KEYSTORE_PASSWORD" >> key.properties
+              echo "keyAlias=$KEY_ALIAS" >> key.properties
+              echo "keyPassword=$KEY_PASSWORD" >> key.properties
+              jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore keystore.jks build/app/outputs/flutter-apk/app-release.apk $KEY_ALIAS
+    
+
       - name: Publish Android Artefacts
         uses: actions/upload-artifact@v2
         with:
