@@ -41,6 +41,10 @@ jobs:
 
       - name: Build Android App Bundle
         run: flutter build apk --release
+      
+      - name: Modify file permissions
+        run: |
+          chmod 644 /home/runner/work/jel-music-app/jel-music-app/app/build/outputs/flutter-apk/app-release.apk        
 
       - name: Sign APK
         run: |
