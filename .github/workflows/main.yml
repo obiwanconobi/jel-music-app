@@ -42,7 +42,7 @@ jobs:
             -keystore /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks \
             -storepass ${{ secrets.STORE_PASSWORD }} \
             app/build/outputs/flutter-apk/app-release.apk \
-            ${{ secrets.KEY_ALIAS }}
+            keystore
 
       - name: Publish Android Artefacts
         uses: actions/upload-artifact@v2
