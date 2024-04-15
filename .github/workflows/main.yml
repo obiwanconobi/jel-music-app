@@ -44,7 +44,6 @@ jobs:
 
       - name: Sign APK
         run: |
-          ls -l app/build/outputs/flutter-apk/
           jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
             -keystore /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks \
             -storepass $STORE_PASSWORD \
