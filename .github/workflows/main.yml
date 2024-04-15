@@ -7,6 +7,7 @@ on:
 
 env:
   STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+  KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
   # Define other environment variables here
       
 
@@ -46,6 +47,7 @@ jobs:
           jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
             -keystore /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks \
             -storepass $STORE_PASSWORD \
+            -keypass $KEY_PASSWORD \
             app/build/outputs/flutter-apk/app-release.apk \
             nutella
         env:
