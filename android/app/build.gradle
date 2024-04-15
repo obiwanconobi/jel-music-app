@@ -60,7 +60,7 @@ android {
 
     signingConfigs {
         release {
-            
+            storeFile file("keystore.jks")
         }
     }
 
