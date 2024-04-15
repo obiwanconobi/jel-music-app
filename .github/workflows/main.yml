@@ -37,7 +37,13 @@ jobs:
 
       - name: Get the latest tag
         id: get_tag
-        run: echo ::set-output name=tag::$(git describe --tags $(git rev-list --tags --max-count=1) || echo "none")
+        run: |
+          latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1) || echo "none")
+          if [ "$latest_tag" == "none" ]; then
+            echo "::set-output name=tag::v1.0.0"  # Set a default tag name if no tags are found
+          else
+            echo "::set-output name=tag::$latest_tag"
+          fi
       
       - name: Create GitHub Release
         id: create_release
