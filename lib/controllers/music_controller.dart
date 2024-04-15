@@ -74,7 +74,7 @@ class MusicController extends ChangeNotifier{
     void onInit()async{
       currentSource = getCurrentSong();
      
-      baseServerUrl = GetStorage().read('serverUrl');
+      baseServerUrl = GetStorage().read('serverUrl') ?? "";
 
       
         
@@ -175,7 +175,7 @@ class MusicController extends ChangeNotifier{
         
         list.add(source);
         playlist.addAll(list);
-        if(_advancedPlayer.playing){
+        if(!playlist.children!.isEmpty){
           var countPlaylist = playlist.length;
           //_advancedPlayer.dynamicSet(url: baseUrl);
           _advancedPlayer.setAudioSource(playlist, initialIndex: countPlaylist-1);

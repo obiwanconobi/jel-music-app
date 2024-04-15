@@ -57,18 +57,22 @@ class _AlbumPageState extends State<AllAlbumsPage> {
     String title = "All Albums";
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('albums', style: Theme.of(context).textTheme.bodyLarge),),
+        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('Albums', style: Theme.of(context).textTheme.bodyLarge),),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,
-            left: 5.sp,
+            left: 16.sp,
             bottom: 10.sp,
-            right: 5.sp,
+            right: 16.sp,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Padding(
+                padding: const EdgeInsets.all(7.0),
+                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle:  TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)), style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)),
+              ),
               Expanded(
                 child: FutureBuilder<List<Album>>(
                   future: albumsFuture,
@@ -197,10 +201,7 @@ class _AlbumPageState extends State<AllAlbumsPage> {
                 )
 
               ),
-              Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle:  TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)), style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)),
-              ),
+              
             ],
           ),
         ),

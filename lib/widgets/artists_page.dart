@@ -16,25 +16,41 @@ class ArtistPage extends StatefulWidget {
 class _ArtistPageState extends State<ArtistPage> {
   ArtistController controller = ArtistController();
   double mainAxis = 250.h;
+  TextEditingController _searchController = TextEditingController();
 
   late Future<List<Artists>> artistsFuture;
-
+  List<Artists> _filteredArtists = []; // List to hold filtered albums
+  List<Artists> artistsList  = [];
   @override
   void initState() {
     super.initState();
     controller.favourite = false;
     artistsFuture = controller.onInit();
+    _searchController.addListener(_filterArtists);
   }
+
+  void _filterArtists() {
+      String searchText = _searchController.text.toLowerCase();
+      setState(() {
+        if (searchText.isNotEmpty) {
+          _filteredArtists = _filteredArtists
+              .where((album) => album.name!.toLowerCase().contains(searchText))
+              .toList();
+        } else {
+          _filteredArtists = List.from(artistsList); // Reset to original list if search text is empty
+        }
+      });
 
   void launchAlbum(){
 
+  }
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('artists', style: Theme.of(context).textTheme.bodyLarge),),
+        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('Artists', style: Theme.of(context).textTheme.bodyLarge),),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
@@ -46,6 +62,10 @@ class _ArtistPageState extends State<ArtistPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Padding(
+                padding: const EdgeInsets.all(7.0),
+                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle:  TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)), style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)),
+              ),
               Expanded(
                 child:
                 FutureBuilder<List<Artists>>(
@@ -65,17 +85,22 @@ class _ArtistPageState extends State<ArtistPage> {
                       );
                     } else {
                       // Data is available, build the list
-                      List<Artists> artistController = snapshot.data!;
+                      
+                      if(!_searchController.text.isEmpty){
+                      
+                      }else{
+                        _filteredArtists = snapshot.data!;
+                      }
                       return ListView.builder(
                    // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 5, mainAxisExtent: 26.h),
-                    itemCount: artistController.length,
-                    //shrinkWrap: true,
+                    itemCount: _filteredArtists.length,
+                   // shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap:() => {
                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => AlbumPage(artistId: artistController[index].name!)),
+                              MaterialPageRoute(builder: (context) => AlbumPage(artistId: _filteredArtists[index].name!)),
                       )},     
                         child: Container(
                           height: 15.h,
@@ -92,7 +117,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                     child: ClipOval(
                                       child: CachedNetworkImage(
                                         fit: BoxFit.cover,
-                                        imageUrl: artistController[index].picture ?? "",
+                                        imageUrl: _filteredArtists[index].picture ?? "",
                                         memCacheHeight: 150,
                                         memCacheWidth: 150,
                                         placeholder: (context, url) => const CircularProgressIndicator(
@@ -122,7 +147,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                             child: Padding(
                                               padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                               child: Text(
-                                                artistController[index].name!,
+                                                _filteredArtists[index].name!,
                                                 style: TextStyle(
                                                   fontSize: 10.sp,
                                                   color: Theme.of(context).textTheme.bodySmall!.color,
@@ -160,4 +185,4 @@ class _ArtistPageState extends State<ArtistPage> {
     );
   }
 }   
-  
+
