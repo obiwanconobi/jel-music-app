@@ -31,7 +31,7 @@ jobs:
           echo "STORE_PASSWORD=${{ secrets.STORE_PASSWORD }}" >> $GITHUB_ENV
       
       - name: Save keystore to file
-        run: echo "${{ secrets.KEYSTORE_CONTENT }}" | base64 -d > /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks
+        run: echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks
 
       - name: Build Android App Bundle
         run: flutter build apk --release
