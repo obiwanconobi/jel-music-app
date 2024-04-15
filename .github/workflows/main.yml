@@ -49,10 +49,10 @@ jobs:
             -keystore /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks \
             -storepass $STORE_PASSWORD \
             -keypass $KEY_PASSWORD \
-            app/build/outputs/flutter-apk/app-release.apk \
+            /home/runner/work/jel-music-app/jel-music-app/app/build/outputs/flutter-apk/app-release.apk \
             nutella
         env:
-          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           JAVA_HOME_12.0.2_x64: /opt/hostedtoolcache/jdk/12.0.2/x64
           JAVA_HOME: /opt/hostedtoolcache/jdk/12.0.2/x64
