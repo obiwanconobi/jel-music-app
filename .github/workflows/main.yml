@@ -37,20 +37,13 @@ jobs:
 
       - name: Get the latest tag
         id: get_tag
-        run: |
-          latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1) || echo "none")
-          if [ "$latest_tag" == "none" ]; then
-            echo "::set-output name=tag::v1.0.0"  # Set a default tag name if no tags are found
-          else
-            echo "::set-output name=tag::$latest_tag"
-          fi
+        run: echo "::set-output name=tag::v1.0.0"  # Set a default tag name
       
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
-        if: steps.get_tag.outputs.tag != '' && steps.get_tag.outputs.tag != 'none'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
         with:
           tag_name: ${{ steps.get_tag.outputs.tag }}
           release_name: Release ${{ steps.get_tag.outputs.tag }}
@@ -60,11 +53,11 @@ jobs:
       - name: Upload artifact to release
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
-        if: steps.get_tag.outputs.tag != '' && steps.get_tag.outputs.tag != 'none'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: build/app/outputs/flutter-apk/*.apk
           asset_name: app-release-${{ steps.get_tag.outputs.tag }}.apk
           asset_content_type: application/octet-stream
+
