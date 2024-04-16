@@ -52,7 +52,7 @@ jobs:
         run: |
           $ANDROID_SDK_ROOT/build-tools/30.0.3/apksigner sign --verbose \
             --ks /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks \
-            --ks-key-alias your_alias \
+            --ks-key-alias nutella \
             --ks-pass $STORE_PASSWORD \
             --key-pass $KEY_PASSWORD \
             --out build/app/outputs/flutter-apk/app-release-signed.apk \
