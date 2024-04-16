@@ -72,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: release-aab-signed
-          path: build/app/outputs/flutter-apk/*.apk
+          path: build/app/outputs/flutter-apk/app-release-signed.apk
 
       - name: Set tag to current date and time
         id: set_tag
@@ -97,7 +97,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /home/runner/work/jel-music-app/jel-music-app/build/app/outputs/flutter-apk/app-release.apk
-          asset_name: app-release-${{ steps.set_tag.outputs.tag }}.apk
+          asset_path: /home/runner/work/jel-music-app/jel-music-app/build/app/outputs/flutter-apk/app-release-signed.apk
+          asset_name: panaudio.apk
           asset_content_type: application/octet-stream
 
