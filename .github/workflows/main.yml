@@ -53,11 +53,13 @@ jobs:
           $ANDROID_SDK_ROOT/build-tools/30.0.3/apksigner sign --verbose \
             --ks /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks \
             --ks-key-alias nutella \
-            --ks-pass $STORE_PASSWORD \
-            --key-pass $KEY_PASSWORD \
+            --ks-pass env:STORE_PASSWORD \
+            --key-pass env:KEY_PASSWORD \
             --out build/app/outputs/flutter-apk/app-release-signed.apk \
             build/app/outputs/flutter-apk/app-release.apk
         env:
+          STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           JAVA_HOME_12.0.2_x64: /opt/hostedtoolcache/jdk/12.0.2/x64
           JAVA_HOME: /opt/hostedtoolcache/jdk/12.0.2/x64
           JAVA_HOME_12_0_2_X64: /opt/hostedtoolcache/jdk/12.0.2/x64
