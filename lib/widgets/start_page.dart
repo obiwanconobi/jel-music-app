@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jel_music/widgets/all_albums_page.dart';
+import 'package:jel_music/widgets/all_songs_part.dart';
 import 'package:jel_music/widgets/artists_page.dart';
 import 'package:jel_music/widgets/favourite_albums.dart';
 import 'package:jel_music/widgets/favourite_artists.dart';
@@ -35,89 +36,132 @@ class _StartPageState extends State<StartPage> {
             right: 0.sp,
           ),
           child: SingleChildScrollView(
-            child: Column(
+            child: Column( 
                 children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        height:20.h,
-                        width: 50.w,
-                        child: Card(
-                          color: Theme.of(context).colorScheme.background,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              ListTile(
-                                leading: const Icon(Icons.album),
-                                title: Text('All Music', style: Theme.of(context).textTheme.bodySmall),
-                                subtitle: Text('All your music', style: Theme.of(context).textTheme.bodySmall),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: <Widget>[
-                                  const SizedBox(width: 8),
-                                  TextButton(
-                                    child: Text('ARTISTS', style: Theme.of(context).textTheme.bodySmall),
-                                    onPressed: () {Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => const ArtistPage()),
-                                      );},
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        
+                        Column(children: 
+                        [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                width: 45.w, // Set the desired width here
+                                height: 12.w,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const ArtistPage()),
+                                    );
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).canvasColor),
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
+                                      ),
+                                    ),
                                   ),
-                                  const SizedBox(width: 8),
-                                  TextButton(
-                                    child:  Text('ALBUMS', style: Theme.of(context).textTheme.bodySmall),
-                                    onPressed: () {Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => AllAlbumsPage(favourite: false)),
-                                      );},
+                                  child: Text(
+                                    'Artists',
+                                    style: Theme.of(context).textTheme.bodyMedium
                                   ),
-                                  
-                                ],
+                                ),
                               ),
-                            ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                width: 45.w, // Set the desired width here
+                                height: 12.w,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => AllAlbumsPage(favourite: false,)),
+                                    );
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).canvasColor),
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
+                                      ),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Albums',
+                                    style: Theme.of(context).textTheme.bodyMedium
+                                  ),
+                                ),
+                              ),
+                            ),
+                    
+                        ],),
+                        Column(children: 
+                        [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                                width: 45.w, // Set the desired width here
+                                height: 12.w,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const LikedSongs()),
+                                    );
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).canvasColor),
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
+                                      ),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Liked Songs',
+                                    style: Theme.of(context).textTheme.bodyMedium
+                                  ),
+                                ),
+                              ),
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        height:20.h,
-                        width: 50.w,
-                        child: Card(
-                          color: Theme.of(context).colorScheme.background,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              ListTile(
-                                leading: const Icon(Icons.album),
-                                title: Text('Liked Songs', style: Theme.of(context).textTheme.bodySmall),
-                                subtitle: Text('Your liked songs', style: Theme.of(context).textTheme.bodySmall),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: <Widget>[
-                                  TextButton(
-                                    child: Text('VIEW', style: Theme.of(context).textTheme.bodySmall),
-                                    onPressed: () {Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => const LikedSongs()),
-                                      );},
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                width: 45.w, // Set the desired width here
+                                height: 12.w,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => AllSongsPage()),
+                                    );
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).canvasColor),
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
+                                      ),
+                                    ),
                                   ),
-                                  const SizedBox(width: 8),
-                                  TextButton(
-                                    child: Text('LISTEN', style: Theme.of(context).textTheme.bodySmall),
-                                    onPressed: () {Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => const ArtistPage( )),
-                                      );},
+                                  child: Text(
+                                    'All Songs',
+                                    style: Theme.of(context).textTheme.bodyMedium
                                   ),
-                                  const SizedBox(width: 8),
-                                ],
+                                ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                    ],
+                            ),
+                        ],)
+                    
+                      ],
+                    ),
                   ),
                   Container(
                     padding: EdgeInsets.fromLTRB(20, 0, 0, 0),

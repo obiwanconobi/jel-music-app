@@ -50,7 +50,7 @@
 
     @HiveField(10)
     bool? downloaded;
-
+  
     @override
     String toString() {
       return '$name:$name';

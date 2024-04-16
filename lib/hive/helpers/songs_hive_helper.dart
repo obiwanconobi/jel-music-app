@@ -3,6 +3,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:jel_music/hive/classes/songs.dart';
 import 'package:http/http.dart' as http;
+import 'package:sorted/sorted.dart';
 
 class SongsHelper{
 
@@ -26,6 +27,10 @@ class SongsHelper{
 
         return timestampString;
       }
+
+  List<Songs> returnAllSongs(){
+    return songsBox.values.toList();
+  }
 
   List<Songs> returnSongsFromAlbum(String artist, String album){
     return songsBox.values.where((Songs) => Songs.artist == artist && Songs.album == album).toList();
