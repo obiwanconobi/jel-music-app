@@ -44,12 +44,12 @@ jobs:
 
       - name: Sign APK
         run: |
-          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
-            -keystore /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks \
-            -storepass $STORE_PASSWORD \
-            -keypass $KEY_PASSWORD \
-            build/app/outputs/flutter-apk/app-release.apk \
-            nutella
+          apksigner sign --verbose --ks /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks \
+            --ks-key-alias nutella \
+            --ks-pass $STORE_PASSWORD \
+            --key-pass $KEY_PASSWORD \
+            --out build/app/outputs/flutter-apk/app-release-signed.apk \
+            build/app/outputs/flutter-apk/app-release.apk
         env:
           STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
@@ -57,8 +57,7 @@ jobs:
           JAVA_HOME: /opt/hostedtoolcache/jdk/12.0.2/x64
           JAVA_HOME_12_0_2_X64: /opt/hostedtoolcache/jdk/12.0.2/x64
           FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.19.5-x64
-          PUB_CACHE: /home/runner/.pub-cache
-
+          PUB_CACHE: /home/runner/.pub-cache        
 
       - name: Publish Android Artefacts
         uses: actions/upload-artifact@v2
