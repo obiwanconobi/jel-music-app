@@ -45,7 +45,7 @@ static ThemeData lightTheme = ThemeData(
     ), // Your accent color for dark mode
     textTheme: const TextTheme(
       bodyLarge: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'League Spartan', fontWeight: FontWeight.w600), // Text color for dark theme
-      bodyMedium: TextStyle(color: Color(0xFFACACAC), fontSize: 16),
+      bodyMedium: TextStyle(color: Colors.black, fontSize: 16),
       bodySmall: TextStyle(color: Colors.black, fontSize: 14),
     ),
     // Add other dark theme properties here

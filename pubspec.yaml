@@ -51,6 +51,7 @@ dependencies:
   adaptive_theme: ^3.6.0
   google_fonts: ^6.2.1
   just_audio_cache: ^0.1.2
+  flutter_svg: ^0.22.0
   
 
   # The following adds the Cupertino Icons font to your application.
@@ -89,6 +90,9 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets: 
     - assets/images/album.png
+    - assets/svg/artist.svg
+    - assets/svg/album.svg
+    - assets/svg/song.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
