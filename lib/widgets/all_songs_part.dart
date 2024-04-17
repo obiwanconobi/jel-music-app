@@ -27,6 +27,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
   late Future<List<Songs>> songsFuture;
   List<Songs> _filteredSongs = []; // List to hold filtered albums
   List<Songs> songsList = [];
+
   @override
   void dispose() {
     _searchController.dispose();

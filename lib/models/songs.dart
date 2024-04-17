@@ -9,6 +9,7 @@ class Songs {
   final String? albumPicture;
   final bool? favourite;
   final String? length;
+  final int? discNumber;
 
   Songs({
     this.id,
@@ -20,6 +21,7 @@ class Songs {
     this.artistId,
     this.albumPicture,
     this.favourite,
-    this.length
+    this.length,
+    this.discNumber
   });
 }

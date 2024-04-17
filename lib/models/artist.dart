@@ -10,3 +10,4 @@ class Artists {
     this.picture
   });
 }
+  
