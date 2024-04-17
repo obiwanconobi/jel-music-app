@@ -149,11 +149,12 @@ class MusicController extends ChangeNotifier{
     await getToken();
     baseServerUrl = GetStorage().read('serverUrl');
     
-    String baseUrl =  "$baseServerUrl/Items/$tempId/Download?api_key=$accessToken";
+   // String baseUrl =  "$baseServerUrl/Items/$tempId/Download?api_key=$accessToken";
    // String baseUrl = "$baseServerUrl/Audio/$tempId/stream";
     List<String> timeParts = tempDuration!.split(':');
 
     
+    String baseUrl = "https://localhost:44312/api/audio-dl";
 
     var source = AudioSource.uri(
                   Uri.parse(baseUrl),

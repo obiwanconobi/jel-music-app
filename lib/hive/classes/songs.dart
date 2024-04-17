@@ -15,7 +15,8 @@
       required this.year,
       required this.length,
       this.favourite, // marked as nullable
-      this.downloaded
+      this.downloaded,
+      this.discIndex
     });
 
     @HiveField(0)
@@ -50,6 +51,9 @@
 
     @HiveField(10)
     bool? downloaded;
+
+    @HiveField(11)
+    int? discIndex;
   
     @override
     String toString() {

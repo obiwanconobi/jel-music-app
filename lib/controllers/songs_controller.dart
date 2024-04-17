@@ -32,9 +32,20 @@ class SongsController {
       for(var song in songsRaw){
              String songId = song.albumId;
              var imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
-        songsList.add(Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length, favourite: song.favourite));
+        songsList.add(Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length, favourite: song.favourite, discNumber: song.discIndex));
       }
-      songsList.sort((a, b) => a.trackNumber!.compareTo(b.trackNumber ?? 0));
+      songsList.sort((a, b) {
+        // First compare discNumber
+        int discComparison = a.discNumber!.compareTo(b.discNumber ?? 0);
+
+        // If discNumber is the same, then compare trackNumber
+        if (discComparison == 0) {
+          return a.trackNumber!.compareTo(b.trackNumber ?? 0);
+        } else {
+          return discComparison;
+        }
+      });
+
       songsHelper.closeBox();
       return songsList;
   }
