@@ -8,6 +8,7 @@ import 'package:jel_music/widgets/liked_songs.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/settings_page.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({super.key});
@@ -66,9 +67,26 @@ class _StartPageState extends State<StartPage> {
                                       ),
                                     ),
                                   ),
-                                  child: Text(
-                                    'Artists',
-                                    style: Theme.of(context).textTheme.bodyMedium
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                        child: SvgPicture.asset(
+                                          'assets/svg/artist.svg',
+                                          width: 24,
+                                          height: 24,
+                                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                        child: Text(
+                                          'Artists',
+                                          style: Theme.of(context).textTheme.bodyMedium
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -93,9 +111,26 @@ class _StartPageState extends State<StartPage> {
                                       ),
                                     ),
                                   ),
-                                  child: Text(
-                                    'Albums',
-                                    style: Theme.of(context).textTheme.bodyMedium
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                        child: SvgPicture.asset(
+                                          'assets/svg/song.svg',
+                                          width: 24,
+                                          height: 24,
+                                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                        child: Text(
+                                          'Albums',
+                                          style: Theme.of(context).textTheme.bodyMedium
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -124,9 +159,21 @@ class _StartPageState extends State<StartPage> {
                                       ),
                                     ),
                                   ),
-                                  child: Text(
-                                    'Liked Songs',
-                                    style: Theme.of(context).textTheme.bodyMedium
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                        child: Icon(Icons.favorite, size: 24, color:Theme.of(context).textTheme.bodyMedium!.color ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                        child: Text(
+                                          'Liked Songs',
+                                          style: Theme.of(context).textTheme.bodyMedium
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -151,9 +198,26 @@ class _StartPageState extends State<StartPage> {
                                       ),
                                     ),
                                   ),
-                                  child: Text(
-                                    'All Songs',
-                                    style: Theme.of(context).textTheme.bodyMedium
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                        child: SvgPicture.asset(
+                                          'assets/svg/album.svg',
+                                          width: 24,
+                                          height: 24,
+                                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                        child: Text(
+                                          'All Songs',
+                                          style: Theme.of(context).textTheme.bodyMedium
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
