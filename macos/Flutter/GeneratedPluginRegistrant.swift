@@ -8,7 +8,7 @@ import Foundation
 import audio_service
 import audio_session
 import just_audio
-import path_provider_foundation
+import path_provider_macos
 import shared_preferences_foundation
 import sqflite
 

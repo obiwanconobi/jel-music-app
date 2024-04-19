@@ -67,6 +67,7 @@ static ThemeData lightTheme = ThemeData(
       bodyMedium: TextStyle(color: Color(0xFFACACAC), fontSize: 16),
       bodySmall: TextStyle(color: Color(0xFFACACAC), fontSize: 14),
     ),
+    iconTheme: IconThemeData(color: Colors.blueGrey)
     // Add other dark theme properties here
   );
   

@@ -1,14 +1,15 @@
 import 'dart:async';
-
+import 'dart:io';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jel_music/models/stream.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
-
+import 'package:path/path.dart' as p;
 
 
 
@@ -16,7 +17,7 @@ class MusicController extends ChangeNotifier{
   final AudioPlayer _advancedPlayer = AudioPlayer();
   StreamController<Duration> _durationController = BehaviorSubject();
   StreamController<Duration> _bufferedDurationController = BehaviorSubject();
-  
+ 
   bool _isPlaying = false;
   List<StreamModel> queue = [];
   int currentStreamIndex = 0;
@@ -37,8 +38,8 @@ class MusicController extends ChangeNotifier{
   List<IndexedAudioSource>? currentQueue = [];
   int currentIndexSource = 0;
 
-
-   
+ // final _cache = JustAudioCache;  
+     
   
    var playlist = ConcatenatingAudioSource(
     // Start loading next item just before reaching it
@@ -51,6 +52,11 @@ class MusicController extends ChangeNotifier{
 ); 
 
   MusicController(){
+
+     // final _cache = JustAudioCache();
+
+     
+
     _advancedPlayer.positionStream.listen((position) {
     _durationController.add(position);
     });
@@ -62,6 +68,10 @@ class MusicController extends ChangeNotifier{
 
     _advancedPlayer.playingStream.listen((event){
             setUiElements();
+    });
+
+    _advancedPlayer.bufferedPositionStream.listen((position){
+      print("buffered: "+  position.toString());      
     });
 
 
@@ -79,6 +89,18 @@ class MusicController extends ChangeNotifier{
       
         
     }
+
+
+
+    clearCache()async{
+     await _advancedPlayer.clearCache();
+    }
+
+    returnPlaylist()async{
+      if(_advancedPlayer.audioSource?.sequence == null)return null;
+      
+      return _advancedPlayer.audioSource!.sequence;
+    }
     
 
     
@@ -95,12 +117,10 @@ class MusicController extends ChangeNotifier{
   void playPause(bool play, bool ignore) {
 
     //_isPlaying = !_isPlaying;
-
+    //AudioSource dd = LockCachingAudioSource(uri)
     if(!ignore){
       if(_advancedPlayer.audioSource == null){
-
        _advancedPlayer.setAudioSource(playlist);
-      
       }
     
       isPlaying = _advancedPlayer.playing;
@@ -149,14 +169,44 @@ class MusicController extends ChangeNotifier{
     await getToken();
     baseServerUrl = GetStorage().read('serverUrl');
     
-   // String baseUrl =  "$baseServerUrl/Items/$tempId/Download?api_key=$accessToken";
-   // String baseUrl = "$baseServerUrl/Audio/$tempId/stream";
+    String baseUrl =  "$baseServerUrl/Items/$tempId/Download?api_key=$accessToken";
+  //  String baseUrl = "$baseServerUrl/Audio/$tempId/stream";
     List<String> timeParts = tempDuration!.split(':');
 
-    
-    String baseUrl = "https://localhost:44312/api/audio-dl";
+ //   await _advancedPlayer.cacheFile(url: baseUrl);
+  //  await Future.delayed(Duration(seconds: 5), () {});
+   // var path = await _advancedPlayer.getCachedPath(url: baseUrl);
 
-    var source = AudioSource.uri(
+    final cacheDir = File('/panaudio/Cache/');
+    if(!cacheDir.existsSync()){
+
+    }
+
+    var documentsDar = await getApplicationDocumentsDirectory();
+
+    
+
+    final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync();
+
+    for(var file in files){
+      print(file.path);
+    }
+
+    AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
+                  cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$tempId.flac'])),
+                  tag: MediaItem(
+                    // Specify a unique ID for each media item:
+                    id: tempId!,
+                    // Metadata to display in the notification:
+                    album: tempArtist ?? "Error",
+                    title: tempAlbum ?? "Error",
+                    extras: {"favourite": tempFavourite ?? false},
+                    artUri: Uri.parse(tempPicture!),
+                    duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
+                  ));
+
+  //  String baseUrl = "https://localhost:44312/api/audio-dl";
+    var sourceold = AudioSource.uri(
                   Uri.parse(baseUrl),
                   tag: MediaItem(
                     // Specify a unique ID for each media item:
@@ -169,16 +219,15 @@ class MusicController extends ChangeNotifier{
                     duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
                   ),
                 );
- 
+  
       try{
         List<AudioSource> list = [];
-
-        
         list.add(source);
         playlist.addAll(list);
         if(!playlist.children!.isEmpty){
           var countPlaylist = playlist.length;
           //_advancedPlayer.dynamicSet(url: baseUrl);
+          
           _advancedPlayer.setAudioSource(playlist, initialIndex: countPlaylist-1);
             playlistPlay();
 
@@ -264,10 +313,10 @@ class MusicController extends ChangeNotifier{
    _addSongToQueue(StreamModel stream)async{
       String pictureUrl = stream.picture!;
       String id = stream.id!;
-      String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
-  // String baseUrl = "$baseServerUrl/Audio/$id/stream";
+   //   String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
+   String baseUrl = "$baseServerUrl/Audio/$id/stream";
       List<String> timeParts = stream.long!.split(':');
-      var source = AudioSource.uri(
+      var sourceold = AudioSource.uri(
                         Uri.parse(baseUrl),
                         tag: MediaItem(
                           // Specify a unique ID for each media item:
@@ -279,7 +328,20 @@ class MusicController extends ChangeNotifier{
                           duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
                           artUri: Uri.parse(pictureUrl),
                         ),
-                      );   
+                      ); 
+
+    AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
+                  tag: MediaItem(
+                          // Specify a unique ID for each media item:
+                          id: stream.id!,
+                          // Metadata to display in the notification:
+                          album: stream.composer ?? "Error",
+                          title: stream.title ?? "Error",
+                          extras: {"favourite": stream.isFavourite},
+                          duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
+                          artUri: Uri.parse(pictureUrl),
+                        ),);                  
+
     playlist.add(source);      
   }
 
@@ -320,10 +382,10 @@ class MusicController extends ChangeNotifier{
       for(var stream in listOfStreams){
               String pictureUrl = stream.picture!;
               String id = stream.id!;
-             // String baseUrl = "$baseServerUrl/Audio/$id/stream";
-              String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
+              String baseUrl = "$baseServerUrl/Audio/$id/stream";
+            //  String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
               List<String> timeParts = stream.long!.split(':');
-              var source = AudioSource.uri(
+              var sourceold = AudioSource.uri(
                         Uri.parse(baseUrl),
                         tag: MediaItem(
                           // Specify a unique ID for each media item:
@@ -336,6 +398,18 @@ class MusicController extends ChangeNotifier{
                           artUri: Uri.parse(pictureUrl),
                         ),
                       ); 
+
+              AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
+                  tag: MediaItem(
+                          // Specify a unique ID for each media item:
+                          id: stream.id!,
+                          // Metadata to display in the notification:
+                          album: stream.composer ?? "Error",
+                          title: stream.title ?? "Error",
+                          extras: {"favourite": stream.isFavourite},
+                          duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
+                          artUri: Uri.parse(pictureUrl),
+                        ),);        
 
               sourceList.add(source);       
               
