@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -7,6 +8,9 @@ import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
+import 'package:jel_music/providers/music_controller_provider.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 
 
@@ -27,6 +31,7 @@ class _MyWidgetState extends State<SettingsPage> {
   SyncHelper syncHelper = SyncHelper();
   ApiController apiController = ApiController();
   ArtistsHelper helper = ArtistsHelper();
+  late String totalCachedFileCount = "";
   _login() async{
 
       try{
@@ -78,6 +83,11 @@ class _MyWidgetState extends State<SettingsPage> {
    void  initState() {
     super.initState();
     GetStorage.init();
+
+      getCachedSongs();
+    
+   
+
     syncHelper.songsHelper.openBox();
     helper.openBox();
     albumsHelper.openBox();
@@ -113,24 +123,21 @@ class _MyWidgetState extends State<SettingsPage> {
 
   }
 
+  void clearCache(){
+    MusicControllerProvider.of(context, listen:false).clearCache();
+  }
+
   void check(){
 
-    var artistList = helper.returnArtists();
+    setState(() {
+      getCachedSongs();
+    });
+  }
 
-    for(var artistr in artistList){
-      var artist = artistr.name;
-      var id = artistr.id;
-
-    }
-  
-
-    var albumsList = albumsHelper.returnAlbums();
-    
-
-    for(var album in albumsList){
-      var albumname = album.name;
-      var artist = album.artist;
-    }
+  getCachedSongs()async{
+     var documentsDar = await getApplicationDocumentsDirectory();
+    final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync();
+    totalCachedFileCount = (files.length/2).toString();
   }
 
   @override
@@ -156,7 +163,8 @@ class _MyWidgetState extends State<SettingsPage> {
                 TextButton(onPressed: () { sync(); }, child: Text('Sync', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
                 TextButton(onPressed: () { check(); }, child: Text('Check', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
                 TextButton(onPressed: () { clear(); }, child: Text('Clear', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
-                TextButton(onPressed: () { toggleTheme(); }, child: Text('Toggle Theme', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),)
+                TextButton(onPressed: () { toggleTheme(); }, child: Text('Toggle Theme', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
+                Text("Cached Songs: $totalCachedFileCount"),
               ],
             ),
                 
