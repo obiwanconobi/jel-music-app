@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/stream.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:get_storage/get_storage.dart';
@@ -17,7 +18,7 @@ class MusicController extends ChangeNotifier{
   final AudioPlayer _advancedPlayer = AudioPlayer();
   StreamController<Duration> _durationController = BehaviorSubject();
   StreamController<Duration> _bufferedDurationController = BehaviorSubject();
- 
+  SongsHelper songsHelper = SongsHelper();
   bool _isPlaying = false;
   List<StreamModel> queue = [];
   int currentStreamIndex = 0;
@@ -70,16 +71,28 @@ class MusicController extends ChangeNotifier{
             setUiElements();
     });
 
-    _advancedPlayer.bufferedPositionStream.listen((position){
-      print("buffered: "+  position.toString());      
-    });
+   _advancedPlayer.processingStateStream.listen((event){
+      if(_advancedPlayer.processingState == ProcessingState.completed){
+        setDownloaded(currentSource!.tag.id);
+      }
+   });
 
 
   }    
   
   Stream<Duration> get durationStream => _durationController.stream;
 
-  
+    void setDownloaded(String Id)async{
+       var documentsDar = await getApplicationDocumentsDirectory();
+      final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync();
+
+      if(files.where((element) => element.path.contains(Id)).length > 0){
+        await songsHelper.openBox();
+        await songsHelper.setDownloaded(Id);
+        await songsHelper.closeBox();
+      }
+    }
+
 
     void onInit()async{
       currentSource = getCurrentSong();
@@ -94,6 +107,7 @@ class MusicController extends ChangeNotifier{
 
     clearCache()async{
      await _advancedPlayer.clearCache();
+     
     }
 
     returnPlaylist()async{
@@ -173,24 +187,7 @@ class MusicController extends ChangeNotifier{
   //  String baseUrl = "$baseServerUrl/Audio/$tempId/stream";
     List<String> timeParts = tempDuration!.split(':');
 
- //   await _advancedPlayer.cacheFile(url: baseUrl);
-  //  await Future.delayed(Duration(seconds: 5), () {});
-   // var path = await _advancedPlayer.getCachedPath(url: baseUrl);
-
-    final cacheDir = File('/panaudio/Cache/');
-    if(!cacheDir.existsSync()){
-
-    }
-
     var documentsDar = await getApplicationDocumentsDirectory();
-
-    
-
-    final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync();
-
-    for(var file in files){
-      print(file.path);
-    }
 
     AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
                   cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$tempId.flac'])),
@@ -373,7 +370,7 @@ class MusicController extends ChangeNotifier{
   }
 
   addPlaylistToQueue(List<StreamModel> listOfStreams) async{
-     var documentsDar = await getApplicationDocumentsDirectory();
+    var documentsDar = await getApplicationDocumentsDirectory();
     List<AudioSource> sourceList = [];
     int count = playlist.children.length;
   
@@ -417,7 +414,7 @@ class MusicController extends ChangeNotifier{
               sourceList.add(source);       
               
       }
-    playlist.addAll(sourceList);
+  playlist.addAll(sourceList);
     _advancedPlayer.setAudioSource(playlist, initialIndex: count, initialPosition: Duration.zero);
     
     if(_isPlaying == false){

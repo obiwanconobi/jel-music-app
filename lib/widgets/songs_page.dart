@@ -70,10 +70,6 @@ class _SongsPageState extends State<SongsPage> {
     MusicControllerProvider.of(context, listen: false).shuffleQueue();
   }
 
-  _downloadFile(Songs song){
-    downloadController.downloadSingleFile(song);
-  }
-
   _addAllToQueue(List<Songs> allSongs){
     if(allSongs.isNotEmpty){
         List<StreamModel> playList = [];
@@ -112,6 +108,10 @@ class _SongsPageState extends State<SongsPage> {
         songsFuture = controller.onInit();
       });
     }
+  }
+
+  _downloadFile(Songs song){
+    //download individual song
   }
 
   

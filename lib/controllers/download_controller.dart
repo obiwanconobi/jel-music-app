@@ -1,61 +1,36 @@
 import 'dart:io';
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/music_controller.dart';
+import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/songs.dart';
 
 class DownloadController{
 
-    Future<String?> _getSavedDir() async {
-    /* String? externalStorageDirPath;
-    externalStorageDirPath =
-        (await getApplicationDocumentsDirectory()).absolute.path; */
-
-    return "";
-  }
-
-  downloadSingleFile(Songs song)async{
-
-    var baseServerUrl = GetStorage().read('serverUrl');
-    var accessToken = GetStorage().read('accessToken');
-    var itemId = song.id;
-    var artistName = song.artist;
-    var songName = song.title;
-    var albumName = song.album;
-    var baseFileName = '$artistName-$songName.flac';
-    MusicController musicController = MusicController();
-
-    String hardCodePath = "/storage/emulated/0/Download/panaudio/";
-
-    String downloadUrl =  "$baseServerUrl/Items/$itemId/Download?api_key=$accessToken";
-      
-    String? savedPath = await _getSavedDir();
-    String? fullSavedPath = '$savedPath/panaudio/$baseFileName';
-    String? checkPath = '$savedPath/panaudio/';
-    Directory ff = Directory(checkPath!);
-    
-    if(!ff.existsSync()){
-      ff.create();
-    }
-    var listt = ff.listSync();
-
-    for(var ff in listt){
-     String test =  ff.uri.toFilePath();
-    }
-
-    try{
+    SongsHelper songsHelper = SongsHelper();
+    String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+    var songs = <Songs>[];
+  Future<List<Songs>> onInit() async {
+    try {
+     // songs = await fetchSongs(albumId!);
+     songs = await _getSongsFromBox();
+      return songs;
+    } catch (error) {
+      // Handle errors if needed
      
-    }catch(e){
-      print(e);
+      rethrow; // Rethrow the error if necessary
     }
-    
-
-    
-    List<String> names = [];
-
-    
-   
-    
-    print(names);
-
   }
+
+  _getSongsFromBox()async{
+      await songsHelper.openBox();
+      var songsRaw =  await songsHelper.returnDownloadedSongs();
+      List<Songs> songsList = [];
+      for(var song in songsRaw){
+             String songId = song.albumId;
+             var imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+        songsList.add(Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length, favourite: song.favourite, discNumber: song.discIndex, downloaded: song.downloaded));
+      }
+      return songsList;
+  }
+
 }
