@@ -32,7 +32,7 @@ class _StartPageState extends State<StartPage> {
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
-            top: 5.h,
+            top: 2.h,
             left: 0.sp,
             bottom: 10.sp,
             right: 0.sp,
@@ -41,7 +41,7 @@ class _StartPageState extends State<StartPage> {
             child: Column( 
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
