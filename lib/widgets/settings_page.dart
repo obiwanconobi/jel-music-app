@@ -9,6 +9,7 @@ import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
+import 'package:jel_music/widgets/downloads_page.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
@@ -123,8 +124,16 @@ class _MyWidgetState extends State<SettingsPage> {
 
   }
 
-  void clearCache(){
-    MusicControllerProvider.of(context, listen:false).clearCache();
+  void clearCache()async{
+  //  MusicControllerProvider.of(context, listen:false).clearCache();
+    syncHelper.songsHelper.setDownloadedFalseAll();
+
+    var documentsDar = await getApplicationDocumentsDirectory();
+    final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync();
+    for(var file in files){
+      await file.delete();
+    }
+
   }
 
   void check(){
@@ -135,9 +144,13 @@ class _MyWidgetState extends State<SettingsPage> {
   }
 
   getCachedSongs()async{
-     var documentsDar = await getApplicationDocumentsDirectory();
+    var documentsDar = await getApplicationDocumentsDirectory();
     final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync();
-    totalCachedFileCount = (files.length/2).toString();
+      totalCachedFileCount = (files.length/2).toString();
+  }
+
+  goToDownloads()async{
+      Navigator.push(context, MaterialPageRoute(builder: (context) =>  DownloadsPage()),);
   }
 
   @override
@@ -164,7 +177,9 @@ class _MyWidgetState extends State<SettingsPage> {
                 TextButton(onPressed: () { check(); }, child: Text('Check', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
                 TextButton(onPressed: () { clear(); }, child: Text('Clear', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
                 TextButton(onPressed: () { toggleTheme(); }, child: Text('Toggle Theme', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
+                 TextButton(onPressed: () { clearCache(); }, child: Text('Clear Cache', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
                 Text("Cached Songs: $totalCachedFileCount"),
+                 TextButton(onPressed: () { goToDownloads(); }, child: Text('Downloads', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
               ],
             ),
                 

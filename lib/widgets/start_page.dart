@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jel_music/widgets/all_albums_page.dart';
 import 'package:jel_music/widgets/all_songs_part.dart';
 import 'package:jel_music/widgets/artists_page.dart';
+import 'package:jel_music/widgets/downloads_page.dart';
 import 'package:jel_music/widgets/favourite_albums.dart';
 import 'package:jel_music/widgets/favourite_artists.dart';
 import 'package:jel_music/widgets/liked_songs.dart';
@@ -43,8 +44,8 @@ class _StartPageState extends State<StartPage> {
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        
                         Column(children: 
                         [
                             Padding(
@@ -127,6 +128,45 @@ class _StartPageState extends State<StartPage> {
                                         padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                                         child: Text(
                                           'Albums',
+                                          style: Theme.of(context).textTheme.bodyMedium
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                width: 45.w, // Set the desired width here
+                                height: 12.w,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => DownloadsPage()),
+                                    );
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).canvasColor),
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                        child: Icon(Icons.save, color: Theme.of(context).textTheme.bodyLarge!.color, size:24)
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                        child: Text(
+                                          'Downloads',
                                           style: Theme.of(context).textTheme.bodyMedium
                                         ),
                                       ),

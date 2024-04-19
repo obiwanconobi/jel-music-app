@@ -40,6 +40,30 @@ class SongsHelper{
     return songsBox.values.where((Songs) => Songs.artist == artist && Songs.name == title).first;
   }
 
+  Songs returnSongById(String Id){
+    return songsBox.values.where((Songs)=>Songs.id == Id).first;
+  }
+
+  returnDownloadedSongs()async{
+    return songsBox.values.where((Songs)=>Songs.downloaded == true).toList();
+  }
+
+  setDownloadedFalseAll()async{
+    var downloadedSongs = await returnDownloadedSongs();
+
+    for(var song in downloadedSongs){
+      song.downloaded = false;
+      songsBox.put(song.key, song);
+    }
+
+  }
+
+  setDownloaded(String id){
+    var song = returnSongById(id);
+    song.downloaded = true;
+    songsBox.put(song.key,song);
+  }
+
   likeSong(String artist, String title, bool value){
       var song = returnSong(artist, title);
       song.favourite = value;

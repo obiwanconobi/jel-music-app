@@ -25,6 +25,17 @@ class SongsController {
     }
   }
 
+  Future<List<Songs>> returnDownloaded()async{
+    await songsHelper.openBox();
+    return songsHelper.returnDownloadedSongs();
+  }
+
+  _setDownloaded(String Id)async{
+    await songsHelper.openBox();
+    songsHelper.setDownloaded(Id);
+    songsHelper.closeBox();
+  }
+
   _getSongsFromBox(String artist, String album)async{
       await songsHelper.openBox();
       var songsRaw = songsHelper.returnSongsFromAlbum(artist, album);
