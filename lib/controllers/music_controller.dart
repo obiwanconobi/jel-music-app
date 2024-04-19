@@ -311,6 +311,7 @@ class MusicController extends ChangeNotifier{
   }
 
    _addSongToQueue(StreamModel stream)async{
+     var documentsDar = await getApplicationDocumentsDirectory();
       String pictureUrl = stream.picture!;
       String id = stream.id!;
    //   String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
@@ -331,6 +332,7 @@ class MusicController extends ChangeNotifier{
                       ); 
 
     AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
+                  cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.flac'])),
                   tag: MediaItem(
                           // Specify a unique ID for each media item:
                           id: stream.id!,
@@ -371,7 +373,7 @@ class MusicController extends ChangeNotifier{
   }
 
   addPlaylistToQueue(List<StreamModel> listOfStreams) async{
-    
+     var documentsDar = await getApplicationDocumentsDirectory();
     List<AudioSource> sourceList = [];
     int count = playlist.children.length;
   
@@ -400,6 +402,7 @@ class MusicController extends ChangeNotifier{
                       ); 
 
               AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
+                  cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.flac'])),
                   tag: MediaItem(
                           // Specify a unique ID for each media item:
                           id: stream.id!,
