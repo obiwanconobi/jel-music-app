@@ -12,6 +12,7 @@ import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/similar_albums.dart';
 import 'package:sizer/sizer.dart';
+import 'package:path/path.dart' as p;
 String? albumIds;
 String? artistIds;
 

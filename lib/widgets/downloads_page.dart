@@ -61,6 +61,10 @@ class _DownloadsPageState extends State<DownloadsPage> {
     MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length));
   }
 
+  _syncDownloads(){
+      controller.syncDownloads();
+  }
+
   @override
   Widget build(BuildContext context) {
     String title = "Downloads";
@@ -78,6 +82,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+               TextButton(onPressed: () { _syncDownloads(); }, child: Text('Sync', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
               Padding(
                 padding: const EdgeInsets.all(7.0),
                 child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle:  TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)), style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)),
