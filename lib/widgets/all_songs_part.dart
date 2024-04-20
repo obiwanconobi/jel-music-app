@@ -60,7 +60,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
 
   void _loadMore()async{
         String searchText = _searchController.text.toLowerCase();
-        if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent-50) {
+        if (_scrollController.position.pixels-500 == _scrollController.position.maxScrollExtent-500) {
           setState(() {
             _currentPage++;
             _filteredSongs.addAll(songsList.sublist((_currentPage*100), ((_currentPage*100)+100)));
