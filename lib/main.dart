@@ -17,6 +17,14 @@ late AudioHandler _audioHandler;
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
 
+  /* _audioHandler = await AudioService.init(
+    builder: () => MyAudioHandler(),
+    config: const AudioServiceConfig(
+      androidNotificationChannelId: 'com.pansoft.panaudio.channel.audio',
+      androidNotificationChannelName: 'panaudio',
+      androidNotificationOngoing: true,
+      androidStopForegroundOnPause: true,
+    ),); */
     
    await JustAudioBackground.init(
     androidNotificationChannelId: 'com.pansoft.panaudio.channel.audio',
