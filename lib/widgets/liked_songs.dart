@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jel_music/controllers/liked_controller.dart';
+import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
@@ -17,11 +18,8 @@ class LikedSongs extends StatefulWidget {
 
 class _LikedSongsState extends State<LikedSongs> {
   LikedController controller = LikedController();
+  Mappers mapper = Mappers();
   late Future<List<Songs>> songsFuture;
-
-  StreamModel returnStream(Songs song){
-    return StreamModel(id: song.id, composer: song.artist, music: song.id, picture: song.albumPicture, title: song.title, long: song.length, isFavourite: song.favourite);
-  }
 
   @override
   void initState() {
@@ -41,7 +39,7 @@ class _LikedSongsState extends State<LikedSongs> {
     if(allSongs.isNotEmpty){
         List<StreamModel> playList = [];
         for(var song in allSongs){
-          playList.add(returnStream(song));
+          playList.add(mapper.returnStreamModel(song));
         }
         MusicControllerProvider.of(context, listen: false).addPlaylistToQueue(playList);
     }

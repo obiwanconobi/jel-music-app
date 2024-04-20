@@ -1,7 +1,9 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:jel_music/controllers/audio_handler.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/hive/classes/songs.dart';
@@ -11,11 +13,13 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:sizer/sizer.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+late AudioHandler _audioHandler;
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  
+
+    
    await JustAudioBackground.init(
-    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+    androidNotificationChannelId: 'com.pansoft.panaudio.channel.audio',
     androidNotificationChannelName: 'Audio playback',
     androidNotificationOngoing: true,
   ); 

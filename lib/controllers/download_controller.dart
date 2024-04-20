@@ -2,15 +2,15 @@ import 'dart:io';
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/music_controller.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
+import 'package:jel_music/hive/helpers/sync_helper.dart';
 import 'package:jel_music/models/songs.dart';
-import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
 class DownloadController{
 
     SongsHelper songsHelper = SongsHelper();
-    
+    SyncHelper syncHelper = SyncHelper();
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
     var songs = <Songs>[];
   Future<List<Songs>> onInit() async {
@@ -23,6 +23,20 @@ class DownloadController{
      
       rethrow; // Rethrow the error if necessary
     }
+  }
+
+  clearDownloads()async{
+      await syncHelper.songsHelper.openBox();
+      await syncHelper.songsHelper.setDownloadedFalseAll();
+
+      var documentsDar = await getApplicationDocumentsDirectory();
+      final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync();
+      for(var file in files){
+        await file.delete();
+      }
+
+      await syncHelper.songsHelper.closeBox();
+
   }
 
   syncDownloads()async{

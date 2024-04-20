@@ -2,17 +2,6 @@ import 'package:audio_service/audio_service.dart';
 import 'package:jel_music/controllers/music_controller.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 
- Future<AudioHandler> initAudioService() async {
-      return await AudioService.init(
-        builder: () => MyAudioHandler(),
-        config: const AudioServiceConfig(
-          androidNotificationChannelId: 'com.mycompany.myapp.audio',
-          androidNotificationChannelName: 'panaudio',
-          androidNotificationOngoing: true,
-          androidStopForegroundOnPause: true,
-        ),
-      );
-    }
 
 class MyAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler{
 
@@ -30,6 +19,10 @@ class MyAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler{
     controller.getQueue();
   }
   Future<void> stop() async {}
-  Future<void> seek(Duration position) async {}
-  Future<void> skipToQueueItem(int i) async {}
+  Future<void> seek(Duration position) async {
+    controller.seekInSong(position);
+  }
+  Future<void> skipToQueueItem(int i) async {
+    controller.seekSong(i);
+  }
 }

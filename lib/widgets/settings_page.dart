@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/api_controller.dart';
+import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
-import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/widgets/downloads_page.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -28,6 +28,7 @@ class _MyWidgetState extends State<SettingsPage> {
   final TextEditingController _serverUrlTextController = TextEditingController();
   final TextEditingController _usernameTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
+  DownloadController downloadController = DownloadController();
   AlbumsHelper albumsHelper = AlbumsHelper();
   SyncHelper syncHelper = SyncHelper();
   ApiController apiController = ApiController();
@@ -126,13 +127,7 @@ class _MyWidgetState extends State<SettingsPage> {
 
   void clearCache()async{
   //  MusicControllerProvider.of(context, listen:false).clearCache();
-    syncHelper.songsHelper.setDownloadedFalseAll();
-
-    var documentsDar = await getApplicationDocumentsDirectory();
-    final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync();
-    for(var file in files){
-      await file.delete();
-    }
+    await downloadController.clearDownloads();
 
   }
 
