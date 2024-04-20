@@ -22,11 +22,13 @@ class AllSongsPage extends StatefulWidget {
 }
 
 class _AllSongsPageState extends State<AllSongsPage> {
+  final _scrollController = ScrollController();
   TextEditingController _searchController = TextEditingController();
   AllSongsController controller = AllSongsController();
   late Future<List<Songs>> songsFuture;
   List<Songs> _filteredSongs = []; // List to hold filtered albums
   List<Songs> songsList = [];
+  int _currentPage = 1;
 
   @override
   void dispose() {
@@ -37,8 +39,10 @@ class _AllSongsPageState extends State<AllSongsPage> {
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_loadMore);
     songsFuture = controller.onInit();
     _searchController.addListener(_filterAlbums);
+
   }
 
    void _filterAlbums() {
@@ -53,6 +57,16 @@ class _AllSongsPageState extends State<AllSongsPage> {
         }
       });
   }
+
+  void _loadMore()async{
+        String searchText = _searchController.text.toLowerCase();
+        if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent-50) {
+          setState(() {
+            _currentPage++;
+            _filteredSongs.addAll(songsList.sublist((_currentPage*100), ((_currentPage*100)+100)));
+          });
+        }
+      }
 
    _playSong(Songs song){
     MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length));
@@ -98,11 +112,12 @@ class _AllSongsPageState extends State<AllSongsPage> {
                       );
                     } else {
                       // Data is available, build the list
-                      songsList = snapshot.data!;
-                      if(_searchController.text.isEmpty){
-                        _filteredSongs = songsList;
+                      songsList = snapshot.data!.toList();
+                      if(_searchController.text.isEmpty && _currentPage == 1){
+                        _filteredSongs = songsList.take(100).toList();
                       }
                       return SingleChildScrollView(
+                        controller: _scrollController,
                         child: Column(
                           children: [
                             ListView.builder(
