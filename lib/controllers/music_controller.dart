@@ -63,19 +63,22 @@ class MusicController extends ChangeNotifier{
     });
 
     _advancedPlayer.currentIndexStream.listen((event) {
-
           setUiElements();
+          setDownloaded(currentSource!.tag.id);
+     
     });
 
     _advancedPlayer.playingStream.listen((event){
             setUiElements();
     });
 
-   _advancedPlayer.processingStateStream.listen((event){
+    
+
+    _advancedPlayer.processingStateStream.listen((event){
       if(_advancedPlayer.processingState == ProcessingState.completed){
-        setDownloaded(currentSource!.tag.id);
+         setDownloaded(currentSource!.tag.id);
       }
-   });
+    });
 
 
   }    
