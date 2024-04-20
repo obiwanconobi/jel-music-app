@@ -15,7 +15,14 @@ import 'package:path/path.dart' as p;
 
 
 class MusicController extends ChangeNotifier{
-  final AudioPlayer _advancedPlayer = AudioPlayer();
+  final AudioPlayer _advancedPlayer = AudioPlayer(
+    audioLoadConfiguration: const AudioLoadConfiguration(
+        androidLoadControl: AndroidLoadControl(
+          minBufferDuration: Duration(seconds: 60),
+          maxBufferDuration: Duration(seconds: 300),
+          prioritizeTimeOverSizeThresholds: true,
+        ),),
+  );
   StreamController<Duration> _durationController = BehaviorSubject();
   StreamController<Duration> _bufferedDurationController = BehaviorSubject();
   SongsHelper songsHelper = SongsHelper();
@@ -75,9 +82,7 @@ class MusicController extends ChangeNotifier{
     
 
     _advancedPlayer.processingStateStream.listen((event){
-      if(_advancedPlayer.processingState == ProcessingState.completed){
-         setDownloaded(currentSource!.tag.id);
-      }
+        setUiElements();
     });
 
 

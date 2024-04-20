@@ -1,16 +1,16 @@
+import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:jel_music/controllers/all_albums_controller.dart';
-import 'package:jel_music/controllers/all_songs_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
-import 'package:jel_music/controllers/songs_controller.dart';
+import 'package:jel_music/helpers/mappers.dart';
+import 'package:jel_music/hive/helpers/sync_helper.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
-import 'package:jel_music/widgets/songs_page.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:path/path.dart' as p;
 
 
 class DownloadsPage extends StatefulWidget {
@@ -25,8 +25,10 @@ class DownloadsPage extends StatefulWidget {
 
 class _DownloadsPageState extends State<DownloadsPage> {
   TextEditingController _searchController = TextEditingController();
+  SyncHelper syncHelper = SyncHelper();
  // AllSongsController controller = AllSongsController();
   DownloadController controller = DownloadController();
+  Mappers mapper = Mappers();
   late Future<List<Songs>> songsFuture;
   List<Songs> _filteredSongs = []; // List to hold filtered albums
   List<Songs> songsList = [];
@@ -65,6 +67,20 @@ class _DownloadsPageState extends State<DownloadsPage> {
       controller.syncDownloads();
   }
 
+  _clearDownloads()async{
+    controller.clearDownloads();
+  }
+
+  _playAll(List<Songs> allSongs){
+     if(allSongs.isNotEmpty){
+        List<StreamModel> playList = [];
+        for(var song in allSongs){
+          playList.add(mapper.returnStreamModel(song));
+        }
+        MusicControllerProvider.of(context, listen: false).addPlaylistToQueue(playList);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     String title = "Downloads";
@@ -82,7 +98,6 @@ class _DownloadsPageState extends State<DownloadsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-               TextButton(onPressed: () { _syncDownloads(); }, child: Text('Sync', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
               Padding(
                 padding: const EdgeInsets.all(7.0),
                 child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle:  TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)), style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)),
@@ -112,7 +127,16 @@ class _DownloadsPageState extends State<DownloadsPage> {
                       return SingleChildScrollView(
                         child: Column(
                           children: [
-                            ListView.builder(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(onPressed: () => { _playAll(songsList) }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Play', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                                ElevatedButton(onPressed: () => { _syncDownloads() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Sync', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                                ElevatedButton(onPressed: () => { _clearDownloads() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Clear', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                             
+                              ],
+                            ),
+                             ListView.builder(
                               shrinkWrap: true,
                               itemCount: _filteredSongs.length,
                               physics: const BouncingScrollPhysics(),
