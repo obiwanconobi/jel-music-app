@@ -43,7 +43,7 @@ class SongsController {
       for(var song in songsRaw){
              String songId = song.albumId;
              var imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
-        songsList.add(Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length, favourite: song.favourite, discNumber: song.discIndex));
+        songsList.add(Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length, favourite: song.favourite, discNumber: song.discIndex, downloaded: song.downloaded));
       }
       songsList.sort((a, b) {
         // First compare discNumber

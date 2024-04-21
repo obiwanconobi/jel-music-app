@@ -45,6 +45,7 @@ class MusicController extends ChangeNotifier{
  String baseServerUrl = "";
   List<IndexedAudioSource>? currentQueue = [];
   int currentIndexSource = 0;
+  
 
  // final _cache = JustAudioCache;  
      
@@ -61,7 +62,7 @@ class MusicController extends ChangeNotifier{
 
   MusicController(){
 
-     // final _cache = JustAudioCache();
+    // final _cache = JustAudioCache();
 
      
 
@@ -94,7 +95,7 @@ class MusicController extends ChangeNotifier{
        var documentsDar = await getApplicationDocumentsDirectory();
       final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync();
 
-      if(files.where((element) => element.path.contains(Id)).length > 0){
+      if(files.where((element) => element.path.contains(Id)).isNotEmpty){
         await songsHelper.openBox();
         await songsHelper.setDownloaded(Id);
         await songsHelper.closeBox();
@@ -111,6 +112,19 @@ class MusicController extends ChangeNotifier{
         
     }
 
+    deleteDownloadedSong(String)async{
+      
+    }
+
+    downloadSong(String id)async{
+      var documentsDar = await getApplicationDocumentsDirectory();
+      await getToken();
+      baseServerUrl = GetStorage().read('serverUrl');
+      String songUrl =  "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
+      await _advancedPlayer.cacheFile(url: songUrl, path: p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.flac']));
+    
+      setDownloaded(id);
+    }
 
 
     clearCache()async{
