@@ -308,7 +308,7 @@ class MusicController extends ChangeNotifier{
     
   }
 
-  void nextSong() async{
+  nextSong() async{
     _advancedPlayer.seekToNext();
     setUiElements();
   }
@@ -367,15 +367,53 @@ class MusicController extends ChangeNotifier{
   }
 
 
-  void playSong(StreamModel value){
+  void playSong(StreamModel value)async{
+     
+    if(playlist.length == 0){
+       tempId = value.id;
+        tempAlbum = value.title;
+        tempArtist = value.composer;
+        tempPicture = value.picture;
+        tempFavourite = value.isFavourite;
+        tempDuration = value.long;
+      resume();
+    }else{
+      var documentsDar = await getApplicationDocumentsDirectory();
+      String pictureUrl = value.picture!;
+      String id = value.id!;
+   //   String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
+        String baseUrl = "$baseServerUrl/Audio/$id/value";
+            List<String> timeParts = value.long!.split(':');
+            var sourceold = AudioSource.uri(
+                              Uri.parse(baseUrl),
+                              tag: MediaItem(
+                                // Specify a unique ID for each media item:
+                                id: value.id!,
+                                // Metadata to display in the notification:
+                                album: value.composer ?? "Error",
+                                title: value.title ?? "Error",
+                                extras: {"favourite": value.isFavourite},
+                                duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
+                                artUri: Uri.parse(pictureUrl),
+                              ),
+                            ); 
+
+          AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
+                        cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.flac'])),
+                        tag: MediaItem(
+                                // Specify a unique ID for each media item:
+                                id: value.id!,
+                                // Metadata to display in the notification:
+                                album: value.composer ?? "Error",
+                                title: value.title ?? "Error",
+                                extras: {"favourite": value.isFavourite},
+                                duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
+                                artUri: Uri.parse(pictureUrl),
+                              ),);                  
+        playlist.insert(currentIndexSource+1, source);
+    }
     
-    tempId = value.id;
-    tempAlbum = value.title;
-    tempArtist = value.composer;
-    tempPicture = value.picture;
-    tempFavourite = value.isFavourite;
-    tempDuration = value.long;
-    resume();
+    
   }
 
   void clearQueue(){

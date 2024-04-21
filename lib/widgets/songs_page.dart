@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
@@ -70,6 +69,7 @@ class _SongsPageState extends State<SongsPage> {
   _shuffleQueue(){
     MusicControllerProvider.of(context, listen: false).shuffleQueue();
   }
+
 
   _addAllToQueue(List<Songs> allSongs){
     if(allSongs.isNotEmpty){
