@@ -34,10 +34,11 @@ dependencies:
   sizer: ^2.0.13
   provider: ^6.1.1
   just_audio: ^0.9.37
+  audio_session: ^0.1.13
+  just_audio_background: ^0.0.1-beta.11
   just_audio_cache: ^0.1.2
   http: ^1.2.1
   audio_service: ^0.18.12
-  just_audio_background: 0.0.1-beta.11
   solid_bottom_sheet: ^0.1.10
   settings_ui: ^2.0.2
   get_storage: ^2.1.1

@@ -71,6 +71,10 @@ class _DownloadsPageState extends State<DownloadsPage> {
     controller.clearDownloads();
   }
 
+  _deleteSong(String id)async{
+    controller.deleteDownloadFile(id);
+  }
+
   _playAll(List<Songs> allSongs){
      if(allSongs.isNotEmpty){
         List<StreamModel> playList = [];
@@ -226,7 +230,8 @@ class _DownloadsPageState extends State<DownloadsPage> {
                                                   ),
                                                 ],
                                               ),
-                                            )
+                                            ),
+                                            IconButton(icon: const Icon(Icons.delete), color: Colors.red, onPressed: () { _deleteSong(_filteredSongs[index].id!) ;},)
                                           ],
                                         ),
                                       ),

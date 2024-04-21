@@ -1,5 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:audio_service/audio_service.dart';
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
@@ -16,21 +17,22 @@ import 'package:hive_flutter/hive_flutter.dart';
 late AudioHandler _audioHandler;
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
-
-  /* _audioHandler = await AudioService.init(
+   /*  final session = await AudioSession.instance;
+  session.configure(const AudioSessionConfiguration.music());
+   _audioHandler = await AudioService.init(
     builder: () => MyAudioHandler(),
     config: const AudioServiceConfig(
       androidNotificationChannelId: 'com.pansoft.panaudio.channel.audio',
       androidNotificationChannelName: 'panaudio',
       androidNotificationOngoing: true,
       androidStopForegroundOnPause: true,
-    ),); */
+    ),);  */
     
-   await JustAudioBackground.init(
+    await JustAudioBackground.init(
     androidNotificationChannelId: 'com.pansoft.panaudio.channel.audio',
     androidNotificationChannelName: 'Audio playback',
     androidNotificationOngoing: true,
-  ); 
+  );  
  // Hive.init('/');
   await Hive.initFlutter();
   await GetStorage.init();

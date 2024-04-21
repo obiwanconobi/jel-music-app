@@ -48,6 +48,12 @@ class SongsHelper{
     return songsBox.values.where((Songs)=>Songs.downloaded == true).toList();
   }
 
+  setDownloadedFalseForSong(String id)async{
+    var song = await returnSongById(id);
+    song.downloaded = false;
+    songsBox.put(song.key, song);
+  }
+
   setDownloadedFalseAll()async{
     var downloadedSongs = await returnDownloadedSongs();
 

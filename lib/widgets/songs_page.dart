@@ -112,7 +112,8 @@ class _SongsPageState extends State<SongsPage> {
   }
 
   _downloadFile(Songs song){
-    //download individual song
+    MusicControllerProvider.of(context, listen: false).downloadSong(song.id!);
+
   }
 
   
@@ -290,7 +291,7 @@ class _SongsPageState extends State<SongsPage> {
                                                             child: Text(songsList[index].length.toString(), style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
                                                             Container(
                                                             margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                                            child: IconButton(icon: const Icon(Icons.download, size: 30, color: Colors.blueGrey), onPressed: () { _downloadFile(songsList[index]); }),
+                                                            child: IconButton(icon: Icon(Icons.download, size: 30, color: ((songsList[index].downloaded ?? false) ? Colors.green : Colors.blueGrey)), onPressed: () { _downloadFile(songsList[index]); }),
                                                           ),
                                                           Container(
                                                             margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),

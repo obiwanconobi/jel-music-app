@@ -4,6 +4,7 @@ import 'package:jel_music/controllers/music_controller.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
 import 'package:jel_music/models/songs.dart';
+import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
@@ -23,6 +24,19 @@ class DownloadController{
      
       rethrow; // Rethrow the error if necessary
     }
+  }
+
+  deleteDownloadFile(String id)async{
+      await syncHelper.songsHelper.openBox();
+      await syncHelper.songsHelper.setDownloadedFalseForSong(id);
+
+      var documentsDar = await getApplicationDocumentsDirectory();
+      final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync().where((element) => element.path.contains(id),);
+      for(var file in files){
+        await file.delete();
+      }
+
+      await syncHelper.songsHelper.closeBox();
   }
 
   clearDownloads()async{
