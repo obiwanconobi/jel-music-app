@@ -18,12 +18,7 @@ class SyncHelper{
     var albumsRaw = await albumsHelper.getAlbumDataFavourite();
 
     for(var album in albumsRaw["Items"]){
-      
-      String albumId = album["Id"];
-      String artistname = album["AlbumArtist"];
-      String artt = album["ArtistItems"][0]["Id"];
-
-    
+          
       try{
         favAlbums.add(FavAlbums(title: album["Name"], artist: album["AlbumArtist"]));
        }catch(e){
@@ -40,15 +35,15 @@ class SyncHelper{
     }
 
     await songsHelper.addSongsToBox();
-    albumsHelper.openBox();
-    artistsHelper.openBox();
+    await albumsHelper.openBox();
+    await artistsHelper.openBox();
     List<Songs> listOfSongs = await songsHelper.returnSongs();
 
     for(var song in listOfSongs){
 
       
       
-      var artist = await artistsHelper.returnArtist(song.artist);
+      var artist = artistsHelper.returnArtist(song.artist);
       bool artistFavourite = false;
       if(artist == null){
         if(favArtists.contains(song.artist)){
@@ -59,7 +54,7 @@ class SyncHelper{
         await artistsHelper.addArtistToBox(Artists(id: song.artistId, name: song.artist, picture: song.artistId, favourite: artistFavourite));
       }
 
-      var album = await albumsHelper.returnAlbum(song.artist, song.album);
+      var album = albumsHelper.returnAlbum(song.artist, song.album);
       
       if(album == null){
           bool favourite = false;

@@ -1,10 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:audio_service/audio_service.dart';
-import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:jel_music/controllers/audio_handler.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/hive/classes/songs.dart';

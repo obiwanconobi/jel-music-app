@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/models/artist.dart';
@@ -17,31 +15,8 @@ class ArtistController {
     ArtistsHelper artistHelper = ArtistsHelper();
     ApiController apiController = ApiController();
 
-  Future<List<Artists>> returnSimilar()async{
-    baseServerUrl = GetStorage().read('serverUrl');
-    await artistHelper.openBox();
-    var artistFromBox = artistHelper.returnArtist(artistId!);
 
-    
-
-    var artistRaw = await apiController.getSimilarItems(artistFromBox!.id);
-    List<Artists> artistsList = [];
-
-
-
-      for(var artist in artistRaw["Items"]){
-
-          String artistId = artist["Id"];
-          var pictureUrl = "$baseServerUrl/Items/$artistId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
-          
-          artistsList.add(Artists(id: artist["Id"], name: artist["Name"], picture: pictureUrl));
-      }
-    
-    return artistsList;
-
-  }
-
-    Future<List<Artists>> onInit() async {
+  Future<List<Artists>> onInit() async {
     try {
       baseServerUrl = GetStorage().read('serverUrl');
       await artistHelper.openBox();
@@ -54,7 +29,32 @@ class ArtistController {
   }
 
 
-    List<Artists> _getArtistsFromBox(bool? favourite){
+
+  //returns similar artists from Jellyfin api
+  Future<List<Artists>> returnSimilar()async{
+    baseServerUrl = GetStorage().read('serverUrl');
+    await artistHelper.openBox();
+    var artistFromBox = artistHelper.returnArtist(artistId!);
+
+    var artistRaw = await apiController.getSimilarItems(artistFromBox!.id);
+    List<Artists> artistsList = [];
+
+    for(var artist in artistRaw["Items"]){
+
+          String artistId = artist["Id"];
+          var pictureUrl = "$baseServerUrl/Items/$artistId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+          
+          artistsList.add(Artists(id: artist["Id"], name: artist["Name"], picture: pictureUrl));
+      }
+
+    return artistsList;
+
+  }
+
+  
+
+
+  List<Artists> _getArtistsFromBox(bool? favourite){
       favourite ??= false;
       var artistsRaw = [];
       if(favourite == true){
@@ -63,7 +63,6 @@ class ArtistController {
         artistsRaw = artistHelper.returnArtists();
       }
       for(var artist in artistsRaw){
-          String name = artist.name;
           String artistId = artist.id;
          var pictureUrl = "$baseServerUrl/Items/$artistId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
         artistsList.add(Artists(id: artist.id, name: artist.name, picture: pictureUrl));
@@ -77,60 +76,7 @@ class ArtistController {
     }
 
     String _removeSpecialCharacters(String str){
-        return str.replaceAll("‐", "").replaceAll(".", "").replaceAll("-", "").toLowerCase();
-       // return str;
-       // return returnStr.replaceAll('.', '');
+        return str.replaceAll("", "").replaceAll(".", "").replaceAll("-", "").toLowerCase();
     }
-
-
-
-    _getArtistData() async{
-    try {
-
-      var accessToken = GetStorage().read('accessToken');
-
-      Map<String, String> requestHeaders = {
-       'Content-type': 'application/json',
-       'X-MediaBrowser-Token': '$accessToken',
-       'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
-     };
-      String url = "$baseServerUrl/Artists/AlbumArtists?enableImages=true&enableTotalRecordCount=true";
-      http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
-      if (res.statusCode == 200) {
-        return json.decode(res.body);
-      }
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-
-  Future<List<Artists>> fetchArtists() async{
-
-    //  var artistRaw = await _getArtistData();
-
-
-      List<Artists> artistList = [];
-
-     /*  for(var artist in artistRaw["Items"]){
-
-          //could be used to minimise image errors 
-          /* String? pictureTag;
-
-          if(artist["ImageTags"] != null){
-              var img = artist["ImageTags"];
-              pictureTag = img["Primary"] ?? img["Banner"] ?? img["Logo"] ?? "";
-          } */
-          String artistId = artist["Id"];
-          var pictureUrl = "$baseServerUrl/Items/$artistId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
-          
-          artistList.add(Artists(id: artist["Id"], name: artist["Name"], picture: pictureUrl));
-      }
- */
-      
-
-
-      return _getArtistsFromBox(false);
-  }
 
 }

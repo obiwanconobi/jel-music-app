@@ -1,6 +1,5 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:jel_music/controllers/music_controller.dart';
-import 'package:jel_music/providers/music_controller_provider.dart';
 
 
 class MyAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler{

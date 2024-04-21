@@ -1,7 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:jel_music/controllers/all_albums_controller.dart';
 import 'package:jel_music/controllers/all_songs_controller.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
@@ -12,9 +10,7 @@ import 'package:sizer/sizer.dart';
 
 
 class AllSongsPage extends StatefulWidget {
-  AllSongsPage({super.key}){
-
-  }
+  const AllSongsPage({super.key});
 
 
   @override
@@ -23,7 +19,7 @@ class AllSongsPage extends StatefulWidget {
 
 class _AllSongsPageState extends State<AllSongsPage> {
   final _scrollController = ScrollController();
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   AllSongsController controller = AllSongsController();
   late Future<List<Songs>> songsFuture;
   List<Songs> _filteredSongs = []; // List to hold filtered albums
@@ -59,7 +55,6 @@ class _AllSongsPageState extends State<AllSongsPage> {
   }
 
   void _loadMore()async{
-        String searchText = _searchController.text.toLowerCase();
         if (_scrollController.position.pixels-500 == _scrollController.position.maxScrollExtent-500) {
           setState(() {
             _currentPage++;
@@ -75,7 +70,6 @@ class _AllSongsPageState extends State<AllSongsPage> {
   @override
   Widget build(BuildContext context) {
     controller.artistId = artistIds;
-    String title = "All Albums";
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('Albums', style: Theme.of(context).textTheme.bodyLarge),),

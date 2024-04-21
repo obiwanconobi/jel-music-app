@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jel_music/controllers/download_controller.dart';
@@ -8,15 +7,10 @@ import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:path/path.dart' as p;
-
 
 class DownloadsPage extends StatefulWidget {
-  DownloadsPage({super.key}){
-
-  }
+  const DownloadsPage({super.key});
 
 
   @override
@@ -24,7 +18,7 @@ class DownloadsPage extends StatefulWidget {
 }
 
 class _DownloadsPageState extends State<DownloadsPage> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   SyncHelper syncHelper = SyncHelper();
  // AllSongsController controller = AllSongsController();
   DownloadController controller = DownloadController();
@@ -87,7 +81,6 @@ class _DownloadsPageState extends State<DownloadsPage> {
 
   @override
   Widget build(BuildContext context) {
-    String title = "Downloads";
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('Downloads', style: Theme.of(context).textTheme.bodyLarge),),

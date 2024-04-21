@@ -1,10 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jel_music/controllers/artist_controller.dart';
-import 'package:jel_music/models/album.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:jel_music/widgets/album_page.dart';
-import 'package:jel_music/widgets/songs_page.dart';
 import 'package:sizer/sizer.dart';
 
 class FavouriteArtists extends StatefulWidget {

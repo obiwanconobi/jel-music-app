@@ -30,9 +30,9 @@ class SongsController {
     return songsHelper.returnDownloadedSongs();
   }
 
-  _setDownloaded(String Id)async{
+  _setDownloaded(String id)async{
     await songsHelper.openBox();
-    songsHelper.setDownloaded(Id);
+    songsHelper.setDownloaded(id);
     songsHelper.closeBox();
   }
 
@@ -97,10 +97,9 @@ class SongsController {
           int trackNumber = song["IndexNumber"] ?? 0;
           String length = _ticksToTimestampString(song["RunTimeTicks"] ?? 0);
           var imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
-          var test = song["UserData"]["IsFavorite"];
           songsList.add(Songs(id: song["Id"], trackNumber: trackNumber, artistId: song["ArtistItems"][0]["Id"], title: song["Name"],artist: song["ArtistItems"][0]["Name"], albumPicture: imgUrl, album: song["Album"], albumId: song["AlbumId"], length: length, favourite: song["UserData"]["IsFavorite"]));
         }catch(e){
-         
+          //log error
         }
     }
     songsList.sort((a, b) => a.trackNumber!.compareTo(b.trackNumber ?? 0));

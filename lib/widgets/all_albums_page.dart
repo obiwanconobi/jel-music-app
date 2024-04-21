@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/all_albums_controller.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
@@ -19,7 +18,7 @@ class AllAlbumsPage extends StatefulWidget {
 }
 
 class _AlbumPageState extends State<AllAlbumsPage> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   AllAlbumsController controller = AllAlbumsController();
   late Future<List<Album>> albumsFuture;
   List<Album> _filteredAlbums = []; // List to hold filtered albums
@@ -54,7 +53,6 @@ class _AlbumPageState extends State<AllAlbumsPage> {
   @override
   Widget build(BuildContext context) {
     controller.artistId = artistIds;
-    String title = "All Albums";
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('Albums', style: Theme.of(context).textTheme.bodyLarge),),

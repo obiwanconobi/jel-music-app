@@ -21,7 +21,7 @@ class AlbumsHelper{
   }
 
   bool isFavourite(String artist, String title){
-      return albumsBox.values.where((Albums) => Albums.artist == artist && Albums.name == title).first.favourite ?? false;
+      return albumsBox.values.where((element) => element.artist == artist && element.name == title).first.favourite ?? false;
   }
 
   List<Albums> returnAlbums(){
