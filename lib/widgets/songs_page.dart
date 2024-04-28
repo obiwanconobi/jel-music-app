@@ -28,12 +28,12 @@ class SongsPage extends StatefulWidget {
 }
 
 class _SongsPageState extends State<SongsPage> {
-  SongsController controller = SongsController();
+  var controller = GetIt.instance<SongsController>();
   //ApiController apiController = ApiController();
   var apiController = GetIt.instance<ApiController>();
   AlbumsHelper albumHelper = AlbumsHelper();
-  AlbumController albumController = AlbumController();
-  DownloadController downloadController = DownloadController();
+  var albumController = GetIt.instance<AlbumController>();
+  var downloadController= GetIt.instance<DownloadController>();
   late Future<bool> favourite;
   late Future<List<Songs>> songsFuture;
   SongsHelper songsHelper = SongsHelper();
@@ -42,6 +42,8 @@ class _SongsPageState extends State<SongsPage> {
   StreamModel returnStream(Songs song){
     return StreamModel(id: song.id, composer: song.artist, music: song.id, picture: song.albumPicture, title: song.title, long: song.length, isFavourite: song.favourite);
   }
+
+
 
 
   @override
@@ -244,7 +246,7 @@ class _SongsPageState extends State<SongsPage> {
                                                   Column(
                                                     children: [
                                                       Padding(
-                                                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                                         child: Row(
                                                           mainAxisSize: MainAxisSize.max,
                                                           mainAxisAlignment:

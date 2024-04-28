@@ -145,7 +145,7 @@ class _StartPageState extends State<StartPage> {
                                   onPressed: () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => DownloadsPage()),
+                                      MaterialPageRoute(builder: (context) => const DownloadsPage()),
                                     );
                                   },
                                   style: ButtonStyle(
@@ -227,7 +227,7 @@ class _StartPageState extends State<StartPage> {
                                   onPressed: () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => AllSongsPage()),
+                                      MaterialPageRoute(builder: (context) => const AllSongsPage()),
                                     );
                                   },
                                   style: ButtonStyle(
@@ -268,12 +268,12 @@ class _StartPageState extends State<StartPage> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                     alignment: Alignment.centerLeft,
                     child: Text('Favourite Albums', style: Theme.of(context).textTheme.bodyLarge,)),
                   const FavouriteAlbums(),
                   Container(
-                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                      padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                     alignment: Alignment.centerLeft,
                     child: Text('Favourite Artists', style: Theme.of(context).textTheme.bodyLarge)),
                   const FavouriteArtists(),

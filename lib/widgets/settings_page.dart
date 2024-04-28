@@ -29,7 +29,7 @@ class _MyWidgetState extends State<SettingsPage> {
   final TextEditingController _serverUrlTextController = TextEditingController();
   final TextEditingController _usernameTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
-  DownloadController downloadController = DownloadController();
+  var downloadController = GetIt.instance<DownloadController>();
   AlbumsHelper albumsHelper = AlbumsHelper();
   SyncHelper syncHelper = SyncHelper();
   //ApiController apiController = ApiController();
@@ -147,6 +147,7 @@ class _MyWidgetState extends State<SettingsPage> {
   }
 
   goToDownloads()async{
+      // ignore: prefer_const_constructors
       Navigator.push(context, MaterialPageRoute(builder: (context) =>  DownloadsPage()),);
   }
 

@@ -22,7 +22,6 @@ class AllSongsPage extends StatefulWidget {
 class _AllSongsPageState extends State<AllSongsPage> {
   final _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
-  //AllSongsController controller = AllSongsController();
   var controller = GetIt.instance<AllSongsController>();
   late Future<List<Songs>> songsFuture;
   List<Songs> _filteredSongs = []; // List to hold filtered albums

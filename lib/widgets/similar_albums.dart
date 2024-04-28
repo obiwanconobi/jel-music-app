@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/widgets/songs_page.dart';
@@ -29,7 +30,7 @@ class _SimilarAlbumsState extends State<SimilarAlbums> {
     controller.albumId = albumIds;
     albumsFuture = _loadAlbums(); 
   }
-  AlbumController controller = AlbumController();
+  var controller = GetIt.instance<AlbumController>();
   late Future<List<Album>> albumsFuture; 
 
   Future<List<Album>> _loadAlbums() async {
@@ -38,7 +39,7 @@ class _SimilarAlbumsState extends State<SimilarAlbums> {
     return albums; // Return albums data
   } catch (error) {
     // Handle error, e.g., show error message
-    throw error;
+    rethrow;
   }
 }
 
@@ -66,7 +67,7 @@ class _SimilarAlbumsState extends State<SimilarAlbums> {
               children: [
                 Row(
                   children: [
-                    Container(
+                    SizedBox(
                       height: 30.h,
                       width: 100.w, 
                       child: ListView.builder(
@@ -119,7 +120,7 @@ class _SimilarAlbumsState extends State<SimilarAlbums> {
                                           ),
                                         ),
                                       ),
-                                      Container(
+                                      SizedBox(
                                         width:33.w,
                                         child: Column(
                                           children: [

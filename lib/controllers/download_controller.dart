@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/songs_controller.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
@@ -13,6 +14,12 @@ class DownloadController{
     SyncHelper syncHelper = SyncHelper();
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
     var songs = <Songs>[];
+    late SongsController songsController;
+
+  DownloadController(){
+    songsController = GetIt.instance<SongsController>();
+  }
+
   Future<List<Songs>> onInit() async {
     try {
      // songs = await fetchSongs(albumId!);
@@ -67,8 +74,8 @@ class DownloadController{
           var first = p.joinAll([documentsDar.path, 'panaudio/cache/']);
           var second = path.replaceAll(first, '');
           var id = second.replaceAll('.flac', '');
-          SongsController controller = SongsController();
-          controller.setDownloaded(id);
+          
+          songsController.setDownloaded(id);
     
 
         }

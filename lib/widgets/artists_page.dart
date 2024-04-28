@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/artist_controller.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:jel_music/widgets/album_page.dart';
@@ -14,9 +15,9 @@ class ArtistPage extends StatefulWidget {
 }
 
 class _ArtistPageState extends State<ArtistPage> {
-  ArtistController controller = ArtistController();
+  var controller = GetIt.instance<ArtistController>();
   double mainAxis = 250.h;
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   late Future<List<Artists>> artistsFuture;
   List<Artists> _filteredArtists = []; // List to hold filtered albums
@@ -40,10 +41,6 @@ class _ArtistPageState extends State<ArtistPage> {
           _filteredArtists = List.from(artistsList); // Reset to original list if search text is empty
         }
       });
-
-  void launchAlbum(){
-
-  }
   }
 
   @override
@@ -86,7 +83,7 @@ class _ArtistPageState extends State<ArtistPage> {
                     } else {
                       // Data is available, build the list
                       
-                      if(!_searchController.text.isEmpty){
+                      if(_searchController.text.isNotEmpty){
                       
                       }else{
                         _filteredArtists = snapshot.data!;
@@ -102,7 +99,7 @@ class _ArtistPageState extends State<ArtistPage> {
                          Navigator.push(context,
                               MaterialPageRoute(builder: (context) => AlbumPage(artistId: _filteredArtists[index].name!)),
                       )},     
-                        child: Container(
+                        child: SizedBox(
                           height: 15.h,
                           child: Padding(
                             padding: EdgeInsets.symmetric(vertical: 6.sp),

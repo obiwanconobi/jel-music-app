@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
@@ -19,7 +20,8 @@ class AlbumPage extends StatefulWidget {
 }
 
 class _AlbumPageState extends State<AlbumPage> {
-  AlbumController controller = AlbumController();
+  var controller = GetIt.instance<AlbumController>();
+  
   late Future<List<Album>> albumsFuture;
 
 
@@ -100,7 +102,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                           children: [
                                             Padding(
                                               padding:
-                                                  EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                                  const EdgeInsets.fromLTRB(5, 5, 5, 5),
                                               child: SizedBox(
                                                 height:40.w,
                                                 width: 42.w,

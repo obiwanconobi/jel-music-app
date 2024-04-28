@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/all_albums_controller.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/widgets/songs_page.dart';
@@ -21,7 +22,7 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
     controller.favouriteVal = true;
     albumsFuture = controller.onInit(); 
   }
-  AllAlbumsController controller = AllAlbumsController();
+  var controller = GetIt.instance<AllAlbumsController>();
   late Future<List<Album>> albumsFuture;
   @override
   Widget build(BuildContext context) {
