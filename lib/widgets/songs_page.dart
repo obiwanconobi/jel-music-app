@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
@@ -12,7 +11,6 @@ import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/similar_albums.dart';
 import 'package:sizer/sizer.dart';
-import 'package:path/path.dart' as p;
 String? albumIds;
 String? artistIds;
 
@@ -43,11 +41,6 @@ class _SongsPageState extends State<SongsPage> {
     return StreamModel(id: song.id, composer: song.artist, music: song.id, picture: song.albumPicture, title: song.title, long: song.length, isFavourite: song.favourite);
   }
 
-  _openBox()async{
-     await albumHelper.openBox();
-     return albumHelper.isFavourite(artistIds!, albumIds!);
-
-  }
 
   @override
   void initState(){
@@ -71,6 +64,7 @@ class _SongsPageState extends State<SongsPage> {
     MusicControllerProvider.of(context, listen: false).shuffleQueue();
   }
 
+
   _addAllToQueue(List<Songs> allSongs){
     if(allSongs.isNotEmpty){
         List<StreamModel> playList = [];
@@ -80,10 +74,6 @@ class _SongsPageState extends State<SongsPage> {
         MusicControllerProvider.of(context, listen: false).addPlaylistToQueue(playList);
     }
     
-  }
-
-  _addToNextInQueue(){
-
   }
 
   _favouriteAlbum(String albumName, String artistName, bool favourite)async{

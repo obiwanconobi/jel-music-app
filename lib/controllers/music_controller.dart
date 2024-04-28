@@ -14,7 +14,7 @@ import 'package:path/path.dart' as p;
 
 
 
-class MusicController extends ChangeNotifier{
+class MusicController extends BaseAudioHandler with ChangeNotifier{
   final AudioPlayer _advancedPlayer = AudioPlayer(
     audioLoadConfiguration: const AudioLoadConfiguration(
         androidLoadControl: AndroidLoadControl(
@@ -24,10 +24,10 @@ class MusicController extends ChangeNotifier{
         ),),
   );
   StreamController<Duration> _durationController = BehaviorSubject();
-  StreamController<Duration> _bufferedDurationController = BehaviorSubject();
+ // StreamController<Duration> _bufferedDurationController = BehaviorSubject();
   SongsHelper songsHelper = SongsHelper();
   bool _isPlaying = false;
-  List<StreamModel> queue = [];
+ // List<StreamModel> queue = [];
   int currentStreamIndex = 0;
  // bool get isPlaying => _isPlaying;
  bool? isPlaying;
@@ -47,7 +47,6 @@ class MusicController extends ChangeNotifier{
   int currentIndexSource = 0;
   
 
- // final _cache = JustAudioCache;  
      
   
    var playlist = ConcatenatingAudioSource(
@@ -60,11 +59,61 @@ class MusicController extends ChangeNotifier{
     ],
 ); 
 
+
+AudioHandler? _audioHandler;
+
+  
+
+  Future<void> initAudioService() async {
+    _audioHandler ??= await AudioService.init(
+      builder: () => this,
+      config: const AudioServiceConfig(
+        androidStopForegroundOnPause: true,
+        androidNotificationChannelName: "Playback",
+        androidNotificationChannelId: "com.pansoft.panaudio.channel.audio",
+        androidNotificationOngoing: true,
+      ),
+    );
+  }  
+
   MusicController(){
 
     // final _cache = JustAudioCache();
 
-     
+     initAudioService();
+
+      playbackState.add(playbackState.value.copyWith(
+        controls: [MediaControl.play],
+        processingState: AudioProcessingState.loading,
+    ));
+
+      _advancedPlayer.setAudioSource(playlist).then((_) {
+      // Broadcast that we've finished loading
+      playbackState.add(playbackState.value.copyWith(
+        processingState: AudioProcessingState.ready,
+      ));
+    });
+
+    _advancedPlayer.playbackEventStream.listen((event) async {
+      final prevState = playbackState.valueOrNull;
+      final prevIndex = prevState?.queueIndex;
+      final prevItem = mediaItem.valueOrNull;
+      final currentState = _transformEvent(event);
+      final currentIndex = currentState.queueIndex;
+
+      playbackState.add(currentState);
+
+      if (currentIndex != null) {
+        final currentItem = _getQueueItem(currentIndex);
+
+        // Differences in queue index or item id are considered track changes
+        if (currentIndex != prevIndex || currentItem.id != prevItem?.id) {
+          mediaItem.add(currentItem);
+
+        //  onTrackChanged(currentItem, currentState, prevItem, prevState);
+        }
+      }
+    });
 
     _advancedPlayer.positionStream.listen((position) {
     _durationController.add(position);
@@ -88,16 +137,91 @@ class MusicController extends ChangeNotifier{
 
 
   }    
+
+    MediaItem _getQueueItem(int index) {
+    if(playlist.sequence.isNotEmpty){
+        return playlist.sequence[index].tag as MediaItem;
+    }
+    return MediaItem(id: "", title: "");
+  }
+
+
+   PlaybackState _transformEvent(PlaybackEvent event) {
+    return PlaybackState(
+      controls: [
+        MediaControl.skipToPrevious,
+        if (_advancedPlayer.playing) MediaControl.pause else MediaControl.play,
+        MediaControl.stop,
+        MediaControl.skipToNext,
+      ],
+      systemActions: const {
+        MediaAction.seek,
+        MediaAction.seekForward,
+        MediaAction.seekBackward,
+      },
+      androidCompactActionIndices: const [0, 1, 3],
+      processingState: const {
+        ProcessingState.idle: AudioProcessingState.idle,
+        ProcessingState.loading: AudioProcessingState.loading,
+        ProcessingState.buffering: AudioProcessingState.buffering,
+        ProcessingState.ready: AudioProcessingState.ready,
+        ProcessingState.completed: AudioProcessingState.completed,
+      }[_advancedPlayer.processingState]!,
+      playing: _advancedPlayer.playing,
+      updatePosition: _advancedPlayer.position,
+      bufferedPosition: _advancedPlayer.bufferedPosition,
+      speed: _advancedPlayer.speed,
+      queueIndex: event.currentIndex,
+      shuffleMode: _advancedPlayer.shuffleModeEnabled
+          ? AudioServiceShuffleMode.all
+          : AudioServiceShuffleMode.none,
+      repeatMode: AudioServiceRepeatMode.none,
+    );
+  }
+
+   @override
+  Future<void> play()async{
+    playbackState.add(playbackState.value.copyWith(
+      playing: true,
+      controls: [MediaControl.pause],
+    ));
+    _advancedPlayer.play();
+   // MusicHelper helper = MusicHelper();
+    notifyListeners();
+   // helper.setUiElements(false);
+  } 
+
+  @override
+  Future<void> pause()async{
+    playbackState.add(playbackState.value.copyWith(
+      playing: false,
+      controls: [MediaControl.play],
+    ));
+    _advancedPlayer.pause();
+    notifyListeners();
+   // MusicHelper helper = MusicHelper();
+   // helper.setUiElements(false);
+  }
   
+  @override
+  Future<void> skipToNext()async{
+    nextSong();
+  }
+
+  @override
+  Future<void> skipToPrevious()async{
+    previousSong();
+  }
+
   Stream<Duration> get durationStream => _durationController.stream;
 
-    void setDownloaded(String Id)async{
+    void setDownloaded(String id)async{
        var documentsDar = await getApplicationDocumentsDirectory();
       final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync();
 
-      if(files.where((element) => element.path.contains(Id)).isNotEmpty){
+      if(files.where((element) => element.path.contains(id)).isNotEmpty){
         await songsHelper.openBox();
-        await songsHelper.setDownloaded(Id);
+        await songsHelper.setDownloaded(id);
         await songsHelper.closeBox();
       }
     }
@@ -112,7 +236,7 @@ class MusicController extends ChangeNotifier{
         
     }
 
-    deleteDownloadedSong(String)async{
+    deleteDownloadedSong(String id)async{
       
     }
 
@@ -162,14 +286,14 @@ class MusicController extends ChangeNotifier{
       isPlaying = _advancedPlayer.playing;
       if(play){
         if(isPlaying!){
-        _advancedPlayer.pause();
+        pause();
         
         }else{
-        _advancedPlayer.play();
+        this.play();
         }
       }else{
         //  _advancedPlayer.stop();
-          _advancedPlayer.play();
+          this.play();
       }
     }
     setUiElements();
@@ -225,7 +349,7 @@ class MusicController extends ChangeNotifier{
                   ));
 
   //  String baseUrl = "https://localhost:44312/api/audio-dl";
-    var sourceold = AudioSource.uri(
+    /* var sourceold = AudioSource.uri(
                   Uri.parse(baseUrl),
                   tag: MediaItem(
                     // Specify a unique ID for each media item:
@@ -237,13 +361,13 @@ class MusicController extends ChangeNotifier{
                     artUri: Uri.parse(tempPicture!),
                     duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
                   ),
-                );
+                ); */
   
       try{
         List<AudioSource> list = [];
         list.add(source);
         playlist.addAll(list);
-        if(!playlist.children!.isEmpty){
+        if(playlist.children.isNotEmpty){
           var countPlaylist = playlist.length;
           //_advancedPlayer.dynamicSet(url: baseUrl);
           
@@ -308,13 +432,13 @@ class MusicController extends ChangeNotifier{
     
   }
 
-  void nextSong() async{
+  nextSong() async{
     _advancedPlayer.seekToNext();
     setUiElements();
   }
 
   void addNextInQueue(StreamModel value){
-    queue.insert(1, value);
+   // queue.insert(1, value);
     setUiElements();
   }
 
@@ -336,7 +460,7 @@ class MusicController extends ChangeNotifier{
    //   String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
    String baseUrl = "$baseServerUrl/Audio/$id/stream";
       List<String> timeParts = stream.long!.split(':');
-      var sourceold = AudioSource.uri(
+    /*   var sourceold = AudioSource.uri(
                         Uri.parse(baseUrl),
                         tag: MediaItem(
                           // Specify a unique ID for each media item:
@@ -348,7 +472,7 @@ class MusicController extends ChangeNotifier{
                           duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
                           artUri: Uri.parse(pictureUrl),
                         ),
-                      ); 
+                      );  */
 
     AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
                   cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.flac'])),
@@ -367,15 +491,53 @@ class MusicController extends ChangeNotifier{
   }
 
 
-  void playSong(StreamModel value){
+  void playSong(StreamModel value)async{
+     
+    if(playlist.length == 0){
+       tempId = value.id;
+        tempAlbum = value.title;
+        tempArtist = value.composer;
+        tempPicture = value.picture;
+        tempFavourite = value.isFavourite;
+        tempDuration = value.long;
+      resume();
+    }else{
+      var documentsDar = await getApplicationDocumentsDirectory();
+      String pictureUrl = value.picture!;
+      String id = value.id!;
+   //   String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
+        String baseUrl = "$baseServerUrl/Audio/$id/value";
+            List<String> timeParts = value.long!.split(':');
+         /*    var sourceold = AudioSource.uri(
+                              Uri.parse(baseUrl),
+                              tag: MediaItem(
+                                // Specify a unique ID for each media item:
+                                id: value.id!,
+                                // Metadata to display in the notification:
+                                album: value.composer ?? "Error",
+                                title: value.title ?? "Error",
+                                extras: {"favourite": value.isFavourite},
+                                duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
+                                artUri: Uri.parse(pictureUrl),
+                              ),
+                            );  */
+
+          AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
+                        cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.flac'])),
+                        tag: MediaItem(
+                                // Specify a unique ID for each media item:
+                                id: value.id!,
+                                // Metadata to display in the notification:
+                                album: value.composer ?? "Error",
+                                title: value.title ?? "Error",
+                                extras: {"favourite": value.isFavourite},
+                                duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
+                                artUri: Uri.parse(pictureUrl),
+                              ),);                  
+        playlist.insert(currentIndexSource+1, source);
+    }
     
-    tempId = value.id;
-    tempAlbum = value.title;
-    tempArtist = value.composer;
-    tempPicture = value.picture;
-    tempFavourite = value.isFavourite;
-    tempDuration = value.long;
-    resume();
+    
   }
 
   void clearQueue(){
@@ -392,6 +554,7 @@ class MusicController extends ChangeNotifier{
   }
 
   addPlaylistToQueue(List<StreamModel> listOfStreams) async{
+    clearQueue();
     var documentsDar = await getApplicationDocumentsDirectory();
     List<AudioSource> sourceList = [];
     int count = playlist.children.length;
@@ -406,7 +569,7 @@ class MusicController extends ChangeNotifier{
               String baseUrl = "$baseServerUrl/Audio/$id/stream";
             //  String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
               List<String> timeParts = stream.long!.split(':');
-              var sourceold = AudioSource.uri(
+             /*  var sourceold = AudioSource.uri(
                         Uri.parse(baseUrl),
                         tag: MediaItem(
                           // Specify a unique ID for each media item:
@@ -418,7 +581,7 @@ class MusicController extends ChangeNotifier{
                           duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
                           artUri: Uri.parse(pictureUrl),
                         ),
-                      ); 
+                      ); */ 
 
               AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
                   cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.flac'])),

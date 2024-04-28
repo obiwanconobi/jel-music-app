@@ -3,7 +3,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:jel_music/hive/classes/songs.dart';
 import 'package:http/http.dart' as http;
-import 'package:sorted/sorted.dart';
 
 class SongsHelper{
 
@@ -33,23 +32,23 @@ class SongsHelper{
   }
 
   List<Songs> returnSongsFromAlbum(String artist, String album){
-    return songsBox.values.where((Songs) => Songs.artist == artist && Songs.album == album).toList();
+    return songsBox.values.where((element) => element.artist == artist && element.album == album).toList();
   }
 
   Songs returnSong(String artist, String title){
-    return songsBox.values.where((Songs) => Songs.artist == artist && Songs.name == title).first;
+    return songsBox.values.where((element) => element.artist == artist && element.name == title).first;
   }
 
-  Songs returnSongById(String Id){
-    return songsBox.values.where((Songs)=>Songs.id == Id).first;
+  Songs returnSongById(String id){
+    return songsBox.values.where((element)=>element.id == id).first;
   }
 
   returnDownloadedSongs()async{
-    return songsBox.values.where((Songs)=>Songs.downloaded == true).toList();
+    return songsBox.values.where((element)=>element.downloaded == true).toList();
   }
 
   setDownloadedFalseForSong(String id)async{
-    var song = await returnSongById(id);
+    var song = returnSongById(id);
     song.downloaded = false;
     songsBox.put(song.key, song);
   }
@@ -94,7 +93,7 @@ class SongsHelper{
   }
 
   returnFavouriteSongs()async{
-    return songsBox.values.where((Songs) => Songs.favourite == true).toList();
+    return songsBox.values.where((element) => element.favourite == true).toList();
   }
 
   
@@ -107,7 +106,7 @@ class SongsHelper{
         try{
           songsList.add(Songs(id: song["Id"], name: song["Name"], artist: song["ArtistItems"][0]["Name"], artistId: song["ArtistItems"][0]["Id"], album: song["Album"], albumId: song["AlbumId"], index: song["IndexNumber"] ?? 0, year: song["ProductionYear"] ?? 0, length: _ticksToTimestampString(song["RunTimeTicks"] ?? 0), favourite: song["UserData"]["IsFavorite"], discIndex: song["ParentIndexNumber"] ?? 1));
         }catch(e){
-         
+         //log error
         }
      }
      for(var song in songsList){
