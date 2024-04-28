@@ -16,6 +16,7 @@ class AllSongsController {
      Future<List<song.Songs>> onInit() async {
     try {
       await songsHelper.openBox();
+      clearSongsList();
       songs = _getSongsFromBox(favouriteVal ?? false);
       return songs;
     } catch (error) {
@@ -23,10 +24,25 @@ class AllSongsController {
     }
   }
 
+  clearSongsList(){
+    songs.clear();
+  }
+
   AllSongsController(){
     baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
   }
   
+  orderByNameAsc(){
+    songs.sort((a, b) => a.title!.compareTo(b.title!));
+  }
+
+  orderByNameDesc(){
+    songs.sort((a, b) => b.title!.compareTo(a.title!));
+  }
+
+  shuffleOrder(){
+    songs.shuffle();
+  }
 
   List<song.Songs> _getSongsFromBox(bool favourite){
 
@@ -44,8 +60,8 @@ class AllSongsController {
     
       }
 
-
-      songsList.sort((a, b) => a.title!.compareTo(b.title!));
+      songsList.shuffle();
+    //  songsList.sort((a, b) => a.title!.compareTo(b.title!));
       return songsList;
   }
 
