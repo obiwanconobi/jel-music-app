@@ -35,7 +35,6 @@ dependencies:
   provider: ^6.1.1
   just_audio: ^0.9.37
   audio_session: ^0.1.13
-  just_audio_cache: ^0.1.2
   http: ^1.2.1
   audio_service: ^0.18.12
   solid_bottom_sheet: ^0.1.10
@@ -53,6 +52,7 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_svg: ^0.22.0
   path_provider: 2.0.9
+  get_it: ^7.7.0
   
 
   # The following adds the Cupertino Icons font to your application.

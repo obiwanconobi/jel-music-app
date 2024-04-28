@@ -1,8 +1,16 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:jel_music/controllers/album_controller.dart';
+import 'package:jel_music/controllers/all_albums_controller.dart';
+import 'package:jel_music/controllers/all_songs_controller.dart';
+import 'package:jel_music/controllers/api_controller.dart';
+import 'package:jel_music/controllers/artist_controller.dart';
+import 'package:jel_music/controllers/download_controller.dart';
+import 'package:jel_music/controllers/liked_controller.dart';
+import 'package:jel_music/controllers/songs_controller.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/hive/classes/songs.dart';
@@ -11,26 +19,22 @@ import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-late AudioHandler _audioHandler;
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
-   /*  final session = await AudioSession.instance;
-  session.configure(const AudioSessionConfiguration.music());
-   _audioHandler = await AudioService.init(
-    builder: () => MyAudioHandler(),
-    config: const AudioServiceConfig(
-      androidNotificationChannelId: 'com.pansoft.panaudio.channel.audio',
-      androidNotificationChannelName: 'panaudio',
-      androidNotificationOngoing: true,
-      androidStopForegroundOnPause: true,
-    ),);  */
-    
- // Hive.init('/');
   await Hive.initFlutter();
   await GetStorage.init();
   Hive.registerAdapter(SongsAdapter());
   Hive.registerAdapter(ArtistsAdapter());
   Hive.registerAdapter(AlbumsAdapter());
+  GetIt.I.registerSingleton<ApiController>(ApiController());
+  GetIt.I.registerSingleton<AllSongsController>(AllSongsController());
+  GetIt.I.registerSingleton<AllAlbumsController>(AllAlbumsController());
+  GetIt.I.registerSingleton<SongsController>(SongsController());
+  GetIt.I.registerSingleton<AlbumController>(AlbumController());
+  GetIt.I.registerSingleton<ArtistController>(ArtistController());
+  GetIt.I.registerSingleton<LikedController>(LikedController());
+  GetIt.I.registerSingleton<DownloadController>(DownloadController());
+
   runApp(const MusicControllerProvider(
     child: MyApp(),
     ));
@@ -73,7 +77,7 @@ static ThemeData lightTheme = ThemeData(
       bodyMedium: TextStyle(color: Color(0xFFACACAC), fontSize: 16),
       bodySmall: TextStyle(color: Color(0xFFACACAC), fontSize: 14),
     ),
-    iconTheme: IconThemeData(color: Colors.blueGrey)
+    iconTheme: const IconThemeData(color: Colors.blueGrey)
     // Add other dark theme properties here
   );
   

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/artist_controller.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:jel_music/widgets/album_page.dart';
@@ -25,7 +26,7 @@ class _SimilarArtistsState extends State<SimilarArtists> {
     controller.artistId = artistIds;
     artistsFuture = _loadArtists(); 
   }
-  ArtistController controller = ArtistController();
+  var controller = GetIt.instance<ArtistController>();
   late Future<List<Artists>> artistsFuture; 
 
   Future<List<Artists>> _loadArtists() async {
@@ -34,7 +35,7 @@ class _SimilarArtistsState extends State<SimilarArtists> {
     return artists; // Return albums data
   } catch (error) {
     // Handle error, e.g., show error message
-    throw error;
+    rethrow;
   }
 }
 
@@ -46,7 +47,7 @@ class _SimilarArtistsState extends State<SimilarArtists> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child:  Text('Offline'));
         } else if (snapshot.hasError) {
-          return Center(
+          return const Center(
             child: Text("Error")
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -64,7 +65,7 @@ class _SimilarArtistsState extends State<SimilarArtists> {
               children: [
                 Row(
                   children: [
-                    Container(
+                    SizedBox(
                       height: 180,
                       width: MediaQuery.of(context).size.width,
                       child: ListView.builder(

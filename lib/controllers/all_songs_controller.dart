@@ -1,19 +1,19 @@
 import 'package:jel_music/hive/classes/songs.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:jel_music/models/songs.dart' as Song;
+import 'package:jel_music/models/songs.dart' as song;
 
 
 class AllSongsController {
-    var songs = <Song.Songs>[];
+    var songs = <song.Songs>[];
     String? artistId;
     bool? favouriteVal;
     final int currentArtistIndex = 0;
-    String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+    String baseServerUrl = "";
     SongsHelper songsHelper = SongsHelper();
 
 
-     Future<List<Song.Songs>> onInit() async {
+     Future<List<song.Songs>> onInit() async {
     try {
       await songsHelper.openBox();
       songs = _getSongsFromBox(favouriteVal ?? false);
@@ -23,21 +23,23 @@ class AllSongsController {
     }
   }
 
+  AllSongsController(){
+    baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+  }
   
 
-  List<Song.Songs> _getSongsFromBox(bool favourite){
+  List<song.Songs> _getSongsFromBox(bool favourite){
 
       List<Songs> songsRaw = [];
-
       songsRaw = songsHelper.returnAllSongs();
-
       
-      List<Song.Songs> songsList = [];
-      for(var song in songsRaw){
-        String albumId = song.albumId;
+      
+      List<song.Songs> songsList = [];
+      for(var songRaw in songsRaw){
+        String albumId = songRaw.albumId;
         var imgUrl = "$baseServerUrl/Items/$albumId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
         //songsList.add(Songs(id: song.id, name: ))
-        songsList.add(Song.Songs(id: song.id, trackNumber: song.index, title: song.name, album: song.album, artist: song.artist, artistId: song.artistId, albumPicture: imgUrl, favourite: song.favourite, length: song.length));
+        songsList.add(song.Songs(id: songRaw.id, trackNumber: songRaw.index, title: songRaw.name, album: songRaw.album, artist: songRaw.artist, artistId: songRaw.artistId, albumPicture: imgUrl, favourite: songRaw.favourite, length: songRaw.length));
      //   songsList.add(Songs(index: song.index, id: song.id, name: song.name,artist: song.artist, year:song.year, albumId: imgUrl, artistId: song.artistId, album: song.album, length: song.length));
     
       }

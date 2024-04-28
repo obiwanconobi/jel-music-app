@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/hive/classes/albums.dart';
@@ -12,7 +13,8 @@ class AlbumController {
     final int currentArtistIndex = 0;
     String? albumId;
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
-    ApiController apiController = ApiController();
+   // ApiController apiController = ApiController();
+    var apiController = GetIt.instance<ApiController>();
     AlbumsHelper albumHelper = AlbumsHelper();
 
      Future<List<Album>> onInit() async {

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
@@ -20,8 +21,7 @@ class DownloadsPage extends StatefulWidget {
 class _DownloadsPageState extends State<DownloadsPage> {
   final TextEditingController _searchController = TextEditingController();
   SyncHelper syncHelper = SyncHelper();
- // AllSongsController controller = AllSongsController();
-  DownloadController controller = DownloadController();
+  var controller = GetIt.instance<DownloadController>();
   Mappers mapper = Mappers();
   late Future<List<Songs>> songsFuture;
   List<Songs> _filteredSongs = []; // List to hold filtered albums

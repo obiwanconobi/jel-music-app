@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:jel_music/helpers/ioclient.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/stream.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:just_audio_cache/just_audio_cache.dart';
 import 'package:path/path.dart' as p;
 
 
@@ -240,19 +240,29 @@ AudioHandler? _audioHandler;
       
     }
 
+    Future<bool> cacheFile({required String url, String? path}) async {
+    var openDir = await getApplicationDocumentsDirectory();
+    final dirPath = path ?? openDir.path;
+    final storedPath = await IoClient.download(url: url, path: dirPath);
+    if (storedPath != null) {
+      return true;
+    }
+    return false;
+  }
+
     downloadSong(String id)async{
       var documentsDar = await getApplicationDocumentsDirectory();
       await getToken();
       baseServerUrl = GetStorage().read('serverUrl');
       String songUrl =  "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
-      await _advancedPlayer.cacheFile(url: songUrl, path: p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.flac']));
-    
-      setDownloaded(id);
+      var result = await cacheFile(url: songUrl, path: p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.flac']));
+
+      if(result)setDownloaded(id);
     }
 
 
     clearCache()async{
-     await _advancedPlayer.clearCache();
+     
      
     }
 

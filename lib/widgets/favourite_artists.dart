@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/artist_controller.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:jel_music/widgets/album_page.dart';
@@ -19,7 +20,7 @@ class _FavouriteArtistsState extends State<FavouriteArtists> {
     controller.favourite = true;
     artistsFuture = controller.onInit(); 
   }
-  ArtistController controller = ArtistController();
+  var controller = GetIt.instance<ArtistController>();
   late Future<List<Artists>> artistsFuture;
   @override
   Widget build(BuildContext context) {
