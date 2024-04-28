@@ -30,9 +30,9 @@ class SongsController {
     return songsHelper.returnDownloadedSongs();
   }
 
-  _setDownloaded(String id)async{
+  setDownloaded(String id)async{
     await songsHelper.openBox();
-    songsHelper.setDownloaded(id);
+    await songsHelper.setDownloaded(id);
     songsHelper.closeBox();
   }
 

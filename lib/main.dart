@@ -8,7 +8,6 @@ import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/hive/classes/songs.dart';
 import 'package:jel_music/homepage.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
-import 'package:just_audio_background/just_audio_background.dart';
 import 'package:sizer/sizer.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -26,11 +25,6 @@ Future<void> main() async{
       androidStopForegroundOnPause: true,
     ),);  */
     
-    await JustAudioBackground.init(
-    androidNotificationChannelId: 'com.pansoft.panaudio.channel.audio',
-    androidNotificationChannelName: 'Audio playback',
-    androidNotificationOngoing: true,
-  );  
  // Hive.init('/');
   await Hive.initFlutter();
   await GetStorage.init();
