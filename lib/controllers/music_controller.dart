@@ -309,8 +309,9 @@ AudioHandler? _audioHandler;
     setUiElements();
     
   }
-
-  seekInSong(Duration seek)async{
+  
+  @override
+  Future<void> seek(Duration seek)async{
     await _advancedPlayer.seek(seek, index: _advancedPlayer.currentIndex); 
     setUiElements();
   }

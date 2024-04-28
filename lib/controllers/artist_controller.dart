@@ -17,10 +17,15 @@ class ArtistController {
     //ApiController apiController = ApiController();
     var apiController = GetIt.instance<ApiController>();
 
+  clearList(){
+    artistsList.clear();
+  }
+
   Future<List<Artists>> onInit() async {
     try {
       baseServerUrl = GetStorage().read('serverUrl');
       await artistHelper.openBox();
+      clearList();
       artistsList = _getArtistsFromBox(favourite);
       return artistsList;
     } catch (error) {
@@ -57,6 +62,7 @@ class ArtistController {
 
   List<Artists> _getArtistsFromBox(bool? favourite){
       favourite ??= false;
+      clearList();
       var artistsRaw = [];
       if(favourite == true){
          artistsRaw = artistHelper.returnFavouriteArtists(true);
@@ -72,7 +78,7 @@ class ArtistController {
    
       artistsList.sort((a, b) =>
       _removeSpecialCharacters(a.name!).compareTo(_removeSpecialCharacters(b.name!)));
-  
+
       return artistsList;
     }
 

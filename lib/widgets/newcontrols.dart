@@ -51,7 +51,7 @@ class _ControlsState extends State<Controls> {
   }
 
   _seekSong(Duration seek){
-    MusicControllerProvider.of(context, listen: false).seekInSong(seek);
+    MusicControllerProvider.of(context, listen: false).seek(seek);
   }
 
   _returnHome(){

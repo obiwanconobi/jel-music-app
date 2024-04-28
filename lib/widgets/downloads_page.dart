@@ -58,7 +58,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
   }
 
   _syncDownloads(){
-      controller.syncDownloads();
+    controller.syncDownloads();
   }
 
   _clearDownloads()async{
