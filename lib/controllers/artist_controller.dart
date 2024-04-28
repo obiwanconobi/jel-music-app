@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/models/artist.dart';
@@ -13,8 +14,8 @@ class ArtistController {
     bool? favourite;
     String? artistId;
     ArtistsHelper artistHelper = ArtistsHelper();
-    ApiController apiController = ApiController();
-
+    //ApiController apiController = ApiController();
+    var apiController = GetIt.instance<ApiController>();
 
   Future<List<Artists>> onInit() async {
     try {

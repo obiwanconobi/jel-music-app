@@ -2,7 +2,10 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:jel_music/controllers/all_songs_controller.dart';
+import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/hive/classes/songs.dart';
@@ -26,11 +29,15 @@ Future<void> main() async{
     ),);  */
     
  // Hive.init('/');
+  
+  //GetIt.instance<ApiController>();
   await Hive.initFlutter();
   await GetStorage.init();
   Hive.registerAdapter(SongsAdapter());
   Hive.registerAdapter(ArtistsAdapter());
   Hive.registerAdapter(AlbumsAdapter());
+  GetIt.I.registerSingleton<ApiController>(ApiController());
+  GetIt.I.registerSingleton<AllSongsController>(AllSongsController());
   runApp(const MusicControllerProvider(
     child: MyApp(),
     ));

@@ -1,13 +1,12 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/music_controller.dart';
 import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:just_audio/just_audio.dart';
 
 class Controls extends StatefulWidget {
   const Controls({super.key});
@@ -17,7 +16,8 @@ class Controls extends StatefulWidget {
 }
 
 class _ControlsState extends State<Controls> {
-  ApiController apiController = ApiController();
+  //ApiController apiController = ApiController();
+  var apiController = GetIt.instance<ApiController>();
   final Conversions _conversions = Conversions();
 
   void onInit(){

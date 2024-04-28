@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
@@ -28,7 +29,8 @@ class SongsPage extends StatefulWidget {
 
 class _SongsPageState extends State<SongsPage> {
   SongsController controller = SongsController();
-  ApiController apiController = ApiController();
+  //ApiController apiController = ApiController();
+  var apiController = GetIt.instance<ApiController>();
   AlbumsHelper albumHelper = AlbumsHelper();
   AlbumController albumController = AlbumController();
   DownloadController downloadController = DownloadController();

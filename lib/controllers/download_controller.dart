@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:get_storage/get_storage.dart';
-import 'package:jel_music/controllers/music_controller.dart';
 import 'package:jel_music/controllers/songs_controller.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';

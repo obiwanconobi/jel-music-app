@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/api_controller.dart';
@@ -31,7 +32,8 @@ class _MyWidgetState extends State<SettingsPage> {
   DownloadController downloadController = DownloadController();
   AlbumsHelper albumsHelper = AlbumsHelper();
   SyncHelper syncHelper = SyncHelper();
-  ApiController apiController = ApiController();
+  //ApiController apiController = ApiController();
+  var apiController = GetIt.instance<ApiController>();
   ArtistsHelper helper = ArtistsHelper();
   late String totalCachedFileCount = "";
   _login() async{

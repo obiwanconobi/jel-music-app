@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/all_songs_controller.dart';
+import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
@@ -20,7 +22,8 @@ class AllSongsPage extends StatefulWidget {
 class _AllSongsPageState extends State<AllSongsPage> {
   final _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
-  AllSongsController controller = AllSongsController();
+  //AllSongsController controller = AllSongsController();
+  var controller = GetIt.instance<AllSongsController>();
   late Future<List<Songs>> songsFuture;
   List<Songs> _filteredSongs = []; // List to hold filtered albums
   List<Songs> songsList = [];
