@@ -51,7 +51,7 @@ static ThemeData lightTheme = ThemeData(
     colorScheme: ColorScheme.fromSwatch(
       primarySwatch: Colors.grey, // Use your primary color here
       accentColor: const Color.fromARGB(255, 69, 69, 69),
-      backgroundColor: const Color.fromARGB(255, 238, 238, 238), // Your secondary color
+      backgroundColor: const Color.fromARGB(255, 204, 204, 204), // Your secondary color
     ), // Your accent color for dark mode
     textTheme: const TextTheme(
       bodyLarge: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'League Spartan', fontWeight: FontWeight.w600), // Text color for dark theme
@@ -73,9 +73,9 @@ static ThemeData lightTheme = ThemeData(
       backgroundColor: const Color(0xFF1C1B1B), // Your secondary color
     ), // Your accent color for dark mode
     textTheme: const TextTheme(
-      bodyLarge: TextStyle(color: Color(0xFFACACAC), fontSize: 20, fontFamily: 'League Spartan', fontWeight: FontWeight.w600), // Text color for dark theme
-      bodyMedium: TextStyle(color: Color(0xFFACACAC), fontSize: 16),
-      bodySmall: TextStyle(color: Color(0xFFACACAC), fontSize: 14),
+      bodyLarge: TextStyle(color: Colors.white, fontSize: 20, fontFamily: 'League Spartan', fontWeight: FontWeight.w600), // Text color for dark theme
+      bodyMedium: TextStyle(color: Colors.white, fontSize: 16),
+      bodySmall: TextStyle(color: Colors.white, fontSize: 14),
     ),
     iconTheme: const IconThemeData(color: Colors.blueGrey)
     // Add other dark theme properties here

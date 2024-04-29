@@ -36,6 +36,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
   @override
   void initState() {
     super.initState();
+    _syncDownloads();
     songsFuture = controller.onInit();
     _searchController.addListener(_filterAlbums);
   }
@@ -57,8 +58,8 @@ class _DownloadsPageState extends State<DownloadsPage> {
     MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length));
   }
 
-  _syncDownloads(){
-    controller.syncDownloads();
+  _syncDownloads()async{
+    await controller.syncDownloads();
   }
 
   _clearDownloads()async{
@@ -95,6 +96,15 @@ class _DownloadsPageState extends State<DownloadsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(onPressed: () => { _playAll(songsList) }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Play', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                                ElevatedButton(onPressed: () => { _syncDownloads() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Sync', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                                ElevatedButton(onPressed: () => { _clearDownloads() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Clear', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                             
+                              ],              
+                            ),
               Padding(
                 padding: const EdgeInsets.all(7.0),
                 child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle:  TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)), style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)),
@@ -124,15 +134,6 @@ class _DownloadsPageState extends State<DownloadsPage> {
                       return SingleChildScrollView(
                         child: Column(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                ElevatedButton(onPressed: () => { _playAll(songsList) }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Play', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
-                                ElevatedButton(onPressed: () => { _syncDownloads() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Sync', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
-                                ElevatedButton(onPressed: () => { _clearDownloads() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Clear', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
-                             
-                              ],
-                            ),
                              ListView.builder(
                               shrinkWrap: true,
                               itemCount: _filteredSongs.length,

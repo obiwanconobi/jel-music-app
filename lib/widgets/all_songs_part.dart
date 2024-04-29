@@ -18,6 +18,7 @@ class AllSongsPage extends StatefulWidget {
   @override
   State<AllSongsPage> createState() => _AllSongsPageState();
 }
+ enum SortOptions { random, asc, desc, }
 
 class _AllSongsPageState extends State<AllSongsPage> {
   final _scrollController = ScrollController();
@@ -27,6 +28,8 @@ class _AllSongsPageState extends State<AllSongsPage> {
   List<Songs> _filteredSongs = []; // List to hold filtered albums
   List<Songs> songsList = [];
   int _currentPage = 1;
+  SortOptions sortOptionsView = SortOptions.random;
+ 
 
   @override
   void dispose() {
@@ -69,12 +72,22 @@ class _AllSongsPageState extends State<AllSongsPage> {
     MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length));
   }
 
+  _sortList(SortOptions sort){
+    if(sort == SortOptions.asc){
+      controller.orderByNameAsc();
+    }else if(sort == SortOptions.desc){
+      controller.orderByNameDesc();
+    }else{
+      controller.shuffleOrder();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     controller.artistId = artistIds;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('Albums', style: Theme.of(context).textTheme.bodyLarge),),
+        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('All Songs', style: Theme.of(context).textTheme.bodyLarge),),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
@@ -86,6 +99,33 @@ class _AllSongsPageState extends State<AllSongsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              SegmentedButton<SortOptions>(
+                style: ButtonStyle(backgroundColor:  MaterialStateProperty.all<Color>(Theme.of(context).canvasColor)),
+                segments: const <ButtonSegment<SortOptions>>[
+                  ButtonSegment<SortOptions>(
+                      value: SortOptions.asc,
+                      label: Text('Ascending', style: TextStyle(fontSize: 11),),
+                      icon: Icon(Icons.north)),
+                  ButtonSegment<SortOptions>(
+                      value: SortOptions.random,
+                      label: Text('Random'),
+                      icon: Icon(Icons.shuffle)),
+                  ButtonSegment<SortOptions>(
+                      value: SortOptions.desc,
+                      label: Text('Descending', style: TextStyle(fontSize: 11),),
+                      icon: Icon(Icons.south)),
+                ],
+                selected: <SortOptions>{sortOptionsView},
+                onSelectionChanged: (Set<SortOptions> newSelection) {
+                  setState(() {
+                    // By default there is only a single segment that can be
+                    // selected at one time, so its value is always the first
+                    // item in the selected set.
+                    sortOptionsView = newSelection.first;
+                    _sortList(sortOptionsView);
+                  });
+                },
+              ),
               Padding(
                 padding: const EdgeInsets.all(7.0),
                 child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle:  TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)), style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)),

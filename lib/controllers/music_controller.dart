@@ -199,8 +199,6 @@ AudioHandler? _audioHandler;
     ));
     _advancedPlayer.pause();
     notifyListeners();
-   // MusicHelper helper = MusicHelper();
-   // helper.setUiElements(false);
   }
   
   @override
@@ -276,7 +274,7 @@ AudioHandler? _audioHandler;
     
 
     void endOfSong() async{
-      //setUiElements();
+      setUiElements();
     }
   
     getToken() async{
