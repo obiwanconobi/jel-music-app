@@ -1,4 +1,5 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/api_controller.dart';
@@ -6,6 +7,7 @@ import 'package:jel_music/controllers/music_controller.dart';
 import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
 class Controls extends StatefulWidget {
@@ -205,14 +207,112 @@ class _ControlsState extends State<Controls> {
                                       ],
                                     );
                                 }                    
-                              )     
+                              ),
+                              ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: musicController.playlist.sequence.length,
+                              physics: const BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.sp),
+                                  child: InkWell(
+                                    onTap:() => _returnHome(),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10.sp),
+                                    ),
+                                    child: Container(
+                                        height: 52.sp,
+                                        decoration: BoxDecoration(
+                                          color: (Theme.of(context).colorScheme.background),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.sp),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.symmetric(horizontal: 13.sp),
+                                              child: SizedBox(
+                                                height: 35.sp,
+                                                width: 35.sp,
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(2.w),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: musicController.playlist.sequence[index].tag.artUri.toString() ?? "",
+                                                    memCacheHeight: 150,
+                                                    memCacheWidth: 150,
+                                                    placeholder: (context, url) => const CircularProgressIndicator(
+                                                      strokeWidth: 5,
+                                                      color: Color.fromARGB(255, 60, 60, 60),
+                                                    ),
+                                                    errorWidget: (context, url, error) => Container(
+                                                      color: const Color(0xFF71B77A),
+                                                      child: const Center(
+                                                        child: Text("404"),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Column(
+                                                    children: [
+                                                      Row(
+                                                        mainAxisSize: MainAxisSize.max,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment.start,
+                                                        children: [
+                                                          Flexible(
+                                                            child: Text(musicController.playlist.sequence[index].tag.title!,
+                                                              style: TextStyle(
+                                                                fontSize: 12.sp,
+                                                                color: Theme.of(context).textTheme.bodySmall!.color,
+                                                                fontWeight: FontWeight.w400,
+                                                                fontFamily: "Segoe UI",
+                                                              ),
+                                                              overflow: TextOverflow.ellipsis, // Set overflow property
+                                                              maxLines: 2, // Set the maximum number of lines
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Container(
+                                                        alignment: Alignment.centerLeft,
+                                                        child: Text(musicController.playlist.sequence[index].tag.album, style: TextStyle(
+                                                                  fontSize: 10.sp,
+                                                                  color: Theme.of(context).textTheme.bodySmall!.color,
+                                                                  fontWeight: FontWeight.w400,
+                                                                  fontFamily: "Segoe UI",
+                                                                ),),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            if(musicController.currentSource!.tag.title == musicController.playlist.sequence[index].tag.title && musicController.currentSource!.tag.album == musicController.playlist.sequence[index].tag.album)Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0), child: Icon(Icons.music_note, color: Theme.of(context).colorScheme.secondary, size:30),)
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                              },
+                            ),     
                             ],
                           ),
                         );
                     }
                   } ),    
                 ],
-              )
+              ),
             ],
           ),
         ),
