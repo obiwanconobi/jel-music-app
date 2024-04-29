@@ -65,7 +65,7 @@ class SongsHelper{
 
   setDownloaded(String id){
     var song = returnSongById(id);
-    if(!song.downloaded!){
+    if(song.downloaded == null || song.downloaded == false){
       song.downloaded = true;
       songsBox.put(song.key,song);
     }
