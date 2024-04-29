@@ -248,14 +248,19 @@ AudioHandler? _audioHandler;
     return false;
   }
 
-    downloadSong(String id)async{
+    Future<bool> downloadSong(String id)async{
       var documentsDar = await getApplicationDocumentsDirectory();
       await getToken();
       baseServerUrl = GetStorage().read('serverUrl');
       String songUrl =  "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
       var result = await cacheFile(url: songUrl, path: p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.flac']));
 
-      if(result)setDownloaded(id);
+      if(result){
+        setDownloaded(id);
+        return true;
+      }else{
+        return false;
+      }
     }
 
 

@@ -163,8 +163,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
                                                 height: 35.sp,
                                                 width: 35.sp,
                                                 child: ClipRRect(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(15.sp)),
+                                                  borderRadius: BorderRadius.circular(2.w),
                                                   child: CachedNetworkImage(
                                                     imageUrl: _filteredSongs[index].albumPicture ?? "",
                                                     memCacheHeight: 150,

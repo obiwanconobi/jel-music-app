@@ -12,6 +12,9 @@ import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/similar_albums.dart';
 import 'package:sizer/sizer.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/tap_bounce_container.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 String? albumIds;
 String? artistIds;
 
@@ -105,9 +108,17 @@ class _SongsPageState extends State<SongsPage> {
     }
   }
 
-  _downloadFile(Songs song){
-    MusicControllerProvider.of(context, listen: false).downloadSong(song.id!);
-
+  _downloadFile(Songs song)async{
+    var result = await MusicControllerProvider.of(context, listen: false).downloadSong(song.id!);
+    if(result){
+            showTopSnackBar(
+          Overlay.of(context),
+          const CustomSnackBar.success(
+            message:
+                "Download Complete",
+          ),
+      );
+    }
   }
 
   
