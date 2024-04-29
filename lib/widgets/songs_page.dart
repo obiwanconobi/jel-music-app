@@ -121,8 +121,6 @@ class _SongsPageState extends State<SongsPage> {
     }
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     controller.albumId = albumIds;
