@@ -87,7 +87,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
     controller.artistId = artistIds;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('Albums', style: Theme.of(context).textTheme.bodyLarge),),
+        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('All Songs', style: Theme.of(context).textTheme.bodyLarge),),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
@@ -104,7 +104,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
                 segments: const <ButtonSegment<SortOptions>>[
                   ButtonSegment<SortOptions>(
                       value: SortOptions.asc,
-                      label: Text('Ascending'),
+                      label: Text('Ascending', style: TextStyle(fontSize: 11),),
                       icon: Icon(Icons.north)),
                   ButtonSegment<SortOptions>(
                       value: SortOptions.random,
@@ -112,7 +112,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
                       icon: Icon(Icons.shuffle)),
                   ButtonSegment<SortOptions>(
                       value: SortOptions.desc,
-                      label: Text('Descending'),
+                      label: Text('Descending', style: TextStyle(fontSize: 11),),
                       icon: Icon(Icons.south)),
                 ],
                 selected: <SortOptions>{sortOptionsView},

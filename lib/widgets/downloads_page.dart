@@ -36,6 +36,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
   @override
   void initState() {
     super.initState();
+    _syncDownloads();
     songsFuture = controller.onInit();
     _searchController.addListener(_filterAlbums);
   }
@@ -57,8 +58,8 @@ class _DownloadsPageState extends State<DownloadsPage> {
     MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length));
   }
 
-  _syncDownloads(){
-    controller.syncDownloads();
+  _syncDownloads()async{
+    await controller.syncDownloads();
   }
 
   _clearDownloads()async{
