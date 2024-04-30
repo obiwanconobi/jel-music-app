@@ -118,12 +118,15 @@ class _SongsPageState extends State<SongsPage> {
 
   _downloadFile(Songs song)async{
     var result = await MusicControllerProvider.of(context, listen: false).downloadSong(song.id!);
+    String? title = song.title;
+    String? artist = song.artist;
     if(result){
             showTopSnackBar(
           Overlay.of(context),
-          const CustomSnackBar.success(
+          CustomSnackBar.success(
+            maxLines: 2,
             message:
-                "Download Complete",
+               "Download of $title by $artist Completed",
           ),
       );
     }
