@@ -149,8 +149,6 @@ class _ControlsState extends State<Controls> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                       ElevatedButton(onPressed: () => { _clearQueue() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Clear', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
-                      ElevatedButton(onPressed: () => _testClck(), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Play All', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
-                      ElevatedButton(onPressed: () => _shuffleSongs(), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Shuffle',style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
                     ],),
                   ),
                   Consumer<MusicController>(

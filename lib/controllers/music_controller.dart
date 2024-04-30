@@ -627,11 +627,7 @@ AudioHandler? _audioHandler;
   }
 
   void shuffleQueue()async{
-   if(_advancedPlayer.shuffleModeEnabled == true){
-      await _advancedPlayer.setShuffleModeEnabled(false);      // Shuffle playlist order (true|false)
-   }else{
-    await _advancedPlayer.setShuffleModeEnabled(true);      // Shuffle playlist order (true|false)
-   }
+    playlist.children.shuffle();
     setUiElements();
    
   }
