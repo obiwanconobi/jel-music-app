@@ -78,6 +78,10 @@ class _ControlsState extends State<Controls> {
   }
 
 
+  _goToSong(int index){
+    MusicControllerProvider.of(context, listen:false).seekSong(index);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -216,7 +220,7 @@ class _ControlsState extends State<Controls> {
                                 return Padding(
                                   padding: EdgeInsets.symmetric(vertical: 8.sp),
                                   child: InkWell(
-                                    onTap:() => _returnHome(),
+                                    onTap:() => _goToSong(index),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.sp),
                                     ),
@@ -298,7 +302,7 @@ class _ControlsState extends State<Controls> {
                                                 ],
                                               ),
                                             ),
-                                            if(musicController.currentSource!.tag.title == musicController.playlist.sequence[index].tag.title && musicController.currentSource!.tag.album == musicController.playlist.sequence[index].tag.album)Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0), child: Icon(Icons.music_note, color: Theme.of(context).colorScheme.secondary, size:30),)
+                                            if(musicController.currentSource!.tag.title == musicController.playlist.sequence[index].tag.title && musicController.currentSource!.tag.album == musicController.playlist.sequence[index].tag.album)Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0), child: Icon(Icons.music_note, color: Theme.of(context).focusColor, size:30),)
                                           ],
                                         ),
                                       ),
