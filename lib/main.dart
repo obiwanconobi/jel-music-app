@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
 static ThemeData lightTheme = ThemeData(
     primaryColor: Colors.teal, // Your primary color for dark mode
     canvasColor:const Color.fromARGB(255, 179, 179, 179),
+    focusColor: Colors.red,
     colorScheme: ColorScheme.fromSwatch(
       primarySwatch: Colors.grey, // Use your primary color here
       accentColor: const Color.fromARGB(255, 69, 69, 69),
@@ -66,6 +67,7 @@ static ThemeData lightTheme = ThemeData(
   static ThemeData darkTheme = ThemeData(
     primaryColor: Colors.blueGrey, // Your primary color for dark mode
     canvasColor:const Color.fromARGB(255, 37, 37, 37),
+    focusColor: Colors.red,
     colorScheme: ColorScheme.fromSwatch(
       primarySwatch: Colors.grey, // Use your primary color here
       accentColor: Colors.blueGrey,

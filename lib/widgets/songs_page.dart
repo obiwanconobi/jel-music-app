@@ -67,8 +67,16 @@ class _SongsPageState extends State<SongsPage> {
     MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length));
   }
 
-  _shuffleQueue(){
-    MusicControllerProvider.of(context, listen: false).shuffleQueue();
+
+  _addShuffledToQueue(List<Songs> allSongs){
+      if(allSongs.isNotEmpty){
+        List<StreamModel> playList = [];
+        for(var song in allSongs){
+          playList.add(returnStream(song));
+        }
+        playList.shuffle();
+        MusicControllerProvider.of(context, listen: false).addPlaylistToQueue(playList);
+    }
   }
 
 
@@ -210,7 +218,7 @@ class _SongsPageState extends State<SongsPage> {
                                   children: [
                                     OutlinedButton(onPressed: () => _addAllToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor), child: Text('Play All', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
                                     IconButton(icon: Icon(Icons.favorite, color: ((snapshot.data ?? false) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30), onPressed: () { setState(){ fave = !fave!;}_favouriteAlbum(albumIds!, artistIds!, snapshot.data!); },),
-                                    OutlinedButton(onPressed: () => _shuffleQueue(), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor), child: Text('Shuffle',style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                                    OutlinedButton(onPressed: () => _addShuffledToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor), child: Text('Shuffle',style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
                                   //  OutlinedButton(onPressed: () => _shuffleQueue(), child: const Text('Add queue')),
                                   ],
                                 ),
