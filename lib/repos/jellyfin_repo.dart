@@ -13,6 +13,26 @@ class JellyfinRepo{
     userId = GetStorage().read('userId');
   }
 
+
+  getArtistData() async{
+    try {
+      var userId = GetStorage().read('userId');
+    
+      Map<String, String> requestHeaders = {
+       'Content-type': 'application/json',
+       'X-MediaBrowser-Token': accessToken,
+       'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
+     };
+      String url = "$baseServerUrl/Artists/AlbumArtists?enableUserData=true&userId=$userId&enableImages=true&enableTotalRecordCount=true&isFavorite=true";
+      http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> addSongToPlaylist(String songId, String playlistId)async{
        Map<String, String> requestHeaders = {
                   'Content-type': 'application/json',
@@ -118,10 +138,10 @@ class JellyfinRepo{
 
        String itemId = '${input.substring(0, 8)}-${input.substring(8, 12)}-${input.substring(12, 16)}-${input.substring(16, 20)}-${input.substring(20)}';
 
-        if(!current){
-          favouriteItem(itemId);
-        }else{
+        if(current){
           unFavouriteItem(itemId);
+        }else{
+          favouriteItem(itemId);
         }
     }
 

@@ -27,6 +27,16 @@ class ArtistsHelper{
   List<Artists> returnFavouriteArtists(bool favourite){
     return artistBox.values.where((Artists) => Artists.favourite == favourite).toList();
   }
+
+  updateFavouriteStatus(String artistId){
+    var artist =  artistBox.values.where((Artists) => Artists.id == artistId).first;
+    if(artist.favourite == null || artist.favourite == false){
+      artist.favourite = true;
+    }else{
+      artist.favourite = false;
+    }
+    artistBox.put(artist.key, artist);
+  }
   
   clearArtists(){
     artistBox.clear();
@@ -40,6 +50,9 @@ class ArtistsHelper{
     return artistBox.values.where((Artists) => Artists.name == name).firstOrNull;
   }
 
+  Artists? returnArtistById(String Id){
+    return artistBox.values.where((Artists) => Artists.id == Id).firstOrNull;
+  }
   
   void getAllArtists()async {
 

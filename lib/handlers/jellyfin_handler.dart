@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/helpers/mappers.dart';
+import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/models/playlists.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/repos/jellyfin_repo.dart';
@@ -10,6 +11,28 @@ class JellyfinHandler{
   
   JellyfinHandler(){
     jellyfinRepo = GetIt.instance<JellyfinRepo>();
+  }
+
+
+  updateFavouriteStatus(String itemId, bool current)async{
+    await jellyfinRepo.updateFavouriteStatus(itemId, current);
+  }
+
+  Future<List<Artists>> fetchArtists()async{
+
+      var artistRaw = await jellyfinRepo.getArtistData();
+      
+
+      List<Artists> artistList = [];
+
+      for(var artist in artistRaw["Items"]){  
+        String test = artist["Name"];
+          if(test.contains('blink')){
+          
+          }    
+          artistList.add(Artists(id: artist["Id"], name: artist["Name"], favourite: artist["UserData"]["IsFavorite"], picture: artist["Id"]));
+      }
+      return artistList;
   }
 
   Future<List<Playlists>> returnPlaylists()async{

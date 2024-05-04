@@ -1,13 +1,15 @@
 class Artists {
-  final String? id;
-  final String? name;
-  final String? picture;
+  String? id;
+  String? name;
+  String? picture;
+  bool? favourite;
 
 
   Artists({
     this.id,
     this.name,
-    this.picture
+    this.picture,
+    this.favourite
   });
 }
   

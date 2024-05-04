@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:jel_music/handlers/jellyfin_handler.dart';
+import 'package:jel_music/hive/classes/albums.dart';
+import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:get_storage/get_storage.dart';
@@ -13,6 +15,7 @@ class SongsController {
     String? albumId;
     String? artistId;
     SongsHelper songsHelper = SongsHelper();
+    AlbumsHelper albumHelper = AlbumsHelper();
     final int currentArtistIndex = 0;
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
     JellyfinHandler jellyfinHandler = GetIt.instance<JellyfinHandler>();
@@ -26,6 +29,24 @@ class SongsController {
      
       rethrow; // Rethrow the error if necessary
     }
+  }
+
+  toggleFavouriteSong(String itemId, bool current)async{
+    await jellyfinHandler.updateFavouriteStatus(itemId, current);
+  }
+
+  toggleFavourite(String artist, String title, bool favourite)async{
+    await albumHelper.openBox();
+    Albums? album = albumHelper.returnAlbum(artist, title);
+    album!.favourite = favourite;
+    albumHelper.updateAlbum(album, album.key);
+    jellyfinHandler.updateFavouriteStatus(album.id, !favourite);
+  }
+
+  Future<bool> returnFavourite(String artist, String album)async{
+    await albumHelper.openBox();
+    return albumHelper.isFavourite(artist, album);
+    
   }
 
   returnPlaylists()async{
