@@ -68,6 +68,15 @@ class _DownloadsPageState extends State<DownloadsPage> {
 
   _deleteSong(String id)async{
     controller.deleteDownloadFile(id);
+     setState(() {
+      int indexToRemove = songsList.indexWhere((item) => item.id == id);
+      if (indexToRemove != -1) {
+        // Remove the item at the specified index
+        songsList.removeAt(indexToRemove);
+      } else {
+        // Log Error
+      }
+    });
   }
 
   _playAll(List<Songs> allSongs){
