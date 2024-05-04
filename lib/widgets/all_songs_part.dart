@@ -136,7 +136,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        //child: CircularProgressIndicator(),
                       );
                     } else if (snapshot.hasError) {
                       return Center(

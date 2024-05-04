@@ -180,7 +180,7 @@ class _SongsPageState extends State<SongsPage> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        //child: CircularProgressIndicator(),
                       );
                     } else if (snapshot.hasError) {
                       return Center(
@@ -229,7 +229,7 @@ class _SongsPageState extends State<SongsPage> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
                               return const Center(
-                                child: CircularProgressIndicator(),
+                                //child: CircularProgressIndicator(),
                               );
                             } else if (snapshot.hasError) {
                               return Center(
