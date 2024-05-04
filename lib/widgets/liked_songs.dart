@@ -94,10 +94,6 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[0].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                                        placeholder: (context, url) => const CircularProgressIndicator(
-                                                          strokeWidth: 5,
-                                                          color: Color.fromARGB(255, 60, 60, 60),
-                                                        ),
                                                         errorWidget: (context, url, error) => Container(
                                                           color: const Color(0xFF71B77A),
                                                           child: const Center(
@@ -109,10 +105,6 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[1].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                                        placeholder: (context, url) => const CircularProgressIndicator(
-                                                          strokeWidth: 5,
-                                                          color: Color.fromARGB(255, 60, 60, 60),
-                                                        ),
                                                         errorWidget: (context, url, error) => Container(
                                                           color: const Color(0xFF71B77A),
                                                           child: const Center(
@@ -124,10 +116,6 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[2].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                                        placeholder: (context, url) => const CircularProgressIndicator(
-                                                          strokeWidth: 5,
-                                                          color: Color.fromARGB(255, 60, 60, 60),
-                                                        ),
                                                         errorWidget: (context, url, error) => Container(
                                                           color: const Color(0xFF71B77A),
                                                           child: const Center(
@@ -143,10 +131,6 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[3].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                                        placeholder: (context, url) => const CircularProgressIndicator(
-                                                          strokeWidth: 5,
-                                                          color: Color.fromARGB(255, 60, 60, 60),
-                                                        ),
                                                         errorWidget: (context, url, error) => Container(
                                                           color: const Color(0xFF71B77A),
                                                           child: const Center(
@@ -158,10 +142,6 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[4].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                                        placeholder: (context, url) => const CircularProgressIndicator(
-                                                          strokeWidth: 5,
-                                                          color: Color.fromARGB(255, 60, 60, 60),
-                                                        ),
                                                         errorWidget: (context, url, error) => Container(
                                                           color: const Color(0xFF71B77A),
                                                           child: const Center(
@@ -173,10 +153,6 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[5].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                                        placeholder: (context, url) => const CircularProgressIndicator(
-                                                          strokeWidth: 5,
-                                                          color: Color.fromARGB(255, 60, 60, 60),
-                                                        ),
                                                         errorWidget: (context, url, error) => Container(
                                                           color: const Color(0xFF71B77A),
                                                           child: const Center(
@@ -192,10 +168,6 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[6].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                                        placeholder: (context, url) => const CircularProgressIndicator(
-                                                          strokeWidth: 5,
-                                                          color: Color.fromARGB(255, 60, 60, 60),
-                                                        ),
                                                         errorWidget: (context, url, error) => Container(
                                                           color: const Color(0xFF71B77A),
                                                           child: const Center(
@@ -207,10 +179,6 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[7].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                                        placeholder: (context, url) => const CircularProgressIndicator(
-                                                          strokeWidth: 5,
-                                                          color: Color.fromARGB(255, 60, 60, 60),
-                                                        ),
                                                         errorWidget: (context, url, error) => Container(
                                                           color: const Color(0xFF71B77A),
                                                           child: const Center(
@@ -222,10 +190,6 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[8].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                                        placeholder: (context, url) => const CircularProgressIndicator(
-                                                          strokeWidth: 5,
-                                                          color: Color.fromARGB(255, 60, 60, 60),
-                                                        ),
                                                         errorWidget: (context, url, error) => Container(
                                                           color: const Color(0xFF71B77A),
                                                           child: const Center(
@@ -285,10 +249,6 @@ class _LikedSongsState extends State<LikedSongs> {
                                                     imageUrl: songsList[index].albumPicture ?? "",
                                                     memCacheHeight: 150,
                                                     memCacheWidth: 150,
-                                                    placeholder: (context, url) => const CircularProgressIndicator(
-                                                      strokeWidth: 5,
-                                                      color: Color.fromARGB(255, 60, 60, 60),
-                                                    ),
                                                     errorWidget: (context, url, error) => Container(
                                                       color: const Color(0xFF71B77A),
                                                       child: const Center(
