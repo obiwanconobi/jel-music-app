@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
+import 'package:jel_music/controllers/playlist_controller.dart';
 import 'package:jel_music/controllers/songs_controller.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
@@ -42,6 +43,8 @@ class _SongsPageState extends State<SongsPage> {
   SongsHelper songsHelper = SongsHelper();
   bool? fave;
 
+  List<PopupMenuEntry<String>> playlistMenuItems = [];
+
   StreamModel returnStream(Songs song){
     return StreamModel(id: song.id, composer: song.artist, music: song.id, picture: song.albumPicture, title: song.title, long: song.length, isFavourite: song.favourite);
   }
@@ -57,7 +60,18 @@ class _SongsPageState extends State<SongsPage> {
     controller.artistId = artistIds;
     songsFuture = controller.onInit();
     
+    _loadPlaylists();
+    
   }
+
+  _loadPlaylists()async{
+    playlistMenuItems = await controller.returnPlaylists();
+  }
+
+  _addToPlaylist(String songId, String playlistId)async{
+      await controller.addSongToPlaylist(songId, playlistId);
+  }
+
 
   _addToQueue(Songs song){
     MusicControllerProvider.of(context, listen: false).addToQueue(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length));
@@ -309,7 +323,15 @@ class _SongsPageState extends State<SongsPage> {
                                                           ),
                                                           Container(
                                                             margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                                            child: IconButton(icon: const Icon(Icons.add, size: 30, color: Colors.blueGrey), onPressed: () { _addToQueue(songsList[index]); }),
+                                                            child:PopupMenuButton<String>(
+                                                              icon: Icon(Icons.settings), // Set your desired icon here
+                                                              onSelected: (String value) {
+                                                                _addToPlaylist(songsList[index].id!, value);
+                                                                // Handle menu item selection here
+                                                               // print("Selected: $value");
+                                                              },
+                                                              itemBuilder: (context) => playlistMenuItems.toList(),
+                                                            ),
                                                           ),
                                                           Container(
                                                             margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),

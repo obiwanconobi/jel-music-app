@@ -30,4 +30,8 @@ class PlaylistController{
     }
   }
 
+  Future<void> deleteSongFromPlaylist(String songId, String playlistId)async{
+    await jellyfinHandler.deleteSongFromPlaylist(songId, playlistId);
+  }
+
 }

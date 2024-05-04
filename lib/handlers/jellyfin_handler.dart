@@ -25,8 +25,16 @@ class JellyfinHandler{
     Mappers mapper = Mappers();
     var songsRaw = await jellyfinRepo.getPlaylistSongs(playlistId);
 
-    var mappedSongs = mapper.returnSongFromRaw(songsRaw);
+    var mappedSongs = mapper.mapSongFromRaw(songsRaw);
     return mappedSongs;
+  }
+
+  addSongToPlaylist(String songId, String playlistId)async{
+    await jellyfinRepo.addSongToPlaylist(songId, playlistId);
+  }
+
+  deleteSongFromPlaylist(String songId, String playlistId)async{
+    await jellyfinRepo.deleteSongFromPlaylist(songId, playlistId);
   }
   
 

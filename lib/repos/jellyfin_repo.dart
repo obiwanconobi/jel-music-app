@@ -13,6 +13,39 @@ class JellyfinRepo{
     userId = GetStorage().read('userId');
   }
 
+  Future<void> addSongToPlaylist(String songId, String playlistId)async{
+       Map<String, String> requestHeaders = {
+                  'Content-type': 'application/json',
+                  'X-MediaBrowser-Token': accessToken,
+                  'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
+                };
+              String url = "$baseServerUrl/Playlists/$playlistId/Items?ids=$songId&userId=$userId";
+              
+              http.Response res = await http.post(Uri.parse(url), headers: requestHeaders);
+              if (res.statusCode == 200) {
+                return json.decode(res.body);
+              }
+  }
+
+  deleteSongFromPlaylist(String songId, String playlistId)async{
+      Map<String, String> requestHeaders = {
+                  'Content-type': 'application/json',
+                  'X-MediaBrowser-Token': accessToken,
+                  'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
+                };
+      String url = "$baseServerUrl/Playlists/$playlistId/Items?entryIds=$songId&userId=$userId";
+      try{
+        http.Response res = await http.delete(Uri.parse(url), headers: requestHeaders);
+              if (res.statusCode == 204) {
+                return res.statusCode;
+              }      
+      }catch(e){
+        //log error
+        print("error");
+      }
+        
+  }
+
   getPlaylists()async{
        try {
               Map<String, String> requestHeaders = {
