@@ -156,6 +156,7 @@ class _MyWidgetState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
+        foregroundColor: Theme.of(context).textTheme.bodySmall!.color,
         backgroundColor: Theme.of(context).colorScheme.background,
         centerTitle: true,
         title: Text("Settings", style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.bodySmall!.color)),
