@@ -40,8 +40,7 @@ class JellyfinRepo{
                 return res.statusCode;
               }      
       }catch(e){
-        //log error
-        print("error");
+        //Log Error
       }
         
   }
