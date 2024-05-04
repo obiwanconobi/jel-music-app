@@ -367,7 +367,7 @@ class _SongsPageState extends State<SongsPage> {
                             Container(
                             padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
                             alignment: Alignment.centerLeft,
-                            child:  const Text('Similar Albums', style: TextStyle(color: Colors.grey, fontSize: 20))),
+                            child: Text('Similar Albums', style: Theme.of(context).textTheme.bodyLarge)),
                             SimilarAlbums(albumId: albumIds!, artistId: artistIds!,),
                           ],
                         ),

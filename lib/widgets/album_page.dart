@@ -166,7 +166,7 @@ class _AlbumPageState extends State<AlbumPage> {
                              Container(
                             padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
                             alignment: Alignment.centerLeft,
-                            child:  const Text('Similar Artists', style: TextStyle(color: Colors.grey, fontSize: 20))),
+                            child:  Text('Similar Artists', style:Theme.of(context).textTheme.bodyLarge)),
                            
                             SimilarArtists(artistId: artistIds!,),
                           ],

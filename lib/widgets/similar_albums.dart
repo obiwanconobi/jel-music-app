@@ -120,8 +120,8 @@ class _SimilarAlbumsState extends State<SimilarAlbums> {
                                         width:33.w,
                                         child: Column(
                                           children: [
-                                            Text(albumsList[index].title!, overflow: TextOverflow.ellipsis, maxLines: 1, style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16)),
-                                            Text(albumsList[index].artist!, overflow: TextOverflow.ellipsis, maxLines: 1, style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 14)),
+                                            Text(albumsList[index].title!, overflow: TextOverflow.ellipsis, maxLines: 1, style: Theme.of(context).textTheme.bodyMedium),
+                                            Text(albumsList[index].artist!, overflow: TextOverflow.ellipsis, maxLines: 1, style: Theme.of(context).textTheme.bodySmall),
                                           ],
                                         ),
                                       ),
