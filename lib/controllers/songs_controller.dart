@@ -28,16 +28,9 @@ class SongsController {
     }
   }
 
-  Future<List<PopupMenuEntry<String>>> returnPlaylists()async{
+  returnPlaylists()async{
       var playlistsRaw =  await jellyfinHandler.returnPlaylists();
-      List<PopupMenuEntry<String>> playlistMenus = [];
-      for(var playlist in playlistsRaw){
-          playlistMenus.add(PopupMenuItem(
-          value: playlist.id,
-          child: Text(playlist.name!),
-        ));
-      }
-      return playlistMenus;
+      return playlistsRaw;
   }
 
   Future<void> addSongToPlaylist(String songId, String playlistId)async{

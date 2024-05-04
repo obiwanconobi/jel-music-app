@@ -65,7 +65,17 @@ class _SongsPageState extends State<SongsPage> {
   }
 
   _loadPlaylists()async{
-    playlistMenuItems = await controller.returnPlaylists();
+    playlistMenuItems.clear();
+    var playlistsRaw = await controller.returnPlaylists();
+    List<PopupMenuEntry<String>> playlistMenus = [];
+      for(var playlist in playlistsRaw){
+          playlistMenus.add(PopupMenuItem(
+          value: playlist.id,
+          child: Text(playlist.name!, style: Theme.of(context).textTheme.bodyMedium),
+        ));
+      }
+      playlistMenuItems = playlistMenus;
+    
   }
 
   _addToPlaylist(String songId, String playlistId)async{
@@ -170,7 +180,7 @@ class _SongsPageState extends State<SongsPage> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        //child: CircularProgressIndicator(),
                       );
                     } else if (snapshot.hasError) {
                       return Center(
@@ -219,7 +229,7 @@ class _SongsPageState extends State<SongsPage> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
                               return const Center(
-                                child: CircularProgressIndicator(),
+                                //child: CircularProgressIndicator(),
                               );
                             } else if (snapshot.hasError) {
                               return Center(
@@ -324,11 +334,10 @@ class _SongsPageState extends State<SongsPage> {
                                                           Container(
                                                             margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                                             child:PopupMenuButton<String>(
-                                                              icon: Icon(Icons.settings), // Set your desired icon here
+                                                              color: Theme.of(context).canvasColor,
+                                                              icon: const Icon(Icons.playlist_add), // Set your desired icon here
                                                               onSelected: (String value) {
                                                                 _addToPlaylist(songsList[index].id!, value);
-                                                                // Handle menu item selection here
-                                                               // print("Selected: $value");
                                                               },
                                                               itemBuilder: (context) => playlistMenuItems.toList(),
                                                             ),

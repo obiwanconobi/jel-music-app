@@ -18,10 +18,9 @@ class IoClient {
         return null;
       }
     } on IOException catch (e) {
-      print('Error occurs while downloading file: $e');
       return null;
     } catch(e) {
-      print(e);
+     
       return null;
     }
   }

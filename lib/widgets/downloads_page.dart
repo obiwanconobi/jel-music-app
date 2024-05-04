@@ -68,6 +68,15 @@ class _DownloadsPageState extends State<DownloadsPage> {
 
   _deleteSong(String id)async{
     controller.deleteDownloadFile(id);
+     setState(() {
+      int indexToRemove = songsList.indexWhere((item) => item.id == id);
+      if (indexToRemove != -1) {
+        // Remove the item at the specified index
+        songsList.removeAt(indexToRemove);
+      } else {
+        // Log Error
+      }
+    });
   }
 
   _playAll(List<Songs> allSongs){
@@ -115,7 +124,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        //child: CircularProgressIndicator(),
                       );
                     } else if (snapshot.hasError) {
                       return Center(
@@ -168,10 +177,6 @@ class _DownloadsPageState extends State<DownloadsPage> {
                                                     imageUrl: _filteredSongs[index].albumPicture ?? "",
                                                     memCacheHeight: 150,
                                                     memCacheWidth: 150,
-                                                    placeholder: (context, url) => const CircularProgressIndicator(
-                                                      strokeWidth: 5,
-                                                      color: Color.fromARGB(255, 60, 60, 60),
-                                                    ),
                                                     errorWidget: (context, url, error) => Container(
                                                       color: const Color(0xFF71B77A),
                                                       child: const Center(

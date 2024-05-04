@@ -106,10 +106,6 @@ class _SimilarAlbumsState extends State<SimilarAlbums> {
                                               imageUrl: albumsList[index].picture ?? "",
                                               memCacheHeight: 180,
                                               memCacheWidth: 180,
-                                              placeholder: (context, url) => const CircularProgressIndicator(
-                                                strokeWidth: 5,
-                                                color: Color.fromARGB(255, 60, 60, 60),
-                                              ),
                                               errorWidget: (context, url, error) => Container(
                                                 color: const Color(0xFF71B77A),
                                                 child: const Center(

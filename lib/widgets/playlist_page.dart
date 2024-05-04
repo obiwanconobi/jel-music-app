@@ -93,7 +93,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        //child: CircularProgressIndicator(),
                       );
                     } else if (snapshot.hasError) {
                       return Center(
@@ -310,10 +310,6 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                                     imageUrl: songsList[index].albumPicture ?? "",
                                                     memCacheHeight: 150,
                                                     memCacheWidth: 150,
-                                                    placeholder: (context, url) => const CircularProgressIndicator(
-                                                      strokeWidth: 5,
-                                                      color: Color.fromARGB(255, 60, 60, 60),
-                                                    ),
                                                     errorWidget: (context, url, error) => Container(
                                                       color: const Color(0xFF71B77A),
                                                       child: const Center(
