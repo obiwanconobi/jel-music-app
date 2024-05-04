@@ -55,7 +55,7 @@ class _SongsPageState extends State<SongsPage> {
   @override
   void initState(){
     super.initState();
-    favourite = albumController.returnFavourite(artistIds!, albumIds!);
+    favourite = controller.returnFavourite(artistIds!, albumIds!);
     controller.albumId = albumIds;
     controller.artistId = artistIds;
     songsFuture = controller.onInit();
@@ -116,7 +116,7 @@ class _SongsPageState extends State<SongsPage> {
   }
 
   _favouriteAlbum(String albumName, String artistName, bool favourite)async{
-    albumController.toggleFavourite(artistName, albumName, !favourite);
+    controller.toggleFavourite(artistName, albumName, !favourite);
     setState(() {
         favourite = !favourite;
     });
@@ -126,14 +126,16 @@ class _SongsPageState extends State<SongsPage> {
     await songsHelper.openBox();
 
     if(current){
-      apiController.unFavouriteItem(songId);
-      songsHelper.likeSong(artist, title, !current);
+      //unfavourite
+      controller.toggleFavouriteSong(songId, false);
+      songsHelper.likeSong(artist, title, false);
       setState(() {
         songsFuture = controller.onInit();
       });
     }else{
-      apiController.favouriteItem(songId);
-      songsHelper.likeSong(artist, title, !current);
+      //favourite
+      controller.toggleFavouriteSong(songId, true);
+      songsHelper.likeSong(artist, title, true);
        setState(() {
         songsFuture = controller.onInit();
       });
@@ -162,7 +164,7 @@ class _SongsPageState extends State<SongsPage> {
     var songsList = controller.songs;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text(albumIds!, style: Theme.of(context).textTheme.bodyLarge),),
+        appBar: AppBar(foregroundColor: Theme.of(context).textTheme.bodySmall!.color, backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text(albumIds!, style: Theme.of(context).textTheme.bodyLarge),),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
@@ -367,7 +369,7 @@ class _SongsPageState extends State<SongsPage> {
                             Container(
                             padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
                             alignment: Alignment.centerLeft,
-                            child:  const Text('Similar Albums', style: TextStyle(color: Colors.grey, fontSize: 20))),
+                            child: Text('Similar Albums', style: Theme.of(context).textTheme.bodyLarge)),
                             SimilarAlbums(albumId: albumIds!, artistId: artistIds!,),
                           ],
                         ),

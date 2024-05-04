@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/models/album.dart';
+import 'package:jel_music/models/artist.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/similar_artists.dart';
 import 'package:jel_music/widgets/songs_page.dart';
@@ -23,22 +24,54 @@ class _AlbumPageState extends State<AlbumPage> {
   var controller = GetIt.instance<AlbumController>();
   
   late Future<List<Album>> albumsFuture;
-
+  late Future<Artists> artistInfo;
+  bool fav = false;
 
   @override
   void initState() {
     super.initState();
     controller.artistId = artistIds;
     albumsFuture = controller.onInit();
+    artistInfo = controller.getArtistInfo();
+    
   }
 
+
+  //Icon(Icons.favorite, color: ((controller.artistInfo.favourite ?? false) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30),)
+  
+  _toggleFavourite(String artistId)async{
+    var current = controller.artistInfo.favourite;
+    controller.toggleArtistFavourite(artistId, current!);
+    fav = !fav;
+  }
 
   @override
   Widget build(BuildContext context) {
     controller.artistId = artistIds;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text(artistIds!, style: Theme.of(context).textTheme.bodyLarge),),
+        appBar: AppBar(actions: [Padding(padding: const EdgeInsets.fromLTRB(0, 0, 15, 0), child: FutureBuilder<Artists>(
+          future: artistInfo,
+          builder: (context, snapshot){
+            if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        //child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Error: ${snapshot.error}'),
+                      );
+                    } else if (!snapshot.hasData) {
+                      return const Center(
+                        child: Text('No artists available.'),
+                      );
+                    } else {
+                      fav = snapshot.data!.favourite!;
+                      return IconButton(icon: Icon(Icons.favorite, color: (fav ? Colors.red : Theme.of(context).colorScheme.secondary),), 
+                    onPressed: () {setState(() {_toggleFavourite(snapshot.data!.id!);});});
+                    }
+          }
+        ))], backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text(artistIds!, style: Theme.of(context).textTheme.bodyLarge),),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
@@ -166,7 +199,7 @@ class _AlbumPageState extends State<AlbumPage> {
                              Container(
                             padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
                             alignment: Alignment.centerLeft,
-                            child:  const Text('Similar Artists', style: TextStyle(color: Colors.grey, fontSize: 20))),
+                            child:  Text('Similar Artists', style:Theme.of(context).textTheme.bodyLarge)),
                            
                             SimilarArtists(artistId: artistIds!,),
                           ],

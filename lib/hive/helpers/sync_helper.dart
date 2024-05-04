@@ -48,6 +48,8 @@ class SyncHelper{
       if(artist == null){
         if(favArtists.contains(song.artist)){
           artistFavourite = true;
+        }else{
+          artistFavourite = false;
         }
 
        

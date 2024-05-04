@@ -1,30 +1,54 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:jel_music/controllers/api_controller.dart';
+import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
+import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:jel_music/models/artist.dart';
 
 class AlbumController {
     var albums = <Album>[];
     String? artistId;
     final int currentArtistIndex = 0;
     String? albumId;
+    late Artists artistInfo = Artists();
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
    // ApiController apiController = ApiController();
     var apiController = GetIt.instance<ApiController>();
     AlbumsHelper albumHelper = AlbumsHelper();
+    ArtistsHelper artistsHelper = ArtistsHelper();
+    JellyfinHandler jellyfinHandler = JellyfinHandler();
 
      Future<List<Album>> onInit() async {
     try {
+      await getArtistInfo();
       await albumHelper.openBox();
       albums =  _getAlbumsFromBox(artistId!);
       return albums;
     } catch (error) {
       rethrow; // Rethrow the error if necessary
     }
+  }
+
+  Future<Artists> getArtistInfo()async{
+     await artistsHelper.openBox();
+     var artistRaw = artistsHelper.returnArtist(artistId!);
+     artistInfo.id = artistRaw!.id;
+     artistInfo.name = artistRaw.name;
+     artistInfo.picture = artistRaw.picture;
+     artistInfo.favourite = artistRaw.favourite;
+     return artistInfo;
+  }
+
+  toggleArtistFavourite(String itemId, bool current)async{
+    await jellyfinHandler.updateFavouriteStatus(artistInfo.id!, current);
+    artistsHelper.openBox();
+    artistsHelper.updateFavouriteStatus(itemId);
   }
 
   Future<List<Album>> returnSimilar()async{
@@ -45,22 +69,8 @@ class AlbumController {
 
   }
 
-  toggleFavourite(String artist, String title, bool favourite)async{
-    await albumHelper.openBox();
-    Albums? album = albumHelper.returnAlbum(artist, title);
-    album!.favourite = favourite;
-    albumHelper.updateAlbum(album, album.key);
-    apiController.updateFavouriteStatus(album.id, !favourite);
-  }
-
-  Future<bool> returnFavourite(String artist, String album)async{
-    await albumHelper.openBox();
-    return albumHelper.isFavourite(artist, album);
-    
-  }
 
   List<Album> _getAlbumsFromBox(String artistIdVal){
-
       List<Albums> albumsRaw = [];
       albumsRaw = albumHelper.returnAlbumsForArtist(artistIdVal);
      

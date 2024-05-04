@@ -27,8 +27,9 @@ class _StartPageState extends State<StartPage> {
     // sets theme mode to dark
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(actions: [Padding(padding: const EdgeInsets.fromLTRB(0, 0, 15, 0), child: IconButton(icon: const Icon(Icons.settings), 
+        appBar: AppBar(actions: [Padding(padding: const EdgeInsets.fromLTRB(0, 0, 15, 0), child: IconButton(icon:  const Icon(Icons.settings), 
                   onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage()),);}))],
+                  foregroundColor: Theme.of(context).textTheme.bodySmall!.color,
                   backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('panaudio', style: Theme.of(context).textTheme.bodyLarge),),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/music_controller.dart';
+import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,8 @@ class Controls extends StatefulWidget {
 
 class _ControlsState extends State<Controls> {
   //ApiController apiController = ApiController();
-  var apiController = GetIt.instance<ApiController>();
+ // var apiController = GetIt.instance<ApiController>();
+  var jellyfinHandler = GetIt.instance<JellyfinHandler>();
   final Conversions _conversions = Conversions();
 
   void onInit(){
@@ -62,7 +64,7 @@ class _ControlsState extends State<Controls> {
   }
 
   _favouriteSong(String itemId, bool current){
-    apiController.updateFavouriteStatus(itemId, current);
+    jellyfinHandler.updateFavouriteStatus(itemId, current);
     MusicControllerProvider.of(context, listen: false).updateCurrentSongFavStatus();
   }
 

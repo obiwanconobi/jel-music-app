@@ -72,7 +72,7 @@ class ArtistController {
       for(var artist in artistsRaw){
           String artistId = artist.id;
          var pictureUrl = "$baseServerUrl/Items/$artistId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
-        artistsList.add(Artists(id: artist.id, name: artist.name, picture: pictureUrl));
+        artistsList.add(Artists(id: artist.id, name: artist.name, picture: pictureUrl, favourite: artist.favourite));
       }
 
    
