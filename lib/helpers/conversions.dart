@@ -11,4 +11,21 @@ class Conversions{
       }
     return 0;
   }
+
+  String returnTicksToTimestampString(int ticks) {
+    // Ticks per second
+      const int ticksPerSecond = 10000000;
+
+      // Calculate the total seconds
+      int totalSeconds = ticks ~/ ticksPerSecond;
+
+      // Extract minutes and seconds
+      int minutes = totalSeconds ~/ 60;
+      int seconds = totalSeconds % 60;
+
+      // Format the result as "mm:ss"
+      String timestampString = "${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}";
+
+      return timestampString;
+    }
 }
