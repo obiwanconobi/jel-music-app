@@ -97,7 +97,7 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
                       return InkWell(
                         onTap:() => {
                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => PlaylistPage(playlistId: _filteredPlaylists[index].id!)),
+                              MaterialPageRoute(builder: (context) => PlaylistPage(playlistId: _filteredPlaylists[index].id!, playlistName: _filteredPlaylists[index].name!,)),
                       )},     
                         child: SizedBox(
                           height: 15.h,

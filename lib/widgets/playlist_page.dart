@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:jel_music/controllers/liked_controller.dart';
 import 'package:jel_music/controllers/playlist_controller.dart';
+import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
@@ -11,18 +11,22 @@ import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:sizer/sizer.dart';
 
 String? playlistIds;
+String? playlistNames;
 
 class PlaylistPage extends StatefulWidget {
-  PlaylistPage({super.key, required this.playlistId}){
+  PlaylistPage({super.key, required this.playlistId, required this.playlistName}){
     playlistIds = playlistId;
+    playlistNames = playlistName;
   }
   
-  final playlistId;
+  final String playlistId;
+  final String playlistName;
   @override
   State<PlaylistPage> createState() => _PlaylistPageState();
 }
 
 class _PlaylistPageState extends State<PlaylistPage> {
+  List<Songs> songsList = [];
   var controller = GetIt.instance<PlaylistController>();
   Mappers mapper = Mappers();
   late Future<List<Songs>> songsFuture;
@@ -30,6 +34,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
   @override
   void initState() {
     super.initState();
+    songsList.clear();
     controller.playlistId = playlistIds!;
     songsFuture = controller.onInit();
   }
@@ -49,14 +54,28 @@ class _PlaylistPageState extends State<PlaylistPage> {
     
   }
 
+
+  _deleteSong(String playlistSongId)async{
+    await controller.deleteSongFromPlaylist(playlistSongId, playlistIds!);
+    setState(() {
+      int indexToRemove = songsList.indexWhere((item) => item.albumId == playlistSongId);
+      if (indexToRemove != -1) {
+        // Remove the item at the specified index
+        songsList.removeAt(indexToRemove);
+      } else {
+        // Log Error
+      }
+    });
+  }
+
   
 
   @override
   Widget build(BuildContext context) {
-    var songsList = controller.playlistList;
+    songsList = controller.playlistList;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('Playlist', style: Theme.of(context).textTheme.bodyLarge),),
+        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text(playlistNames!, style: Theme.of(context).textTheme.bodyLarge),),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
@@ -346,7 +365,8 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                                   ),
                                                 ],
                                               ),
-                                            )
+                                            ),
+                                            IconButton(icon: const Icon(Icons.delete), color: Colors.red, onPressed: () {_deleteSong(songsList[index].albumId!);},)
                                           ],
                                         ),
                                       ),
@@ -360,7 +380,6 @@ class _PlaylistPageState extends State<PlaylistPage> {
                     }
                   }
                 )
-
               ),
             ],
           ),

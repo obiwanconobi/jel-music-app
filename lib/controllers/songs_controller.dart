@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:get_storage/get_storage.dart';
@@ -12,7 +15,7 @@ class SongsController {
     SongsHelper songsHelper = SongsHelper();
     final int currentArtistIndex = 0;
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
-
+    JellyfinHandler jellyfinHandler = GetIt.instance<JellyfinHandler>();
      Future<List<Songs>> onInit() async {
     try {
      // songs = await fetchSongs(albumId!);
@@ -23,6 +26,22 @@ class SongsController {
      
       rethrow; // Rethrow the error if necessary
     }
+  }
+
+  Future<List<PopupMenuEntry<String>>> returnPlaylists()async{
+      var playlistsRaw =  await jellyfinHandler.returnPlaylists();
+      List<PopupMenuEntry<String>> playlistMenus = [];
+      for(var playlist in playlistsRaw){
+          playlistMenus.add(PopupMenuItem(
+          value: playlist.id,
+          child: Text(playlist.name!),
+        ));
+      }
+      return playlistMenus;
+  }
+
+  Future<void> addSongToPlaylist(String songId, String playlistId)async{
+    await jellyfinHandler.addSongToPlaylist(songId, playlistId);
   }
 
   Future<List<Songs>> returnDownloaded()async{
