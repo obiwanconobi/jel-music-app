@@ -16,7 +16,12 @@
       required this.length,
       this.favourite, // marked as nullable
       this.downloaded,
-      this.discIndex
+      this.discIndex,
+      this.codec,
+      this.bitrate,
+      this.bitdepth,
+      this.samplerate
+
     });
 
     @HiveField(0)
@@ -54,6 +59,18 @@
 
     @HiveField(11)
     int? discIndex;
+
+    @HiveField(12)
+    String? codec;
+
+    @HiveField(13)
+    int? bitrate;
+
+    @HiveField(14)
+    int? bitdepth;
+
+    @HiveField(15)
+    int? samplerate;
   
     @override
     String toString() {

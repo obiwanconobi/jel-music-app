@@ -42,27 +42,8 @@ class _AlbumPageState extends State<AlbumPage> {
   
   _toggleFavourite(String artistId)async{
     var current = controller.artistInfo.favourite;
-    controller.toggleArtistFavourite(artistId, current!);
-    fav = !fav;
+    await controller.toggleArtistFavourite(artistId, current!);
   }
-
-/*   FutureBuilder<Artists>(
-          future: artistInfo,
-          builder: (context, snapshot){
-            if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        //child: CircularProgressIndicator(),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text('Error: ${snapshot.error}'),
-                      );
-                    } else if (!snapshot.hasData) {
-                      return const Center(
-                        child: Text('No artists available.'),
-                      );
-                    } else {
-                      fav = snapshot.data!.favourite!; */
 
   @override
   Widget build(BuildContext context) {
@@ -76,9 +57,9 @@ class _AlbumPageState extends State<AlbumPage> {
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,
-            left: 16.sp,
+            left: 0.sp,
             bottom: 10.sp,
-            right: 16.sp,
+            right: 0.sp,
           ),
           child: SingleChildScrollView(
             child: Column(
@@ -101,6 +82,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                     );
                                   } else {
                                     var artist = snapshot.data!;
+                                    fav = artist.favourite!;
                                     return Column(mainAxisSize: MainAxisSize.min,children: 
                                     [
                                       ExpandableText(
@@ -110,7 +92,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                             maxLines: 4,
                                             linkColor: Colors.blue,
                                         ),
-                                      Icon(Icons.favorite, color: ((artist.favourite ?? false) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30),
+                                      IconButton(onPressed:()=>{setState(() {artist.favourite = !artist.favourite!;}), _toggleFavourite(artist.id!)}, icon: Icon(Icons.favorite, color: ((artist.favourite!) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30),)
                                     ],);
                             }}),
                 FutureBuilder<List<Album>>(

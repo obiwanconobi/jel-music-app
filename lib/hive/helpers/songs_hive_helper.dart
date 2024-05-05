@@ -108,9 +108,15 @@ class SongsHelper{
 
     for(var song in songs["Items"]){
         try{
-          songsList.add(Songs(id: song["Id"], name: song["Name"], artist: song["ArtistItems"][0]["Name"], artistId: song["ArtistItems"][0]["Id"], album: song["Album"], albumId: song["AlbumId"], index: song["IndexNumber"] ?? 0, year: song["ProductionYear"] ?? 0, length: _ticksToTimestampString(song["RunTimeTicks"] ?? 0), favourite: song["UserData"]["IsFavorite"], discIndex: song["ParentIndexNumber"] ?? 1));
+          songsList.add(Songs(id: song["Id"], name: song["Name"], artist: song["ArtistItems"][0]["Name"],
+           artistId: song["ArtistItems"][0]["Id"], album: song["Album"], albumId: song["AlbumId"], 
+           index: song["IndexNumber"] ?? 0, year: song["ProductionYear"] ?? 0, length: _ticksToTimestampString(song["RunTimeTicks"] ?? 0),
+            favourite: song["UserData"]["IsFavorite"], discIndex: song["ParentIndexNumber"] ?? 1,
+            codec: song["MediaStreams"][0]["Codec"], bitrate: song["MediaStreams"][0]["BitRate"], bitdepth: song["MediaStreams"][0]["BitDepth"],
+            samplerate: song["MediaStreams"][0]["SampleRate"]));
         }catch(e){
          //log error
+         print('lol');
         }
      }
      for(var song in songsList){
@@ -127,7 +133,7 @@ class SongsHelper{
           'X-MediaBrowser-Token': '$accessToken',
           'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
         };
-      String url = "$baseServerUrl/Users/$userId/Items?recursive=true&includeItemTypes=Audio&enableUserData=true&enableTotalRecordCount=true&enableImages=true";
+      String url = "$baseServerUrl/Users/$userId/Items?recursive=true&includeItemTypes=Audio&fields=MediaStreams&enableUserData=true&enableTotalRecordCount=true&enableImages=true";
       http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
       if (res.statusCode == 200) {
         return json.decode(res.body);

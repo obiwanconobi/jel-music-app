@@ -66,6 +66,7 @@ class _SimilarAlbumsState extends State<SimilarAlbums> {
             child: Column(
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SizedBox(
                       height: 30.h,
@@ -95,7 +96,7 @@ class _SimilarAlbumsState extends State<SimilarAlbums> {
                                     children: [
                                       Padding(
                                         padding:
-                                            const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                            EdgeInsets.all(4.sp),
                                         child: SizedBox(
                                           height:35.w,
                                           width: 37.w,

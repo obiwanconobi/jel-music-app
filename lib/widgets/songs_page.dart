@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
-import 'package:jel_music/controllers/playlist_controller.dart';
 import 'package:jel_music/controllers/songs_controller.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
@@ -14,7 +13,6 @@ import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/similar_albums.dart';
 import 'package:sizer/sizer.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/tap_bounce_container.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 String? albumIds;
 String? artistIds;
@@ -115,10 +113,12 @@ class _SongsPageState extends State<SongsPage> {
     
   }
 
-  _favouriteAlbum(String albumName, String artistName, bool favourite)async{
-    controller.toggleFavourite(artistName, albumName, !favourite);
+  _favouriteAlbum(String albumName, String artistName, bool fave)async{
+    controller.toggleFavourite(artistName, albumName, !fave);
+    
     setState(() {
-        favourite = !favourite;
+      favourite = controller.returnFavourite(artistIds!, albumIds!);
+      fave = !fave;
     });
   }
 
@@ -169,9 +169,9 @@ class _SongsPageState extends State<SongsPage> {
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,
-            left: 16.sp,
+            left: 0.sp,
             bottom: 10.sp,
-            right: 16.sp,
+            right: 0.sp,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -238,7 +238,7 @@ class _SongsPageState extends State<SongsPage> {
                                 child: Text('Error: ${snapshot.error}'),
                               );
                             } else {
-                              fave = snapshot.data;
+                              fave = snapshot.data ?? false;
                               return  
                             Column(
                               children: [
@@ -246,7 +246,8 @@ class _SongsPageState extends State<SongsPage> {
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     OutlinedButton(onPressed: () => _addAllToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor), child: Text('Play All', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
-                                    IconButton(icon: Icon(Icons.favorite, color: ((snapshot.data ?? false) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30), onPressed: () { setState(){ fave = !fave!;}_favouriteAlbum(albumIds!, artistIds!, snapshot.data!); },),
+                                    IconButton(onPressed:()=>{_favouriteAlbum(albumIds!, artistIds!, fave!)}, icon: Icon(Icons.favorite, color: ((fave!) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30),),
+                                   // IconButton(icon: Icon(Icons.favorite, color: ((fave ?? false) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30), onPressed: () => { setState(() {fave = !fave!;}),_favouriteAlbum(albumIds!, artistIds!, snapshot.data!) },),
                                     OutlinedButton(onPressed: () => _addShuffledToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor), child: Text('Shuffle',style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
                                   //  OutlinedButton(onPressed: () => _shuffleQueue(), child: const Text('Add queue')),
                                   ],
@@ -261,6 +262,7 @@ class _SongsPageState extends State<SongsPage> {
                             ),
                             const SizedBox(height: 16.0),
                             ListView.builder(
+                              padding: EdgeInsets.fromLTRB(16.sp, 0, 16.sp, 0),
                               shrinkWrap: true,
                               itemCount: songsList.length,
                               physics: const BouncingScrollPhysics(),
@@ -377,7 +379,7 @@ class _SongsPageState extends State<SongsPage> {
                     }
                   }
                 )
-
+              
               ),
             ],
           ),
