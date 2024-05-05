@@ -21,13 +21,14 @@ class ArtistsAdapter extends TypeAdapter<Artists> {
       id: fields[1] as String,
       picture: fields[2] as String,
       favourite: fields[3] as bool?,
+      overview: fields[4] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Artists obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class ArtistsAdapter extends TypeAdapter<Artists> {
       ..writeByte(2)
       ..write(obj.picture)
       ..writeByte(3)
-      ..write(obj.favourite);
+      ..write(obj.favourite)
+      ..writeByte(4)
+      ..write(obj.overview);
   }
 
   @override

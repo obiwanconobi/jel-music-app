@@ -42,6 +42,7 @@ class AlbumController {
      artistInfo.name = artistRaw.name;
      artistInfo.picture = artistRaw.picture;
      artistInfo.favourite = artistRaw.favourite;
+     artistInfo.overview = artistRaw.overview;
      return artistInfo;
   }
 

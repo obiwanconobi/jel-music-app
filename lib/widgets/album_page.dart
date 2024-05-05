@@ -45,12 +45,7 @@ class _AlbumPageState extends State<AlbumPage> {
     fav = !fav;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    controller.artistId = artistIds;
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(actions: [Padding(padding: const EdgeInsets.fromLTRB(0, 0, 15, 0), child: FutureBuilder<Artists>(
+/*   FutureBuilder<Artists>(
           future: artistInfo,
           builder: (context, snapshot){
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -66,12 +61,16 @@ class _AlbumPageState extends State<AlbumPage> {
                         child: Text('No artists available.'),
                       );
                     } else {
-                      fav = snapshot.data!.favourite!;
-                      return IconButton(icon: Icon(Icons.favorite, color: (fav ? Colors.red : Theme.of(context).colorScheme.secondary),), 
-                    onPressed: () {setState(() {_toggleFavourite(snapshot.data!.id!);});});
-                    }
-          }
-        ))], backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text(artistIds!, style: Theme.of(context).textTheme.bodyLarge),),
+                      fav = snapshot.data!.favourite!; */
+
+  @override
+  Widget build(BuildContext context) {
+    controller.artistId = artistIds;
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(centerTitle: true, title: Text(artistIds!, style: Theme.of(context).textTheme.bodyLarge),
+        backgroundColor: Theme.of(context).colorScheme.background,
+        foregroundColor: Theme.of(context).textTheme.bodySmall!.color,),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
@@ -80,11 +79,12 @@ class _AlbumPageState extends State<AlbumPage> {
             bottom: 10.sp,
             right: 16.sp,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: FutureBuilder<List<Album>>(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                FutureBuilder<List<Album>>(
                   future: albumsFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -102,115 +102,135 @@ class _AlbumPageState extends State<AlbumPage> {
                     } else {
                       // Data is available, build the list
                       List<Album> albumsList = snapshot.data!;
-                      return SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            GridView.builder(
-                              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 250, // Adjust this value according to your needs
-                                  mainAxisSpacing: 18,
-                                  mainAxisExtent: 25.h,
-                                ),
-                             shrinkWrap: true,
-                              itemCount: albumsList.length,
-                              physics: const BouncingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return SizedBox(
-                                  child: InkWell(
-                                    onTap:() => {
-                                      Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => SongsPage(albumId: albumsList[index].title!, artistId: albumsList[index].artist!,)),
-                                      )}, 
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.sp),
-                                    ),
-                                    child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).colorScheme.background,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.sp),
-                                          ),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                                              child: SizedBox(
-                                                height:40.w,
-                                                width: 42.w,
-                                                child: ClipRRect(
-                                                  borderRadius: BorderRadius.circular(4.w),
-                                                  child: CachedNetworkImage(
-                                                    fit: BoxFit.fill,
-                                                    imageUrl: albumsList[index].picture ?? "",
-                                                    memCacheHeight: 180,
-                                                    memCacheWidth: 180,
-                                                    errorWidget: (context, url, error) => Container(
-                                                      color: const Color(0xFF71B77A),
-                                                      child: const Center(
-                                                        child: Text("404"),
-                                                      ),
-                                                    ),
-                                                  )
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  Row(
-                                                    mainAxisSize: MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.spaceBetween,
-                                                    children: [
-                                                      Flexible(
-                                                        child: Center(
-                                                          child: Text(
-                                                            albumsList[index].title!,
-                                                            style: TextStyle(
-                                                              fontSize: 13.sp,
-                                                              color: Theme.of(context).textTheme.bodySmall!.color,
-                                                              fontWeight: FontWeight.bold,
-                                                              fontFamily: "Segoe UI",
-                                                            ),
-                                                            overflow: TextOverflow.ellipsis, // Set overflow property
-                                                            maxLines: 1, // Set the maximum number of lines
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
+                      return Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          GridView.builder(
+                            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 250, // Adjust this value according to your needs
+                                mainAxisSpacing: 18,
+                                mainAxisExtent: 25.h,
+                              ),
+                            shrinkWrap: true,
+                            itemCount: albumsList.length,
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return SizedBox(
+                                child: InkWell(
+                                  onTap:() => {
+                                    Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) => SongsPage(albumId: albumsList[index].title!, artistId: albumsList[index].artist!,)),
+                                    )}, 
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10.sp),
+                                  ),
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).colorScheme.background,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(10.sp),
                                         ),
                                       ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                            child: SizedBox(
+                                              height:40.w,
+                                              width: 42.w,
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(4.w),
+                                                child: CachedNetworkImage(
+                                                  fit: BoxFit.fill,
+                                                  imageUrl: albumsList[index].picture ?? "",
+                                                  memCacheHeight: 180,
+                                                  memCacheWidth: 180,
+                                                  errorWidget: (context, url, error) => Container(
+                                                    color: const Color(0xFF71B77A),
+                                                    child: const Center(
+                                                      child: Text("404"),
+                                                    ),
+                                                  ),
+                                                )
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Row(
+                                                  mainAxisSize: MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Flexible(
+                                                      child: Center(
+                                                        child: Text(
+                                                          albumsList[index].title!,
+                                                          style: TextStyle(
+                                                            fontSize: 13.sp,
+                                                            color: Theme.of(context).textTheme.bodySmall!.color,
+                                                            fontWeight: FontWeight.bold,
+                                                            fontFamily: "Segoe UI",
+                                                          ),
+                                                          overflow: TextOverflow.ellipsis, // Set overflow property
+                                                          maxLines: 1, // Set the maximum number of lines
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                );
-                              },
-                            ),
-                             Container(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
-                            alignment: Alignment.centerLeft,
-                            child:  Text('Similar Artists', style:Theme.of(context).textTheme.bodyLarge)),
-                           
-                            SimilarArtists(artistId: artistIds!,),
-                          ],
-                        ),
+                                  ),
+                              );
+                            },
+                          ),
+                          FutureBuilder<Artists>(
+                          future: artistInfo,
+                          builder: (context, snapshot){
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return const Center(
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Center(
+                                      child: Text('Error: ${snapshot.error}'),
+                                    );
+                                  } else if (!snapshot.hasData) {
+                                    return const Center(
+                                      child: Text('No artists available.'),
+                                    );
+                                  } else {
+                                    var artist = snapshot.data!;
+                                    return Column(mainAxisSize: MainAxisSize.min,children: 
+                                    [
+                                      Text(artist.overview ?? "", maxLines: 7, overflow: TextOverflow.ellipsis,)
+                                    ],);
+                            }}),
+                           Container(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
+                          alignment: Alignment.centerLeft,
+                          child:  Text('Similar Artists', style:Theme.of(context).textTheme.bodyLarge)),
+                         
+                          SimilarArtists(artistId: artistIds!,),
+                        ],
                       );
                     }
                   }
-                )
-
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
         bottomNavigationBar: const Controls(),

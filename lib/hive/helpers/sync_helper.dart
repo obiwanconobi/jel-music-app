@@ -47,13 +47,15 @@ class SyncHelper{
       
       var artist = artistsHelper.returnArtist(song.artist);
       bool artistFavourite = false;
+      if(song.artist == 'blink-182'){
+          print('stop');
+        }
       if(artist == null){
         if(favArtists.contains(song.artist)){
           artistFavourite = true;
         }else{
           artistFavourite = false;
         }
-
         var artistFull = await jellyfinHandler.returnArtistBio(song.artist);
         var overview = artistFull["Overview"];
         await artistsHelper.addArtistToBox(Artists(id: song.artistId, name: song.artist, picture: song.artistId, favourite: artistFavourite, overview: overview));
