@@ -9,6 +9,7 @@
       required this.id,
       required this.picture,
       this.favourite, // marked as nullable
+      this.overview
     });
 
     @HiveField(0)
@@ -22,6 +23,9 @@
 
     @HiveField(3)
     bool? favourite; // marked as nullable
+
+    @HiveField(4)
+    String? overview;
 
     @override
     String toString() {

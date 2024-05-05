@@ -18,6 +18,10 @@ class JellyfinHandler{
     await jellyfinRepo.updateFavouriteStatus(itemId, current);
   }
 
+  returnArtistBio(String artistName)async{
+    return await jellyfinRepo.getArtistBio(artistName);
+  }
+
   Future<List<Artists>> fetchArtists()async{
 
       var artistRaw = await jellyfinRepo.getArtistData();

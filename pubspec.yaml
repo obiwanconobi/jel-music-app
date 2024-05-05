@@ -54,6 +54,7 @@ dependencies:
   path_provider: 2.0.9
   get_it: ^7.7.0
   top_snackbar_flutter: ^3.1.0
+  expandable_text: 2.3.0
   
 
   # The following adds the Cupertino Icons font to your application.

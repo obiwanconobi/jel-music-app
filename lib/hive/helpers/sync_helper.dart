@@ -1,3 +1,4 @@
+import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/hive/classes/songs.dart';
@@ -11,6 +12,7 @@ class SyncHelper{
   SongsHelper songsHelper = SongsHelper();
   AlbumsHelper albumsHelper = AlbumsHelper();
   ArtistsHelper artistsHelper = ArtistsHelper();
+  JellyfinHandler jellyfinHandler = JellyfinHandler();
 
   runSync()async{
 
@@ -45,15 +47,18 @@ class SyncHelper{
       
       var artist = artistsHelper.returnArtist(song.artist);
       bool artistFavourite = false;
+      if(song.artist == 'blink-182'){
+          print('stop');
+        }
       if(artist == null){
         if(favArtists.contains(song.artist)){
           artistFavourite = true;
         }else{
           artistFavourite = false;
         }
-
-       
-        await artistsHelper.addArtistToBox(Artists(id: song.artistId, name: song.artist, picture: song.artistId, favourite: artistFavourite));
+        var artistFull = await jellyfinHandler.returnArtistBio(song.artist);
+        var overview = artistFull["Overview"];
+        await artistsHelper.addArtistToBox(Artists(id: song.artistId, name: song.artist, picture: song.artistId, favourite: artistFavourite, overview: overview));
       }
 
       var album = albumsHelper.returnAlbum(song.artist, song.album);
