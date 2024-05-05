@@ -169,9 +169,9 @@ class _SongsPageState extends State<SongsPage> {
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,
-            left: 16.sp,
+            left: 0.sp,
             bottom: 10.sp,
-            right: 16.sp,
+            right: 0.sp,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -261,6 +261,7 @@ class _SongsPageState extends State<SongsPage> {
                             ),
                             const SizedBox(height: 16.0),
                             ListView.builder(
+                              padding: EdgeInsets.fromLTRB(16.sp, 0, 16.sp, 0),
                               shrinkWrap: true,
                               itemCount: songsList.length,
                               physics: const BouncingScrollPhysics(),
@@ -377,7 +378,7 @@ class _SongsPageState extends State<SongsPage> {
                     }
                   }
                 )
-
+              
               ),
             ],
           ),

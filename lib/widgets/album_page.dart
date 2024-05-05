@@ -76,9 +76,9 @@ class _AlbumPageState extends State<AlbumPage> {
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,
-            left: 16.sp,
+            left: 0.sp,
             bottom: 10.sp,
-            right: 16.sp,
+            right: 0.sp,
           ),
           child: SingleChildScrollView(
             child: Column(
