@@ -85,6 +85,33 @@ class _AlbumPageState extends State<AlbumPage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                FutureBuilder<Artists>(
+                          future: artistInfo,
+                          builder: (context, snapshot){
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return const Center(
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Center(
+                                      child: Text('Error: ${snapshot.error}'),
+                                    );
+                                  } else if (!snapshot.hasData) {
+                                    return const Center(
+                                      child: Text('No artists available.'),
+                                    );
+                                  } else {
+                                    var artist = snapshot.data!;
+                                    return Column(mainAxisSize: MainAxisSize.min,children: 
+                                    [
+                                      ExpandableText(
+                                            artist.overview ?? "",
+                                            expandText: 'show more',
+                                            collapseText: 'show less',
+                                            maxLines: 4,
+                                            linkColor: Colors.blue,
+                                        )
+                                    ],);
+                            }}),
                 FutureBuilder<List<Album>>(
                   future: albumsFuture,
                   builder: (context, snapshot) {
@@ -198,33 +225,6 @@ class _AlbumPageState extends State<AlbumPage> {
                               );
                             },
                           ),
-                          FutureBuilder<Artists>(
-                          future: artistInfo,
-                          builder: (context, snapshot){
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                                    return const Center(
-                                    );
-                                  } else if (snapshot.hasError) {
-                                    return Center(
-                                      child: Text('Error: ${snapshot.error}'),
-                                    );
-                                  } else if (!snapshot.hasData) {
-                                    return const Center(
-                                      child: Text('No artists available.'),
-                                    );
-                                  } else {
-                                    var artist = snapshot.data!;
-                                    return Column(mainAxisSize: MainAxisSize.min,children: 
-                                    [
-                                      ExpandableText(
-                                            artist.overview ?? "",
-                                            expandText: 'show more',
-                                            collapseText: 'show less',
-                                            maxLines: 7,
-                                            linkColor: Colors.blue,
-                                        )
-                                    ],);
-                            }}),
                            Container(
                           padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
                           alignment: Alignment.centerLeft,
