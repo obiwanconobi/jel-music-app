@@ -8,6 +8,7 @@ import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/similar_artists.dart';
 import 'package:jel_music/widgets/songs_page.dart';
 import 'package:sizer/sizer.dart';
+import 'package:expandable_text/expandable_text.dart';
 String? artistIds;
 
 class AlbumPage extends StatefulWidget {
@@ -215,7 +216,13 @@ class _AlbumPageState extends State<AlbumPage> {
                                     var artist = snapshot.data!;
                                     return Column(mainAxisSize: MainAxisSize.min,children: 
                                     [
-                                      Text(artist.overview ?? "", maxLines: 7, overflow: TextOverflow.ellipsis,)
+                                      ExpandableText(
+                                            artist.overview ?? "",
+                                            expandText: 'show more',
+                                            collapseText: 'show less',
+                                            maxLines: 7,
+                                            linkColor: Colors.blue,
+                                        )
                                     ],);
                             }}),
                            Container(
