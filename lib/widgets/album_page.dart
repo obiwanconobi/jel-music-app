@@ -109,7 +109,8 @@ class _AlbumPageState extends State<AlbumPage> {
                                             collapseText: 'show less',
                                             maxLines: 4,
                                             linkColor: Colors.blue,
-                                        )
+                                        ),
+                                      Icon(Icons.favorite, color: ((artist.favourite ?? false) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30),
                                     ],);
                             }}),
                 FutureBuilder<List<Album>>(
