@@ -11,6 +11,10 @@ class Songs {
   final String? length;
   final int? discNumber;
   final bool? downloaded;
+  final String? codec;
+  final int? bitrate;
+  final int? bitdepth;
+  final int? samplerate;
 
   Songs({
     this.id,
@@ -24,6 +28,10 @@ class Songs {
     this.favourite,
     this.length,
     this.discNumber,
-    this.downloaded
+    this.downloaded,
+    this.codec,
+    this.bitrate,
+    this.bitdepth,
+    this.samplerate
   });
 }

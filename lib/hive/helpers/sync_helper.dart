@@ -43,13 +43,8 @@ class SyncHelper{
 
     for(var song in listOfSongs){
 
-      
-      
       var artist = artistsHelper.returnArtist(song.artist);
       bool artistFavourite = false;
-      if(song.artist == 'blink-182'){
-          print('stop');
-        }
       if(artist == null){
         if(favArtists.contains(song.artist)){
           artistFavourite = true;
