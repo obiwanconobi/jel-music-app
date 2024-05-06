@@ -2,10 +2,8 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/music_controller.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
-import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -22,8 +20,7 @@ class _ControlsState extends State<Controls> {
   //ApiController apiController = ApiController();
  // var apiController = GetIt.instance<ApiController>();
   var jellyfinHandler = GetIt.instance<JellyfinHandler>();
-  final Conversions _conversions = Conversions();
-
+ 
   void onInit(){
 
     MusicControllerProvider.of(context, listen: true).onInit();
@@ -181,7 +178,6 @@ class _ControlsState extends State<Controls> {
                                 stream: musicController.durationStream,
                                 builder: (context, snapshot) {    
                                   final duration = snapshot.data ?? Duration.zero;
-                                  var total = musicController.currentSource!.tag.duration;
                                   return 
                                     Column(
                                       children: [
@@ -201,10 +197,10 @@ class _ControlsState extends State<Controls> {
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Text(musicController.currentSource?.tag.extras["codec"], style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),
-                                            Text(musicController.currentSource?.tag.extras["bitrate"], style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),
-                                            Text(musicController.currentSource?.tag.extras["bitdepth"], style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),
-                                            Text(musicController.currentSource?.tag.extras["samplerate"], style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),
+                                            Text(musicController.currentSource?.tag.extras["codec"], style:  Theme.of(context).textTheme.labelSmall),
+                                            Text(musicController.currentSource?.tag.extras["bitrate"], style: Theme.of(context).textTheme.labelSmall),
+                                            Text(musicController.currentSource?.tag.extras["bitdepth"], style: Theme.of(context).textTheme.labelSmall),
+                                            Text(musicController.currentSource?.tag.extras["samplerate"], style: Theme.of(context).textTheme.labelSmall),
                                           ],
                                         ), 
                                         
@@ -243,7 +239,7 @@ class _ControlsState extends State<Controls> {
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.circular(2.w),
                                                   child: CachedNetworkImage(
-                                                    imageUrl: musicController.playlist.sequence[index].tag.artUri.toString() ?? "",
+                                                    imageUrl: musicController.playlist.sequence[index].tag.artUri.toString(),
                                                     memCacheHeight: 150,
                                                     memCacheWidth: 150,
                                                     errorWidget: (context, url, error) => Container(

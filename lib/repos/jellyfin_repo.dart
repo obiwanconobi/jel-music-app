@@ -15,7 +15,7 @@ class JellyfinRepo{
 
   getArtistBio(String artistName)async{
     try {
-      var userId = GetStorage().read('userId');
+    //  var userId = GetStorage().read('userId');
     
       Map<String, String> requestHeaders = {
        'Content-type': 'application/json',

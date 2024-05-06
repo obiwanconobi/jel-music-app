@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/playlist_controller.dart';
-import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
