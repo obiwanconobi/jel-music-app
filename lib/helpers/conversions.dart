@@ -12,6 +12,14 @@ class Conversions{
     return 0;
   }
 
+  codecCleanup(String codec){
+      if(codec.startsWith('PCM'))return "wav";
+      if(codec.startsWith('ALAC'))return "m4a";
+      if(codec.startsWith('FLAC'))return "flac";
+      if(codec.startsWith('MP3'))return "mp3";
+      
+  }
+
   String returnTicksToTimestampString(int ticks) {
     // Ticks per second
       const int ticksPerSecond = 10000000;
