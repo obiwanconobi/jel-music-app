@@ -62,18 +62,31 @@ class DownloadController{
   syncDownloads()async{
     var documentsDar = await getApplicationDocumentsDirectory();
 
-    final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync().where((entity) => entity.path.endsWith('.flac')).toList();
+   // final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync().where((entity) => entity.path.endsWith('.flac')).toList();
 
+      final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/']))
+    .listSync()
+    .where((entity) =>
+        entity.path.endsWith('.flac') ||
+        entity.path.endsWith('.mp3') ||
+        entity.path.endsWith('.aac') ||
+        entity.path.endsWith('.wav') ||
+        entity.path.endsWith('.m4a'))
+    .toList();
    /*   final files = documentsDar.listSync().where((entity) {
         return entity is File && (entity.path.endsWith('.flac') || entity.path.endsWith('.mp3') || entity.path.endsWith('.aac'));
       }).toList();
  */
     for(var file in files){
-        if(file.path.endsWith('.flac')){
+        if(file.path.endsWith('.flac') ||
+        file.path.endsWith('.mp3') ||
+        file.path.endsWith('.aac') ||
+        file.path.endsWith('.wav') ||
+        file.path.endsWith('.m4a')){
           String path = file.path;
           var first = p.joinAll([documentsDar.path, 'panaudio/cache/']);
           var second = path.replaceAll(first, '');
-          var id = second.replaceAll('.flac', '');
+          var id = second.split('.').first;
           
           songsController.setDownloaded(id);
     

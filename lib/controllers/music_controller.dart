@@ -261,12 +261,12 @@ AudioHandler? _audioHandler;
     return false;
   }
 
-    Future<bool> downloadSong(String id)async{
+    Future<bool> downloadSong(String id, String codec)async{
       var documentsDar = await getApplicationDocumentsDirectory();
       await getToken();
       baseServerUrl = GetStorage().read('serverUrl');
       String songUrl =  "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
-      var result = await cacheFile(url: songUrl, path: p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.flac']));
+      var result = await cacheFile(url: songUrl, path: p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.$codec']));
 
       if(result){
         setDownloaded(id);
@@ -363,7 +363,7 @@ AudioHandler? _audioHandler;
     var documentsDar = await getApplicationDocumentsDirectory();
 
     AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
-                  cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$tempId.flac'])),
+                  cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$tempId.$tempCodec'])),
                   tag: MediaItem(
                     // Specify a unique ID for each media item:
                     id: tempId!,
@@ -504,6 +504,7 @@ AudioHandler? _audioHandler;
      var documentsDar = await getApplicationDocumentsDirectory();
       String pictureUrl = stream.picture!;
       String id = stream.id!;
+      String codec = stream.codec!;
    //   String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
    String baseUrl = "$baseServerUrl/Audio/$id/stream";
       List<String> timeParts = stream.long!.split(':');
@@ -522,7 +523,7 @@ AudioHandler? _audioHandler;
                       );  */
 
     AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
-                  cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.flac'])),
+                  cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.$codec'])),
                   tag: MediaItem(
                           // Specify a unique ID for each media item:
                           id: stream.id!,
@@ -568,7 +569,7 @@ AudioHandler? _audioHandler;
         String baseUrl = "$baseServerUrl/Audio/$id/value";
             List<String> timeParts = value.long!.split(':');
             AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
-                        cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.flac'])),
+                        cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.$tempCodec'])),
                         tag: MediaItem(
                                 // Specify a unique ID for each media item:
                                 id: value.id!,
@@ -619,6 +620,7 @@ AudioHandler? _audioHandler;
       for(var stream in listOfStreams){
               String pictureUrl = stream.picture!;
               String id = stream.id!;
+              String codec = stream.codec!;
               String baseUrl = "$baseServerUrl/Audio/$id/stream";
             //  String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
               List<String> timeParts = stream.long!.split(':');
@@ -637,7 +639,7 @@ AudioHandler? _audioHandler;
                       ); */ 
               
               AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
-                  cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.flac'])),
+                  cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.$codec'])),
                   tag: MediaItem(
                           // Specify a unique ID for each media item:
                           id: stream.id!,

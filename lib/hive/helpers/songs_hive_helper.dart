@@ -100,14 +100,23 @@ class SongsHelper{
     return songsBox.values.where((element) => element.favourite == true).toList();
   }
 
-  
+  codecCleanup(String codec){
+      if(codec.startsWith('PCM'))return "wav";
+      if(codec.startsWith('ALAC'))return "m4a";
+      
+  }
 
    addSongsToBox()async{
     List<Songs> songsList = [];
     var songs = await _getSongsDataRaw();
 
     for(var song in songs["Items"]){
+
       var codec = song["MediaStreams"][0]["Codec"];
+      codec = codecCleanup(codec.toUpperCase());
+
+
+
       var bitrate = song["MediaStreams"][0]["BitRate"]~/1000;
       var bitdepth = song["MediaStreams"][0]["BitDepth"];
       var samplerate = song["MediaStreams"][0]["SampleRate"]/1000;
@@ -120,14 +129,14 @@ class SongsHelper{
             samplerate: "$samplerate kHz"));
         }catch(e){
          //log error
-         print('lol');
+       
         }
      }
      for(var song in songsList){
       try{
          songsBox.add(song);
       }catch(e){
-        print(e);
+        
       }
        
      }

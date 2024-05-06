@@ -143,7 +143,7 @@ class _SongsPageState extends State<SongsPage> {
   }
 
   _downloadFile(Songs song)async{
-    var result = await MusicControllerProvider.of(context, listen: false).downloadSong(song.id!);
+    var result = await MusicControllerProvider.of(context, listen: false).downloadSong(song.id!, song.codec!);
     String? title = song.title;
     String? artist = song.artist;
     if(result){
