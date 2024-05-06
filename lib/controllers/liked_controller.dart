@@ -61,7 +61,10 @@ class LikedController {
    //   String length = _ticksToTimestampString(song["RunTimeTicks"]);
       var imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
       try{
-        songsList.add(Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length, favourite: song.favourite));
+        songsList.add(Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,
+        artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length,
+         favourite: song.favourite, codec: song.codec, bitdepth: song.bitdepth, bitrate: song.bitrate, samplerate: song.samplerate,
+         downloaded: song.downloaded));
       }catch(e){
         
       }

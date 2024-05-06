@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
+import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/hive/classes/songs.dart';
 import 'package:http/http.dart' as http;
 
@@ -9,7 +10,7 @@ class SongsHelper{
   late Box<Songs> songsBox;
   var accessToken = GetStorage().read('accessToken');
   var baseServerUrl = GetStorage().read('serverUrl');
-  
+  Conversions conversions = Conversions();
 
   String _ticksToTimestampString(int ticks) {
       // Ticks per second
@@ -100,13 +101,7 @@ class SongsHelper{
     return songsBox.values.where((element) => element.favourite == true).toList();
   }
 
-  codecCleanup(String codec){
-      if(codec.startsWith('PCM'))return "wav";
-      if(codec.startsWith('ALAC'))return "m4a";
-      if(codec.startsWith('FLAC'))return "flac";
-      if(codec.startsWith('MP3'))return "mp3";
-      
-  }
+
 
    addSongsToBox()async{
     List<Songs> songsList = [];
@@ -115,7 +110,7 @@ class SongsHelper{
     for(var song in songs["Items"]){
 
       var codec = song["MediaStreams"][0]["Codec"];
-      codec = codecCleanup(codec.toUpperCase());
+      codec = conversions.codecCleanup(codec.toUpperCase());
 
 
 
