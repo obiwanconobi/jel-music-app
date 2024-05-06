@@ -177,7 +177,16 @@ class _ControlsState extends State<Controls> {
                                     },
                                   ),
                                   Text(musicController.currentSource?.tag.title, style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 17)),
-                                  Text(musicController.currentSource?.tag.album, style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)) 
+                                  Text(musicController.currentSource?.tag.album, style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(musicController.currentSource?.tag.extras["codec"], style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),
+                                      Text(musicController.currentSource?.tag.extras["bitrate"], style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),
+                                      Text(musicController.currentSource?.tag.extras["bitdepth"], style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),
+                                      Text(musicController.currentSource?.tag.extras["samplerate"], style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),
+                                    ],
+                                  ) 
                                 ],
                               ),
                               StreamBuilder<Duration>(

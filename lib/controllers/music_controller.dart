@@ -38,6 +38,11 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
  String? tempAlbum;
  String? tempPicture;
  bool? tempFavourite;
+ String? tempCodec;
+ String? tempBitrate;
+ String? tempBitdepth;
+ String? tempSampleRate;
+ bool? tempDownloaded;
  String? tempDuration = "00:00";
  bool? isShuffle;
  bool npChange = true;
@@ -357,7 +362,13 @@ AudioHandler? _audioHandler;
                     // Metadata to display in the notification:
                     album: tempArtist ?? "Error",
                     title: tempAlbum ?? "Error",
-                    extras: {"favourite": tempFavourite ?? false},
+                    extras: {"favourite": tempFavourite ?? false,
+                            "bitrate": tempBitrate ?? "",
+                            "bitdepth": tempBitdepth ?? "",
+                            "samplerate": tempSampleRate ?? "",
+                            "codec": tempCodec ?? "",
+                            "downloaded": tempDownloaded ?? "",
+                    },
                     artUri: Uri.parse(tempPicture!),
                     duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
                   ));
@@ -403,6 +414,8 @@ AudioHandler? _audioHandler;
 
     }
 
+
+
   
 
   IndexedAudioSource? getCurrentSong(){
@@ -417,7 +430,13 @@ AudioHandler? _audioHandler;
                     title: tempAlbum ?? "Error",
                     duration: const Duration(seconds: 0),
                     displayDescription: tempPicture ??  ("error"),
-                    extras: {'favourite': tempFavourite ?? false},
+                    extras: {'favourite': tempFavourite ?? false,
+                            "bitrate": "",
+                            "bitdepth": "",
+                            "samplerate": "",
+                            "codec": "",
+                            "downloaded": "",
+                    },
                     artUri: Uri.parse(tempPicture ?? ('https://error.com')),
                   ),
                 );
@@ -464,6 +483,12 @@ AudioHandler? _audioHandler;
     tempPicture = value.picture;
     tempFavourite = value.isFavourite;
     tempDuration = value.long;
+    tempCodec = value.codec;
+    tempBitdepth = value.bitdepth.toString();
+    tempBitrate = value.bitrate.toString();
+    tempSampleRate = value.samplerate.toString();
+    tempDownloaded = value.downloaded;
+
     _addSongToQueue(value);
   }
 
@@ -496,7 +521,14 @@ AudioHandler? _audioHandler;
                           // Metadata to display in the notification:
                           album: stream.composer ?? "Error",
                           title: stream.title ?? "Error",
-                          extras: {"favourite": stream.isFavourite},
+                          extras: {
+                            "favourite": stream.isFavourite,
+                            "bitrate": stream.bitrate,
+                            "bitdepth": stream.bitdepth,
+                            "samplerate": stream.samplerate,
+                            "codec": stream.codec,
+                            "downloaded": stream.downloaded,
+                          },
                           duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
                           artUri: Uri.parse(pictureUrl),
                         ),);                  
@@ -514,6 +546,11 @@ AudioHandler? _audioHandler;
         tempPicture = value.picture;
         tempFavourite = value.isFavourite;
         tempDuration = value.long;
+    tempCodec = value.codec;
+    tempBitdepth = value.bitdepth.toString();
+    tempBitrate = value.bitrate.toString();
+    tempSampleRate = value.samplerate.toString();
+    tempDownloaded = value.downloaded;
       resume();
     }else{
       var documentsDar = await getApplicationDocumentsDirectory();
@@ -544,7 +581,15 @@ AudioHandler? _audioHandler;
                                 // Metadata to display in the notification:
                                 album: value.composer ?? "Error",
                                 title: value.title ?? "Error",
-                                extras: {"favourite": value.isFavourite},
+                                extras: {
+                                  "favourite": value.isFavourite,
+                                  "bitrate": value.bitrate,
+                                  "bitdepth": value.bitdepth,
+                                  "samplerate": value.samplerate,
+                                  "codec": value.codec,
+                                  "downloaded": value.downloaded,
+                                  
+                                },
                                 duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
                                 artUri: Uri.parse(pictureUrl),
                               ),);                  
@@ -596,7 +641,7 @@ AudioHandler? _audioHandler;
                           artUri: Uri.parse(pictureUrl),
                         ),
                       ); */ 
-
+              
               AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
                   cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.flac'])),
                   tag: MediaItem(
@@ -605,9 +650,18 @@ AudioHandler? _audioHandler;
                           // Metadata to display in the notification:
                           album: stream.composer ?? "Error",
                           title: stream.title ?? "Error",
-                          extras: {"favourite": stream.isFavourite},
+                          extras: {
+                            "favourite": stream.isFavourite,
+                            "bitrate": stream.bitrate,
+                            "bitdepth": stream.bitdepth,
+                            "samplerate": stream.samplerate,
+                            "codec": stream.codec,
+                            "downloaded": stream.downloaded,
+                            
+                            },
                           duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
                           artUri: Uri.parse(pictureUrl),
+                          
                         ),);        
 
               sourceList.add(source);       

@@ -6,6 +6,12 @@ class StreamModel {
   final String? title;
   final bool? isFavourite;
   final String? long;
+  final int? discNumber;
+  final bool? downloaded;
+  final String? codec;
+  final int? bitrate;
+  final int? bitdepth;
+  final int? samplerate;
 
   StreamModel({
     this.id,
@@ -15,5 +21,11 @@ class StreamModel {
     this.title,
     this.isFavourite,
     this.long,
+    this.discNumber,
+    this.downloaded,
+    this.codec,
+    this.bitrate,
+    this.bitdepth,
+    this.samplerate
   });
 }

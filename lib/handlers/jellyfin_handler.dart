@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/models/playlists.dart';
@@ -8,9 +9,11 @@ import 'package:jel_music/repos/jellyfin_repo.dart';
 class JellyfinHandler{
 
   late JellyfinRepo jellyfinRepo;
+  Conversions conversions = Conversions();
   
   JellyfinHandler(){
     jellyfinRepo = GetIt.instance<JellyfinRepo>();
+  
   }
 
 
@@ -43,7 +46,8 @@ class JellyfinHandler{
     var playlistsRaw = await jellyfinRepo.getPlaylists();
     List<Playlists> playlistList = [];
     for(var playlistRaw in playlistsRaw["Items"]){
-      playlistList.add(Playlists(id: playlistRaw["Id"], name: playlistRaw["Name"], runtime: playlistRaw["RunTimeTicks"].toString()));
+      
+      playlistList.add(Playlists(id: playlistRaw["Id"], name: playlistRaw["Name"], runtime: conversions.returnTicksToTimestampString(playlistRaw["RunTimeTicks"] ?? 0)));
     }
     return playlistList;
   }
