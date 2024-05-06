@@ -368,14 +368,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
-  google_fonts:
-    dependency: "direct main"
-    description:
-      name: google_fonts
-      sha256: b1ac0fe2832c9cc95e5e88b57d627c5e68c223b9657f4b96e1487aa9098c7b82
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.2.1"
   graphs:
     dependency: transitive
     description:
@@ -813,14 +805,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.10"
-  sorted:
-    dependency: "direct main"
-    description:
-      name: sorted
-      sha256: c0a30a03031250f95a92cef245744f97bb9c7ba847464829205e3bf2a48225f8
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
   source_gen:
     dependency: transitive
     description:
@@ -1031,4 +1015,4 @@ packages:
     version: "3.1.2"
 sdks:
   dart: ">=3.3.0 <4.0.0"
-  flutter: ">=3.19.2"
+  flutter: ">=3.19.0"

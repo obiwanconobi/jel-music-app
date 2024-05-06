@@ -23,7 +23,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
           prioritizeTimeOverSizeThresholds: true,
         ),),
   );
-  StreamController<Duration> _durationController = BehaviorSubject();
+ StreamController<Duration> _durationController = BehaviorSubject();
  // StreamController<Duration> _bufferedDurationController = BehaviorSubject();
   SongsHelper songsHelper = SongsHelper();
   bool _isPlaying = false;
@@ -147,7 +147,7 @@ AudioHandler? _audioHandler;
     if(playlist.sequence.isNotEmpty){
         return playlist.sequence[index].tag as MediaItem;
     }
-    return MediaItem(id: "", title: "");
+    return const MediaItem(id: "", title: "");
   }
 
 

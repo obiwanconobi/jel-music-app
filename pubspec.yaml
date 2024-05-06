@@ -46,9 +46,7 @@ dependencies:
   rxdart: ^0.27.7
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  sorted: ^2.1.0
   adaptive_theme: ^3.6.0
-  google_fonts: ^6.2.1
   flutter_svg: ^0.22.0
   path_provider: 2.0.9
   get_it: ^7.7.0

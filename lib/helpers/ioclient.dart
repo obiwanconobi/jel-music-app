@@ -17,7 +17,7 @@ class IoClient {
       } else {
         return null;
       }
-    } on IOException catch (e) {
+    } on IOException {
       return null;
     } catch(e) {
      

@@ -65,10 +65,6 @@ class _ControlsState extends State<Controls> {
     MusicControllerProvider.of(context, listen: false).updateCurrentSongFavStatus();
   }
 
-  _shuffleSongs() async{
-      MusicControllerProvider.of(context, listen:false).shuffleQueue();
-    }
-
   _clearQueue() async{
     MusicControllerProvider.of(context, listen:false).clearQueue();
   }
