@@ -64,13 +64,13 @@
     String? codec;
 
     @HiveField(13)
-    int? bitrate;
+    String? bitrate;
 
     @HiveField(14)
-    int? bitdepth;
+    String? bitdepth;
 
     @HiveField(15)
-    int? samplerate;
+    String? samplerate;
   
     @override
     String toString() {

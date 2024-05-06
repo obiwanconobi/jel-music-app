@@ -138,27 +138,25 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Row(
-                                        children: [
-                                          Flexible(
-                                            child: Padding(
-                                              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                              child: Text(
-                                                _filteredPlaylists[index].name!,
-                                                style: TextStyle(
-                                                  fontSize: 10.sp,
-                                                  color: Theme.of(context).textTheme.bodySmall!.color,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: "Segoe UI",
-                                                  
-                                                ),
-                                                overflow: TextOverflow.ellipsis, // Set overflow property
-                                                maxLines: 2, 
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                        child: Text(
+                                          _filteredPlaylists[index].name!,
+                                          style: Theme.of(context).textTheme.bodyLarge,
+                                          overflow: TextOverflow.ellipsis, // Set overflow property
+                                          maxLines: 2, 
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                        child: Text(
+                                          _filteredPlaylists[index].runtime!,
+                                          style: Theme.of(context).textTheme.bodyMedium,
+                                          overflow: TextOverflow.ellipsis, // Set overflow property
+                                          maxLines: 2, 
+                                          textAlign: TextAlign.center,
+                                        ),
                                       ),
                                     ],
                                   ),

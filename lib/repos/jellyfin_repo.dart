@@ -8,9 +8,9 @@ class JellyfinRepo{
   late String userId;
 
   JellyfinRepo(){
-    accessToken = GetStorage().read('accessToken');
-    baseServerUrl = GetStorage().read('serverUrl');
-    userId = GetStorage().read('userId');
+    accessToken = GetStorage().read('accessToken') ?? "";
+    baseServerUrl = GetStorage().read('serverUrl') ?? "";
+    userId = GetStorage().read('userId') ?? "";
   }
 
   getArtistBio(String artistName)async{
@@ -118,7 +118,6 @@ class JellyfinRepo{
   }
 
   getUser()async{
-   
         try {
               Map<String, String> requestHeaders = {
               'Content-type': 'application/json',

@@ -71,9 +71,6 @@ class _ControlsState extends State<Controls> {
   _shuffleSongs() async{
       MusicControllerProvider.of(context, listen:false).shuffleQueue();
     }
-  void _testClck(){
-
-  }
 
   _clearQueue() async{
     MusicControllerProvider.of(context, listen:false).clearQueue();
@@ -177,7 +174,7 @@ class _ControlsState extends State<Controls> {
                                     },
                                   ),
                                   Text(musicController.currentSource?.tag.title, style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 17)),
-                                  Text(musicController.currentSource?.tag.album, style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)) 
+                                  Text(musicController.currentSource?.tag.album, style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),
                                 ],
                               ),
                               StreamBuilder<Duration>(
@@ -202,12 +199,15 @@ class _ControlsState extends State<Controls> {
                                         
                                         ),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Text(duration.inMinutes.remainder(60).toString() + ":" + duration.inSeconds.remainder(60).toString()  + " : ", style:TextStyle(color:Theme.of(context).textTheme.bodySmall!.color),),
-                                            Text(musicController.currentSource!.tag.duration.inMinutes.remainder(60).toString() + ":"+ musicController.currentSource!.tag.duration.inSeconds.remainder(60).toString() , style:TextStyle(color:Theme.of(context).textTheme.bodySmall!.color)),
+                                            Text(musicController.currentSource?.tag.extras["codec"], style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),
+                                            Text(musicController.currentSource?.tag.extras["bitrate"], style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),
+                                            Text(musicController.currentSource?.tag.extras["bitdepth"], style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),
+                                            Text(musicController.currentSource?.tag.extras["samplerate"], style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),
                                           ],
-                                        )
+                                        ), 
+                                        
                                       ],
                                     );
                                 }                    

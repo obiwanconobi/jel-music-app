@@ -104,7 +104,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
                 segments: const <ButtonSegment<SortOptions>>[
                   ButtonSegment<SortOptions>(
                       value: SortOptions.asc,
-                      label: Text('Ascending', style: TextStyle(fontSize: 11),),
+                      label: Text('asc', style: TextStyle(fontSize: 13),),
                       icon: Icon(Icons.north)),
                   ButtonSegment<SortOptions>(
                       value: SortOptions.random,
@@ -112,7 +112,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
                       icon: Icon(Icons.shuffle)),
                   ButtonSegment<SortOptions>(
                       value: SortOptions.desc,
-                      label: Text('Descending', style: TextStyle(fontSize: 11),),
+                      label: Text('desc', style: TextStyle(fontSize: 13),),
                       icon: Icon(Icons.south)),
                 ],
                 selected: <SortOptions>{sortOptionsView},

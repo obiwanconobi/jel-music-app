@@ -19,7 +19,7 @@ class SongsController {
     final int currentArtistIndex = 0;
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
     JellyfinHandler jellyfinHandler = GetIt.instance<JellyfinHandler>();
-     Future<List<Songs>> onInit() async {
+  Future<List<Songs>> onInit() async {
     try {
      // songs = await fetchSongs(albumId!);
      songs = await _getSongsFromBox(artistId!, albumId!);

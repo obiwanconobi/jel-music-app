@@ -44,7 +44,7 @@ class _SongsPageState extends State<SongsPage> {
   List<PopupMenuEntry<String>> playlistMenuItems = [];
 
   StreamModel returnStream(Songs song){
-    return StreamModel(id: song.id, composer: song.artist, music: song.id, picture: song.albumPicture, title: song.title, long: song.length, isFavourite: song.favourite);
+    return StreamModel(id: song.id, composer: song.artist, music: song.id, picture: song.albumPicture, title: song.title, long: song.length, isFavourite: song.favourite, downloaded: song.downloaded, codec: song.codec, bitdepth: song.bitdepth, bitrate: song.bitrate, samplerate: song.samplerate);
   }
 
 
@@ -82,11 +82,11 @@ class _SongsPageState extends State<SongsPage> {
 
 
   _addToQueue(Songs song){
-    MusicControllerProvider.of(context, listen: false).addToQueue(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length));
+    MusicControllerProvider.of(context, listen: false).addToQueue(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length, downloaded: song.downloaded, codec: song.codec, bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate));
   }
 
   _playSong(Songs song){
-    MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length));
+    MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length, downloaded: song.downloaded, codec: song.codec, bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate));
   }
 
 
@@ -143,7 +143,7 @@ class _SongsPageState extends State<SongsPage> {
   }
 
   _downloadFile(Songs song)async{
-    var result = await MusicControllerProvider.of(context, listen: false).downloadSong(song.id!);
+    var result = await MusicControllerProvider.of(context, listen: false).downloadSong(song.id!, song.codec!);
     String? title = song.title;
     String? artist = song.artist;
     if(result){
