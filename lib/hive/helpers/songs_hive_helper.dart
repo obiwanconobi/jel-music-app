@@ -107,20 +107,29 @@ class SongsHelper{
     var songs = await _getSongsDataRaw();
 
     for(var song in songs["Items"]){
+      var codec = song["MediaStreams"][0]["Codec"];
+      var bitrate = song["MediaStreams"][0]["BitRate"]~/1000;
+      var bitdepth = song["MediaStreams"][0]["BitDepth"];
+      var samplerate = song["MediaStreams"][0]["SampleRate"]/1000;
         try{
           songsList.add(Songs(id: song["Id"], name: song["Name"], artist: song["ArtistItems"][0]["Name"],
            artistId: song["ArtistItems"][0]["Id"], album: song["Album"], albumId: song["AlbumId"], 
            index: song["IndexNumber"] ?? 0, year: song["ProductionYear"] ?? 0, length: _ticksToTimestampString(song["RunTimeTicks"] ?? 0),
             favourite: song["UserData"]["IsFavorite"], discIndex: song["ParentIndexNumber"] ?? 1,
-            codec: song["MediaStreams"][0]["Codec"], bitrate: song["MediaStreams"][0]["BitRate"], bitdepth: song["MediaStreams"][0]["BitDepth"],
-            samplerate: song["MediaStreams"][0]["SampleRate"]));
+            codec: codec, bitrate: "$bitrate kpbs", bitdepth: "$bitdepth bit",
+            samplerate: "$samplerate kHz"));
         }catch(e){
          //log error
          print('lol');
         }
      }
      for(var song in songsList){
-        songsBox.add(song);
+      try{
+         songsBox.add(song);
+      }catch(e){
+        print(e);
+      }
+       
      }
 
   }

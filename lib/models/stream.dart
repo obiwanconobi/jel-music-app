@@ -9,9 +9,9 @@ class StreamModel {
   final int? discNumber;
   final bool? downloaded;
   final String? codec;
-  final int? bitrate;
-  final int? bitdepth;
-  final int? samplerate;
+  final String? bitrate;
+  final String? bitdepth;
+  final String? samplerate;
 
   StreamModel({
     this.id,

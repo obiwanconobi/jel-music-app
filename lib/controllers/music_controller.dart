@@ -220,7 +220,15 @@ AudioHandler? _audioHandler;
 
     void setDownloaded(String id)async{
        var documentsDar = await getApplicationDocumentsDirectory();
-      final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync();
+
+        final directory = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/']));
+        if (!directory.existsSync()) {
+          directory.createSync(recursive: true);
+        }
+        final files = directory.listSync();
+
+
+    //  final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync();
 
       if(files.where((element) => element.path.contains(id)).isNotEmpty){
         await songsHelper.openBox();
@@ -523,9 +531,9 @@ AudioHandler? _audioHandler;
                           title: stream.title ?? "Error",
                           extras: {
                             "favourite": stream.isFavourite,
-                            "bitrate": stream.bitrate,
-                            "bitdepth": stream.bitdepth,
-                            "samplerate": stream.samplerate,
+                            "bitrate": stream.bitrate.toString(),
+                            "bitdepth": stream.bitdepth.toString(),
+                            "samplerate": stream.samplerate.toString(),
                             "codec": stream.codec,
                             "downloaded": stream.downloaded,
                           },
@@ -559,21 +567,7 @@ AudioHandler? _audioHandler;
    //   String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
         String baseUrl = "$baseServerUrl/Audio/$id/value";
             List<String> timeParts = value.long!.split(':');
-         /*    var sourceold = AudioSource.uri(
-                              Uri.parse(baseUrl),
-                              tag: MediaItem(
-                                // Specify a unique ID for each media item:
-                                id: value.id!,
-                                // Metadata to display in the notification:
-                                album: value.composer ?? "Error",
-                                title: value.title ?? "Error",
-                                extras: {"favourite": value.isFavourite},
-                                duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
-                                artUri: Uri.parse(pictureUrl),
-                              ),
-                            );  */
-
-          AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
+            AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
                         cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.flac'])),
                         tag: MediaItem(
                                 // Specify a unique ID for each media item:
@@ -583,9 +577,9 @@ AudioHandler? _audioHandler;
                                 title: value.title ?? "Error",
                                 extras: {
                                   "favourite": value.isFavourite,
-                                  "bitrate": value.bitrate,
-                                  "bitdepth": value.bitdepth,
-                                  "samplerate": value.samplerate,
+                                  "bitrate": value.bitrate.toString(),
+                                  "bitdepth": value.bitdepth.toString(),
+                                  "samplerate": value.samplerate.toString(),
                                   "codec": value.codec,
                                   "downloaded": value.downloaded,
                                   
@@ -652,9 +646,9 @@ AudioHandler? _audioHandler;
                           title: stream.title ?? "Error",
                           extras: {
                             "favourite": stream.isFavourite,
-                            "bitrate": stream.bitrate,
-                            "bitdepth": stream.bitdepth,
-                            "samplerate": stream.samplerate,
+                            "bitrate": stream.bitrate.toString(),
+                            "bitdepth": stream.bitdepth.toString(),
+                            "samplerate": stream.samplerate.toString(),
                             "codec": stream.codec,
                             "downloaded": stream.downloaded,
                             
