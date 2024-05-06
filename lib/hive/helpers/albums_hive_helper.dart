@@ -29,16 +29,16 @@ class AlbumsHelper{
   }
 
   List<Albums> returnFavouriteAlbums(bool favourite){
-      return albumsBox.values.where((Albums) => Albums.favourite == favourite).toList();
+      return albumsBox.values.where((albums) => albums.favourite == favourite).toList();
   }
 
   List<Albums> returnAlbumsForArtist(String artist){
     //var testx = artistBox.values.where((Artists) => Artists.name == "Jeff Rosenstock");
-      return albumsBox.values.where((Albums) => Albums.artist == artist).toList();
+      return albumsBox.values.where((albums) => albums.artist == artist).toList();
   }
 
   Albums? returnAlbum(String artist, String album){
-    return albumsBox.values.where((Albums) => Albums.artist == artist && Albums.name == album).firstOrNull;
+    return albumsBox.values.where((albums) => albums.artist == artist && albums.name == album).firstOrNull;
   }
 
   updateAlbum(Albums album, int key){

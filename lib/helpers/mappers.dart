@@ -5,18 +5,37 @@ import 'package:jel_music/models/stream.dart';
 
 class Mappers{
 
+    Conversions conversions = Conversions();
+    String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+
   StreamModel returnStreamModel(Songs song){
     return StreamModel(id: song.id, composer: song.artist, music: song.id, picture: song.albumPicture, title: song.title, long: song.length, isFavourite: song.favourite, discNumber: song.discNumber, downloaded: song.downloaded, codec: song.codec, bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate);
   }
 
   
+  Future<List<Songs>> mapListSongsFromRaw(dynamic songs)async{
+    List<Songs> songsList = [];
+      for(var song in songs){
+      String songId = song.albumId;
+      var imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+      try{
+        songsList.add(Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,
+        artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length,
+         favourite: song.favourite, codec: song.codec, bitdepth: song.bitdepth, bitrate: song.bitrate, samplerate: song.samplerate,
+         downloaded: song.downloaded));
+      }catch(e){
+        //log error
+      }
+    } 
+    return songsList;
+  }
 
   Future<List<Songs>> mapSongFromRaw(dynamic songs) async {
     List<Songs> songsList = [];
     Conversions conversions = Conversions();
      String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
     
-    for(var song in songs["Items"]){
+    for(var song in songs){
       //var songId = song["Id"];
       var albumImgId = song["AlbumId"];
       var imgUrl = "$baseServerUrl/Items/$albumImgId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
@@ -35,16 +54,15 @@ class Mappers{
            trackNumber: song["IndexNumber"] ?? 0, length: conversions.returnTicksToTimestampString(song["RunTimeTicks"] ?? 0),
             favourite: song["UserData"]["IsFavorite"], discNumber: song["ParentIndexNumber"] ?? 1,
             codec: codec, bitrate: "$bitrate kpbs", bitdepth: "$bitdepth bit",
-            samplerate: "$samplerate kHz"));
+            samplerate: "$samplerate kHz", albumPicture: imgUrl));
         }catch(e){
          //log error
-       
         }
 
         try{
 
 
-          songsList.add(Songs(id: song["Id"], title: song["Name"], artist: song["ArtistItems"][0]["Name"], artistId: song["ArtistItems"][0]["Id"], album: song["Album"], albumId: song["PlaylistItemId"], trackNumber: song["IndexNumber"] ?? 0, length: conversions.returnTicksToTimestampString(song["RunTimeTicks"] ?? 0), favourite: song["UserData"]["IsFavorite"], albumPicture: imgUrl, codec: song["MediaStreams"][0]["Codec"], bitdepth: song["MediaStreams"][0]["BitDepth"], ));
+        //  songsList.add(Songs(id: song["Id"], title: song["Name"], artist: song["ArtistItems"][0]["Name"], artistId: song["ArtistItems"][0]["Id"], album: song["Album"], albumId: song["PlaylistItemId"], trackNumber: song["IndexNumber"] ?? 0, length: conversions.returnTicksToTimestampString(song["RunTimeTicks"] ?? 0), favourite: song["UserData"]["IsFavorite"], albumPicture: imgUrl, codec: song["MediaStreams"][0]["Codec"], bitdepth: song["MediaStreams"][0]["BitDepth"], ));
         }catch(e){
          //log error
         }

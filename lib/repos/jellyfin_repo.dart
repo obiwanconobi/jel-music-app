@@ -15,7 +15,7 @@ class JellyfinRepo{
 
   getArtistBio(String artistName)async{
     try {
-      var userId = GetStorage().read('userId');
+    //  var userId = GetStorage().read('userId');
     
       Map<String, String> requestHeaders = {
        'Content-type': 'application/json',
@@ -107,7 +107,7 @@ class JellyfinRepo{
               'X-MediaBrowser-Token': accessToken,
               'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
             };
-          String url = "$baseServerUrl/Playlists/$playlistId/Items?userId=$userId";
+          String url = "$baseServerUrl/Playlists/$playlistId/Items?fields=MediaStreams&userId=$userId";
           http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
           if (res.statusCode == 200) {
             return json.decode(res.body);

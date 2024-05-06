@@ -162,7 +162,7 @@ class _MyWidgetState extends State<SettingsPage> {
         title: Text("Settings", style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.bodySmall!.color)),
       ),
       body:
-        Container(
+          Container(
           padding: const EdgeInsets.all(20),
           child: 
             Column(
@@ -181,8 +181,6 @@ class _MyWidgetState extends State<SettingsPage> {
                  TextButton(onPressed: () { goToDownloads(); }, child: Text('Downloads', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
               ],
             ),
-                
-   
             )
         );
   }
