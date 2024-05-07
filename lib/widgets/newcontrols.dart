@@ -34,7 +34,7 @@ class _ControlsState extends State<Controls> {
   // Add your music player control logic here
   _onItemTapped(int index) async{
     if(index == 0){
-      MusicControllerProvider.of(context, listen: false).previousSong();
+      MusicControllerProvider.of(context, listen: false).skipToPrevious();
       _getQueue();
     }
     if(index == 1){
@@ -43,7 +43,7 @@ class _ControlsState extends State<Controls> {
       
     }
     if(index == 2){
-      MusicControllerProvider.of(context, listen: false).nextSong();
+      MusicControllerProvider.of(context, listen: false).skipToNext();
       _getQueue();
     }
 

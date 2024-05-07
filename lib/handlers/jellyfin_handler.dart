@@ -67,6 +67,14 @@ class JellyfinHandler{
   deleteSongFromPlaylist(String songId, String playlistId)async{
     await jellyfinRepo.deleteSongFromPlaylist(songId, playlistId);
   }
+
+  startPlaybackReporting(String songId, String userId)async{
+    await jellyfinRepo.startPlaybackReporting(songId, userId);
+  }
+
+  stopPlaybackReporting(String songId, String userId)async{
+    await jellyfinRepo.stopPlaybackReporting(songId, userId);
+  }
   
 
 }

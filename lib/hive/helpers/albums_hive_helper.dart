@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
+import 'package:jel_music/helpers/apihelper.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:http/http.dart' as http;
 
@@ -9,6 +10,7 @@ class AlbumsHelper{
   late Box<Albums> albumsBox;
   var accessToken = GetStorage().read('accessToken');
   var baseServerUrl = GetStorage().read('serverUrl');
+   ApiHelper apiHelper = ApiHelper();
   
 
   Future<void> closeBox()async{
@@ -71,21 +73,13 @@ class AlbumsHelper{
   }
 
    _getAlbumData() async{
-    var userId = GetStorage().read('userId');
-      try {
-          Map<String, String> requestHeaders = {
-          'Content-type': 'application/json',
-          'X-MediaBrowser-Token': '$accessToken',
-          'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
-        };
+    var userId =  GetStorage().read('userId');
+       var requestHeaders = apiHelper.returnJellyfinHeaders();
       String url = "$baseServerUrl/Users/$userId/Items?recursive=true&includeItemTypes=MusicAlbum&videoTypes=&enableTotalRecordCount=true&enableImages=true&isFavorite=true";
       http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
       if (res.statusCode == 200) {
         return json.decode(res.body);
       }
-    } catch (e) {
-      rethrow;
-    }
    }
 
   Future<List<Albums>> fetchAlbums() async{

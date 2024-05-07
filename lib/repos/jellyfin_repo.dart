@@ -1,27 +1,26 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
+import 'package:jel_music/helpers/apihelper.dart';
 
 class JellyfinRepo{
   late String accessToken;
   late String baseServerUrl;
   late String userId;
+  ApiHelper apiHelper = ApiHelper();
 
   JellyfinRepo(){
     accessToken = GetStorage().read('accessToken') ?? "";
     baseServerUrl = GetStorage().read('serverUrl') ?? "";
     userId = GetStorage().read('userId') ?? "";
+     
   }
 
   getArtistBio(String artistName)async{
     try {
     //  var userId = GetStorage().read('userId');
     
-      Map<String, String> requestHeaders = {
-       'Content-type': 'application/json',
-       'X-MediaBrowser-Token': accessToken,
-       'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
-     };
+     var requestHeaders = apiHelper.returnJellyfinHeaders();
       String url = "$baseServerUrl/Artists/$artistName";
       http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
       if (res.statusCode == 200) {
@@ -36,11 +35,7 @@ class JellyfinRepo{
     try {
       var userId = GetStorage().read('userId');
     
-      Map<String, String> requestHeaders = {
-       'Content-type': 'application/json',
-       'X-MediaBrowser-Token': accessToken,
-       'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
-     };
+       var requestHeaders = apiHelper.returnJellyfinHeaders();
       String url = "$baseServerUrl/Artists/AlbumArtists?enableUserData=true&userId=$userId&enableImages=true&enableTotalRecordCount=true&isFavorite=true";
       http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
       if (res.statusCode == 200) {
@@ -52,11 +47,7 @@ class JellyfinRepo{
   }
 
   Future<void> addSongToPlaylist(String songId, String playlistId)async{
-       Map<String, String> requestHeaders = {
-                  'Content-type': 'application/json',
-                  'X-MediaBrowser-Token': accessToken,
-                  'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
-                };
+       var requestHeaders = apiHelper.returnJellyfinHeaders();
               String url = "$baseServerUrl/Playlists/$playlistId/Items?ids=$songId&userId=$userId";
               
               http.Response res = await http.post(Uri.parse(url), headers: requestHeaders);
@@ -65,12 +56,33 @@ class JellyfinRepo{
               }
   }
 
+  startPlaybackReporting(String songId, String userId)async{
+       var requestHeaders = apiHelper.returnJellyfinHeaders();
+       String url = "$baseServerUrl/Users/$userId/PlayingItems/$songId";
+      try{
+        http.Response res = await http.post(Uri.parse(url), headers: requestHeaders);
+              if (res.statusCode == 204) {
+                return res.statusCode;
+              }      
+      }catch(e){
+        //Log Error
+      }
+  }
+   stopPlaybackReporting(String songId, String userId)async{
+       var requestHeaders = apiHelper.returnJellyfinHeaders();
+      String url = "$baseServerUrl/Users/$userId/PlayingItems/$songId";
+      try{
+        http.Response res = await http.delete(Uri.parse(url), headers: requestHeaders);
+              if (res.statusCode == 204) {
+                return res.statusCode;
+              }      
+      }catch(e){
+        //Log Error
+      }
+  }
+
   deleteSongFromPlaylist(String songId, String playlistId)async{
-      Map<String, String> requestHeaders = {
-                  'Content-type': 'application/json',
-                  'X-MediaBrowser-Token': accessToken,
-                  'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
-                };
+       var requestHeaders = apiHelper.returnJellyfinHeaders();
       String url = "$baseServerUrl/Playlists/$playlistId/Items?entryIds=$songId&userId=$userId";
       try{
         http.Response res = await http.delete(Uri.parse(url), headers: requestHeaders);
@@ -85,11 +97,7 @@ class JellyfinRepo{
 
   getPlaylists()async{
        try {
-              Map<String, String> requestHeaders = {
-              'Content-type': 'application/json',
-              'X-MediaBrowser-Token': accessToken,
-              'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
-            };
+           var requestHeaders = apiHelper.returnJellyfinHeaders();
           String url = "$baseServerUrl/Items?includeItemTypes=Playlist&enableTotalRecordCount=true&enableImages=true&recursive=true";
           http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
           if (res.statusCode == 200) {
@@ -102,11 +110,7 @@ class JellyfinRepo{
 
   getPlaylistSongs(String playlistId)async{
       try {
-              Map<String, String> requestHeaders = {
-              'Content-type': 'application/json',
-              'X-MediaBrowser-Token': accessToken,
-              'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
-            };
+             var requestHeaders = apiHelper.returnJellyfinHeaders();
           String url = "$baseServerUrl/Playlists/$playlistId/Items?fields=MediaStreams&userId=$userId";
           http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
           if (res.statusCode == 200) {
@@ -119,11 +123,7 @@ class JellyfinRepo{
 
   getUser()async{
         try {
-              Map<String, String> requestHeaders = {
-              'Content-type': 'application/json',
-              'X-MediaBrowser-Token': accessToken,
-              'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
-            };
+             var requestHeaders = apiHelper.returnJellyfinHeaders();
           String url = "$baseServerUrl/Users/me";
           http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
           if (res.statusCode == 200) {
@@ -136,11 +136,7 @@ class JellyfinRepo{
 
   getSimilarItems(String itemId)async{
         try {
-              Map<String, String> requestHeaders = {
-              'Content-type': 'application/json',
-              'X-MediaBrowser-Token': accessToken,
-              'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
-            };
+              var requestHeaders = apiHelper.returnJellyfinHeaders();
           String url = "$baseServerUrl/Items/$itemId/Similar?limit=10";
           http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
           if (res.statusCode == 200) {
@@ -163,11 +159,7 @@ class JellyfinRepo{
     }
 
     Future<void> favouriteItem(String itemId) async {              
-                  Map<String, String> requestHeaders = {
-                  'Content-type': 'application/json',
-                  'X-MediaBrowser-Token': accessToken,
-                  'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
-                };
+                  var requestHeaders = apiHelper.returnJellyfinHeaders();
               String url = "$baseServerUrl/Users/$userId/FavoriteItems/$itemId";
               
               http.Response res = await http.post(Uri.parse(url), headers: requestHeaders);
@@ -177,11 +169,7 @@ class JellyfinRepo{
     }
 
     Future<void> unFavouriteItem(String itemId) async {
-                  Map<String, String> requestHeaders = {
-                  'Content-type': 'application/json',
-                  'X-MediaBrowser-Token': accessToken,
-                  'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
-                };
+                  var requestHeaders = apiHelper.returnJellyfinHeaders();
               String url = "$baseServerUrl/Users/$userId/FavoriteItems/$itemId";
               
               http.Response res = await http.delete(Uri.parse(url), headers: requestHeaders);
