@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
+import 'package:jel_music/helpers/androidid.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
@@ -43,22 +44,24 @@ class _MyWidgetState extends State<SettingsPage> {
       var password =  _passwordTextController.text;
       var baseServerUrl = _serverUrlTextController.text;
       
-
+      //var deviceId = await const AndroidId().getDeviceId();
+      String deviceId = "TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2";
+      GetStorage().write('deviceId', deviceId);
       String loginBody = '{"Username": "$username","Pw": "$password"}';
 
       Map<String, String> requestHeaders = {
        'Content-type': 'application/json',
-       'X-Emby-Authorization': 'MediaBrowser Client="Jel Android App",Device="Mobile",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI2",Version="10.8.13"'
+       'X-Emby-Authorization': 'MediaBrowser Client="Panaudio",Device="Mobile",DeviceId="$deviceId", Version="10.8.13"'
      };
       String url = "$baseServerUrl/Users/AuthenticateByName";
       
             http.Response res = await http.post(Uri.parse(url), headers: requestHeaders, body: loginBody);
             if (res.statusCode == 200) {
-              
+              var stringgg = json.decode(res.body)["AccessToken"];
               GetStorage().write('accessToken', json.decode(res.body)["AccessToken"]);
               GetStorage().write('username', username);
               GetStorage().write('password', password);
-              
+              var strginggg = res.body.toString();
             }else{
               //log error
             }

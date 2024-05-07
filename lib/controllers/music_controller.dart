@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/helpers/ioclient.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/stream.dart';
@@ -23,7 +24,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
           prioritizeTimeOverSizeThresholds: true,
         ),),
   );
-  StreamController<Duration> _durationController = BehaviorSubject();
+ StreamController<Duration> _durationController = BehaviorSubject();
  // StreamController<Duration> _bufferedDurationController = BehaviorSubject();
   SongsHelper songsHelper = SongsHelper();
   bool _isPlaying = false;
@@ -50,7 +51,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
  String baseServerUrl = "";
   List<IndexedAudioSource>? currentQueue = [];
   int currentIndexSource = 0;
-  
+  String lastUpdateSong = "";
+  bool lastUpdateStatus = false;
 
      
   
@@ -106,6 +108,13 @@ AudioHandler? _audioHandler;
       final currentState = _transformEvent(event);
       final currentIndex = currentState.queueIndex;
 
+      if (playbackState.valueOrNull != null &&
+          playbackState.valueOrNull?.processingState !=
+              AudioProcessingState.idle &&
+          playbackState.valueOrNull?.processingState !=
+              AudioProcessingState.completed) {
+      }
+
       playbackState.add(currentState);
 
       if (currentIndex != null) {
@@ -143,11 +152,12 @@ AudioHandler? _audioHandler;
 
   }    
 
+
     MediaItem _getQueueItem(int index) {
     if(playlist.sequence.isNotEmpty){
         return playlist.sequence[index].tag as MediaItem;
     }
-    return MediaItem(id: "", title: "");
+    return const MediaItem(id: "", title: "");
   }
 
 
@@ -184,6 +194,35 @@ AudioHandler? _audioHandler;
     );
   }
 
+  _updatePlaybackProgress()async{
+       var userId = await GetStorage().read('userId');
+      
+    JellyfinHandler jellyfinHandler = JellyfinHandler();
+      String current = currentSource!.tag.id;
+      bool playing = playbackState.valueOrNull?.playing ?? false;
+
+  
+      if(playbackState.valueOrNull?.playing == true){
+        if(lastUpdateStatus == false || lastUpdateSong != current){
+          lastUpdateStatus = true;
+          lastUpdateSong = current;
+          await jellyfinHandler.startPlaybackReporting(current, userId);
+        }
+       
+      }else if(playbackState.valueOrNull?.playing == false){
+        if(lastUpdateStatus == true){
+          lastUpdateStatus = false;
+          lastUpdateSong = current;
+          await jellyfinHandler.stopPlaybackReporting(current, userId);
+          
+          
+        }
+        
+        
+      }
+  }
+
+
    @override
   Future<void> play()async{
     playbackState.add(playbackState.value.copyWith(
@@ -191,6 +230,7 @@ AudioHandler? _audioHandler;
       controls: [MediaControl.pause],
     ));
     _advancedPlayer.play();
+     await _updatePlaybackProgress();
    // MusicHelper helper = MusicHelper();
     notifyListeners();
    // helper.setUiElements(false);
@@ -203,17 +243,20 @@ AudioHandler? _audioHandler;
       controls: [MediaControl.play],
     ));
     _advancedPlayer.pause();
+     await _updatePlaybackProgress();
     notifyListeners();
   }
   
   @override
   Future<void> skipToNext()async{
     nextSong();
+     await _updatePlaybackProgress();
   }
 
   @override
   Future<void> skipToPrevious()async{
     previousSong();
+     await _updatePlaybackProgress();
   }
 
   Stream<Duration> get durationStream => _durationController.stream;
@@ -329,6 +372,7 @@ AudioHandler? _audioHandler;
   @override
   Future<void> seek(Duration seek)async{
     await _advancedPlayer.seek(seek, index: _advancedPlayer.currentIndex); 
+    await _updatePlaybackProgress();
     setUiElements();
   }
 
@@ -406,6 +450,7 @@ AudioHandler? _audioHandler;
           
           _advancedPlayer.setAudioSource(playlist, initialIndex: countPlaylist-1);
             playlistPlay();
+             await _updatePlaybackProgress();
 
         }else{
           playPause(false, false);
@@ -601,7 +646,8 @@ AudioHandler? _audioHandler;
   }
 
   playlistPlay()async{
-    await _advancedPlayer.play();
+     _advancedPlayer.play();
+     await _updatePlaybackProgress();
     isPlaying = _advancedPlayer.playing;
     getQueue();
     notifyListeners();
@@ -670,9 +716,8 @@ AudioHandler? _audioHandler;
       _isPlaying = !_isPlaying;
       setUiElements();
     }
-
+    currentSource = getCurrentSong();
     await playlistPlay();
-   currentSource = getCurrentSong();
     setUiElements();
   }
 
