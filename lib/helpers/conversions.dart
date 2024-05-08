@@ -1,3 +1,6 @@
+import 'package:jel_music/hive/classes/log.dart';
+import 'package:jel_music/models/log.dart';
+
 class Conversions{
 
   int returnSecondsFromDuration(String duration){
@@ -10,6 +13,14 @@ class Conversions{
         return secondsFromMinutes + seconds;
       }
     return 0;
+  }
+
+  Log returnLogFromLogModel(LogModel log){
+    return Log(id: log.id!, logType: log.logType!, logMessage: log.logMessage!, logDateTime: log.logDateTime!);
+  }
+
+  LogModel returnLogModelFromLog(Log log){
+   return LogModel(id: log.id, logType: log.logType, logMessage: log.logMessage, logDateTime: log.logDateTime);
   }
 
   codecCleanup(String codec){

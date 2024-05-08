@@ -55,8 +55,7 @@ class JellyfinHandler{
   Future<List<Songs>> returnSongsFromPlaylist(String playlistId)async{
     Mappers mapper = Mappers();
     var songsRaw = await jellyfinRepo.getPlaylistSongs(playlistId);
-
-    var mappedSongs = mapper.mapSongFromRaw(songsRaw);
+    var mappedSongs = await mapper.mapSongFromRaw(songsRaw["Items"]);
     return mappedSongs;
   }
 

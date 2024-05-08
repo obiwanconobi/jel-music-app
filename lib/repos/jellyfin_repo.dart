@@ -66,6 +66,7 @@ class JellyfinRepo{
               }      
       }catch(e){
         //Log Error
+        rethrow;
       }
   }
    stopPlaybackReporting(String songId, String userId)async{
@@ -78,6 +79,7 @@ class JellyfinRepo{
               }      
       }catch(e){
         //Log Error
+        rethrow;
       }
   }
 

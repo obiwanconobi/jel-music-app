@@ -194,10 +194,11 @@ AudioHandler? _audioHandler;
     );
   }
 
-  _updatePlaybackProgress()async{
-       var userId = await GetStorage().read('userId');
-      
-    JellyfinHandler jellyfinHandler = JellyfinHandler();
+  _updatePlaybackProgress()async{ 
+    var playbackLog = await GetStorage().read('playbackReporting') ?? false;
+      if(playbackLog){
+           var userId = await GetStorage().read('userId');
+       JellyfinHandler jellyfinHandler = JellyfinHandler();
       String current = currentSource!.tag.id;
       bool playing = playbackState.valueOrNull?.playing ?? false;
 
@@ -220,6 +221,9 @@ AudioHandler? _audioHandler;
         
         
       }
+
+      }
+      
   }
 
 
@@ -249,14 +253,14 @@ AudioHandler? _audioHandler;
   
   @override
   Future<void> skipToNext()async{
-    nextSong();
-     await _updatePlaybackProgress();
+    await nextSong();
+    await _updatePlaybackProgress();
   }
 
   @override
   Future<void> skipToPrevious()async{
-    previousSong();
-     await _updatePlaybackProgress();
+    await previousSong();
+    await _updatePlaybackProgress();
   }
 
   Stream<Duration> get durationStream => _durationController.stream;
@@ -500,7 +504,7 @@ AudioHandler? _audioHandler;
   }
   
 
-  void previousSong() async{
+  previousSong() async{
     
     _advancedPlayer.seekToPrevious();
     setUiElements();

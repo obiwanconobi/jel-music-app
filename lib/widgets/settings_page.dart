@@ -7,10 +7,12 @@ import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
+import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/helpers/androidid.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
+import 'package:jel_music/models/log.dart';
 import 'package:jel_music/widgets/downloads_page.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -31,12 +33,15 @@ class _MyWidgetState extends State<SettingsPage> {
   final TextEditingController _usernameTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
   var downloadController = GetIt.instance<DownloadController>();
+   var logger = GetIt.instance<LogHandler>();
   AlbumsHelper albumsHelper = AlbumsHelper();
   SyncHelper syncHelper = SyncHelper();
   //ApiController apiController = ApiController();
   var apiController = GetIt.instance<ApiController>();
   ArtistsHelper helper = ArtistsHelper();
   late String totalCachedFileCount = "";
+  late bool playbackReporting;
+  List<LogModel> logHistory = [];
   _login() async{
 
       try{
@@ -62,7 +67,10 @@ class _MyWidgetState extends State<SettingsPage> {
               GetStorage().write('username', username);
               GetStorage().write('password', password);
               var strginggg = res.body.toString();
+               logger.addToLog(LogModel(logMessage: "Login Successful", logDateTime:DateTime.now(), logType: "INFO"));
+           
             }else{
+              logger.addToLog(LogModel(logMessage: "Failed o login with username: $username at the url: $baseServerUrl", logDateTime:DateTime.now(), logType: "ERROR"));
               //log error
             }
 
@@ -80,6 +88,10 @@ class _MyWidgetState extends State<SettingsPage> {
 
   }
 
+  _getLogInfo()async{
+    logHistory = logger.listFromLog();
+  }
+
   _saveUrl() async {
 
     GetStorage().write('serverUrl', _serverUrlTextController.text);
@@ -92,7 +104,7 @@ class _MyWidgetState extends State<SettingsPage> {
     GetStorage.init();
 
       getCachedSongs();
-    
+      playbackReporting = getPlaybackReporting();
    
 
     syncHelper.songsHelper.openBox();
@@ -143,6 +155,14 @@ class _MyWidgetState extends State<SettingsPage> {
     });
   }
 
+  bool getPlaybackReporting(){
+    return GetStorage().read('playbackReporting') ?? false;
+  }
+
+   setPlaybackReporting(bool value){
+     GetStorage().write('playbackReporting', value);
+   }
+
   getCachedSongs()async{
     var documentsDar = await getApplicationDocumentsDirectory();
     final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync();
@@ -182,6 +202,20 @@ class _MyWidgetState extends State<SettingsPage> {
                  TextButton(onPressed: () { clearCache(); }, child: Text('Clear Cache', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
                 Text("Cached Songs: $totalCachedFileCount"),
                  TextButton(onPressed: () { goToDownloads(); }, child: Text('Downloads', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
+                 Row(
+                   children: [
+                    const Text("Playback reporting:"),
+                    Switch(
+                        value: playbackReporting,
+                        onChanged: (value) {
+                          setState(() {
+                            setPlaybackReporting(value);
+                            playbackReporting = getPlaybackReporting();
+                          });
+                        },
+                      ),
+                   ],
+                 ),
               ],
             ),
             )

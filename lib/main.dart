@@ -14,8 +14,10 @@ import 'package:jel_music/controllers/playlist_controller.dart';
 import 'package:jel_music/controllers/playlists_controller.dart';
 import 'package:jel_music/controllers/songs_controller.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
+import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/classes/artists.dart';
+import 'package:jel_music/hive/classes/log.dart';
 import 'package:jel_music/hive/classes/songs.dart';
 import 'package:jel_music/homepage.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
@@ -30,6 +32,7 @@ Future<void> main() async{
   Hive.registerAdapter(SongsAdapter());
   Hive.registerAdapter(ArtistsAdapter());
   Hive.registerAdapter(AlbumsAdapter());
+  Hive.registerAdapter(LogAdapter());
 
 
 
@@ -38,6 +41,7 @@ Future<void> main() async{
 
    //Handlers
   GetIt.I.registerSingleton<JellyfinHandler>(JellyfinHandler());
+  GetIt.I.registerSingleton<LogHandler>(LogHandler());
 
   GetIt.I.registerSingleton<ApiController>(ApiController());
   GetIt.I.registerSingleton<AllSongsController>(AllSongsController());
