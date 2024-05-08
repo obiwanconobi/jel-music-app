@@ -1,11 +1,15 @@
 import 'dart:convert';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
+import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/helpers/apihelper.dart';
+import 'package:jel_music/models/log.dart';
 
 
 class ApiController{
   ApiHelper apiHelper = ApiHelper();
+   var logger = GetIt.instance<LogHandler>();
   getUser()async{
   
     var baseServerUrl = await GetStorage().read('serverUrl');
@@ -23,6 +27,8 @@ class ApiController{
             return json.decode(res.body);
           }
         } catch (e) {
+           logger.addToLog(LogModel(logMessage: "Failed to get user. $e", logDateTime:DateTime.now(), logType: "ERROR"));
+           
           rethrow;
         }
   }
@@ -38,6 +44,7 @@ class ApiController{
             return json.decode(res.body);
           }
         } catch (e) {
+           logger.addToLog(LogModel(logMessage: "Failed to get similar items. $e", logDateTime:DateTime.now(), logType: "ERROR"));
           rethrow;
         }
   }
