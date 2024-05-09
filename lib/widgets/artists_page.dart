@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/artist_controller.dart';
 import 'package:jel_music/models/artist.dart';
@@ -47,9 +48,12 @@ class _ArtistPageState extends State<ArtistPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(foregroundColor: Theme.of(context).textTheme.bodySmall!.color, backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('Artists', style: Theme.of(context).textTheme.bodyLarge),),
-        backgroundColor: Theme.of(context).colorScheme.background,
-        body: Padding(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("Artists", style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.bodySmall!.color)),
+      ), 
+      body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,
             left: 16.sp,

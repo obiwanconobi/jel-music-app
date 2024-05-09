@@ -50,9 +50,7 @@ class _AlbumPageState extends State<AlbumPage> {
     controller.artistId = artistIds;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(centerTitle: true, title: Text(artistIds!, style: Theme.of(context).textTheme.bodyLarge),
-        backgroundColor: Theme.of(context).colorScheme.background,
-        foregroundColor: Theme.of(context).textTheme.bodySmall!.color,),
+        appBar: AppBar(centerTitle: true, title: Text(artistIds!, style: Theme.of(context).textTheme.bodyLarge),),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(

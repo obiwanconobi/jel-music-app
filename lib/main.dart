@@ -69,6 +69,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
 
 static ThemeData lightTheme = ThemeData(
+  useMaterial3: true,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color.fromARGB(255, 204, 204, 204),
+      foregroundColor:  Colors.black,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: Color.fromARGB(255, 204, 204, 204),
+      )
+    ),
     primaryColor: Colors.teal, // Your primary color for dark mode
     canvasColor:const Color.fromARGB(255, 179, 179, 179),
     focusColor: Colors.red,
@@ -89,6 +97,14 @@ static ThemeData lightTheme = ThemeData(
 
 
   static ThemeData darkTheme = ThemeData(
+    useMaterial3: true,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color(0xFF1C1B1B),
+      foregroundColor:  Colors.white,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: Color(0xFF1C1B1B),
+      )
+    ),
     primaryColor: Colors.blueGrey, // Your primary color for dark mode
     canvasColor:const Color.fromARGB(255, 37, 37, 37),
     focusColor: Colors.red,
@@ -110,9 +126,6 @@ static ThemeData lightTheme = ThemeData(
   
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Color(0xFF1C1B1B),
-    ));
     return Sizer(builder: (context, orientation, deviceType) {
       return  AdaptiveTheme(
         light: lightTheme,
