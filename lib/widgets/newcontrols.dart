@@ -79,6 +79,7 @@ class _ControlsState extends State<Controls> {
   Widget build(BuildContext context) {
     onInit();
     return  SolidBottomSheet(
+      maxHeight: 70.h,
       autoSwiped: true,
       draggableBody: true,
       elevation: 5,

@@ -50,32 +50,35 @@ class _ArtistButtonState extends State<ArtistButton> {
                       );
                     } else {
                       var artist = snapshot.data;
-                     return Container(
-                        width: 30.w,
-                        height: 10.w,
+                     return SizedBox(
+                        width: 50.w,
+                        height: 11.w,
                         child: InkWell(
                           onTap: () => {
                                 Navigator.push(context,
                                   MaterialPageRoute(builder: (context) => AlbumPage(artistId: artist.name!,)),
                                 )},
-                          child: Row(children: 
-                                                [
-                          ClipOval(
-                            child: CachedNetworkImage(
-                             imageUrl: artist!.picture ?? "",
-                             memCacheHeight: 150,
-                            memCacheWidth: 150,
-                            errorWidget: (context, url, error) => Container(
-                            color: const Color(0xFF71B77A),
-                            child: const Center(
-                              child: Text("404"),),),),
-                          ),                                             
+                          child: Row(children: [
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(artist.name!, style: Theme.of(context).textTheme.bodyMedium),
-                          ),
-                                                ],
-                                              ),
+                            padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                            child: ClipOval(
+                              child: CachedNetworkImage(
+                               imageUrl: artist!.picture ?? "",
+                               memCacheHeight: 150,
+                              memCacheWidth: 150,
+                              errorWidget: (context, url, error) => Container(
+                              color: const Color(0xFF71B77A),
+                              child: const Center(
+                                child: Text("404"),),),),
+                            ),
+                          ),                                             
+                           Flexible(
+                                child: Text(artist.name!, style: Theme.of(context).textTheme.bodyMedium,
+                                overflow: TextOverflow.ellipsis, // Set overflow property
+                                maxLines: 2,),
+                              ),
+                            ],
+                            ),
                         )
                   );
        }
