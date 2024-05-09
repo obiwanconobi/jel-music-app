@@ -83,17 +83,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                     fav = artist.favourite!;
                                     return Column(mainAxisSize: MainAxisSize.min,children: 
                                     [
-                                      ExpandableText(
-                                            artist.overview ?? "",
-                                            expandText: 'show more',
-                                            collapseText: 'show less',
-                                            maxLines: 4,
-                                            linkColor: Colors.blue,
-                                        ),
-                                      IconButton(onPressed:()=>{setState(() {artist.favourite = !artist.favourite!;}), _toggleFavourite(artist.id!)}, icon: Icon(Icons.favorite, color: ((artist.favourite!) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30),)
-                                    ],);
-                            }}),
-                FutureBuilder<List<Album>>(
+                                      FutureBuilder<List<Album>>(
                   future: albumsFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -114,6 +104,7 @@ class _AlbumPageState extends State<AlbumPage> {
                       return Column(
                         mainAxisSize: MainAxisSize.max,
                         children: [
+                            IconButton(onPressed:()=>{setState(() {artist.favourite = !artist.favourite!;}), _toggleFavourite(artist.id!)}, icon: Icon(Icons.favorite, color: ((artist.favourite!) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30),),
                           GridView.builder(
                             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                                 maxCrossAxisExtent: 250, // Adjust this value according to your needs
@@ -206,17 +197,40 @@ class _AlbumPageState extends State<AlbumPage> {
                               );
                             },
                           ),
-                           Container(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
-                          alignment: Alignment.centerLeft,
-                          child:  Text('Similar Artists', style:Theme.of(context).textTheme.bodyLarge)),
-                         
-                          SimilarArtists(artistId: artistIds!,),
+                          
                         ],
                       );
                     }
                   }
                 ),
+
+                Container(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
+                          alignment: Alignment.centerLeft,
+                          child:  Text('Similar Artists', style:Theme.of(context).textTheme.bodyLarge)),
+                          SimilarArtists(artistId: artistIds!,),
+
+
+                Container(
+                          alignment: Alignment.centerLeft,
+                           child: Padding(
+                             padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
+                             child: Text('Biography', style: Theme.of(context).textTheme.bodyLarge),
+                           ),
+                         ),
+                          
+                                      ExpandableText(
+                                            artist.overview ?? "",
+                                            expandText: 'show more',
+                                            collapseText: 'show less',
+                                            maxLines: 4,
+                                            linkColor: Colors.blue,
+                                        ),
+                                       ],
+                                    );
+                            }}),
+                
+                
               ],
             ),
           ),
