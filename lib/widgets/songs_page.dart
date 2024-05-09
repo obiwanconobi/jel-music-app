@@ -9,6 +9,7 @@ import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
+import 'package:jel_music/widgets/artist_button_widget.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/similar_albums.dart';
 import 'package:sizer/sizer.dart';
@@ -207,47 +208,54 @@ class _SongsPageState extends State<SongsPage> {
                                 },
                               ),
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+                                  padding: const EdgeInsets.fromLTRB(10, 10, 0, 5),
                                   child: Text(songsList[0].album.toString(), style: Theme.of(context).textTheme.bodyLarge),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: Text(songsList[0].artist.toString(), style: Theme.of(context).textTheme.bodyMedium),
-                                ),
-                    Center(
-                      child: 
-                      FutureBuilder<bool>(
-                          future: favourite,
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return const Center(
-                                //child: CircularProgressIndicator(),
-                              );
-                            } else if (snapshot.hasError) {
-                              return Center(
-                                child: Text('Error: ${snapshot.error}'),
-                              );
-                            } else {
-                              fave = snapshot.data ?? false;
-                              return  
-                            Column(
-                              children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
-                                    OutlinedButton(onPressed: () => _addAllToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor), child: Text('Play All', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
-                                    IconButton(onPressed:()=>{_favouriteAlbum(albumIds!, artistIds!, fave!)}, icon: Icon(Icons.favorite, color: ((fave!) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30),),
-                                   // IconButton(icon: Icon(Icons.favorite, color: ((fave ?? false) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30), onPressed: () => { setState(() {fave = !fave!;}),_favouriteAlbum(albumIds!, artistIds!, snapshot.data!) },),
-                                    OutlinedButton(onPressed: () => _addShuffledToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor), child: Text('Shuffle',style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
-                                  //  OutlinedButton(onPressed: () => _shuffleQueue(), child: const Text('Add queue')),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 5),
+                                      child: ArtistButton(artistId: artistIds!),
+                                    ),
+                                    FutureBuilder<bool>(
+                                    future: favourite,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                        return const Center(
+                                          //child: CircularProgressIndicator(),
+                                        );
+                                      } else if (snapshot.hasError) {
+                                        return Center(
+                                          child: Text('Error: ${snapshot.error}'),
+                                        );
+                                      } else {
+                                        fave = snapshot.data ?? false;
+                                        return  
+                                      Row(
+                                      //  mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                            IconButton(onPressed:()=>{_favouriteAlbum(albumIds!, artistIds!, fave!)}, icon: Icon(Icons.favorite, color: ((fave!) ? Colors.red : Theme.of(context).colorScheme.secondary), size:40),),
+                                          
+                                             IconButton(onPressed:()=>{ _addAllToQueue(songsList!)}, icon: Icon(Icons.play_arrow, size: 40, color: Theme.of(context).colorScheme.secondary),),
+                                             IconButton(onPressed:()=>{_addShuffledToQueue(songsList)}, icon: Icon(Icons.shuffle, size: 40, color: Theme.of(context).colorScheme.secondary),),
+                                         
+                                         // OutlinedButton(onPressed: () => _addAllToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor), child: Text('Play All', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                                        // IconButton(icon: Icon(Icons.favorite, color: ((fave ?? false) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30), onPressed: () => { setState(() {fave = !fave!;}),_favouriteAlbum(albumIds!, artistIds!, snapshot.data!) },),
+                                        //  OutlinedButton(onPressed: () => _addShuffledToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor), child: Text('Shuffle',style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                                        //  OutlinedButton(onPressed: () => _shuffleQueue(), child: const Text('Add queue')),
+                                        ],
+                                      );
+                                    }
+                                    }
+                                    ),
                                   ],
                                 ),
-                              ],
-                            );
-                          }
-                          }
-                          ),
-                    ),
+                               /*  Padding(
+                                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                  child: Text(songsList[0].artist.toString(), style: Theme.of(context).textTheme.bodyMedium),
+                                ), */
+                    
                               ],
                             ),
                             const SizedBox(height: 16.0),
