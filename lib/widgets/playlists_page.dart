@@ -45,7 +45,7 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(foregroundColor: Theme.of(context).textTheme.bodySmall!.color, backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('Playlists', style: Theme.of(context).textTheme.bodyLarge),),
+        appBar: AppBar(centerTitle: true, title: Text('Playlists', style: Theme.of(context).textTheme.bodyLarge),),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(

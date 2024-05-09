@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jel_music/widgets/all_albums_page.dart';
 import 'package:jel_music/widgets/all_songs_part.dart';
 import 'package:jel_music/widgets/artists_page.dart';
@@ -27,11 +28,12 @@ class _StartPageState extends State<StartPage> {
     // sets theme mode to dark
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(actions: [Padding(padding: const EdgeInsets.fromLTRB(0, 0, 15, 0), child: IconButton(icon:  const Icon(Icons.settings), 
+        appBar: AppBar(
+                  actions: [Padding(padding: const EdgeInsets.fromLTRB(0, 0, 15, 0), child: IconButton(icon:  const Icon(Icons.settings), 
                   onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage()),);}))],
-                  foregroundColor: Theme.of(context).textTheme.bodySmall!.color,
-                  backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text('panaudio', style: Theme.of(context).textTheme.bodyLarge),),
-        backgroundColor: Theme.of(context).colorScheme.background,
+                
+                  centerTitle: true, title: Text('panaudio', style: Theme.of(context).textTheme.bodyLarge),),
+        //backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
             top: 2.h,

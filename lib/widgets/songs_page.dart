@@ -159,8 +159,6 @@ class _SongsPageState extends State<SongsPage> {
     var songsList = controller.songs;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(foregroundColor: Theme.of(context).textTheme.bodySmall!.color, backgroundColor: Theme.of(context).colorScheme.background, centerTitle: true, title: Text(albumIds!, style: Theme.of(context).textTheme.bodyLarge),),
-        backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,
@@ -194,11 +192,12 @@ class _SongsPageState extends State<SongsPage> {
                         child: Column(
                           children: [
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Image.network(
                                 songsList[0].albumPicture ?? "", // this image doesn't exist
                                 fit: BoxFit.cover,
-                                height:250,
+                                height:100.w,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Container(
                                   //  color: Colors.amber,
@@ -207,19 +206,15 @@ class _SongsPageState extends State<SongsPage> {
                                   );
                                 },
                               ),
-                                Text(songsList[0].album.toString(), style: TextStyle(
-                                                                fontSize: 13.sp,
-                                                                color: Theme.of(context).textTheme.bodySmall!.color,
-                                                                fontWeight: FontWeight.w400,
-                                                                fontFamily: "Segoe UI",
-                                                              ),),
-                                Text(songsList[0].artist.toString(), style: TextStyle(
-                                                                fontSize: 11.sp,
-                                                                color: Theme.of(context).textTheme.bodySmall!.color,
-                                                                fontWeight: FontWeight.w400,
-                                                                fontFamily: "Segoe UI",
-                                                              ),),
-                                                              Center(
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+                                  child: Text(songsList[0].album.toString(), style: Theme.of(context).textTheme.bodyLarge),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                  child: Text(songsList[0].artist.toString(), style: Theme.of(context).textTheme.bodyMedium),
+                                ),
+                    Center(
                       child: 
                       FutureBuilder<bool>(
                           future: favourite,
@@ -295,20 +290,10 @@ class _SongsPageState extends State<SongsPage> {
                                                           mainAxisAlignment:
                                                               MainAxisAlignment.start,
                                                           children: [
-                                                            Text('${songsList[index].trackNumber}. ', style: TextStyle(
-                                                                  fontSize: 13.sp,
-                                                                  color: Theme.of(context).textTheme.bodySmall!.color,
-                                                                  fontWeight: FontWeight.w400,
-                                                                  fontFamily: "Segoe UI",
-                                                                )),
+                                                            Text('${songsList[index].trackNumber}. ', style: Theme.of(context).textTheme.bodyMedium),
                                                             Flexible(
                                                               child: Text(songsList[index].title!,
-                                                                style: TextStyle(
-                                                                  fontSize: 13.sp,
-                                                                  color: Theme.of(context).textTheme.bodySmall!.color,
-                                                                  fontWeight: FontWeight.w400,
-                                                                  fontFamily: "Segoe UI",
-                                                                ),
+                                                                style: Theme.of(context).textTheme.bodyMedium,
                                                                 softWrap: true,
                                                                 overflow: TextOverflow.ellipsis, // Set overflow property
                                                                 maxLines: 1, // Set the maximum number of lines
@@ -325,7 +310,7 @@ class _SongsPageState extends State<SongsPage> {
                                                         children: [
                                                           Container(
                                                             margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                                            child: Text(songsList[index].length.toString(), style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                                                            child: Text(songsList[index].length.toString(), style:  Theme.of(context).textTheme.bodySmall)),
                                                             Container(
                                                             margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                                             child: IconButton(icon: Icon(Icons.download, size: 30, color: ((songsList[index].downloaded ?? false) ? Colors.green : Colors.blueGrey)), onPressed: () { _downloadFile(songsList[index]); }),
