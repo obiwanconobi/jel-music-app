@@ -136,14 +136,6 @@ class _ControlsState extends State<Controls> {
             children: [
               Column(
                 children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                      ElevatedButton(onPressed: () => { _clearQueue() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Clear', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
-                    ],),
-                  ),
                   Consumer<MusicController>(
                     builder: (context, musicController, snapshot) {
                     if (musicController.currentQueue == null) {
@@ -159,16 +151,17 @@ class _ControlsState extends State<Controls> {
                                   Image.network(
                                     (musicController.currentSource!.tag.artUri.toString()), // this image doesn't exist
                                     fit: BoxFit.cover,
-                                    height:250,
+                                    height:100.w,
+                                    width: 100.w,
                                     errorBuilder: (context, error, stackTrace) {
                                       return Container(
                                         alignment: Alignment.center,
-                                        child: Image.asset('assets/images/album.png', height: 250),
+                                        child: Image.asset('assets/images/album.png', height: 100.w),
                                       );
                                     },
                                   ),
-                                  Text(musicController.currentSource?.tag.title, style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 17)),
-                                  Text(musicController.currentSource?.tag.album, style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),
+                                  Text(musicController.currentSource?.tag.title, style: Theme.of(context).textTheme.bodyMedium),
+                                  Text(musicController.currentSource?.tag.album, style: Theme.of(context).textTheme.bodySmall),
                                 ],
                               ),
                               StreamBuilder<Duration>(
@@ -178,7 +171,7 @@ class _ControlsState extends State<Controls> {
                                   return 
                                     Column(
                                       children: [
-                                        Container(
+                                        SizedBox(
                                           width: 200,
                                           child:
                                               ProgressBar(
@@ -205,6 +198,14 @@ class _ControlsState extends State<Controls> {
                                     );
                                 }                    
                               ),
+                              Container(
+                                margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                  ElevatedButton(onPressed: () => { _clearQueue() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Clear', style: Theme.of(context).textTheme.bodySmall)),
+                                ],),
+                              ), 
                               ListView.builder(
                               shrinkWrap: true,
                               itemCount: musicController.playlist.sequence.length,
@@ -231,8 +232,8 @@ class _ControlsState extends State<Controls> {
                                               padding:
                                                   EdgeInsets.symmetric(horizontal: 13.sp),
                                               child: SizedBox(
-                                                height: 35.sp,
-                                                width: 35.sp,
+                                                height: 40.sp,
+                                                width: 40.sp,
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.circular(2.w),
                                                   child: CachedNetworkImage(
@@ -265,12 +266,7 @@ class _ControlsState extends State<Controls> {
                                                         children: [
                                                           Flexible(
                                                             child: Text(musicController.playlist.sequence[index].tag.title!,
-                                                              style: TextStyle(
-                                                                fontSize: 12.sp,
-                                                                color: Theme.of(context).textTheme.bodySmall!.color,
-                                                                fontWeight: FontWeight.w400,
-                                                                fontFamily: "Segoe UI",
-                                                              ),
+                                                              style: Theme.of(context).textTheme.bodyMedium,
                                                               overflow: TextOverflow.ellipsis, // Set overflow property
                                                               maxLines: 2, // Set the maximum number of lines
                                                             ),
@@ -279,12 +275,8 @@ class _ControlsState extends State<Controls> {
                                                       ),
                                                       Container(
                                                         alignment: Alignment.centerLeft,
-                                                        child: Text(musicController.playlist.sequence[index].tag.album, style: TextStyle(
-                                                                  fontSize: 10.sp,
-                                                                  color: Theme.of(context).textTheme.bodySmall!.color,
-                                                                  fontWeight: FontWeight.w400,
-                                                                  fontFamily: "Segoe UI",
-                                                                ),),
+                                                        child: Text(musicController.playlist.sequence[index].tag.album,
+                                                         style: Theme.of(context).textTheme.bodySmall,),
                                                       ),
                                                     ],
                                                   ),
