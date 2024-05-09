@@ -105,7 +105,7 @@ static ThemeData lightTheme = ThemeData(
         statusBarColor: Color(0xFF1C1B1B),
       )
     ),
-    primaryColor: Colors.blueGrey, // Your primary color for dark mode
+    primaryColor: Colors.teal, // Your primary color for dark mode
     canvasColor:const Color.fromARGB(255, 37, 37, 37),
     focusColor: Colors.red,
     colorScheme: ColorScheme.fromSwatch(
