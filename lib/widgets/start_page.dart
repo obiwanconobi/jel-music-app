@@ -319,12 +319,14 @@ class _StartPageState extends State<StartPage> {
                     padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                     alignment: Alignment.centerLeft,
                     child: Text('Favourite Albums', style: Theme.of(context).textTheme.bodyLarge,)),
-                  const FavouriteAlbums(),
+                  // ignore: prefer_const_constructors
+                  FavouriteAlbums(),
                   Container(
                       padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                     alignment: Alignment.centerLeft,
                     child: Text('Favourite Artists', style: Theme.of(context).textTheme.bodyLarge)),
-                  const FavouriteArtists(),
+                  // ignore: prefer_const_constructors
+                  FavouriteArtists(),
                 ],
                     ),
           )
