@@ -100,18 +100,18 @@ class _AllSongsPageState extends State<AllSongsPage> {
             children: [
               SegmentedButton<SortOptions>(
                 style: ButtonStyle(backgroundColor:  MaterialStateProperty.all<Color>(Theme.of(context).canvasColor)),
-                segments: const <ButtonSegment<SortOptions>>[
-                  ButtonSegment<SortOptions>(
+                segments: <ButtonSegment<SortOptions>>[
+                   ButtonSegment<SortOptions>(
                       value: SortOptions.asc,
-                      label: Text('asc', style: TextStyle(fontSize: 13),),
+                      label: Text('Asc', style: Theme.of(context).textTheme.bodySmall,),
                       icon: Icon(Icons.north)),
                   ButtonSegment<SortOptions>(
                       value: SortOptions.random,
-                      label: Text('Random'),
+                      label: Text('Random', style: Theme.of(context).textTheme.bodyMedium),
                       icon: Icon(Icons.shuffle)),
                   ButtonSegment<SortOptions>(
                       value: SortOptions.desc,
-                      label: Text('desc', style: TextStyle(fontSize: 13),),
+                      label: Text('Desc', style: Theme.of(context).textTheme.bodySmall,),
                       icon: Icon(Icons.south)),
                 ],
                 selected: <SortOptions>{sortOptionsView},
