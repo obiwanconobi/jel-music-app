@@ -38,10 +38,14 @@ class AlbumController {
 
   Future<Artists> getArtistInfo()async{
      await artistsHelper.openBox();
+     String artistIds = "";
      var artistRaw = artistsHelper.returnArtist(artistId!);
      artistInfo.id = artistRaw!.id;
+     artistIds = artistRaw!.id;
      artistInfo.name = artistRaw.name;
-     artistInfo.picture = artistRaw.picture;
+    var pictureUrl = "$baseServerUrl/Items/$artistIds/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+         
+     artistInfo.picture = pictureUrl;
      artistInfo.favourite = artistRaw.favourite;
      artistInfo.overview = artistRaw.overview;
      return artistInfo;

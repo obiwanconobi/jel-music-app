@@ -210,22 +210,60 @@ class _AlbumPageState extends State<AlbumPage> {
                           child:  Text('Similar Artists', style:Theme.of(context).textTheme.bodyLarge)),
                           SimilarArtists(artistId: artistIds!,),
 
-
-                Container(
-                          alignment: Alignment.centerLeft,
-                           child: Padding(
-                             padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
-                             child: Text('Biography', style: Theme.of(context).textTheme.bodyLarge),
-                           ),
-                         ),
-                          
-                                      ExpandableText(
-                                            artist.overview ?? "",
-                                            expandText: 'show more',
-                                            collapseText: 'show less',
-                                            maxLines: 4,
-                                            linkColor: Colors.blue,
-                                        ),
+                if(artist.overview != null)Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Card(
+                    color: Theme.of(context).canvasColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    // Set the clip behavior of the card
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    // Define the child widgets of the card
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        // Display an image at the top of the card that fills the width of the card and has a height of 160 pixels
+                       /*  CachedNetworkImage(
+                                 imageUrl: artist.picture ?? "",
+                                 memCacheHeight: 150,
+                                memCacheWidth: 150,
+                                errorWidget: (context, url, error) => Container(
+                                color: const Color(0xFF71B77A),
+                                child: const Center(
+                                  child: Text("404"),),),), */
+                        // Add a container with padding that contains the card's title, text, and buttons
+                        Container(
+                          padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              // Display the card's title using a font size of 24 and a dark grey color
+                              Text(
+                                "Biography",
+                                style: Theme.of(context).textTheme.labelLarge,
+                              ),
+                              // Add a space between the title and the text
+                              Container(height: 10),
+                              // Display the card's text using a font size of 15 and a light grey color
+                              ExpandableText(
+                                              artist.overview ?? "",
+                                              expandText: 'show more',
+                                              collapseText: 'show less',
+                                              maxLines: 4,
+                                              linkColor: Colors.blue,
+                                              style: Theme.of(context).textTheme.bodyMedium,
+                                          ),
+                              // Add a row with two buttons spaced apart and aligned to the right side of the card
+                            ],
+                          ),
+                        ),
+                        // Add a small space between the card and the next widget
+                        Container(height: 5),
+                      ],
+                    ),
+                  ),
+                ),
                                        ],
                                     );
                             }}),

@@ -86,7 +86,8 @@ static ThemeData lightTheme = ThemeData(
       backgroundColor: const Color.fromARGB(255, 204, 204, 204), // Your secondary color
     ), // Your accent color for dark mode
     textTheme: const TextTheme(
-      bodyLarge: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'League Spartan', fontWeight: FontWeight.w600), // Text color for dark theme
+      labelLarge: TextStyle(color: Colors.black, fontSize:26, fontWeight: FontWeight.w600),
+      bodyLarge: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600), // Text color for dark theme
       bodyMedium: TextStyle(color: Colors.black, fontSize: 18),
       bodySmall: TextStyle(color: Colors.black, fontSize: 16),
       labelSmall: TextStyle(color: Colors.black, fontSize: 11)
@@ -115,7 +116,8 @@ static ThemeData lightTheme = ThemeData(
       backgroundColor: const Color(0xFF1C1B1B), // Your secondary color
     ), // Your accent color for dark mode
     textTheme: const TextTheme(
-      bodyLarge: TextStyle(color: Colors.white, fontSize: 20, fontFamily: 'League Spartan', fontWeight: FontWeight.w600), // Text color for dark theme
+      labelLarge: TextStyle(color: Colors.white, fontSize:26, fontWeight: FontWeight.w600),
+      bodyLarge: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600), // Text color for dark theme
       bodyMedium: TextStyle(color: Colors.white, fontSize: 18),
       bodySmall: TextStyle(color: Colors.white, fontSize: 16),
       labelSmall: TextStyle(color: Colors.white, fontSize: 11)
