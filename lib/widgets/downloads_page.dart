@@ -108,9 +108,9 @@ class _DownloadsPageState extends State<DownloadsPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                ElevatedButton(onPressed: () => { _playAll(songsList) }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Play', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
-                                ElevatedButton(onPressed: () => { _syncDownloads() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Sync', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
-                                ElevatedButton(onPressed: () => { _clearDownloads() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Clear', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
+                                ElevatedButton(onPressed: () => { _playAll(songsList) }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Play', style:Theme.of(context).textTheme.bodySmall)),
+                                ElevatedButton(onPressed: () => { _syncDownloads() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Sync', style: Theme.of(context).textTheme.bodySmall)),
+                                ElevatedButton(onPressed: () => { _clearDownloads() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Clear', style: Theme.of(context).textTheme.bodySmall)),
                              
                               ],              
                             ),

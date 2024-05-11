@@ -9,6 +9,7 @@ import 'package:jel_music/controllers/all_songs_controller.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/artist_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
+import 'package:jel_music/controllers/latest_albums_controller.dart';
 import 'package:jel_music/controllers/liked_controller.dart';
 import 'package:jel_music/controllers/playlist_controller.dart';
 import 'package:jel_music/controllers/playlists_controller.dart';
@@ -46,6 +47,7 @@ Future<void> main() async{
   GetIt.I.registerSingleton<ApiController>(ApiController());
   GetIt.I.registerSingleton<AllSongsController>(AllSongsController());
   GetIt.I.registerSingleton<AllAlbumsController>(AllAlbumsController());
+  GetIt.I.registerSingleton<LatestAlbumsController>(LatestAlbumsController());
   GetIt.I.registerSingleton<SongsController>(SongsController());
   GetIt.I.registerSingleton<AlbumController>(AlbumController());
   GetIt.I.registerSingleton<ArtistController>(ArtistController());
