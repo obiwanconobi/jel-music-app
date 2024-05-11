@@ -42,9 +42,6 @@ jobs:
       - name: Build Android Apk
         run: flutter build apk --release
 
-      - name: Build Android App Bundle
-        run: flutter build appbundle --release  
-
       - name: Set up Android SDK
         uses: android-actions/setup-android@v2
         with:
@@ -69,38 +66,11 @@ jobs:
           FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.19.5-x64
           PUB_CACHE: /home/runner/.pub-cache
           
-      - name: Sign aab
-        run: |
-          $ANDROID_SDK_ROOT/build-tools/30.0.3/apksigner sign --verbose \
-            --ks /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks \
-            --ks-key-alias nutella \
-            --ks-pass env:STORE_PASSWORD \
-            --key-pass env:KEY_PASSWORD \
-            --out build/app/outputs/flutter-apk/app-release-signed.aab \
-            build/app/outputs/flutter-apk/app-release.aab
-        env:
-          STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-          JAVA_HOME_12.0.2_x64: /opt/hostedtoolcache/jdk/12.0.2/x64
-          JAVA_HOME: /opt/hostedtoolcache/jdk/12.0.2/x64
-          JAVA_HOME_12_0_2_X64: /opt/hostedtoolcache/jdk/12.0.2/x64
-          FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.19.5-x64
-          PUB_CACHE: /home/runner/.pub-cache
-
-
-
       - name: Publish Android Artefacts
         uses: actions/upload-artifact@v2
         with:
           name: release-apk-signed
           path: build/app/outputs/flutter-apk/app-release-signed.apk
-
-      - name: Publish Android Artefacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: release-aab-signed
-          path: build/app/outputs/flutter-apk/app-release-signed.aab
-
       
 
       - name: Set tag to current date and time
