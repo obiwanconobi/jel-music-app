@@ -4,17 +4,21 @@ import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/models/playlists.dart';
 import 'package:jel_music/models/songs.dart';
+import 'package:jel_music/models/album.dart';
 import 'package:jel_music/repos/jellyfin_repo.dart';
 
 class JellyfinHandler{
 
   late JellyfinRepo jellyfinRepo;
   Conversions conversions = Conversions();
+  Mappers mapper = Mappers();
   
   JellyfinHandler(){
     jellyfinRepo = GetIt.instance<JellyfinRepo>();
   
   }
+
+
 
 
   updateFavouriteStatus(String itemId, bool current)async{
@@ -23,6 +27,12 @@ class JellyfinHandler{
 
   returnArtistBio(String artistName)async{
     return await jellyfinRepo.getArtistBio(artistName);
+  }
+
+
+  Future<List<Album>>  returnLatestAlbums()async{
+    var albumsRaw =  await jellyfinRepo.getLatestAlbums();
+    return await mapper.mapAlbumFromRaw(albumsRaw);
   }
 
   Future<List<Artists>> fetchArtists()async{
@@ -53,7 +63,6 @@ class JellyfinHandler{
   }
 
   Future<List<Songs>> returnSongsFromPlaylist(String playlistId)async{
-    Mappers mapper = Mappers();
     var songsRaw = await jellyfinRepo.getPlaylistSongs(playlistId);
     var mappedSongs = await mapper.mapSongFromRaw(songsRaw["Items"]);
     return mappedSongs;

@@ -46,10 +46,12 @@ class SongsController {
 
   Future<bool> returnFavourite(String artist, String album)async{
     await albumHelper.openBox();
-    return albumHelper.isFavourite(artist, album);
-    
+   // return albumHelper.isFavourite(artist, album);
+   var albumFull = albumHelper.returnAlbum(artist, album);
+    return false;
   }
 
+ 
   returnPlaylists()async{
       var playlistsRaw =  await jellyfinHandler.returnPlaylists();
       return playlistsRaw;

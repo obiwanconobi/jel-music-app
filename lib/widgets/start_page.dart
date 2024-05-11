@@ -6,6 +6,7 @@ import 'package:jel_music/widgets/artists_page.dart';
 import 'package:jel_music/widgets/downloads_page.dart';
 import 'package:jel_music/widgets/favourite_albums.dart';
 import 'package:jel_music/widgets/favourite_artists.dart';
+import 'package:jel_music/widgets/latest_albums.dart';
 import 'package:jel_music/widgets/liked_songs.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/playlists_page.dart';
@@ -327,6 +328,15 @@ class _StartPageState extends State<StartPage> {
                     child: Text('Favourite Artists', style: Theme.of(context).textTheme.bodyLarge)),
                   // ignore: prefer_const_constructors
                   FavouriteArtists(),
+                  Container(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    alignment: Alignment.centerLeft,
+                    child: Text('Latest Albums', style: Theme.of(context).textTheme.bodyLarge)),
+                  // ignore: prefer_const_constructors
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 70),
+                    child: const LatestAlbums(),
+                  ),
                 ],
                     ),
           )

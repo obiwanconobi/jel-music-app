@@ -23,6 +23,8 @@ class AlbumsHelper{
   }
 
   bool isFavourite(String artist, String title){
+    var ff = albumsBox.values.where((element) => element.artist == artist && element.name == title);
+    var fff = albumsBox.values.where((element) => element.artist == artist);
       return albumsBox.values.where((element) => element.artist == artist && element.name == title).first.favourite ?? false;
   }
 

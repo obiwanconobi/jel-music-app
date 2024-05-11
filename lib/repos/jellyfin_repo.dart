@@ -97,6 +97,20 @@ class JellyfinRepo{
         
   }
 
+  getLatestAlbums()async{
+    //Users/D8B7A1C3-8440-4C88-80A1-04F7119FAA7A/Items?includeItemTypes=MusicAlbum&fields=DateCreated&sortBy=DateCreated&enableTotalRecordCount=true&enableImages=true&recursive=true&sortOrder=Descending&limit=20
+    try{
+         var requestHeaders = apiHelper.returnJellyfinHeaders();
+         String url = "$baseServerUrl/Users/$userId/Items?includeItemTypes=MusicAlbum&fields=DateCreated&sortBy=DateCreated&enableTotalRecordCount=true&enableImages=true&recursive=true&sortOrder=Descending&limit=20";
+        http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
+        if (res.statusCode == 200) {
+          return json.decode(res.body);
+        }
+    }catch (e) {
+          rethrow;
+        }
+  }
+
   getPlaylists()async{
        try {
            var requestHeaders = apiHelper.returnJellyfinHeaders();

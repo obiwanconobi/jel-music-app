@@ -1,5 +1,6 @@
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/helpers/conversions.dart';
+import 'package:jel_music/models/album.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
 
@@ -28,6 +29,18 @@ class Mappers{
       }
     } 
     return songsList;
+  }
+
+  Future<List<Album>> mapAlbumFromRaw(dynamic albums)async{
+    List<Album> albumsList = [];
+    for(var album in albums["Items"]){
+          String albumId = album["Id"];
+        //  Albums? albumGot = albumHelper.returnAlbum(artist, title);
+      var imgUrl = "$baseServerUrl/Items/$albumId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+      albumsList.add(Album(id: album["Id"], title: album["Name"],artist: album["AlbumArtist"], year: album["ProductionYear"] ?? 1900, picture: imgUrl));
+  
+    }
+    return albumsList;
   }
 
   Future<List<Songs>> mapSongFromRaw(dynamic songs) async {
