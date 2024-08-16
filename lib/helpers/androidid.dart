@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 
 /// The plugin class for retrieving the Android ID.
@@ -20,7 +20,7 @@ class AndroidId {
     final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     if (Platform.isAndroid) {
       AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
-      deviceId = androidInfo.androidId;
+      deviceId = androidInfo.id;
     } else if (Platform.isIOS) {
       // For iOS, you can use iosInfo to get the unique identifier
       // For example: deviceId = iosInfo.identifierForVendor;
