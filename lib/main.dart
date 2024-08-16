@@ -79,6 +79,7 @@ static ThemeData lightTheme = ThemeData(
         statusBarColor: Color.fromARGB(255, 204, 204, 204),
       )
     ),
+    scaffoldBackgroundColor:const Color.fromARGB(255, 204, 204, 204),
     primaryColor: Colors.teal, // Your primary color for dark mode
     canvasColor:const Color.fromARGB(255, 179, 179, 179),
     focusColor: Colors.red,
@@ -108,6 +109,7 @@ static ThemeData lightTheme = ThemeData(
         statusBarColor: Color(0xFF1C1B1B),
       )
     ),
+    scaffoldBackgroundColor: const Color(0xFF1C1B1B),
     primaryColor: Colors.teal, // Your primary color for dark mode
     canvasColor:const Color.fromARGB(255, 37, 37, 37),
     focusColor: Colors.red,
