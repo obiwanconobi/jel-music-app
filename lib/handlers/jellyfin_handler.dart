@@ -18,9 +18,6 @@ class JellyfinHandler{
   
   }
 
-
-
-
   updateFavouriteStatus(String itemId, bool current)async{
     await jellyfinRepo.updateFavouriteStatus(itemId, current);
   }
@@ -50,6 +47,10 @@ class JellyfinHandler{
           artistList.add(Artists(id: artist["Id"], name: artist["Name"], favourite: artist["UserData"]["IsFavorite"], picture: artist["Id"]));
       }
       return artistList;
+  }
+
+  returnSongs()async{
+    return await jellyfinRepo.getSongsDataRaw();
   }
 
   Future<List<Playlists>> returnPlaylists()async{

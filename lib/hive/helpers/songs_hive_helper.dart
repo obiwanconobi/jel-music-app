@@ -103,16 +103,14 @@ class SongsHelper{
 
 
 
-   addSongsToBox()async{
+   addSongsToBox(dynamic songs)async{
     List<Songs> songsList = [];
-    var songs = await _getSongsDataRaw();
+    //var songs = await _getSongsDataRaw();
 
     for(var song in songs["Items"]){
 
       var codec = song["MediaStreams"][0]["Codec"];
       codec = conversions.codecCleanup(codec.toUpperCase());
-
-
 
       var bitrate = song["MediaStreams"][0]["BitRate"]~/1000;
       var bitdepth = song["MediaStreams"][0]["BitDepth"];

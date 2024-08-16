@@ -1,4 +1,5 @@
 import 'package:jel_music/handlers/jellyfin_handler.dart';
+import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/hive/classes/songs.dart';
@@ -7,38 +8,63 @@ import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/fav_albums.dart';
 
+import '../../models/log.dart';
+
 
 class SyncHelper{
   SongsHelper songsHelper = SongsHelper();
   AlbumsHelper albumsHelper = AlbumsHelper();
   ArtistsHelper artistsHelper = ArtistsHelper();
   JellyfinHandler jellyfinHandler = JellyfinHandler();
+  LogHandler logger = LogHandler();
 
-  runSync()async{
-
+  Future<List<FavAlbums>> getFavouriteAlbums()async{
     List<FavAlbums> favAlbums = [];
     var albumsRaw = await albumsHelper.getAlbumDataFavourite();
 
     for(var album in albumsRaw["Items"]){
-          
+
       try{
         favAlbums.add(FavAlbums(title: album["Name"], artist: album["AlbumArtist"]));
-       }catch(e){
+      }catch(e){
         //log error
-      
+        logger.addToLog(LogModel(logType: "Error", logDateTime: DateTime.now(), logMessage: "Failed to get favourite albums: $e"));
+
       }
-      
     }
+    return favAlbums;
+  }
 
+  Future<List<String>> getFavouriteArtists()async{
     List<String> favArtists = [];
-    var artistRaw = await artistsHelper.getArtistDataFavourite();
-    for(var artist in artistRaw["Items"]){
-      favArtists.add(artist["Name"]);
+    dynamic artistRaw;
+    try{
+      artistRaw = await artistsHelper.getArtistDataFavourite();
+    }catch(e){
+      logger.addToLog(LogModel(logType: "Error", logDateTime: DateTime.now(), logMessage: "Failed to get favourite artists: $e"));
     }
 
-    await songsHelper.addSongsToBox();
+    try{
+      for(var artist in artistRaw["Items"]){
+        favArtists.add(artist["Name"]);
+      }
+      return favArtists;
+    }catch(e){
+      logger.addToLog(LogModel(logType: "Error", logDateTime: DateTime.now(), logMessage: "Failed to get favourite artists: $e"));
+    }
+    return [];
+  }
+
+  runSync()async{
+
+    List<FavAlbums> favAlbums = await getFavouriteAlbums();
+    List<String> favArtists = await getFavouriteArtists();
+    var songs = await jellyfinHandler.returnSongs();
+
+    await songsHelper.addSongsToBox(songs);
     await albumsHelper.openBox();
     await artistsHelper.openBox();
+
     List<Songs> listOfSongs = await songsHelper.returnSongs();
 
     for(var song in listOfSongs){

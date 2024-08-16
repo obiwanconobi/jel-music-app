@@ -32,6 +32,7 @@ class _MyWidgetState extends State<SettingsPage> {
   final TextEditingController _serverUrlTextController = TextEditingController();
   final TextEditingController _usernameTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
+  final TextEditingController _logController = TextEditingController();
   var downloadController = GetIt.instance<DownloadController>();
    var logger = GetIt.instance<LogHandler>();
   AlbumsHelper albumsHelper = AlbumsHelper();
@@ -62,15 +63,15 @@ class _MyWidgetState extends State<SettingsPage> {
       
             http.Response res = await http.post(Uri.parse(url), headers: requestHeaders, body: loginBody);
             if (res.statusCode == 200) {
-              var stringgg = json.decode(res.body)["AccessToken"];
+              var stringgg = json.decode(res.body)["  AccessToken"];
               GetStorage().write('accessToken', json.decode(res.body)["AccessToken"]);
               GetStorage().write('username', username);
               GetStorage().write('password', password);
               var strginggg = res.body.toString();
-               logger.addToLog(LogModel(logMessage: "Login Successful", logDateTime:DateTime.now(), logType: "INFO"));
+              // logger.addToLog(LogModel(logMessage: "Login Successful", logDateTime:DateTime.now(), logType: "INFO"));
            
             }else{
-              logger.addToLog(LogModel(logMessage: "Failed o login with username: $username at the url: $baseServerUrl", logDateTime:DateTime.now(), logType: "ERROR"));
+            //  logger.addToLog(LogModel(logMessage: "Failed o login with username: $username at the url: $baseServerUrl", logDateTime:DateTime.now(), logType: "ERROR"));
               //log error
             }
 
@@ -88,8 +89,11 @@ class _MyWidgetState extends State<SettingsPage> {
 
   }
 
-  _getLogInfo()async{
+  getLogInfo()async{
     logHistory = logger.listFromLog();
+    for (var log in logHistory){
+      _logController.text += log.logMessage!;
+    }
   }
 
   _saveUrl() async {
@@ -106,7 +110,7 @@ class _MyWidgetState extends State<SettingsPage> {
       getCachedSongs();
       playbackReporting = getPlaybackReporting();
    
-
+    getLogInfo();
     syncHelper.songsHelper.openBox();
     helper.openBox();
     albumsHelper.openBox();
@@ -214,6 +218,7 @@ class _MyWidgetState extends State<SettingsPage> {
                       ),
                    ],
                  ),
+                TextField(controller: _logController, expands: true, readOnly: true,)
               ],
             ),
             )

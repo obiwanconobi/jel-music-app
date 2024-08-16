@@ -8,8 +8,8 @@ class LogHelper{
   late Box<Log> logBox;
 
    Future<void> openBox()async{
-     await Hive.openBox<Log>('albums');
-     logBox = Hive.box('albums');
+     await Hive.openBox<Log>('logs');
+     logBox = Hive.box('logs');
   }
 
   addToLog(Log log){
