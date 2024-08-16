@@ -33,10 +33,10 @@ dependencies:
     sdk: flutter
   sizer: ^2.0.13
   provider: ^6.1.1
-  just_audio: ^0.9.37
+  just_audio: ^0.9.39
   audio_session: ^0.1.13
   http: ^1.2.1
-  audio_service: ^0.18.12
+  audio_service: ^0.18.15
   solid_bottom_sheet: ^0.1.10
   get_storage: ^2.1.1
   cached_network_image: ^3.3.1
