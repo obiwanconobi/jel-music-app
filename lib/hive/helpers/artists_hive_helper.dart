@@ -99,7 +99,7 @@ class ArtistsHelper{
     try {
       var userId = GetStorage().read('userId');
     
-       var requestHeaders = apiHelper.returnJellyfinHeaders();
+       var requestHeaders = await apiHelper.returnJellyfinHeaders();
       String url = "$baseServerUrl/Artists/AlbumArtists?fields=Overview&enableUserData=true&userId=$userId&enableImages=true&enableTotalRecordCount=true&isFavorite=true";
       http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
       if (res.statusCode == 200) {
@@ -113,7 +113,7 @@ class ArtistsHelper{
        _getAlbumData() async{
         var userId = GetStorage().read('userId');
       try {
-         var requestHeaders = apiHelper.returnJellyfinHeaders();
+         var requestHeaders = await apiHelper.returnJellyfinHeaders();
       String url = "$baseServerUrl/Users/$userId/Items?recursive=true&includeItemTypes=MusicAlbum&videoTypes=&enableTotalRecordCount=true&enableImages=true";
       http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
       if (res.statusCode == 200) {

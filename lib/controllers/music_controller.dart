@@ -79,7 +79,7 @@ AudioHandler? _audioHandler;
 
     _audioHandler ??= await AudioService.init(
       builder: () => this,
-      config: const AudioServiceConfig(
+      config: AudioServiceConfig(
         androidStopForegroundOnPause: true,
         androidNotificationChannelName: "Playback",
         androidNotificationChannelId: "com.pansoft.panaudio.channel.audio",

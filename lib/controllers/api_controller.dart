@@ -39,7 +39,7 @@ class ApiController{
       var accessToken = await GetStorage().read('accessToken');
       var baseServerUrl = await GetStorage().read('serverUrl');
         try {
-          var requestHeaders = apiHelper.returnJellyfinHeaders();
+          var requestHeaders = await apiHelper.returnJellyfinHeaders();
           String url = "$baseServerUrl/Items/$itemId/Similar?limit=10";
           http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
           if (res.statusCode == 200) {

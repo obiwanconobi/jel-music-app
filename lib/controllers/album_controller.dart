@@ -99,7 +99,7 @@ class AlbumController {
         var userId = GetStorage().read('userId');
         var deviceId = GetStorage().read('deviceId');
         
-          var requestHeaders = apiHelper.returnJellyfinHeaders();
+          var requestHeaders = await apiHelper.returnJellyfinHeaders();
       String url = "$baseServerUrl/Users/$userId/Items?recursive=true&includeItemTypes=MusicAlbum&artistIds=$artistId&videoTypes=&enableTotalRecordCount=true&enableImages=true";
       http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
       if (res.statusCode == 200) {

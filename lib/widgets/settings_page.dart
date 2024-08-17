@@ -63,7 +63,7 @@ class _MyWidgetState extends State<SettingsPage> {
       
             http.Response res = await http.post(Uri.parse(url), headers: requestHeaders, body: loginBody);
             if (res.statusCode == 200) {
-              var stringgg = json.decode(res.body)["  AccessToken"];
+              var stringgg = json.decode(res.body)["AccessToken"];
               GetStorage().write('accessToken', json.decode(res.body)["AccessToken"]);
               GetStorage().write('username', username);
               GetStorage().write('password', password);
@@ -218,7 +218,7 @@ class _MyWidgetState extends State<SettingsPage> {
                       ),
                    ],
                  ),
-                TextField(controller: _logController, expands: true, readOnly: true,)
+
               ],
             ),
             )
