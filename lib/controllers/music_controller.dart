@@ -80,8 +80,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
 
     _audioHandler ??= await AudioService.init(
       builder: () => this,
-      config: const AudioServiceConfig(
-        androidStopForegroundOnPause: true,
+      config: AudioServiceConfig(
+        androidStopForegroundOnPause: false,
         androidNotificationChannelName: "Playback",
         androidNotificationChannelId: "com.pansoft.panaudio.channel.audio",
         androidNotificationOngoing: true,
