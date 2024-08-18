@@ -68,7 +68,6 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
                           child: Container(
                               width: 38.w,
                               decoration: BoxDecoration(
-                                color: (Theme.of(context).colorScheme.surface),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10.sp),
                                 ),

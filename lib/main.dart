@@ -63,26 +63,10 @@ Future<void> main() async{
   GetIt.I.registerSingleton<PlaylistController>(PlaylistController());
 
  // late MusicController _audioHandler;
-  Future<void> initAudioService() async {
 
-    final session = await AudioSession.instance;
-    await session.configure(const AudioSessionConfiguration.music());
-
-
-  }
-  MusicController audioHandler =  await AudioService.init(
-    builder: () => MusicController(),
-    config: const AudioServiceConfig(
-      androidStopForegroundOnPause: true,
-      androidNotificationChannelName: "Playback",
-      androidNotificationChannelId: "com.pansoft.panaudio.audio",
-      androidNotificationOngoing: true,
-    ),
-  );
 
   runApp(MusicControllerProvider(
-    controller: audioHandler,
-    child: MyApp(),
+    child:MyApp(),
     ));
 }
 

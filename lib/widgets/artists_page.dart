@@ -47,7 +47,6 @@ class _ArtistPageState extends State<ArtistPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         centerTitle: true,
         title: Text("Artists", style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.bodySmall!.color)),

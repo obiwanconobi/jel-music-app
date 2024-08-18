@@ -67,7 +67,6 @@ class _FavouriteArtistsState extends State<FavouriteArtists> {
                           ),
                           child: Container(
                               decoration: BoxDecoration(
-                                color: (Theme.of(context).colorScheme.surface),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10.sp),
                                 ),

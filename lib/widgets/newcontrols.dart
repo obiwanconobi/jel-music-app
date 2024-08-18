@@ -130,7 +130,6 @@ class _ControlsState extends State<Controls> {
         ), // Your header here
         body:
          Container(
-          color: Theme.of(context).colorScheme.surface,
           child: ListView(
             shrinkWrap: true,
             children: [
@@ -221,7 +220,6 @@ class _ControlsState extends State<Controls> {
                                     child: Container(
                                         height: 52.sp,
                                         decoration: BoxDecoration(
-                                          color: (Theme.of(context).colorScheme.surface),
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10.sp),
                                           ),

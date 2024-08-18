@@ -87,7 +87,6 @@ class _AllSongsPageState extends State<AllSongsPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(centerTitle: true, title: Text('All Songs', style: Theme.of(context).textTheme.bodyLarge),),
-        backgroundColor: Theme.of(context).colorScheme.surface,
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,
@@ -170,7 +169,6 @@ class _AllSongsPageState extends State<AllSongsPage> {
                                     child: Container(
                                         height: 52.sp,
                                         decoration: BoxDecoration(
-                                          color: (Theme.of(context).colorScheme.surface),
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10.sp),
                                           ),

@@ -16,6 +16,7 @@ import 'package:jel_music/models/log.dart';
 import 'package:jel_music/widgets/downloads_page.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:sizer/sizer.dart';
 
 
 
@@ -105,7 +106,7 @@ class _MyWidgetState extends State<SettingsPage> {
     await logger.openBox();
     logHistory = logger.listFromLog();
     for (var log in logHistory){
-      _logController.text += log.logMessage!;
+      _logController.text +=("\n${log.logMessage!}");
     }
   }
 
@@ -200,7 +201,6 @@ class _MyWidgetState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         centerTitle: true,
         title: Text("Settings", style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.bodySmall!.color)),
@@ -209,62 +209,68 @@ class _MyWidgetState extends State<SettingsPage> {
           Container(
           padding: const EdgeInsets.all(20),
           child: 
-            Column(
-              children: 
-              [
-              DropdownButton<String>(
-              value: _selectedOption,
-              onChanged: (String? newValue) {
-                if (newValue != null && newValue != 'PanAudio') {
-                  setState(() {
-                    _selectedOption = newValue;
-                  });
-                }
-              },
-              items: const <DropdownMenuItem<String>>[
-                DropdownMenuItem<String>(
-                  value: 'Jellyfin',
-                  child: Text('Jellyfin'),
-                ),
-                DropdownMenuItem<String>(
-                  value: 'Subsonic',
-                  child: Text('Subsonic'),
-                ),
-                DropdownMenuItem<String>(
-                  value: 'PanAudio',
-                  child: Text('PanAudio'),
-                  enabled: false,
-                ),
-              ],
+            SingleChildScrollView(
+              child: Column(
+                children: 
+                [
+                DropdownButton<String>(
+                value: _selectedOption,
+                onChanged: (String? newValue) {
+                  if (newValue != null && newValue != 'PanAudio') {
+                    setState(() {
+                      _selectedOption = newValue;
+                    });
+                  }
+                },
+                items: const <DropdownMenuItem<String>>[
+                  DropdownMenuItem<String>(
+                    value: 'Jellyfin',
+                    child: Text('Jellyfin'),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: 'Subsonic',
+                    child: Text('Subsonic'),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: 'PanAudio',
+                    child: Text('PanAudio'),
+                    enabled: false,
+                  ),
+                ],
+              ),
+                   Text('Server URL', style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color)),
+                  TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _serverUrlTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_saveUrl),)),),
+                  TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _usernameTextController,),
+                  TextField(obscureText: true, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _passwordTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_login),)),),
+                  TextButton(onPressed: () { sync(); }, child: Text('Sync', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
+                  TextButton(onPressed: () { check(); }, child: Text('Check', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
+                  TextButton(onPressed: () { clear(); }, child: Text('Clear', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
+                  TextButton(onPressed: () { toggleTheme(); }, child: Text('Toggle Theme', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
+                   TextButton(onPressed: () { clearCache(); }, child: Text('Clear Cache', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
+                  Text("Cached Songs: $totalCachedFileCount"),
+                   TextButton(onPressed: () { goToDownloads(); }, child: Text('Downloads', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
+                   Row(
+                     children: [
+                      const Text("Playback reporting:"),
+                      Switch(
+                          value: playbackReporting,
+                          onChanged: (value) {
+                            setState(() {
+                              setPlaybackReporting(value);
+                              playbackReporting = getPlaybackReporting();
+                            });
+                          },
+                        ),
+                     ],
+                   ),
+                  SizedBox(
+                    height: 30.h,
+                      child: TextField(maxLines: null, controller: _logController))
+                ],
+              
+              ),
             ),
-                 Text('Server URL', style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color)),
-                TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _serverUrlTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_saveUrl),)),),
-                TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _usernameTextController,),
-                TextField(obscureText: true, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _passwordTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_login),)),),
-                TextButton(onPressed: () { sync(); }, child: Text('Sync', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
-                TextButton(onPressed: () { check(); }, child: Text('Check', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
-                TextButton(onPressed: () { clear(); }, child: Text('Clear', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
-                TextButton(onPressed: () { toggleTheme(); }, child: Text('Toggle Theme', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
-                 TextButton(onPressed: () { clearCache(); }, child: Text('Clear Cache', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
-                Text("Cached Songs: $totalCachedFileCount"),
-                 TextButton(onPressed: () { goToDownloads(); }, child: Text('Downloads', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
-                 Row(
-                   children: [
-                    const Text("Playback reporting:"),
-                    Switch(
-                        value: playbackReporting,
-                        onChanged: (value) {
-                          setState(() {
-                            setPlaybackReporting(value);
-                            playbackReporting = getPlaybackReporting();
-                          });
-                        },
-                      ),
-                   ],
-                 ),
 
-              ],
-            ),
             )
         );
   }

@@ -274,7 +274,6 @@ class _SongsPageState extends State<SongsPage> {
                                     child: Container(
                                         height: 69.sp,
                                         decoration: BoxDecoration(
-                                          color: Theme.of(context).colorScheme.surface,
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10.sp),
                                           ),

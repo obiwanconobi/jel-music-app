@@ -4,9 +4,13 @@ import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
+import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/helpers/ioclient.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
+import 'package:jel_music/models/log.dart';
 import 'package:jel_music/models/stream.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:get_storage/get_storage.dart';
@@ -26,6 +30,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
         ),),
   );
  final StreamController<Duration> _durationController = BehaviorSubject();
+  var logger = GetIt.instance<LogHandler>();
  // StreamController<Duration> _bufferedDurationController = BehaviorSubject();
   SongsHelper songsHelper = SongsHelper();
   bool _isPlaying = false;
@@ -65,17 +70,31 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
     // Specify the playlist items
     children: [
     ],
-); 
+);
+
+  AudioHandler? _audioHandler;
+
+  Future<void> initAudioService() async {
+    final session = await AudioSession.instance;
+    await session.configure(const AudioSessionConfiguration.music());
+
+    _audioHandler ??= await AudioService.init(
+      builder: () => this,
+      config: const AudioServiceConfig(
+        androidStopForegroundOnPause: true,
+        androidNotificationChannelName: "Playback",
+        androidNotificationChannelId: "com.pansoft.panaudio.channel.audio",
+        androidNotificationOngoing: true,
+      ),
+    );
+  }
 
 
-
-
-  
 
 
 
   MusicController(){
-
+      logger.openBox();
     // final _cache = JustAudioCache();
 
     // initAudioService();
@@ -92,12 +111,23 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
       ));
     });
 
+     _advancedPlayer.playbackEventStream.listen((event) {}, onError: (Object e, StackTrace st) {
+        if (e is PlatformException) {
+          logger.addToLog(LogModel(logType: "Error",logMessage: e.message, logDateTime: DateTime.now()));
+          nextSong();
+        } else {
+          print('An error occurred: $e');
+        }
+      });
+
     _advancedPlayer.playbackEventStream.listen((event) async {
       final prevState = playbackState.valueOrNull;
       final prevIndex = prevState?.queueIndex;
       final prevItem = mediaItem.valueOrNull;
       final currentState = _transformEvent(event);
       final currentIndex = currentState.queueIndex;
+
+
 
       if (playbackState.valueOrNull != null &&
           playbackState.valueOrNull?.processingState !=

@@ -3,15 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jel_music/controllers/music_controller.dart';
 
-MusicController? _controller;
+
 
 class MusicControllerProvider extends StatelessWidget {
   final Widget child;
 
-  MusicControllerProvider({super.key,required this.controller,required this.child}){
-    _controller = controller;
-  }
-  final MusicController controller;
+  const MusicControllerProvider({super.key,required this.child});
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
