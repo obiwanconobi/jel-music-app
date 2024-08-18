@@ -31,7 +31,7 @@ class ApiController{
       http.Response res = await http.post(Uri.parse(url), headers: requestHeaders, body: loginBody);
 
       if (res.statusCode == 200) {
-        GetStorage().write('accessToken', json.decode(res.body)["AccessToken"]);
+        await GetStorage().write('accessToken', json.decode(res.body)["AccessToken"]);
          logger.addToLog(LogModel(logMessage: "Login Successful", logDateTime:DateTime.now(), logType: "INFO"));
 
       } else {

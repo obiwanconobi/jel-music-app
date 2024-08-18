@@ -75,7 +75,7 @@ class AlbumsHelper{
   }
 
    _getAlbumData() async{
-    var userId =  GetStorage().read('userId');
+    var userId =  await GetStorage().read('userId');
        var requestHeaders = await apiHelper.returnJellyfinHeaders();
       String url = "$baseServerUrl/Users/$userId/Items?recursive=true&includeItemTypes=MusicAlbum&videoTypes=&enableTotalRecordCount=true&enableImages=true&isFavorite=true";
       http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);

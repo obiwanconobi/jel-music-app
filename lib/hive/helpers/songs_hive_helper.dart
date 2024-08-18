@@ -141,7 +141,7 @@ class SongsHelper{
   }
 
   _getSongsDataRaw() async{
-    var userId = GetStorage().read('userId');
+    var userId = await GetStorage().read('userId');
       try {
           Map<String, String> requestHeaders = {
           'Content-type': 'application/json',

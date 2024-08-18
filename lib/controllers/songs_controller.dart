@@ -104,9 +104,9 @@ class SongsController {
 
    _getSongsData(String albumIdVal) async{
       try {
-        var accessToken = GetStorage().read('accessToken');
+        var accessToken = await GetStorage().read('accessToken');
         String albumId = albumIdVal;
-        var userId = GetStorage().read('userId');
+        var userId = await GetStorage().read('userId');
            var requestHeaders = await apiHelper.returnJellyfinHeaders();
       String url = "$baseServerUrl/Users/$userId/Items?recursive=true&excludeItemTypes=&includeItemTypes=&albumIds=$albumId&enableTotalRecordCount=true&enableImages=true";
       

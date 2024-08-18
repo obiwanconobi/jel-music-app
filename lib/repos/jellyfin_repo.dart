@@ -35,7 +35,7 @@ class JellyfinRepo{
 
   getArtistData() async{
     try {
-      var userId = GetStorage().read('userId');
+      var userId = await GetStorage().read('userId');
     
        var requestHeaders = await apiHelper.returnJellyfinHeaders();
       String url = "$baseServerUrl/Artists/AlbumArtists?enableUserData=true&userId=$userId&enableImages=true&enableTotalRecordCount=true&isFavorite=true";

@@ -65,12 +65,12 @@ class _MyWidgetState extends State<SettingsPage> {
       await GetStorage().write('username', username);
       await GetStorage().write('password', password);
       await apiController.jellyfinLogin();
-      
+      await getUserId();
   }
 
-  _getUserId()async{
+  getUserId()async{
     var user = await apiController.getUser();
-    GetStorage().write('userId', user["Id"]);
+    await GetStorage().write('userId', user["Id"]);
 
   }
 
