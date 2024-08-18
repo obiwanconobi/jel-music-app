@@ -4,16 +4,18 @@ import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/helpers/apihelper.dart';
 
 class JellyfinRepo{
-  late String accessToken;
-  late String baseServerUrl;
-  late String userId;
+  String accessToken = "";
+  String baseServerUrl = "";
+  String userId = "";
   ApiHelper apiHelper = ApiHelper();
 
   JellyfinRepo(){
-    accessToken = GetStorage().read('accessToken') ?? "";
-    baseServerUrl = GetStorage().read('serverUrl') ?? "";
-    userId = GetStorage().read('userId') ?? "";
-     
+  }
+
+  getValues()async{
+    accessToken = await GetStorage().read('accessToken');
+    baseServerUrl =await GetStorage().read('serverUrl');
+    userId = await  GetStorage().read('userId');
   }
 
   getArtistBio(String artistName)async{
@@ -98,6 +100,7 @@ class JellyfinRepo{
   }
 
   getLatestAlbums()async{
+    await getValues();
     //Users/D8B7A1C3-8440-4C88-80A1-04F7119FAA7A/Items?includeItemTypes=MusicAlbum&fields=DateCreated&sortBy=DateCreated&enableTotalRecordCount=true&enableImages=true&recursive=true&sortOrder=Descending&limit=20
     try{
          var requestHeaders = await apiHelper.returnJellyfinHeaders();

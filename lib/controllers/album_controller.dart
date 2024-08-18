@@ -95,9 +95,9 @@ class AlbumController {
       try {
 
         String artistId = artistIdVal;
-        var accessToken = GetStorage().read('accessToken');
-        var userId = GetStorage().read('userId');
-        var deviceId = GetStorage().read('deviceId');
+        var accessToken =await GetStorage().read('accessToken');
+        var userId =await  GetStorage().read('userId');
+        var deviceId = await GetStorage().read('deviceId');
         
           var requestHeaders = await apiHelper.returnJellyfinHeaders();
       String url = "$baseServerUrl/Users/$userId/Items?recursive=true&includeItemTypes=MusicAlbum&artistIds=$artistId&videoTypes=&enableTotalRecordCount=true&enableImages=true";

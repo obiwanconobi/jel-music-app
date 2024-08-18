@@ -97,7 +97,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
       logger.openBox();
     // final _cache = JustAudioCache();
 
-    // initAudioService();
+     initAudioService();
 
       playbackState.add(playbackState.value.copyWith(
         controls: [MediaControl.play],

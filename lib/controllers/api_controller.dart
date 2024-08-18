@@ -10,6 +10,40 @@ import 'package:jel_music/models/log.dart';
 class ApiController{
   ApiHelper apiHelper = ApiHelper();
    var logger = GetIt.instance<LogHandler>();
+
+  jellyfinLogin() async {
+    try {
+      var username = GetStorage().read('username');
+      var password = GetStorage().read('password');
+      var baseServerUrl = GetStorage().read('serverUrl');
+
+      //var deviceId = await const AndroidId().getDeviceId();
+      String deviceId = "TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2";
+      GetStorage().write('deviceId', deviceId);
+      String loginBody = '{"Username": "$username","Pw": "$password"}';
+
+      Map<String, String> requestHeaders = {
+        'Content-type': 'application/json',
+        'X-Emby-Authorization': 'MediaBrowser Client="Panaudio",Device="Mobile",DeviceId="$deviceId", Version="10.8.13"'
+      };
+      String url = "$baseServerUrl/Users/AuthenticateByName";
+
+      http.Response res = await http.post(Uri.parse(url), headers: requestHeaders, body: loginBody);
+
+      if (res.statusCode == 200) {
+        GetStorage().write('accessToken', json.decode(res.body)["AccessToken"]);
+         logger.addToLog(LogModel(logMessage: "Login Successful", logDateTime:DateTime.now(), logType: "INFO"));
+
+      } else {
+        logger.addToLog(LogModel(logMessage: "Failed o login with username: $username at the url: $baseServerUrl", logDateTime:DateTime.now(), logType: "ERROR"));
+        //log error
+      }
+
+    } catch (e) {
+      //log error
+    }
+  }
+
   getUser()async{
   
     var baseServerUrl = await GetStorage().read('serverUrl');
