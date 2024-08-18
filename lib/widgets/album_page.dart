@@ -51,7 +51,7 @@ class _AlbumPageState extends State<AlbumPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(centerTitle: true, title: Text(artistIds!, style: Theme.of(context).textTheme.bodyLarge),),
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,
@@ -126,7 +126,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                   ),
                                   child: Container(
                                       decoration: BoxDecoration(
-                                        color: Theme.of(context).colorScheme.background,
+                                        color: Theme.of(context).colorScheme.surface,
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(10.sp),
                                         ),

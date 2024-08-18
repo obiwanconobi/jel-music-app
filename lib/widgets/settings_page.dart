@@ -8,9 +8,9 @@ import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
-import 'package:jel_music/helpers/androidid.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
+import 'package:jel_music/hive/helpers/subsonic_sync_helper.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
 import 'package:jel_music/models/log.dart';
 import 'package:jel_music/widgets/downloads_page.dart';
@@ -37,13 +37,25 @@ class _MyWidgetState extends State<SettingsPage> {
    var logger = GetIt.instance<LogHandler>();
   AlbumsHelper albumsHelper = AlbumsHelper();
   SyncHelper syncHelper = SyncHelper();
+  SubsonicSyncHelper subsonicSyncHelper = SubsonicSyncHelper();
   //ApiController apiController = ApiController();
   var apiController = GetIt.instance<ApiController>();
   ArtistsHelper helper = ArtistsHelper();
   late String totalCachedFileCount = "";
   late bool playbackReporting;
   List<LogModel> logHistory = [];
-  _login() async{
+
+  _login()async{
+    if(_selectedOption == "Jellyfin"){
+      await _jellyfinLogin();
+    }else if (_selectedOption == "Subsonic"){
+      await _subSoniclogin();
+    }
+  }
+
+  _subSoniclogin()async{}
+
+  _jellyfinLogin() async{
 
       try{
       var username = _usernameTextController.text;
@@ -90,6 +102,7 @@ class _MyWidgetState extends State<SettingsPage> {
   }
 
   getLogInfo()async{
+    await logger.openBox();
     logHistory = logger.listFromLog();
     for (var log in logHistory){
       _logController.text += log.logMessage!;
@@ -128,11 +141,15 @@ class _MyWidgetState extends State<SettingsPage> {
   }
 
   
-  void sync(){
+  void sync()async{
     /* helper.getAllArtists();
     albumsHelper.getAllAlbums(); */
+  if(_selectedOption == "Jellyfin"){
+   await syncHelper.runSync();
+  }else if (_selectedOption == "Subsonic"){
+   await subsonicSyncHelper.runSync();
+  }
 
-    syncHelper.runSync();
   }
 
   void clear(){
@@ -178,10 +195,12 @@ class _MyWidgetState extends State<SettingsPage> {
       Navigator.push(context, MaterialPageRoute(builder: (context) =>  DownloadsPage()),);
   }
 
+  String? _selectedOption = 'Jellyfin';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         centerTitle: true,
         title: Text("Settings", style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.bodySmall!.color)),
@@ -193,6 +212,31 @@ class _MyWidgetState extends State<SettingsPage> {
             Column(
               children: 
               [
+              DropdownButton<String>(
+              value: _selectedOption,
+              onChanged: (String? newValue) {
+                if (newValue != null && newValue != 'PanAudio') {
+                  setState(() {
+                    _selectedOption = newValue;
+                  });
+                }
+              },
+              items: const <DropdownMenuItem<String>>[
+                DropdownMenuItem<String>(
+                  value: 'Jellyfin',
+                  child: Text('Jellyfin'),
+                ),
+                DropdownMenuItem<String>(
+                  value: 'Subsonic',
+                  child: Text('Subsonic'),
+                ),
+                DropdownMenuItem<String>(
+                  value: 'PanAudio',
+                  child: Text('PanAudio'),
+                  enabled: false,
+                ),
+              ],
+            ),
                  Text('Server URL', style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color)),
                 TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _serverUrlTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_saveUrl),)),),
                 TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _usernameTextController,),

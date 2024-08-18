@@ -46,7 +46,7 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(centerTitle: true, title: Text('Playlists', style: Theme.of(context).textTheme.bodyLarge),),
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,

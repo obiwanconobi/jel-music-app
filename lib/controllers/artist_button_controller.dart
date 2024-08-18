@@ -12,7 +12,7 @@ class ArtistButtonController{
   String artistIdValue = artist!.id;
    var pictureUrl = "$baseServerUrl/Items/$artistIdValue/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
          
-    return Artists(id: artist!.id, name: artist.name, picture: pictureUrl, favourite: artist.favourite, overview: artist.overview);
+    return Artists(id: artist.id, name: artist.name, picture: pictureUrl, favourite: artist.favourite, overview: artist.overview);
 
   }
 }

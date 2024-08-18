@@ -8,6 +8,7 @@ import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/fav_albums.dart';
 
+import '../../handlers/subsonic_handler.dart';
 import '../../models/log.dart';
 
 
@@ -17,6 +18,14 @@ class SyncHelper{
   ArtistsHelper artistsHelper = ArtistsHelper();
   JellyfinHandler jellyfinHandler = JellyfinHandler();
   LogHandler logger = LogHandler();
+
+
+  SubsonicHandler testHandler = SubsonicHandler();
+
+  getTest()async{
+    var test = await testHandler.getArtists();
+    return test;
+  }
 
   Future<List<FavAlbums>> getFavouriteAlbums()async{
     List<FavAlbums> favAlbums = [];
@@ -56,6 +65,7 @@ class SyncHelper{
   }
 
   runSync()async{
+
 
     List<FavAlbums> favAlbums = await getFavouriteAlbums();
     List<String> favArtists = await getFavouriteArtists();

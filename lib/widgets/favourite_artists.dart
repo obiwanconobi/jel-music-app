@@ -15,10 +15,12 @@ class FavouriteArtists extends StatefulWidget {
 
 class _FavouriteArtistsState extends State<FavouriteArtists> {
     @override
+
   void initState() {
     super.initState();
+
     controller.favourite = true;
-    artistsFuture = controller.onInit(); 
+    artistsFuture = controller.onInit();
   }
   var controller = GetIt.instance<ArtistController>();
   late Future<List<Artists>> artistsFuture;
@@ -65,7 +67,7 @@ class _FavouriteArtistsState extends State<FavouriteArtists> {
                           ),
                           child: Container(
                               decoration: BoxDecoration(
-                                color: (Theme.of(context).colorScheme.background),
+                                color: (Theme.of(context).colorScheme.surface),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10.sp),
                                 ),

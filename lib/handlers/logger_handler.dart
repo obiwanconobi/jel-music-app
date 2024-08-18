@@ -9,6 +9,10 @@ class LogHandler{
   LogHelper logHelper = LogHelper();
   Conversions conversions = Conversions();
 
+  openBox()async{
+    await logHelper.openBox();
+  }
+
   listLogsFromBox(){
     return logHelper.listFromLog();
   }

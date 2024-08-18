@@ -41,7 +41,7 @@ class AlbumController {
      String artistIds = "";
      var artistRaw = artistsHelper.returnArtist(artistId!);
      artistInfo.id = artistRaw!.id;
-     artistIds = artistRaw!.id;
+     artistIds = artistRaw.id;
      artistInfo.name = artistRaw.name;
     var pictureUrl = "$baseServerUrl/Items/$artistIds/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
          

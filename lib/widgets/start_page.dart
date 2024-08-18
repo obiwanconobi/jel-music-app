@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:jel_music/widgets/all_albums_page.dart';
 import 'package:jel_music/widgets/all_songs_part.dart';
 import 'package:jel_music/widgets/artists_page.dart';
@@ -66,8 +65,8 @@ class _StartPageState extends State<StartPage> {
                                     );
                                   },
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).canvasColor),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    backgroundColor: WidgetStateProperty.all<Color>(Theme.of(context).canvasColor),
+                                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
                                       ),
@@ -110,8 +109,8 @@ class _StartPageState extends State<StartPage> {
                                     );
                                   },
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).canvasColor),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    backgroundColor: WidgetStateProperty.all<Color>(Theme.of(context).canvasColor),
+                                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
                                       ),
@@ -154,8 +153,8 @@ class _StartPageState extends State<StartPage> {
                                     );
                                   },
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).canvasColor),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    backgroundColor: WidgetStateProperty.all<Color>(Theme.of(context).canvasColor),
+                                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
                                       ),
@@ -197,8 +196,8 @@ class _StartPageState extends State<StartPage> {
                                     );
                                   },
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).canvasColor),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    backgroundColor: WidgetStateProperty.all<Color>(Theme.of(context).canvasColor),
+                                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
                                       ),
@@ -236,8 +235,8 @@ class _StartPageState extends State<StartPage> {
                                     );
                                   },
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).canvasColor),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    backgroundColor: WidgetStateProperty.all<Color>(Theme.of(context).canvasColor),
+                                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
                                       ),
@@ -280,8 +279,8 @@ class _StartPageState extends State<StartPage> {
                                     );
                                   },
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).canvasColor),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    backgroundColor: WidgetStateProperty.all<Color>(Theme.of(context).canvasColor),
+                                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
                                       ),

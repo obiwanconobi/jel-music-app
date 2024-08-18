@@ -31,6 +31,17 @@ class Conversions{
       
   }
 
+  String returnSecondsToTimestampString(int totalSeconds){
+    // Extract minutes and seconds
+    int minutes = totalSeconds ~/ 60;
+    int seconds = totalSeconds % 60;
+
+    // Format the result as "mm:ss"
+    String timestampString = "${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}";
+
+    return timestampString;
+  }
+
   String returnTicksToTimestampString(int ticks) {
     // Ticks per second
       const int ticksPerSecond = 10000000;

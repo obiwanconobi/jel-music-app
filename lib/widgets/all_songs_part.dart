@@ -87,7 +87,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(centerTitle: true, title: Text('All Songs', style: Theme.of(context).textTheme.bodyLarge),),
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,
@@ -99,20 +99,20 @@ class _AllSongsPageState extends State<AllSongsPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SegmentedButton<SortOptions>(
-                style: ButtonStyle(backgroundColor:  MaterialStateProperty.all<Color>(Theme.of(context).canvasColor)),
+                style: ButtonStyle(backgroundColor:  WidgetStateProperty.all<Color>(Theme.of(context).canvasColor)),
                 segments: <ButtonSegment<SortOptions>>[
                    ButtonSegment<SortOptions>(
                       value: SortOptions.asc,
                       label: Text('Asc', style: Theme.of(context).textTheme.bodySmall,),
-                      icon: Icon(Icons.north)),
+                      icon: const Icon(Icons.north)),
                   ButtonSegment<SortOptions>(
                       value: SortOptions.random,
                       label: Text('Random', style: Theme.of(context).textTheme.bodyMedium),
-                      icon: Icon(Icons.shuffle)),
+                      icon: const Icon(Icons.shuffle)),
                   ButtonSegment<SortOptions>(
                       value: SortOptions.desc,
                       label: Text('Desc', style: Theme.of(context).textTheme.bodySmall,),
-                      icon: Icon(Icons.south)),
+                      icon: const Icon(Icons.south)),
                 ],
                 selected: <SortOptions>{sortOptionsView},
                 onSelectionChanged: (Set<SortOptions> newSelection) {
@@ -170,7 +170,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
                                     child: Container(
                                         height: 52.sp,
                                         decoration: BoxDecoration(
-                                          color: (Theme.of(context).colorScheme.background),
+                                          color: (Theme.of(context).colorScheme.surface),
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10.sp),
                                           ),

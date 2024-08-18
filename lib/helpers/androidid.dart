@@ -1,7 +1,5 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
@@ -28,7 +26,7 @@ class AndroidId {
     }
     
       // Hashing the deviceId to reach the desired length
-  if (deviceId!.length < 168) {
+  if (deviceId.length < 168) {
     // If deviceId is shorter than 168 characters, hash it
    // deviceId = md5.convert(utf8.encode(deviceId)).toString();
   } else if (deviceId.length > 168) {

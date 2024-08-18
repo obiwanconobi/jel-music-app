@@ -25,7 +25,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
           prioritizeTimeOverSizeThresholds: true,
         ),),
   );
- StreamController<Duration> _durationController = BehaviorSubject();
+ final StreamController<Duration> _durationController = BehaviorSubject();
  // StreamController<Duration> _bufferedDurationController = BehaviorSubject();
   SongsHelper songsHelper = SongsHelper();
   bool _isPlaying = false;
@@ -68,31 +68,17 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
 ); 
 
 
-AudioHandler? _audioHandler;
+
 
   
 
-  Future<void> initAudioService() async {
 
-    final session = await AudioSession.instance;
-    await session.configure(const AudioSessionConfiguration.music());
-
-    _audioHandler ??= await AudioService.init(
-      builder: () => this,
-      config: AudioServiceConfig(
-        androidStopForegroundOnPause: true,
-        androidNotificationChannelName: "Playback",
-        androidNotificationChannelId: "com.pansoft.panaudio.channel.audio",
-        androidNotificationOngoing: true,
-      ),
-    );
-  }  
 
   MusicController(){
 
     // final _cache = JustAudioCache();
 
-     initAudioService();
+    // initAudioService();
 
       playbackState.add(playbackState.value.copyWith(
         controls: [MediaControl.play],

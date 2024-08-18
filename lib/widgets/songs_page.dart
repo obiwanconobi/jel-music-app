@@ -236,7 +236,7 @@ class _SongsPageState extends State<SongsPage> {
                                       //  mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
                                             IconButton(onPressed:()=>{_favouriteAlbum(albumIds!, artistIds!, fave!)}, icon: Icon(Icons.favorite, color: ((fave!) ? Colors.red : Theme.of(context).colorScheme.secondary), size:40),),
-                                             IconButton(onPressed:()=>{ _addAllToQueue(songsList!)}, icon: Icon(Icons.play_circle_rounded, size: 40, color: Theme.of(context).primaryColor),),
+                                             IconButton(onPressed:()=>{ _addAllToQueue(songsList)}, icon: Icon(Icons.play_circle_rounded, size: 40, color: Theme.of(context).primaryColor),),
                                              IconButton(onPressed:()=>{_addShuffledToQueue(songsList)}, icon: Icon(Icons.shuffle, size: 40, color: Theme.of(context).colorScheme.secondary),),
                                          
                                          // OutlinedButton(onPressed: () => _addAllToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor), child: Text('Play All', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
@@ -274,7 +274,7 @@ class _SongsPageState extends State<SongsPage> {
                                     child: Container(
                                         height: 69.sp,
                                         decoration: BoxDecoration(
-                                          color: Theme.of(context).colorScheme.background,
+                                          color: Theme.of(context).colorScheme.surface,
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10.sp),
                                           ),

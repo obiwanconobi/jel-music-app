@@ -101,7 +101,9 @@ class SongsHelper{
     return songsBox.values.where((element) => element.favourite == true).toList();
   }
 
-
+  addSongToBox(Songs song)async{
+    songsBox.add(song);
+  }
 
    addSongsToBox(dynamic songs)async{
     List<Songs> songsList = [];

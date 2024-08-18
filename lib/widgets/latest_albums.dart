@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:jel_music/controllers/all_albums_controller.dart';
 import 'package:jel_music/controllers/latest_albums_controller.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/widgets/songs_page.dart';
@@ -69,7 +68,7 @@ class _LatestAlbumsState extends State<LatestAlbums> {
                           child: Container(
                               width: 38.w,
                               decoration: BoxDecoration(
-                                color: (Theme.of(context).colorScheme.background),
+                                color: (Theme.of(context).colorScheme.surface),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10.sp),
                                 ),
