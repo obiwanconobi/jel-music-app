@@ -54,7 +54,12 @@ class _MyWidgetState extends State<SettingsPage> {
     }
   }
 
-  _subSoniclogin()async{}
+  _subSoniclogin()async{
+    var username = _usernameTextController.text;
+    var password =  _passwordTextController.text;
+    await GetStorage().write('username', username);
+    await GetStorage().write('password', password);
+  }
 
   _jellyfinLogin() async{
 
@@ -93,6 +98,7 @@ class _MyWidgetState extends State<SettingsPage> {
     super.initState();
     GetStorage.init();
 
+    _selectedOption = GetStorage().read('ServerType');
       getCachedSongs();
       playbackReporting = getPlaybackReporting();
    
@@ -108,8 +114,8 @@ class _MyWidgetState extends State<SettingsPage> {
 
    @override
   void dispose() {
-    albumsHelper.albumsBox.close();
-    helper.artistBox.close(); // Close the Hive box in dispose
+   // albumsHelper.albumsBox.close();
+   // helper.artistBox.close(); // Close the Hive box in dispose
     super.dispose();
   }
 
@@ -168,6 +174,9 @@ class _MyWidgetState extends State<SettingsPage> {
       Navigator.push(context, MaterialPageRoute(builder: (context) =>  DownloadsPage()),);
   }
 
+  writeServerType(String serverType)async{
+    await GetStorage().write('ServerType', serverType);
+  }
   String? _selectedOption = 'Jellyfin';
 
   @override
@@ -191,6 +200,7 @@ class _MyWidgetState extends State<SettingsPage> {
                   if (newValue != null && newValue != 'PanAudio') {
                     setState(() {
                       _selectedOption = newValue;
+                      writeServerType(newValue);
                     });
                   }
                 },

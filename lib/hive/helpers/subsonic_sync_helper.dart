@@ -10,6 +10,7 @@ class SubsonicSyncHelper{
   AlbumsHelper albumsHelper = AlbumsHelper();
   ArtistsHelper artistsHelper = ArtistsHelper();
   SubsonicHandler subsonicHandler = SubsonicHandler();
+
   runSync()async{
     await songsHelper.openBox();
     await albumsHelper.openBox();
@@ -26,7 +27,7 @@ class SubsonicSyncHelper{
     var albums = await subsonicHandler.getAlbumsForArtist(id);
     for(var album in albums){
       await albumsHelper.addAlbumToBox(album);
-      await syncAlbumsForArtist(id);
+      await syncSongsForAlbum(album.id);
     }
   }
 

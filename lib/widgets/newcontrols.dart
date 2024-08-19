@@ -129,176 +129,177 @@ class _ControlsState extends State<Controls> {
           ),
         ), // Your header here
         body:
-         Container(
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              Column(
-                children: [
-                  Consumer<MusicController>(
-                    builder: (context, musicController, snapshot) {
-                    if (musicController.currentQueue == null) {
-                      return const Center(
-                        child: Text('No artists available.'),
-                      );
-                    } else {
-                          return Center(
-                          child: Column(
-                            children: [
-                              Column(
-                                children: [  
-                                  Image.network(
-                                    (musicController.currentSource!.tag.artUri.toString()), // this image doesn't exist
-                                    fit: BoxFit.cover,
-                                    height:100.w,
-                                    width: 100.w,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Container(
-                                        alignment: Alignment.center,
-                                        child: Image.asset('assets/images/album.png', height: 100.w),
-                                      );
-                                    },
-                                  ),
-                                  Text(musicController.currentSource?.tag.title, style: Theme.of(context).textTheme.bodyMedium),
-                                  Text(musicController.currentSource?.tag.album, style: Theme.of(context).textTheme.bodySmall),
-                                ],
-                              ),
-                              StreamBuilder<Duration>(
-                                stream: musicController.durationStream,
-                                builder: (context, snapshot) {    
-                                  final duration = snapshot.data ?? Duration.zero;
-                                  return 
-                                    Column(
-                                      children: [
-                                        SizedBox(
-                                          width: 200,
-                                          child:
-                                              ProgressBar(
-                                                progress: Duration(seconds: duration.inSeconds),
-                                                total: musicController.currentSource!.tag.duration,
-                                                onSeek: (duration) {
-                                                  _seekSong(duration);
-                                                 // print('User selected a new time: $duration');
-                                                },
-                                              ),
-                                        
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Text(musicController.currentSource?.tag.extras["codec"], style:  Theme.of(context).textTheme.labelSmall),
-                                            Text(musicController.currentSource?.tag.extras["bitrate"], style: Theme.of(context).textTheme.labelSmall),
-                                            Text(musicController.currentSource?.tag.extras["bitdepth"], style: Theme.of(context).textTheme.labelSmall),
-                                            Text(musicController.currentSource?.tag.extras["samplerate"], style: Theme.of(context).textTheme.labelSmall),
-                                          ],
-                                        ), 
-                                        
-                                      ],
-                                    );
-                                }                    
-                              ),
-                              Container(
-                                margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                  ElevatedButton(onPressed: () => { _clearQueue() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Clear', style: Theme.of(context).textTheme.bodySmall)),
-                                ],),
-                              ), 
-                              ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: musicController.playlist.sequence.length,
-                              physics: const BouncingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 8.sp),
-                                  child: InkWell(
-                                    onTap:() => _goToSong(index),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.sp),
-                                    ),
-                                    child: Container(
-                                        height: 52.sp,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.sp),
-                                          ),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.symmetric(horizontal: 13.sp),
-                                              child: SizedBox(
-                                                height: 40.sp,
-                                                width: 40.sp,
-                                                child: ClipRRect(
-                                                  borderRadius: BorderRadius.circular(2.w),
-                                                  child: CachedNetworkImage(
-                                                    imageUrl: musicController.playlist.sequence[index].tag.artUri.toString(),
-                                                    memCacheHeight: 150,
-                                                    memCacheWidth: 150,
-                                                    errorWidget: (context, url, error) => Container(
-                                                      color: const Color(0xFF71B77A),
-                                                      child: const Center(
-                                                        child: Text("404"),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Column(
-                                                    children: [
-                                                      Row(
-                                                        mainAxisSize: MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment.start,
-                                                        children: [
-                                                          Flexible(
-                                                            child: Text(musicController.playlist.sequence[index].tag.title!,
-                                                              style: Theme.of(context).textTheme.bodyMedium,
-                                                              overflow: TextOverflow.ellipsis, // Set overflow property
-                                                              maxLines: 2, // Set the maximum number of lines
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Container(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Text(musicController.playlist.sequence[index].tag.album,
-                                                         style: Theme.of(context).textTheme.bodySmall,),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            if(musicController.currentSource!.tag.title == musicController.playlist.sequence[index].tag.title && musicController.currentSource!.tag.album == musicController.playlist.sequence[index].tag.album)Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0), child: Icon(Icons.music_note, color: Theme.of(context).focusColor, size:30),)
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                              },
-                            ),     
-                            ],
-                          ),
-                        );
-                    }
-                  } ),    
-                ],
-              ),
-            ],
-          ),
-        ),
+         ListView(
+           shrinkWrap: true,
+           children: [
+             Column(
+               children: [
+                 Consumer<MusicController>(
+                   builder: (context, musicController, snapshot) {
+                   if (musicController.currentQueue == null) {
+                     return const Center(
+                       child: Text('No artists available.'),
+                     );
+                   } else {
+                         return Center(
+                         child: Container(
+                           color: Theme.of(context).scaffoldBackgroundColor,
+                           child: Column(
+                             children: [
+                               Column(
+                                 children: [
+                                   Image.network(
+                                     (musicController.currentSource!.tag.artUri.toString()), // this image doesn't exist
+                                     fit: BoxFit.cover,
+                                     height:100.w,
+                                     width: 100.w,
+                                     errorBuilder: (context, error, stackTrace) {
+                                       return Container(
+                                         alignment: Alignment.center,
+                                         child: Image.asset('assets/images/album.png', height: 100.w),
+                                       );
+                                     },
+                                   ),
+                                   Text(musicController.currentSource?.tag.title, style: Theme.of(context).textTheme.bodyMedium),
+                                   Text(musicController.currentSource?.tag.album, style: Theme.of(context).textTheme.bodySmall),
+                                 ],
+                               ),
+                               StreamBuilder<Duration>(
+                                 stream: musicController.durationStream,
+                                 builder: (context, snapshot) {
+                                   final duration = snapshot.data ?? Duration.zero;
+                                   return
+                                     Column(
+                                       children: [
+                                         SizedBox(
+                                           width: 200,
+                                           child:
+                                               ProgressBar(
+                                                 progress: Duration(seconds: duration.inSeconds),
+                                                 total: musicController.currentSource!.tag.duration,
+                                                 onSeek: (duration) {
+                                                   _seekSong(duration);
+                                                  // print('User selected a new time: $duration');
+                                                 },
+                                               ),
+
+                                         ),
+                                         Row(
+                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                           children: [
+                                             Text(musicController.currentSource?.tag.extras["codec"], style:  Theme.of(context).textTheme.labelSmall),
+                                             Text(musicController.currentSource?.tag.extras["bitrate"], style: Theme.of(context).textTheme.labelSmall),
+                                             Text(musicController.currentSource?.tag.extras["bitdepth"], style: Theme.of(context).textTheme.labelSmall),
+                                             Text(musicController.currentSource?.tag.extras["samplerate"], style: Theme.of(context).textTheme.labelSmall),
+                                           ],
+                                         ),
+
+                                       ],
+                                     );
+                                 }
+                               ),
+                               Container(
+                                 margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                 child: Row(
+                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                   children: [
+                                   ElevatedButton(onPressed: () => { _clearQueue() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Clear', style: Theme.of(context).textTheme.bodySmall)),
+                                 ],),
+                               ),
+                               ListView.builder(
+                               shrinkWrap: true,
+                               itemCount: musicController.playlist.sequence.length,
+                               physics: const BouncingScrollPhysics(),
+                               itemBuilder: (context, index) {
+                                 return Padding(
+                                   padding: EdgeInsets.symmetric(vertical: 8.sp),
+                                   child: InkWell(
+                                     onTap:() => _goToSong(index),
+                                     borderRadius: BorderRadius.all(
+                                       Radius.circular(10.sp),
+                                     ),
+                                     child: Container(
+                                         height: 52.sp,
+                                         decoration: BoxDecoration(
+                                           borderRadius: BorderRadius.all(
+                                             Radius.circular(10.sp),
+                                           ),
+                                         ),
+                                         child: Row(
+                                           children: [
+                                             Padding(
+                                               padding:
+                                                   EdgeInsets.symmetric(horizontal: 13.sp),
+                                               child: SizedBox(
+                                                 height: 40.sp,
+                                                 width: 40.sp,
+                                                 child: ClipRRect(
+                                                   borderRadius: BorderRadius.circular(2.w),
+                                                   child: CachedNetworkImage(
+                                                     imageUrl: musicController.playlist.sequence[index].tag.artUri.toString(),
+                                                     memCacheHeight: 150,
+                                                     memCacheWidth: 150,
+                                                     errorWidget: (context, url, error) => Container(
+                                                       color: const Color(0xFF71B77A),
+                                                       child: const Center(
+                                                         child: Text("404"),
+                                                       ),
+                                                     ),
+                                                   ),
+                                                 ),
+                                               ),
+                                             ),
+                                             Expanded(
+                                               child: Column(
+                                                 mainAxisAlignment:
+                                                     MainAxisAlignment.center,
+                                                 crossAxisAlignment:
+                                                     CrossAxisAlignment.start,
+                                                 children: [
+                                                   Column(
+                                                     children: [
+                                                       Row(
+                                                         mainAxisSize: MainAxisSize.max,
+                                                         mainAxisAlignment:
+                                                             MainAxisAlignment.start,
+                                                         children: [
+                                                           Flexible(
+                                                             child: Text(musicController.playlist.sequence[index].tag.title!,
+                                                               style: Theme.of(context).textTheme.bodyMedium,
+                                                               overflow: TextOverflow.ellipsis, // Set overflow property
+                                                               maxLines: 2, // Set the maximum number of lines
+                                                             ),
+                                                           ),
+                                                         ],
+                                                       ),
+                                                       Container(
+                                                         alignment: Alignment.centerLeft,
+                                                         child: Text(musicController.playlist.sequence[index].tag.album,
+                                                          style: Theme.of(context).textTheme.bodySmall,),
+                                                       ),
+                                                     ],
+                                                   ),
+                                                 ],
+                                               ),
+                                             ),
+                                             if(musicController.currentSource!.tag.title == musicController.playlist.sequence[index].tag.title && musicController.currentSource!.tag.album == musicController.playlist.sequence[index].tag.album)Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0), child: Icon(Icons.music_note, color: Theme.of(context).focusColor, size:30),)
+                                           ],
+                                         ),
+                                       ),
+                                     ),
+                                   );
+                               },
+                             ),
+                             ],
+                           ),
+                         ),
+                       );
+                   }
+                 } ),
+               ],
+             ),
+           ],
+         ),
       );
   }
 }

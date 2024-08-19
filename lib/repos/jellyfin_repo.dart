@@ -142,7 +142,7 @@ class JellyfinRepo{
 
   getUser()async{
         try {
-             var requestHeaders = await apiHelper.returnJellyfinHeaders();
+          var requestHeaders = await apiHelper.returnJellyfinHeaders();
           String url = "$baseServerUrl/Users/me";
           http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
           if (res.statusCode == 200) {

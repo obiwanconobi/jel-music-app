@@ -49,7 +49,7 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
             child: Row(
               children: [
                 SizedBox(
-                  height: 200,
+                  height: 22.h,
                   width: MediaQuery.of(context).size.width,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
