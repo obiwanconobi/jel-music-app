@@ -1,3 +1,4 @@
+import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/hive/classes/albums.dart';
@@ -64,6 +65,12 @@ class SyncHelper{
     return [];
   }
 
+  getImageUrl(String Id)async{
+    var baseServerUrl = await GetStorage().read('serverUrl');
+    var imgUrl = "$baseServerUrl/Items/$Id/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+    return imgUrl;
+  }
+
   runSync()async{
 
 
@@ -120,15 +127,16 @@ class SyncHelper{
             }
           }
           if (containsTargetAlbum) {
-         
             favourite = true;
           } else {
            
           }
 
 
+          var imgUrl = getImageUrl(song.albumId);
           try{
-            await albumsHelper.addAlbumToBox(Albums(id: song.albumId, name: song.album, picture: song.albumId, favourite: favourite, artist: song.artist, artistId: song.artistId, year: song.year.toString()));
+            //here
+            await albumsHelper.addAlbumToBox(Albums(id: song.albumId, name: song.album, picture: imgUrl, favourite: favourite, artist: song.artist, artistId: song.artistId, year: song.year.toString()));
 
           }catch(e){
             logger.addToLog(LogModel(logType: "Error", logMessage: "Error Adding Album ${song.album} to box: ${e.toString()}", logDateTime: DateTime.now()));

@@ -1,6 +1,8 @@
 import 'package:get_it/get_it.dart';
+import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/classes/songs.dart';
+import 'package:jel_music/models/log.dart';
 import 'package:jel_music/repos/subsonic_repo.dart';
 
 import '../helpers/conversions.dart';
@@ -10,6 +12,7 @@ class SubsonicHandler{
 
   late SubsonicRepo subsonicRepo;
   Conversions conversions = Conversions();
+  LogHandler logger = LogHandler();
   SubsonicHandler(){
     subsonicRepo = GetIt.instance<SubsonicRepo>();
 
@@ -21,8 +24,13 @@ class SubsonicHandler{
     final songData = rawSongs["subsonic-response"]["album"]["song"];
     for(var songs in songData){
       var title = songs["title"];
-      songsList.add(Songs(name: songs["title"], id: songs["id"], artist: songs["artist"], artistId: songs["artistId"], albumId: id, album: songs["album"], index: songs["track"], year: songs["year"], length: conversions.returnSecondsToTimestampString(songs["duration"]), favourite: songs["starred"] != null, discIndex: songs["discNumber"], codec: songs["suffix"]));
-    }
+        try{
+          songsList.add(Songs(name: songs["title"], id: songs["id"], artist: songs["artist"], artistId: songs["artistId"] ?? "N/A", albumId: id, album: songs["album"], index: songs["track"] ?? 0, year: songs["year"] ?? 1900, length: conversions.returnSecondsToTimestampString(songs["duration"]), favourite: songs["starred"] != null, discIndex: songs["discNumber"] ?? 0, codec: songs["suffix"]));
+        }catch(e){
+          await logger.openBox();
+          await logger.addToLog(LogModel(logType: "Error", logMessage: "Error adding song: $title: $e", logDateTime: DateTime.now()));
+        }
+      }
     return songsList;
   }
 

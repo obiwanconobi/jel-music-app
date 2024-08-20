@@ -1,8 +1,10 @@
 
+import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/handlers/subsonic_handler.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
+import 'package:jel_music/models/log.dart';
 
 class SubsonicSyncHelper{
 
@@ -10,6 +12,7 @@ class SubsonicSyncHelper{
   AlbumsHelper albumsHelper = AlbumsHelper();
   ArtistsHelper artistsHelper = ArtistsHelper();
   SubsonicHandler subsonicHandler = SubsonicHandler();
+  LogHandler logger = LogHandler();
 
   runSync()async{
     await songsHelper.openBox();
@@ -18,7 +21,12 @@ class SubsonicSyncHelper{
 
     var artists = await subsonicHandler.getArtists();
     for(var artist in artists){
-      await artistsHelper.addArtistToBox(artist);
+      try{
+        await artistsHelper.addArtistToBox(artist);
+      }catch(e){
+        await logger.addToLog(LogModel(logType: "Error", logMessage: "Error adding artist: ${artist.name}", logDateTime: DateTime.now()));
+      }
+
       await syncAlbumsForArtist(artist.id);
     }
   }
@@ -26,7 +34,12 @@ class SubsonicSyncHelper{
   syncAlbumsForArtist(id)async{
     var albums = await subsonicHandler.getAlbumsForArtist(id);
     for(var album in albums){
-      await albumsHelper.addAlbumToBox(album);
+      try{
+        await albumsHelper.addAlbumToBox(album);
+      }catch(e){
+        await logger.addToLog(LogModel(logType: "Error", logMessage: "Error adding album: ${album.name}", logDateTime: DateTime.now()));
+      }
+
       await syncSongsForAlbum(album.id);
     }
   }
@@ -34,7 +47,13 @@ class SubsonicSyncHelper{
   syncSongsForAlbum(id)async{
     var songs = await subsonicHandler.getSongsForAlbum(id);
     for(var song in songs){
-      await songsHelper.addSongToBox(song);
+      try{
+        await songsHelper.addSongToBox(song);
+      }catch(e){
+        await logger.addToLog(LogModel(logType: "Error", logMessage: "Error adding song: ${song.name}", logDateTime: DateTime.now()));
+
+      }
+
     }
   }
 

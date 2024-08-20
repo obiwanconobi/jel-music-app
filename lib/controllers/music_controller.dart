@@ -328,11 +328,21 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
     return false;
   }
 
+    getSongUrl(String id)async{
+      var serverType = await GetStorage().read('ServerType');
+      if(serverType == "Jellyfin"){
+        await getToken();
+        return "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
+      }else if (serverType == "Subsonic"){
+        return "$baseServerUrl/rest/download?id=$id";
+      }
+    }
+
     Future<bool> downloadSong(String id, String codec)async{
       var documentsDar = await getApplicationDocumentsDirectory();
-      await getToken();
-      baseServerUrl = GetStorage().read('serverUrl');
-      String songUrl =  "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
+
+      baseServerUrl = await GetStorage().read('serverUrl');
+      String songUrl = await getSongUrl(id);
       var result = await cacheFile(url: songUrl, path: p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.$codec']));
 
       if(result){
@@ -424,7 +434,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
     await getToken();
     baseServerUrl = GetStorage().read('serverUrl');
     
-    String baseUrl =  "$baseServerUrl/Items/$tempId/Download?api_key=$accessToken";
+    String baseUrl = await getSongUrl(tempId!);
   //  String baseUrl = "$baseServerUrl/Audio/$tempId/stream";
     List<String> timeParts = tempDuration!.split(':');
 
@@ -575,7 +585,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
       String id = stream.id!;
       String codec = stream.codec!;
    //   String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
-   String baseUrl = "$baseServerUrl/Audio/$id/stream";
+   String baseUrl = await getSongUrl(id);
       List<String> timeParts = stream.long!.split(':');
     /*   var sourceold = AudioSource.uri(
                         Uri.parse(baseUrl),
@@ -635,7 +645,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
       String pictureUrl = value.picture!;
       String id = value.id!;
    //   String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
-        String baseUrl = "$baseServerUrl/Audio/$id/value";
+        String baseUrl = await getSongUrl(id);
             List<String> timeParts = value.long!.split(':');
             AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
                         cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.$tempCodec'])),
@@ -691,7 +701,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
               String pictureUrl = stream.picture!;
               String id = stream.id!;
               String codec = stream.codec!;
-              String baseUrl = "$baseServerUrl/Audio/$id/stream";
+          //    String baseUrl = "$baseServerUrl/Audio/$id/stream";
+              String baseUrl = await getSongUrl(id);
             //  String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
               List<String> timeParts = stream.long!.split(':');
              /*  var sourceold = AudioSource.uri(
