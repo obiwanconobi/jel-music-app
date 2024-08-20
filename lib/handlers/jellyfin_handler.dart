@@ -51,6 +51,7 @@ class JellyfinHandler{
 
   returnSongs()async{
     return await jellyfinRepo.getSongsDataRaw();
+    //return await mapper.mapListSongsFromRaw(songsRaw);
   }
 
   Future<List<Playlists>> returnPlaylists()async{

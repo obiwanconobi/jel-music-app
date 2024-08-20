@@ -16,7 +16,10 @@ class LogHelper{
   }
 
   List<Log> listFromLog(){
-    return logBox.values.toList();
+     // albumsBox.values.where((element) => element.artist == artist);
+    var list = logBox.values.toList();
+    list.sort((a,b) => -a.logDateTime.compareTo(b.logDateTime));
+    return list;
   }
 
   clearLog(){

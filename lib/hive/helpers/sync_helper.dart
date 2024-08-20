@@ -71,7 +71,12 @@ class SyncHelper{
     List<String> favArtists = await getFavouriteArtists();
     var songs = await jellyfinHandler.returnSongs();
 
-    await songsHelper.addSongsToBox(songs);
+    try{
+      await songsHelper.addSongsToBox(songs);
+    }catch(e){
+      logger.addToLog(LogModel(logType: "Error", logMessage: "Error Adding Songs: ${e.toString()}", logDateTime: DateTime.now()));
+    }
+
     await albumsHelper.openBox();
     await artistsHelper.openBox();
 
@@ -89,8 +94,15 @@ class SyncHelper{
         }
         var artistFull = await jellyfinHandler.returnArtistBio(song.artist);
         var overview = artistFull["Overview"];
-        await artistsHelper.addArtistToBox(Artists(id: song.artistId, name: song.artist, picture: song.artistId, favourite: artistFavourite, overview: overview));
-      }
+
+        try{
+          await artistsHelper.addArtistToBox(Artists(id: song.artistId, name: song.artist, picture: song.artistId, favourite: artistFavourite, overview: overview));
+
+        }catch(e){
+          logger.addToLog(LogModel(logType: "Error", logMessage: "Error Adding ${song.artist} to box: ${e.toString()}", logDateTime: DateTime.now()));
+        }
+
+         }
 
       var album = albumsHelper.returnAlbum(song.artist, song.album);
       
@@ -113,11 +125,18 @@ class SyncHelper{
           } else {
            
           }
-         
-         await albumsHelper.addAlbumToBox(Albums(id: song.albumId, name: song.album, picture: song.albumId, favourite: favourite, artist: song.artist, artistId: song.artistId, year: song.year.toString()));
-      }
 
-      
+
+          try{
+            await albumsHelper.addAlbumToBox(Albums(id: song.albumId, name: song.album, picture: song.albumId, favourite: favourite, artist: song.artist, artistId: song.artistId, year: song.year.toString()));
+
+          }catch(e){
+            logger.addToLog(LogModel(logType: "Error", logMessage: "Error Adding Album ${song.album} to box: ${e.toString()}", logDateTime: DateTime.now()));
+          }
+
+         }
+
+
 
     }
 

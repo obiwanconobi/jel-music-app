@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
+import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/hive/classes/songs.dart';
 import 'package:http/http.dart' as http;
+import 'package:jel_music/models/log.dart';
 
 class SongsHelper{
 
@@ -11,6 +13,7 @@ class SongsHelper{
   var accessToken = GetStorage().read('accessToken');
   var baseServerUrl = GetStorage().read('serverUrl');
   Conversions conversions = Conversions();
+  LogHandler logger = LogHandler();
 
   String _ticksToTimestampString(int ticks) {
       // Ticks per second
@@ -105,18 +108,46 @@ class SongsHelper{
     songsBox.add(song);
   }
 
+ bool mediaStreams(dynamic song){
+    try {
+      var string = song["MediaStreams"];
+      if (string[0] == null) {
+        print('stop');
+      }
+      var test = song["MediaStreams"][0];
+      return true;
+    } catch (e) {
+      print('error');
+      return false;
+    }
+  }
+
    addSongsToBox(dynamic songs)async{
     List<Songs> songsList = [];
     //var songs = await _getSongsDataRaw();
 
+    var codec = "N/A";
+    var bitrate = 0;
+    var bitdepth = 0;
+    double? samplerate;
     for(var song in songs["Items"]){
+      var msAvailable = mediaStreams(song);
 
-      var codec = song["MediaStreams"][0]["Codec"];
-      codec = conversions.codecCleanup(codec.toUpperCase());
+      if(msAvailable){
+         bitrate = song["MediaStreams"][0]["BitRate"]~/1000 ?? 0;
+         bitdepth = song["MediaStreams"][0]["BitDepth"] ?? 0;
+         samplerate = song["MediaStreams"][0]["SampleRate"]/1000 ?? 0;
+         codec = conversions.codecCleanup(song["MediaStreams"][0]["Codec"].toUpperCase());
+      }
 
-      var bitrate = song["MediaStreams"][0]["BitRate"]~/1000;
-      var bitdepth = song["MediaStreams"][0]["BitDepth"];
-      var samplerate = song["MediaStreams"][0]["SampleRate"]/1000;
+      var songName = song["Name"];
+      if(songName.contains("�")){
+        await logger.openBox();
+        await logger.addToLog(LogModel(logType: "Error", logMessage: "Error adding song: ${songName}", logDateTime: DateTime.now()));
+        continue;
+      }
+
+
         try{
           songsList.add(Songs(id: song["Id"], name: song["Name"], artist: song["ArtistItems"][0]["Name"],
            artistId: song["ArtistItems"][0]["Id"], album: song["Album"], albumId: song["AlbumId"], 
@@ -126,14 +157,14 @@ class SongsHelper{
             samplerate: "$samplerate kHz"));
         }catch(e){
          //log error
-       
+        print('error');
         }
      }
      for(var song in songsList){
       try{
          songsBox.add(song);
       }catch(e){
-        
+        print(e);
       }
        
      }
