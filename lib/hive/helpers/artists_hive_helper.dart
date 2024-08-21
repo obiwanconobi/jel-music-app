@@ -49,7 +49,7 @@ class ArtistsHelper{
   }
 
   Artists? returnArtist(String name){
-    return artistBox.values.where((artists) => artists.name == name).firstOrNull;
+    return artistBox.values.where((artists) => artists.name.toLowerCase() == name.toLowerCase()).firstOrNull;
   }
 
   Artists? returnArtistById(String id){

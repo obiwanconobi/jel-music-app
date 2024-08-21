@@ -63,6 +63,10 @@ class _SongsPageState extends State<SongsPage> {
     
   }
 
+  getFavourite()async{
+
+  }
+
   _loadPlaylists()async{
     playlistMenuItems.clear();
     var playlistsRaw = await controller.returnPlaylists();
@@ -235,7 +239,7 @@ class _SongsPageState extends State<SongsPage> {
                                       Row(
                                       //  mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
-                                            IconButton(onPressed:()=>{_favouriteAlbum(albumIds!, artistIds!, fave!)}, icon: Icon(Icons.favorite, color: ((fave!) ? Colors.red : Theme.of(context).colorScheme.secondary), size:40),),
+                                            IconButton(onPressed:()=>{_favouriteAlbum(albumIds!, artistIds!, fave!)}, icon: Icon(Icons.favorite, color: (fave! ? Colors.red : Theme.of(context).colorScheme.secondary), size:40),),
                                              IconButton(onPressed:()=>{ _addAllToQueue(songsList)}, icon: Icon(Icons.play_circle_rounded, size: 40, color: Theme.of(context).primaryColor),),
                                              IconButton(onPressed:()=>{_addShuffledToQueue(songsList)}, icon: Icon(Icons.shuffle, size: 40, color: Theme.of(context).colorScheme.secondary),),
                                          

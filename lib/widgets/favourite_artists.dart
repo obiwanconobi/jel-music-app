@@ -44,6 +44,7 @@ class _FavouriteArtistsState extends State<FavouriteArtists> {
         } else {
           // Data is available, build the list
           List<Artists> artistsList = snapshot.data!;
+          artistsList.shuffle();
           return SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(

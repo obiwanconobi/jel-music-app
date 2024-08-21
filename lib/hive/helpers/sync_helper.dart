@@ -21,13 +21,6 @@ class SyncHelper{
   LogHandler logger = LogHandler();
 
 
-  SubsonicHandler testHandler = SubsonicHandler();
-
-  getTest()async{
-    var test = await testHandler.getArtists();
-    return test;
-  }
-
   Future<List<FavAlbums>> getFavouriteAlbums()async{
     List<FavAlbums> favAlbums = [];
     var albumsRaw = await albumsHelper.getAlbumDataFavourite();
@@ -118,6 +111,9 @@ class SyncHelper{
           //FavAlbums targetAlbum = FavAlbums(title: song.album, artist: song.artist);
           FavAlbums targetAlbum = FavAlbums(artist: song.artist, title: song.album);
 
+          if(song.artist.toUpperCase() == "PUP"){
+            print('stop');
+          }
 
           bool containsTargetAlbum = favAlbums.contains(targetAlbum);
           for(var album in favAlbums){
@@ -133,7 +129,7 @@ class SyncHelper{
           }
 
 
-          var imgUrl = getImageUrl(song.albumId);
+          var imgUrl = await getImageUrl(song.albumId);
           try{
             //here
             await albumsHelper.addAlbumToBox(Albums(id: song.albumId, name: song.album, picture: imgUrl, favourite: favourite, artist: song.artist, artistId: song.artistId, year: song.year.toString()));

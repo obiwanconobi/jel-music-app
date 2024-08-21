@@ -37,7 +37,7 @@ class SongsHelper{
   }
 
   List<Songs> returnSongsFromAlbum(String artist, String album){
-    return songsBox.values.where((element) => element.artist == artist && element.album == album).toList();
+    return songsBox.values.where((element) => element.artist.toLowerCase() == artist.toLowerCase() && element.album.toLowerCase() == album.toLowerCase()).toList();
   }
 
   Songs returnSong(String artist, String title){

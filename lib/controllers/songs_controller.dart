@@ -48,7 +48,7 @@ class SongsController {
     await albumHelper.openBox();
    // return albumHelper.isFavourite(artist, album);
    var albumFull = albumHelper.returnAlbum(artist, album);
-    return false;
+    return albumFull?.favourite ?? false;
   }
 
  

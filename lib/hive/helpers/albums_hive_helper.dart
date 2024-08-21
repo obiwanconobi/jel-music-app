@@ -42,7 +42,7 @@ class AlbumsHelper{
   }
 
   Albums? returnAlbum(String artist, String album){
-    return albumsBox.values.where((albums) => albums.artist == artist && albums.name == album).firstOrNull;
+    return albumsBox.values.where((albums) => albums.artist!.toLowerCase() == artist.toLowerCase() && albums.name.toLowerCase() == album.toLowerCase()).firstOrNull;
   }
 
   updateAlbum(Albums album, int key){
