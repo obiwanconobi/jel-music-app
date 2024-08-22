@@ -66,7 +66,7 @@ class _SimilarArtistsState extends State<SimilarArtists> {
                 Row(
                   children: [
                     SizedBox(
-                      height: 180,
+                      height: 22.h,
                       width: MediaQuery.of(context).size.width,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,

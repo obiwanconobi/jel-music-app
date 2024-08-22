@@ -13,7 +13,7 @@ class SubsonicRepo{
   getSongsForAlbum(String id)async{
     try{
       var requestHeaders = await apiHelper.returnSubsonicHeaders();
-      String url = "http://192.168.1.15:4533/rest/getAlbum?id=$id&$requestHeaders";
+      String url = "$baseServerUrl/rest/getAlbum?id=$id&$requestHeaders";
 
       http.Response res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
@@ -25,10 +25,23 @@ class SubsonicRepo{
     }
   }
 
+  getLatestAlbums()async{
+    try{
+      var requestHeaders = await apiHelper.returnSubsonicHeaders();
+      String url = "$baseServerUrl/rest/getAlbumList?type=newest&$requestHeaders";
+      http.Response res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    }catch (e) {
+      rethrow;
+    }
+  }
+
   getAlbumsForArtist(String id)async{
     try{
       var requestHeaders = await apiHelper.returnSubsonicHeaders();
-      String url = "http://192.168.1.15:4533/rest/getArtist?id=$id&$requestHeaders";
+      String url = "$baseServerUrl/rest/getArtist?id=$id&$requestHeaders";
 
       http.Response res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {

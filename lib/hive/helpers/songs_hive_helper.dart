@@ -40,6 +40,10 @@ class SongsHelper{
     return songsBox.values.where((element) => element.artist.toLowerCase() == artist.toLowerCase() && element.album.toLowerCase() == album.toLowerCase()).toList();
   }
 
+  List<Songs> returnSongsForArtist(String artist){
+    return songsBox.values.where((element) => element.artist.toLowerCase() == artist.toLowerCase()).toList();
+  }
+
   Songs returnSong(String artist, String title){
     return songsBox.values.where((element) => element.artist == artist && element.name == title).first;
   }
@@ -91,6 +95,7 @@ class SongsHelper{
      await Hive.openBox<Songs>('songs');
      songsBox = Hive.box('songs');
   }
+
 
   closeBox()async{
     await Hive.close();

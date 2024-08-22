@@ -36,6 +36,10 @@ class AlbumController {
     }
   }
 
+  playAllSongsFromArtist()async{
+
+  }
+
   Future<Artists> getArtistInfo()async{
      await artistsHelper.openBox();
      String artistIds = "";

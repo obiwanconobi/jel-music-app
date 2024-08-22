@@ -13,6 +13,19 @@ class Mappers{
     return StreamModel(id: song.id, composer: song.artist, music: song.id, picture: song.albumPicture, title: song.title, long: song.length, isFavourite: song.favourite, discNumber: song.discNumber, downloaded: song.downloaded, codec: song.codec, bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate);
   }
 
+    Future<List<StreamModel>> convertHiveSongsToModelSongs(dynamic songsRaw)async{
+      List<StreamModel> songsList = [];
+      for(var song in songsRaw){
+        String songId = song.albumId;
+        var imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+
+        songsList.add(StreamModel(id: song.id, composer: song.artist, music: song.id, picture: imgUrl, title: song.name, long: song.length, isFavourite: song.favourite, discNumber: song.discIndex, downloaded: song.downloaded, codec: song.codec, bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate));
+
+      }
+      songsList.shuffle();
+      return songsList;
+    }
+
   
   Future<List<Songs>> mapListSongsFromRaw(dynamic songs)async{
     List<Songs> songsList = [];

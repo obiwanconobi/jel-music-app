@@ -40,6 +40,7 @@ class _SongsPageState extends State<SongsPage> {
   late Future<bool> favourite;
   late Future<List<Songs>> songsFuture;
   SongsHelper songsHelper = SongsHelper();
+  List<Songs> songsList = [];
   bool? fave;
 
   List<PopupMenuEntry<String>> playlistMenuItems = [];
@@ -142,10 +143,33 @@ class _SongsPageState extends State<SongsPage> {
     }
   }
 
+  _downloadAll(List<Songs> songs)async{
+    for(var song in songs){
+      try{
+        bool dl = song.downloaded ?? false;
+        if(!dl){
+          await _downloadFile(song);
+        }
+
+      }catch(e){
+
+      }
+    }
+  }
+
+  extraTasks(String task)async{
+    if(task == "DOWNLOAD"){
+     await _downloadAll(songsList);
+    }else if (task == "SHUFFLE"){
+      await _addShuffledToQueue(songsList);
+    }
+  }
+
   _downloadFile(Songs song)async{
     var result = await MusicControllerProvider.of(context, listen: false).downloadSong(song.id!, song.codec!);
     String? title = song.title;
     String? artist = song.artist;
+    var newSong = song;
     if(result){
             showTopSnackBar(
           Overlay.of(context),
@@ -155,13 +179,28 @@ class _SongsPageState extends State<SongsPage> {
                "Download of $title by $artist Completed",
           ),
       );
+      song.downloaded = true;
+      var index = songsList.indexWhere((element) => element.title == title);
+      setState(() {
+        songsList[index] = song;
+      });
+
+    }else{
+      showTopSnackBar(
+        Overlay.of(context),
+        CustomSnackBar.error(
+          maxLines: 2,
+          message:
+          "Download of $title by $artist Failed",
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     controller.albumId = albumIds;
-    var songsList = controller.songs;
+    songsList = controller.songs;
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -241,7 +280,31 @@ class _SongsPageState extends State<SongsPage> {
                                         children: [
                                             IconButton(onPressed:()=>{_favouriteAlbum(albumIds!, artistIds!, fave!)}, icon: Icon(Icons.favorite, color: (fave! ? Colors.red : Theme.of(context).colorScheme.secondary), size:40),),
                                              IconButton(onPressed:()=>{ _addAllToQueue(songsList)}, icon: Icon(Icons.play_circle_rounded, size: 40, color: Theme.of(context).primaryColor),),
-                                             IconButton(onPressed:()=>{_addShuffledToQueue(songsList)}, icon: Icon(Icons.shuffle, size: 40, color: Theme.of(context).colorScheme.secondary),),
+                                          PopupMenuButton(
+                                            icon: const Icon(
+                                              Icons.menu
+                                            ),
+                                            onSelected: (item) => setState(() => extraTasks(item!)),
+                                            itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                                              const PopupMenuItem(
+                                                value: 'SHUFFLE',
+                                                child: Row(
+                                                  children: [
+                                                    Icon(Icons.shuffle),
+                                                  ],
+                                                ),
+                                              ),
+                                              const PopupMenuItem(
+                                                value: 'DOWNLOAD',
+                                                child: Row(
+                                                  children: [
+                                                    Icon(Icons.download),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],),
+                                          //   IconButton(onPressed:()=>{_addShuffledToQueue(songsList)}, icon: Icon(Icons.shuffle, size: 40, color: Theme.of(context).colorScheme.secondary),),
+                                       //   IconButton(onPressed:()=>{_downloadAll(songsList)}, icon: Icon(Icons.download, size: 40, color: Theme.of(context).colorScheme.secondary),),
                                          
                                          // OutlinedButton(onPressed: () => _addAllToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor), child: Text('Play All', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color))),
                                         // IconButton(icon: Icon(Icons.favorite, color: ((fave ?? false) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30), onPressed: () => { setState(() {fave = !fave!;}),_favouriteAlbum(albumIds!, artistIds!, snapshot.data!) },),

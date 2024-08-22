@@ -9,6 +9,7 @@ import 'package:get_it/get_it.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/helpers/ioclient.dart';
+import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/log.dart';
 import 'package:jel_music/models/stream.dart';
@@ -17,6 +18,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:path/path.dart' as p;
+
+import '../hive/classes/songs.dart';
 
 
 
@@ -31,6 +34,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
   );
  final StreamController<Duration> _durationController = BehaviorSubject();
   var logger = GetIt.instance<LogHandler>();
+  Mappers mapper = Mappers();
  // StreamController<Duration> _bufferedDurationController = BehaviorSubject();
   SongsHelper songsHelper = SongsHelper();
   bool _isPlaying = false;
@@ -60,7 +64,16 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
   String lastUpdateSong = "";
   bool lastUpdateStatus = false;
 
-     
+  @override
+  Future<dynamic> customAction(String name, [Map<String, dynamic>? extras]) async {
+    switch (name) {
+      case 'favourite':
+        return await updateCurrentSongFavStatus();
+      default:
+        return super.customAction(name, extras);
+    }
+  }
+
   
    var playlist = ConcatenatingAudioSource(
     // Start loading next item just before reaching it
@@ -87,7 +100,6 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
       ),
     );
   }
-
 
 
 
@@ -127,7 +139,6 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
       final currentIndex = currentState.queueIndex;
 
 
-
       if (playbackState.valueOrNull != null &&
           playbackState.valueOrNull?.processingState !=
               AudioProcessingState.idle &&
@@ -163,6 +174,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
             setUiElements();
     });
 
+
+
     
 
     _advancedPlayer.processingStateStream.listen((event){
@@ -170,7 +183,9 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
     });
 
 
-  }    
+  }
+
+
 
 
     MediaItem _getQueueItem(int index) {
@@ -188,6 +203,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
         if (_advancedPlayer.playing) MediaControl.pause else MediaControl.play,
         MediaControl.stop,
         MediaControl.skipToNext,
+        //MediaControl.custom(androidIcon: 'favourite', label: 'favourite', name: 'favourite')
       ],
       systemActions: const {
         MediaAction.seek,
@@ -212,6 +228,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
           : AudioServiceShuffleMode.none,
       repeatMode: AudioServiceRepeatMode.none,
     );
+
   }
 
   _updatePlaybackProgress()async{ 
@@ -314,6 +331,20 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
         
     }
 
+    playAllSongsFromArtist(String artist)async{
+      try{
+        await songsHelper.openBox();
+        var songs = songsHelper.returnSongsForArtist(artist);
+        List<StreamModel> streamModels = await mapper.convertHiveSongsToModelSongs(songs);
+        await addPlaylistToQueue(streamModels);
+      }catch(e){
+        logger.addToLog(LogModel(logType: "Error",logMessage: e.toString(), logDateTime: DateTime.now()));
+      }
+
+
+    }
+
+
     deleteDownloadedSong(String id)async{
       
     }
@@ -333,6 +364,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
       if(serverType == "Jellyfin"){
         await getToken();
         return "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
+        //return "$baseServerUrl/Audio/$id";
       }else if (serverType == "Subsonic"){
         return "$baseServerUrl/rest/download?id=$id";
       }

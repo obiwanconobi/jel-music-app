@@ -1,20 +1,20 @@
 class Songs {
-  final String? id;
-  final int? trackNumber;
-  final String? title;
-  final String? album;
-  final String? albumId;
-  final String? artist;
-  final String? artistId;
-  final String? albumPicture;
-  final bool? favourite;
-  final String? length;
-  final int? discNumber;
-  final bool? downloaded;
-  final String? codec;
-  final String? bitrate;
-  final String? bitdepth;
-  final String? samplerate;
+   String? id;
+   int? trackNumber;
+   String? title;
+   String? album;
+   String? albumId;
+   String? artist;
+   String? artistId;
+   String? albumPicture;
+   bool? favourite;
+   String? length;
+   int? discNumber;
+   bool? downloaded;
+   String? codec;
+   String? bitrate;
+   String? bitdepth;
+   String? samplerate;
 
   Songs({
     this.id,

@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/models/artist.dart';
+import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/similar_artists.dart';
 import 'package:jel_music/widgets/songs_page.dart';
@@ -39,7 +40,11 @@ class _AlbumPageState extends State<AlbumPage> {
 
 
   //Icon(Icons.favorite, color: ((controller.artistInfo.favourite ?? false) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30),)
-  
+
+  playAll()async{
+    MusicControllerProvider.of(context, listen: false).playAllSongsFromArtist(artistIds!);
+  }
+
   _toggleFavourite(String artistId)async{
     var current = controller.artistInfo.favourite;
     await controller.toggleArtistFavourite(artistId, current!);
@@ -103,7 +108,13 @@ class _AlbumPageState extends State<AlbumPage> {
                       return Column(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                            IconButton(onPressed:()=>{setState(() {artist.favourite = !artist.favourite!;}), _toggleFavourite(artist.id!)}, icon: Icon(Icons.favorite, color: ((artist.favourite!) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30),),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(onPressed:()=>{setState(() {artist.favourite = !artist.favourite!;}), _toggleFavourite(artist.id!)}, icon: Icon(Icons.favorite, color: ((artist.favourite!) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30),),
+                                IconButton(onPressed:()=>{playAll()}, icon: Icon(Icons.play_circle, color: Theme.of(context).colorScheme.secondary, size:30),),
+                              ],
+                            ),
                           GridView.builder(
                             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                                 maxCrossAxisExtent: 250, // Adjust this value according to your needs
