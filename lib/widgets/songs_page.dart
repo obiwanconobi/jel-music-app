@@ -86,8 +86,19 @@ class _SongsPageState extends State<SongsPage> {
       await controller.addSongToPlaylist(songId, playlistId);
   }
 
-  _playSong(Songs song){
-    MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length, downloaded: song.downloaded, codec: song.codec, bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate));
+ // _playSong(Songs song){
+ //   MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length, downloaded: song.downloaded, codec: song.codec, bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate));
+ // }
+
+  _playSong(List<Songs> allSongs, index){
+    if(allSongs.isNotEmpty){
+      List<StreamModel> playList = [];
+      for(var song in allSongs){
+        playList.add(returnStream(song));
+      }
+      MusicControllerProvider.of(context, listen: false).addPlaylistToQueue(playList, index: index);
+    }
+
   }
 
 
@@ -281,8 +292,10 @@ class _SongsPageState extends State<SongsPage> {
                                             IconButton(onPressed:()=>{_favouriteAlbum(albumIds!, artistIds!, fave!)}, icon: Icon(Icons.favorite, color: (fave! ? Colors.red : Theme.of(context).colorScheme.secondary), size:40),),
                                              IconButton(onPressed:()=>{ _addAllToQueue(songsList)}, icon: Icon(Icons.play_circle_rounded, size: 40, color: Theme.of(context).primaryColor),),
                                           PopupMenuButton(
-                                            icon: const Icon(
-                                              Icons.menu
+                                            icon:  Icon(
+                                              Icons.more_vert,
+                                              size: 40,
+                                              color: Theme.of(context).colorScheme.secondary
                                             ),
                                             onSelected: (item) => setState(() => extraTasks(item!)),
                                             itemBuilder: (BuildContext context) => <PopupMenuEntry>[
@@ -291,6 +304,7 @@ class _SongsPageState extends State<SongsPage> {
                                                 child: Row(
                                                   children: [
                                                     Icon(Icons.shuffle),
+                                                    Text('Shuffle')
                                                   ],
                                                 ),
                                               ),
@@ -299,6 +313,7 @@ class _SongsPageState extends State<SongsPage> {
                                                 child: Row(
                                                   children: [
                                                     Icon(Icons.download),
+                                                    Text('Download')
                                                   ],
                                                 ),
                                               ),
@@ -334,7 +349,7 @@ class _SongsPageState extends State<SongsPage> {
                                 return Padding(
                                   padding: EdgeInsets.symmetric(vertical: 8.sp),
                                   child: InkWell(
-                                    onTap:() => _playSong(songsList[index]),
+                                    onTap:() => _playSong(songsList, index),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.sp),
                                     ),
@@ -391,8 +406,7 @@ class _SongsPageState extends State<SongsPage> {
                                                           Container(
                                                             margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                                             child:PopupMenuButton<String>(
-                                                              color: Theme.of(context).canvasColor,
-                                                              icon: const Icon(Icons.playlist_add), // Set your desired icon here
+                                                              icon: const Icon(Icons.playlist_add, color: Colors.blueGrey), // Set your desired icon here
                                                               onSelected: (String value) {
                                                                 _addToPlaylist(songsList[index].id!, value);
                                                               },
@@ -405,19 +419,13 @@ class _SongsPageState extends State<SongsPage> {
                                                         ],
                                                       ),
                                                       Divider(color: Theme.of(context).colorScheme.secondary, indent: 40, endIndent: 40,),
-                                                          
                                                 ],
                                               ),
-                                              
                                             ),
-                                            
                                           ],
                                         ),
-                                        
                                       ),
-                                      
                                     ),
-                                    
                                   );
                               },
                             ),

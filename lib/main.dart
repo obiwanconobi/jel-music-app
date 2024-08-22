@@ -93,6 +93,10 @@ static ThemeData lightTheme = ThemeData(
       accentColor: const Color.fromARGB(255, 69, 69, 69),
       backgroundColor: const Color.fromARGB(255, 204, 204, 204), // Your secondary color
     ), // Your accent color for dark mode
+    popupMenuTheme: const PopupMenuThemeData(
+      color: Color.fromARGB(255, 179, 179, 179),
+      iconColor: Color.fromARGB(255, 179, 179, 179),
+    ),
     textTheme: const TextTheme(
       labelLarge: TextStyle(color: Colors.black, fontSize:26, fontWeight: FontWeight.w600),
       bodyLarge: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600), // Text color for dark theme
@@ -131,6 +135,10 @@ static ThemeData lightTheme = ThemeData(
       bodySmall: TextStyle(color: Colors.white, fontSize: 16),
       labelSmall: TextStyle(color: Colors.white, fontSize: 11)
     ),
+    popupMenuTheme: const PopupMenuThemeData(
+        color: Color.fromARGB(255, 37, 37, 37),
+        iconColor: Color.fromARGB(255, 37, 37, 37),
+      ),
     iconTheme: const IconThemeData(color: Colors.blueGrey)
     // Add other dark theme properties here
   );

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
+import 'package:jel_music/helpers/androidid.dart';
 import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/hive/classes/songs.dart';
 import 'package:http/http.dart' as http;
@@ -14,6 +15,7 @@ class SongsHelper{
   var baseServerUrl = GetStorage().read('serverUrl');
   Conversions conversions = Conversions();
   LogHandler logger = LogHandler();
+  AndroidId androidId = const AndroidId();
 
   String _ticksToTimestampString(int ticks) {
       // Ticks per second
@@ -177,11 +179,13 @@ class SongsHelper{
 
   _getSongsDataRaw() async{
     var userId = await GetStorage().read('userId');
+    var uuid = await androidId.getDeviceId();
+    String deviceId = "PanAudio_$uuid";
       try {
           Map<String, String> requestHeaders = {
           'Content-type': 'application/json',
           'X-MediaBrowser-Token': '$accessToken',
-          'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMS4wLjAuMCBTYWZhcmkvNTM3LjM2fDE3MDc5Mzc2MDIyNTI1",Version="10.8.13"'
+          'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="$deviceId",Version="10.8.13"'
         };
       String url = "$baseServerUrl/Users/$userId/Items?recursive=true&includeItemTypes=Audio&fields=MediaStreams&enableUserData=true&enableTotalRecordCount=true&enableImages=true";
       http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);

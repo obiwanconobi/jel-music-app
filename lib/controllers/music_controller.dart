@@ -719,7 +719,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
     notifyListeners();
   }
 
-  addPlaylistToQueue(List<StreamModel> listOfStreams) async{
+  addPlaylistToQueue(List<StreamModel> listOfStreams, {int index = 0}) async{
     clearQueue();
     var documentsDar = await getApplicationDocumentsDirectory();
     List<AudioSource> sourceList = [];
@@ -777,7 +777,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
               
       }
   playlist.addAll(sourceList);
-    _advancedPlayer.setAudioSource(playlist, initialIndex: count, initialPosition: Duration.zero);
+    _advancedPlayer.setAudioSource(playlist, initialIndex: index, initialPosition: Duration.zero);
     
     if(_isPlaying == false){
       _isPlaying = !_isPlaying;
