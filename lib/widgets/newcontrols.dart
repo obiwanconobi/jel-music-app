@@ -6,6 +6,7 @@ import 'package:jel_music/controllers/music_controller.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
@@ -167,15 +168,24 @@ class _ControlsState extends State<Controls> {
                                StreamBuilder<Duration>(
                                  stream: musicController.durationStream,
                                  builder: (context, snapshot) {
-                                   final duration = snapshot.data ?? Duration.zero;
+                                   final streamDuration = snapshot.data ?? Duration.zero;
                                    return
+                                   StreamBuilder<Duration>(
+                                    stream: musicController.bufferStream,
+                                    builder: (context, snapshot) {
+                                      final bufferDuration = snapshot.data ?? Duration.zero;
+                                    return
                                      Column(
                                        children: [
                                          SizedBox(
                                            width: 200,
                                            child:
                                                ProgressBar(
-                                                 progress: Duration(seconds: duration.inSeconds),
+                                                 baseBarColor: Theme.of(context).canvasColor,
+                                                 bufferedBarColor: Colors.red,
+                                                 progressBarColor: Colors.red,
+                                                 buffered: Duration(seconds: bufferDuration.inSeconds),
+                                                 progress: Duration(seconds: streamDuration.inSeconds),
                                                  total: musicController.currentSource!.tag.duration,
                                                  onSeek: (duration) {
                                                    _seekSong(duration);
@@ -196,6 +206,8 @@ class _ControlsState extends State<Controls> {
 
                                        ],
                                      );
+                                 }
+                               );
                                  }
                                ),
                                Container(

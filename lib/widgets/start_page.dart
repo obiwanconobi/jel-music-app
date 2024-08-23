@@ -16,6 +16,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 class StartPage extends StatefulWidget {
   const StartPage({super.key});
 
+
+
   @override
   State<StartPage> createState() => _StartPageState();
   

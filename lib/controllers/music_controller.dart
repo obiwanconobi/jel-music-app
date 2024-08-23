@@ -33,6 +33,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
         ),),
   );
  final StreamController<Duration> _durationController = BehaviorSubject();
+ final StreamController<Duration> _bufferController = BehaviorSubject();
   var logger = GetIt.instance<LogHandler>();
   Mappers mapper = Mappers();
  // StreamController<Duration> _bufferedDurationController = BehaviorSubject();
@@ -162,6 +163,10 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
 
     _advancedPlayer.positionStream.listen((position) {
     _durationController.add(position);
+    });
+
+    _advancedPlayer.bufferedPositionStream.listen((position){
+      _bufferController.add(position);
     });
 
     _advancedPlayer.currentIndexStream.listen((event) {
@@ -301,6 +306,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
   }
 
   Stream<Duration> get durationStream => _durationController.stream;
+  Stream<Duration> get bufferStream => _bufferController.stream;
 
     void setDownloaded(String id)async{
        var documentsDar = await getApplicationDocumentsDirectory();
