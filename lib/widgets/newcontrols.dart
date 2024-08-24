@@ -80,6 +80,7 @@ class _ControlsState extends State<Controls> {
   Widget build(BuildContext context) {
     onInit();
     return  SolidBottomSheet(
+      canUserSwipe: MusicControllerProvider.of(context, listen: true).currentQueue?.isNotEmpty ?? false,
       maxHeight: 70.h,
       autoSwiped: true,
       draggableBody: true,
