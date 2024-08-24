@@ -42,14 +42,6 @@ class _StartPageButtonsState extends State<StartPageButtons> {
                     MaterialPageRoute(builder: (context) => const LikedSongs()),
                   );
                 },
-                style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all<Color>(Theme.of(context).canvasColor),
-                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
-                    ),
-                  ),
-                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

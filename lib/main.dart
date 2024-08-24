@@ -65,7 +65,7 @@ Future<void> main() async{
  // late MusicController _audioHandler;
 
 
-  runApp(MusicControllerProvider(
+  runApp(const MusicControllerProvider(
     child:MyApp(),
     ));
 }
@@ -98,6 +98,16 @@ static ThemeData lightTheme = ThemeData(
     popupMenuTheme: const PopupMenuThemeData(
       color: Color.fromARGB(255, 179, 179, 179),
       iconColor: Color.fromARGB(255, 179, 179, 179),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.all<Color>(const Color.fromARGB(255, 179, 179, 179)),
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
+          ),
+        ),
+      )
     ),
     textTheme: const TextTheme(
       labelLarge: TextStyle(color: Colors.black, fontSize:26, fontWeight: FontWeight.w600),
@@ -137,6 +147,16 @@ static ThemeData lightTheme = ThemeData(
       bodySmall: TextStyle(color: Colors.white, fontSize: 16),
       labelSmall: TextStyle(color: Colors.white, fontSize: 11)
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all<Color>(const Color.fromARGB(255, 37, 37, 37)),
+            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
+              ),
+            ),
+          )
+      ),
     popupMenuTheme: const PopupMenuThemeData(
         color: Color.fromARGB(255, 37, 37, 37),
         iconColor: Color.fromARGB(255, 37, 37, 37),
