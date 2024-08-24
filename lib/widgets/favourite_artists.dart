@@ -14,8 +14,8 @@ class FavouriteArtists extends StatefulWidget {
 }
 
 class _FavouriteArtistsState extends State<FavouriteArtists> {
-    @override
 
+    @override
   void initState() {
     super.initState();
 
