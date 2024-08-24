@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jel_music/handlers/logger_handler.dart';
+import 'package:jel_music/models/log.dart';
 import 'package:jel_music/widgets/all_albums_page.dart';
 import 'package:jel_music/widgets/all_songs_part.dart';
 import 'package:jel_music/widgets/artists_page.dart';
@@ -17,17 +19,23 @@ class StartPageButtons extends StatefulWidget {
 
 class _StartPageButtonsState extends State<StartPageButtons> {
 
+  LogHandler logger = LogHandler();
+
   bool visible = true;
   @override
   void initState() {
     super.initState();
+    logger.openBox();
+    logger.addToLog(LogModel(logType: "Error", logMessage: "Loading buttons", logDateTime: DateTime.now()));
     setState(() {
       visible = true;
+      logger.addToLog(LogModel(logType: "Error", logMessage: "Loading buttons from set state", logDateTime: DateTime.now()));
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    logger.addToLog(LogModel(logType: "Error", logMessage: "Loading from build", logDateTime: DateTime.now()));
     return Visibility(
       visible: visible,
       child: Row(
