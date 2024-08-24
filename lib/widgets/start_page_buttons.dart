@@ -36,6 +36,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
   @override
   Widget build(BuildContext context) {
     logger.addToLog(LogModel(logType: "Error", logMessage: "Loading from build", logDateTime: DateTime.now()));
+    logger.addToLog(LogModel(logType: "Error", logMessage: "${Theme.of(context).textButtonTheme.style!.backgroundColor}", logDateTime: DateTime.now()));
     return Visibility(
       visible: visible,
       child: Row(
