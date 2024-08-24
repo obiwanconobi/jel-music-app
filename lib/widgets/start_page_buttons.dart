@@ -49,7 +49,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
               child: SizedBox(
                 width: 45.w, // Set the desired width here
                 height: 12.w,
-                child: ElevatedButton(
+                child: TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -85,7 +85,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
               child: SizedBox(
                 width: 45.w, // Set the desired width here
                 height: 12.w,
-                child: ElevatedButton(
+                child: TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -121,7 +121,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
               child: SizedBox(
                 width: 45.w, // Set the desired width here
                 height: 12.w,
-                child: ElevatedButton(
+                child: TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -156,7 +156,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
               child: SizedBox(
                 width: 45.w, // Set the desired width here
                 height: 12.w,
-                child: ElevatedButton(
+                child: TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -187,7 +187,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
               child: SizedBox(
                 width: 45.w, // Set the desired width here
                 height: 12.w,
-                child: ElevatedButton(
+                child: TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -223,7 +223,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
               child: SizedBox(
                 width: 45.w, // Set the desired width here
                 height: 12.w,
-                child: ElevatedButton(
+                child: TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,

@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/all_albums_controller.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/widgets/songs_page.dart';
+import 'package:jel_music/widgets/start_page_buttons.dart';
 import 'package:sizer/sizer.dart';
 
 class FavouriteAlbums extends StatefulWidget {
@@ -62,7 +63,7 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
                           onTap:() => {
                             Navigator.push(context,
                               MaterialPageRoute(builder: (context) => SongsPage(albumId: albumsList[index].title!, artistId: albumsList[index].artist!,)),
-                            )}, 
+                            )},
                           borderRadius: BorderRadius.all(
                             Radius.circular(10.sp),
                           ),
