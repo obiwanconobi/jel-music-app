@@ -24,9 +24,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        return Padding(
+    return Padding(
           padding: const EdgeInsets.all(8.0),
           child: SizedBox(
             width: 45.w, // Set the desired width here
@@ -65,7 +63,6 @@ class _StartPageButtonsState extends State<StartPageButtons> {
             ),
           ),
         );
-      }
-    );
   }
 }
+
