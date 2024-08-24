@@ -25,6 +25,15 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    print("StartPage initialized");
+    // You could also try forcing a rebuild here
+    // WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+  }
+
   @override
   Widget build(BuildContext context) {
     // sets theme mode to dark
@@ -35,7 +44,8 @@ class _StartPageState extends State<StartPage> {
                   onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage()),);}))],
                   centerTitle: true, title: Text('panaudio', style: Theme.of(context).textTheme.bodyLarge),),
         //backgroundColor: Theme.of(context).colorScheme.background,
-        body: Padding(
+        body:
+        Padding(
           padding: EdgeInsets.only(
             top: 2.h,
             left: 0.sp,
@@ -74,7 +84,7 @@ class _StartPageState extends State<StartPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    /*Padding(
+                                    Padding(
                                       padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                       child: SvgPicture.asset(
                                         'assets/svg/artist.svg',
@@ -82,7 +92,7 @@ class _StartPageState extends State<StartPage> {
                                         height: 24,
                                         color: Theme.of(context).textTheme.bodyMedium!.color,
                                       ),
-                                    ),*/
+                                    ),
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                                       child: Text(
@@ -118,7 +128,7 @@ class _StartPageState extends State<StartPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    /*Padding(
+                                    Padding(
                                       padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                       child: SvgPicture.asset(
                                         'assets/svg/song.svg',
@@ -126,7 +136,7 @@ class _StartPageState extends State<StartPage> {
                                         height: 24,
                                         color: Theme.of(context).textTheme.bodyMedium!.color,
                                       ),
-                                    ),*/
+                                    ),
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                                       child: Text(
@@ -205,10 +215,10 @@ class _StartPageState extends State<StartPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    /*Padding(
+                                    Padding(
                                       padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                       child: Icon(Icons.favorite, size: 24, color:Theme.of(context).textTheme.bodyMedium!.color ),
-                                    ),*/
+                                    ),
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                                       child: Text(
@@ -244,7 +254,7 @@ class _StartPageState extends State<StartPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    /*Padding(
+                                    Padding(
                                       padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                       child: SvgPicture.asset(
                                         'assets/svg/album.svg',
@@ -252,7 +262,7 @@ class _StartPageState extends State<StartPage> {
                                         height: 24,
                                         color: Theme.of(context).textTheme.bodyMedium!.color,
                                       ),
-                                    ),*/
+                                    ),
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                                       child: Text(
@@ -288,7 +298,7 @@ class _StartPageState extends State<StartPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    /*Padding(
+                                    Padding(
                                       padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                       child: SvgPicture.asset(
                                         'assets/svg/album.svg',
@@ -296,7 +306,7 @@ class _StartPageState extends State<StartPage> {
                                         height: 24,
                                         color: Theme.of(context).textTheme.bodyMedium!.color,
                                       ),
-                                    ),*/
+                                    ),
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                                       child: Text(
