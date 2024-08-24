@@ -17,52 +17,59 @@ class StartPageButtons extends StatefulWidget {
 
 class _StartPageButtonsState extends State<StartPageButtons> {
 
+  bool visible = true;
   @override
   void initState() {
     super.initState();
+    setState(() {
+      visible = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SizedBox(
-            width: 45.w, // Set the desired width here
-            height: 12.w,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LikedSongs()),
-                );
-              },
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all<Color>(Theme.of(context).canvasColor),
-                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
-                  ),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                    child: Icon(Icons.favorite, size: 24, color:Theme.of(context).textTheme.bodyMedium!.color ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                    child: Text(
-                        'Liked Songs',
-                        style: Theme.of(context).textTheme.bodyMedium
+    return Visibility(
+      visible: visible,
+      child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              width: 45.w, // Set the desired width here
+              height: 12.w,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LikedSongs()),
+                  );
+                },
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all<Color>(Theme.of(context).canvasColor),
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
                     ),
                   ),
-                ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                      child: Icon(Icons.favorite, size: 24, color:Theme.of(context).textTheme.bodyMedium!.color ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                      child: Text(
+                          'Liked Songs',
+                          style: Theme.of(context).textTheme.bodyMedium
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        );
+    );
   }
 }
 
