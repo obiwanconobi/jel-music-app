@@ -169,6 +169,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
       _bufferController.add(position);
     });
 
+
     _advancedPlayer.currentIndexStream.listen((event) {
           setUiElements();
           setDownloaded(currentSource!.tag.id);
@@ -305,6 +306,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
     await _updatePlaybackProgress();
   }
 
+
   Stream<Duration> get durationStream => _durationController.stream;
   Stream<Duration> get bufferStream => _bufferController.stream;
 
@@ -318,12 +320,10 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
         final files = directory.listSync();
 
 
-    //  final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync();
 
       if(files.where((element) => element.path.contains(id)).isNotEmpty){
         await songsHelper.openBox();
         await songsHelper.setDownloaded(id);
-        await songsHelper.closeBox();
       }
     }
 

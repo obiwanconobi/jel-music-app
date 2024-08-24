@@ -33,7 +33,6 @@ class _StartPageState extends State<StartPage> {
         appBar: AppBar(
                   actions: [Padding(padding: const EdgeInsets.fromLTRB(0, 0, 15, 0), child: IconButton(icon:  const Icon(Icons.settings), 
                   onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage()),);}))],
-                
                   centerTitle: true, title: Text('panaudio', style: Theme.of(context).textTheme.bodyLarge),),
         //backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
@@ -75,7 +74,7 @@ class _StartPageState extends State<StartPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Padding(
+                                    /*Padding(
                                       padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                       child: SvgPicture.asset(
                                         'assets/svg/artist.svg',
@@ -83,7 +82,7 @@ class _StartPageState extends State<StartPage> {
                                         height: 24,
                                         color: Theme.of(context).textTheme.bodyMedium!.color,
                                       ),
-                                    ),
+                                    ),*/
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                                       child: Text(
@@ -119,7 +118,7 @@ class _StartPageState extends State<StartPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Padding(
+                                    /*Padding(
                                       padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                       child: SvgPicture.asset(
                                         'assets/svg/song.svg',
@@ -127,7 +126,7 @@ class _StartPageState extends State<StartPage> {
                                         height: 24,
                                         color: Theme.of(context).textTheme.bodyMedium!.color,
                                       ),
-                                    ),
+                                    ),*/
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                                       child: Text(
@@ -163,10 +162,10 @@ class _StartPageState extends State<StartPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Padding(
+                                    /*Padding(
                                       padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                       child: Icon(Icons.save, color: Theme.of(context).textTheme.bodyLarge!.color, size:24)
-                                    ),
+                                    ),*/
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                                       child: Text(
@@ -206,10 +205,10 @@ class _StartPageState extends State<StartPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Padding(
+                                    /*Padding(
                                       padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                       child: Icon(Icons.favorite, size: 24, color:Theme.of(context).textTheme.bodyMedium!.color ),
-                                    ),
+                                    ),*/
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                                       child: Text(
@@ -245,7 +244,7 @@ class _StartPageState extends State<StartPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Padding(
+                                    /*Padding(
                                       padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                       child: SvgPicture.asset(
                                         'assets/svg/album.svg',
@@ -253,7 +252,7 @@ class _StartPageState extends State<StartPage> {
                                         height: 24,
                                         color: Theme.of(context).textTheme.bodyMedium!.color,
                                       ),
-                                    ),
+                                    ),*/
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                                       child: Text(
@@ -289,7 +288,7 @@ class _StartPageState extends State<StartPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Padding(
+                                    /*Padding(
                                       padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                       child: SvgPicture.asset(
                                         'assets/svg/album.svg',
@@ -297,7 +296,7 @@ class _StartPageState extends State<StartPage> {
                                         height: 24,
                                         color: Theme.of(context).textTheme.bodyMedium!.color,
                                       ),
-                                    ),
+                                    ),*/
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                                       child: Text(
