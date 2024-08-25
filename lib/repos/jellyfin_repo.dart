@@ -62,9 +62,15 @@ class JellyfinRepo{
 
   startPlaybackReporting(String songId, String userId)async{
        var requestHeaders = await apiHelper.returnJellyfinHeaders();
-       String url = "$baseServerUrl/Users/$userId/PlayingItems/$songId";
+       String url = "$baseServerUrl/Sessions/Playing";
+
+       var body = {
+         "CanSeek": true,
+         "ItemId": songId
+       };
+       var jsonBody = json.encode(body);
       try{
-        http.Response res = await http.post(Uri.parse(url), headers: requestHeaders);
+        http.Response res = await http.post(Uri.parse(url), headers: requestHeaders, body: jsonBody);
               if (res.statusCode == 204) {
                 return res.statusCode;
               }      
@@ -73,6 +79,29 @@ class JellyfinRepo{
         rethrow;
       }
   }
+
+  updatePlaybackProgress(String songId, String userId, bool paused, int ticks)async{
+    var requestHeaders = await apiHelper.returnJellyfinHeaders();
+    String url = "$baseServerUrl/Sessions/Playing/Progress";
+    var body = {
+      "CanSeek": true,
+      "ItemId": songId,
+      "IsPaused": paused,
+      "PositionTicks": ticks
+    };
+
+    var jsonBody = json.encode(body);
+    try{
+      http.Response res = await http.post(Uri.parse(url), headers: requestHeaders, body: jsonBody);
+      if (res.statusCode == 204) {
+        return res.statusCode;
+      }
+    }catch(e){
+      //Log Error
+      rethrow;
+    }
+  }
+
    stopPlaybackReporting(String songId, String userId)async{
        var requestHeaders = await apiHelper.returnJellyfinHeaders();
       String url = "$baseServerUrl/Users/$userId/PlayingItems/$songId";

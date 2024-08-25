@@ -79,7 +79,16 @@ class JellyfinHandler{
   }
 
   startPlaybackReporting(String songId, String userId)async{
-    await jellyfinRepo.startPlaybackReporting(songId, userId);
+    try{
+      await jellyfinRepo.startPlaybackReporting(songId, userId);
+    }catch(e){
+      print(e);
+    }
+
+  }
+
+  updatePlaybackProgress(String songId, String userId, bool paused, int ticks)async{
+    await jellyfinRepo.updatePlaybackProgress(songId, userId, paused, ticks);
   }
 
   stopPlaybackReporting(String songId, String userId)async{
