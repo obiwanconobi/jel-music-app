@@ -176,7 +176,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
     _advancedPlayer.currentIndexStream.listen((event) {
           setUiElements();
           setDownloaded(currentSource!.tag.id);
-          _updatePlaybackProgress();
+         // _updatePlaybackProgress();
+          _startPlaybackProgress();
     });
 
     _advancedPlayer.playingStream.listen((event){
@@ -253,6 +254,17 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
     }
   }
 
+  _startPlaybackProgress()async{
+    var playbackLog = GetStorage().read('playbackReporting') ?? false;
+    if(playbackLog) {
+      var userId = await GetStorage().read('userId');
+      JellyfinHandler jellyfinHandler = JellyfinHandler();
+      String current = currentSource!.tag.id;
+      bool playing = playbackState.valueOrNull?.playing ?? false;
+      await jellyfinHandler.startPlaybackReporting(current, userId);
+    }
+  }
+
   _updatePlaybackProgress()async{ 
     var playbackLog = GetStorage().read('playbackReporting') ?? false;
       if(playbackLog){
@@ -317,13 +329,13 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
   @override
   Future<void> skipToNext()async{
     await nextSong();
-    await _updatePlaybackProgress();
+   // await _updatePlaybackProgress();
   }
 
   @override
   Future<void> skipToPrevious()async{
     await previousSong();
-    await _updatePlaybackProgress();
+  //  await _updatePlaybackProgress();
   }
 
 
