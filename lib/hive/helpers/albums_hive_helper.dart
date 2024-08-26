@@ -94,7 +94,7 @@ class AlbumsHelper{
      
       var imgUrl = "$baseServerUrl/Items/$albumId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
       try{
-        albumsList.add(Albums(id: album["Id"], name: album["Name"],artist: album["AlbumArtist"], year: album["ProductionYear"].toString(), picture: imgUrl, favourite: album["UserData"]["IsFavorite"], artistId: album["ArtistItems"][0]["Id"] ?? ""));
+        albumsList.add(Albums(id: album["Id"], name: album["Name"],artist: album["AlbumArtist"], year: album["ProductionYear"].toString(), picture: imgUrl, favourite: album["UserData"]["IsFavorite"], artistId: album["ArtistItems"][0]["Id"] ?? "", playCount: 0));
       }catch(e){
         //log error
       

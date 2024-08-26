@@ -24,13 +24,14 @@ class AlbumsAdapter extends TypeAdapter<Albums> {
       artistId: fields[4] as String?,
       artist: fields[5] as String?,
       year: fields[6] as String?,
+      playCount: fields[7] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Albums obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class AlbumsAdapter extends TypeAdapter<Albums> {
       ..writeByte(5)
       ..write(obj.artist)
       ..writeByte(6)
-      ..write(obj.year);
+      ..write(obj.year)
+      ..writeByte(7)
+      ..write(obj.playCount);
   }
 
   @override

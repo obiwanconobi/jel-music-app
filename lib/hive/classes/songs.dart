@@ -20,7 +20,8 @@
       this.codec,
       this.bitrate,
       this.bitdepth,
-      this.samplerate
+      this.samplerate,
+      required this.playCount
 
     });
 
@@ -71,7 +72,10 @@
 
     @HiveField(15)
     String? samplerate;
-  
+
+    @HiveField(16)
+    int playCount;
+
     @override
     String toString() {
       return '$name:$name';

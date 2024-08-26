@@ -36,7 +36,7 @@ class Mappers{
         songsList.add(Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,
         artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length,
          favourite: song.favourite, codec: song.codec, bitdepth: song.bitdepth, bitrate: song.bitrate, samplerate: song.samplerate,
-         downloaded: song.downloaded));
+         downloaded: song.downloaded, playCount: song.playCount));
       }catch(e){
         //log error
       }

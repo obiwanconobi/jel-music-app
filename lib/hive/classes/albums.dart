@@ -12,6 +12,7 @@
       required this.artistId,
       required this.artist,
       required this.year,
+      required this.playCount
     });
 
     @HiveField(0)
@@ -34,6 +35,9 @@
 
     @HiveField(6)
     String? year;
+
+    @HiveField(7)
+    int playCount;
 
     @override
     String toString() {

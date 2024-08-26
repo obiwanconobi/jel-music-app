@@ -111,6 +111,12 @@ class SongsHelper{
     return songsBox.values.where((element) => element.favourite == true).toList();
   }
 
+  returnMostPlayedSongs()async{
+    var songs = songsBox.values.toList();
+    songs.sort((a, b) => b.playCount.compareTo(a.playCount));
+    return songs.take(100);
+  }
+
   addSongToBox(Songs song)async{
     songsBox.add(song);
   }
@@ -118,13 +124,10 @@ class SongsHelper{
  bool mediaStreams(dynamic song){
     try {
       var string = song["MediaStreams"];
-      if (string[0] == null) {
-        print('stop');
-      }
+
       var test = song["MediaStreams"][0];
       return true;
     } catch (e) {
-      print('error');
       return false;
     }
   }
@@ -160,7 +163,7 @@ class SongsHelper{
            index: song["IndexNumber"] ?? 0, year: song["ProductionYear"] ?? 0, length: _ticksToTimestampString(song["RunTimeTicks"] ?? 0),
             favourite: song["UserData"]["IsFavorite"], discIndex: song["ParentIndexNumber"] ?? 1,
             codec: codec, bitrate: "$bitrate kpbs", bitdepth: "$bitdepth bit",
-            samplerate: "$samplerate kHz"));
+            samplerate: "$samplerate kHz", playCount: song["UserData"]["PlayCount"] ?? 0));
         }catch(e){
          //log error
         print('error');
@@ -168,7 +171,16 @@ class SongsHelper{
      }
      for(var song in songsList){
       try{
-         songsBox.add(song);
+
+        //look for element
+        var element = songsBox.values.where((x) => x.id == song.id).firstOrNull;
+        if(element != null){
+          songsBox.put(element.key, song);
+        }else{
+          songsBox.add(song);
+        }
+
+
       }catch(e){
         print(e);
       }

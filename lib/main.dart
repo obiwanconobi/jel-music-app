@@ -13,6 +13,7 @@ import 'package:jel_music/controllers/artist_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/controllers/latest_albums_controller.dart';
 import 'package:jel_music/controllers/liked_controller.dart';
+import 'package:jel_music/controllers/most_played_songs_controller.dart';
 import 'package:jel_music/controllers/playlist_controller.dart';
 import 'package:jel_music/controllers/playlists_controller.dart';
 import 'package:jel_music/controllers/songs_controller.dart';
@@ -61,6 +62,7 @@ Future<void> main() async{
   GetIt.I.registerSingleton<DownloadController>(DownloadController());
   GetIt.I.registerSingleton<PlaylistsController>(PlaylistsController());
   GetIt.I.registerSingleton<PlaylistController>(PlaylistController());
+  GetIt.I.registerSingleton<MostPlayedSongsController>(MostPlayedSongsController());
 
  // late MusicController _audioHandler;
 

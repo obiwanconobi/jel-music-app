@@ -25,7 +25,7 @@ class SubsonicHandler{
     for(var songs in songData){
       var title = songs["title"];
         try{
-          songsList.add(Songs(name: songs["title"], id: songs["id"], artist: songs["artist"], artistId: songs["artistId"] ?? "N/A", albumId: id, album: songs["album"], index: songs["track"] ?? 0, year: songs["year"] ?? 1900, length: conversions.returnSecondsToTimestampString(songs["duration"]), favourite: songs["starred"] != null, discIndex: songs["discNumber"] ?? 0, codec: songs["suffix"]));
+          songsList.add(Songs(name: songs["title"], id: songs["id"], artist: songs["artist"], artistId: songs["artistId"] ?? "N/A", albumId: id, album: songs["album"], index: songs["track"] ?? 0, year: songs["year"] ?? 1900, length: conversions.returnSecondsToTimestampString(songs["duration"]), favourite: songs["starred"] != null, discIndex: songs["discNumber"] ?? 0, codec: songs["suffix"], playCount: 0));
         }catch(e){
           await logger.openBox();
           await logger.addToLog(LogModel(logType: "Error", logMessage: "Error adding song: $title: $e", logDateTime: DateTime.now()));
@@ -39,7 +39,7 @@ class SubsonicHandler{
     var rawAlbums = await subsonicRepo.getAlbumsForArtist(id);
     final albumData = rawAlbums["subsonic-response"]["artist"]["album"];
     for(var album in albumData){
-      albums.add(Albums(id: album["id"], name: album["title"], picture: album["coverArt"], favourite: album["starred"] != null, artistId: id, artist: album["artist"], year: album["year"].toString(), ));
+      albums.add(Albums(id: album["id"], name: album["title"], picture: album["coverArt"], favourite: album["starred"] != null, artistId: id, artist: album["artist"], year: album["year"].toString(), playCount: 0 ));
     }
     return albums;
   }
@@ -57,6 +57,7 @@ class SubsonicHandler{
           picture: artist['artistImageUrl'],
           favourite: artist['starred'] != null,
           overview: null, // Left as null as per your request
+          playCount: 0
         ));
 
         var album = await getAlbumsForArtist(artist['id']);

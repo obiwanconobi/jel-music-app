@@ -33,13 +33,14 @@ class SongsAdapter extends TypeAdapter<Songs> {
       bitrate: fields[13] as String?,
       bitdepth: fields[14] as String?,
       samplerate: fields[15] as String?,
+      playCount: fields[16] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Songs obj) {
     writer
-      ..writeByte(16)
+      ..writeByte(17)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -71,7 +72,9 @@ class SongsAdapter extends TypeAdapter<Songs> {
       ..writeByte(14)
       ..write(obj.bitdepth)
       ..writeByte(15)
-      ..write(obj.samplerate);
+      ..write(obj.samplerate)
+      ..writeByte(16)
+      ..write(obj.playCount);
   }
 
   @override

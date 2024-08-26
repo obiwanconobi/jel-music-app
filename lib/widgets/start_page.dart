@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jel_music/hive/helpers/sync_helper.dart';
 import 'package:jel_music/widgets/favourite_albums.dart';
 import 'package:jel_music/widgets/favourite_artists.dart';
 import 'package:jel_music/widgets/latest_albums.dart';
@@ -20,9 +21,12 @@ class StartPage extends StatefulWidget {
 
 class _StartPageState extends State<StartPage> {
 
+  SyncHelper syncHelper = SyncHelper();
+
   @override
   void initState() {
     super.initState();
+    syncHelper.runSync();
     print("StartPage initialized");
     // You could also try forcing a rebuild here
     // WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));

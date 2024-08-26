@@ -64,56 +64,68 @@ class SyncHelper{
     return imgUrl;
   }
 
+  isMoreThanAnHourBefore(DateTime dateTime) {
+    DateTime now = DateTime.now();
+    Duration difference = now.difference(dateTime);
+    return difference > Duration(hours: 1);
+  }
+
   runSync()async{
 
+    var lastSyncRaw = await GetStorage().read('lastSync') ?? DateTime.now().add(const Duration(hours:-2)).toString();
+    DateTime lastSync = DateTime.parse(lastSyncRaw);
 
-    List<FavAlbums> favAlbums = await getFavouriteAlbums();
-    List<String> favArtists = await getFavouriteArtists();
-    var songs = await jellyfinHandler.returnSongs();
+    if(isMoreThanAnHourBefore(lastSync)){
 
-    try{
-      await songsHelper.addSongsToBox(songs);
-    }catch(e){
-      logger.addToLog(LogModel(logType: "Error", logMessage: "Error Adding Songs: ${e.toString()}", logDateTime: DateTime.now()));
-    }
+      List<FavAlbums> favAlbums = await getFavouriteAlbums();
+      List<String> favArtists = await getFavouriteArtists();
+      var songs = await jellyfinHandler.returnSongs();
 
-    await albumsHelper.openBox();
-    await artistsHelper.openBox();
+      try{
+        await songsHelper.openBox();
+        await songsHelper.addSongsToBox(songs);
+      }catch(e){
+        logger.addToLog(LogModel(logType: "Error", logMessage: "Error Adding Songs: ${e.toString()}", logDateTime: DateTime.now()));
+      }
 
-    List<Songs> listOfSongs = await songsHelper.returnSongs();
+      await albumsHelper.openBox();
+      await artistsHelper.openBox();
 
-    for(var song in listOfSongs){
+      List<Songs> listOfSongs = await songsHelper.returnSongs();
 
-      var artist = artistsHelper.returnArtist(song.artist);
-      bool artistFavourite = false;
-      if(artist == null){
-        if(favArtists.contains(song.artist)){
-          artistFavourite = true;
+      for(var song in listOfSongs){
+
+        var artist = artistsHelper.returnArtist(song.artist);
+        bool artistFavourite = false;
+        if(artist == null){
+          if(favArtists.contains(song.artist)){
+            artistFavourite = true;
+          }else{
+            artistFavourite = false;
+          }
+          var artistFull = await jellyfinHandler.returnArtistBio(song.artist);
+          var overview = artistFull["Overview"];
+
+          try{
+            await artistsHelper.addArtistToBox(Artists(id: song.artistId, name: song.artist, picture: song.artistId, favourite: artistFavourite, overview: overview, playCount: song.playCount));
+
+          }catch(e){
+            logger.addToLog(LogModel(logType: "Error", logMessage: "Error Adding ${song.artist} to box: ${e.toString()}", logDateTime: DateTime.now()));
+          }
+
         }else{
-          artistFavourite = false;
-        }
-        var artistFull = await jellyfinHandler.returnArtistBio(song.artist);
-        var overview = artistFull["Overview"];
+          artist.playCount = artist.playCount + song.playCount;
 
-        try{
-          await artistsHelper.addArtistToBox(Artists(id: song.artistId, name: song.artist, picture: song.artistId, favourite: artistFavourite, overview: overview));
-
-        }catch(e){
-          logger.addToLog(LogModel(logType: "Error", logMessage: "Error Adding ${song.artist} to box: ${e.toString()}", logDateTime: DateTime.now()));
+          await artistsHelper.updateArtist(artist);
         }
 
-         }
+        var album = albumsHelper.returnAlbum(song.artist, song.album);
 
-      var album = albumsHelper.returnAlbum(song.artist, song.album);
-      
-      if(album == null){
+        if(album == null){
           bool favourite = false;
           //FavAlbums targetAlbum = FavAlbums(title: song.album, artist: song.artist);
           FavAlbums targetAlbum = FavAlbums(artist: song.artist, title: song.album);
 
-          if(song.artist.toUpperCase() == "PUP"){
-            print('stop');
-          }
 
           bool containsTargetAlbum = favAlbums.contains(targetAlbum);
           for(var album in favAlbums){
@@ -125,24 +137,36 @@ class SyncHelper{
           if (containsTargetAlbum) {
             favourite = true;
           } else {
-           
+
           }
 
 
           var imgUrl = await getImageUrl(song.albumId);
           try{
             //here
-            await albumsHelper.addAlbumToBox(Albums(id: song.albumId, name: song.album, picture: imgUrl, favourite: favourite, artist: song.artist, artistId: song.artistId, year: song.year.toString()));
+            await albumsHelper.addAlbumToBox(Albums(id: song.albumId, name: song.album, picture: imgUrl, favourite: favourite, artist: song.artist, artistId: song.artistId, year: song.year.toString(), playCount: song.playCount));
 
           }catch(e){
             logger.addToLog(LogModel(logType: "Error", logMessage: "Error Adding Album ${song.album} to box: ${e.toString()}", logDateTime: DateTime.now()));
           }
 
-         }
+        }else{
+          album.playCount = album.playCount + song.playCount;
+          albumsHelper.updateAlbum(album, album.key);
+        }
 
 
+
+      }
+
+      logger.addToLog(LogModel(logType: "Error", logMessage: "Sync Complete", logDateTime: DateTime.now()));
+
+      await GetStorage().write('lastSync', DateTime.now());
 
     }
+
+
+
 
   }
 

@@ -9,7 +9,8 @@
       required this.id,
       required this.picture,
       this.favourite, // marked as nullable
-      this.overview
+      this.overview,
+      required this.playCount
     });
 
     @HiveField(0)
@@ -26,6 +27,9 @@
 
     @HiveField(4)
     String? overview;
+
+    @HiveField(5)
+    int playCount;
 
     @override
     String toString() {

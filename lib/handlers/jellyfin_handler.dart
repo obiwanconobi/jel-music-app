@@ -44,7 +44,7 @@ class JellyfinHandler{
           if(test.contains('blink')){
           
           }    
-          artistList.add(Artists(id: artist["Id"], name: artist["Name"], favourite: artist["UserData"]["IsFavorite"], picture: artist["Id"]));
+          artistList.add(Artists(id: artist["Id"], name: artist["Name"], favourite: artist["UserData"]["IsFavorite"], picture: artist["Id"], playCount: 0));
       }
       return artistList;
   }

@@ -48,6 +48,10 @@ class ArtistsHelper{
     artistBox.add(artist);
   }
 
+  updateArtist(Artists artist){
+    artistBox.put(artist.key, artist);
+  }
+
   Artists? returnArtist(String name){
     return artistBox.values.where((artists) => artists.name.toLowerCase() == name.toLowerCase()).firstOrNull;
   }
@@ -86,7 +90,7 @@ class ArtistsHelper{
           if(test.contains('blink')){
           
           }    
-          artistList.add(Artists(id: artist["Id"], name: artist["Name"], favourite: artist["UserData"]["IsFavorite"], picture: artist["Id"]));
+          artistList.add(Artists(id: artist["Id"], name: artist["Name"], favourite: artist["UserData"]["IsFavorite"], picture: artist["Id"], playCount: 0));
       }
       return artistList;
   }
@@ -132,7 +136,7 @@ class ArtistsHelper{
     for(var album in albumsRaw["Items"]){
       String albumId = album["Id"];
       var imgUrl = "$baseServerUrl/Items/$albumId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
-      albumsList.add(Albums(id: album["Id"], name: album["Name"],artist: album["AlbumArtist"], year: album["ProductionYear"] ?? 1900, picture: imgUrl, favourite: album["UserData"]["IsFavorite"], artistId: album["artistId"]));
+      albumsList.add(Albums(id: album["Id"], name: album["Name"],artist: album["AlbumArtist"], year: album["ProductionYear"] ?? 1900, picture: imgUrl, favourite: album["UserData"]["IsFavorite"], artistId: album["artistId"], playCount: 0));
     }
 
     return albumsList;

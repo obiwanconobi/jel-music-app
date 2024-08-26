@@ -7,6 +7,7 @@ import 'package:jel_music/widgets/all_songs_part.dart';
 import 'package:jel_music/widgets/artists_page.dart';
 import 'package:jel_music/widgets/downloads_page.dart';
 import 'package:jel_music/widgets/liked_songs.dart';
+import 'package:jel_music/widgets/most_played_songs.dart';
 import 'package:jel_music/widgets/playlists_page.dart';
 import 'package:sizer/sizer.dart';
 
@@ -29,14 +30,12 @@ class _StartPageButtonsState extends State<StartPageButtons> {
     logger.addToLog(LogModel(logType: "Error", logMessage: "Loading buttons", logDateTime: DateTime.now()));
     setState(() {
       visible = true;
-      logger.addToLog(LogModel(logType: "Error", logMessage: "Loading buttons from set state", logDateTime: DateTime.now()));
+    //  logger.addToLog(LogModel(logType: "Error", logMessage: "Loading buttons from set state", logDateTime: DateTime.now()));
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    logger.addToLog(LogModel(logType: "Error", logMessage: "Loading from build", logDateTime: DateTime.now()));
-    logger.addToLog(LogModel(logType: "Error", logMessage: "${Theme.of(context).textButtonTheme.style!.backgroundColor}", logDateTime: DateTime.now()));
     return Visibility(
       visible: visible,
       child: Row(
@@ -126,7 +125,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const DownloadsPage()),
+                      MaterialPageRoute(builder: (context) => const MostPlayedSongs()),
                     );
                   },
                   child: Row(
@@ -139,7 +138,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                         child: Text(
-                            'Downloads',
+                            'Most Played',
                             style: Theme.of(context).textTheme.bodyMedium
                         ),
                       ),
@@ -148,7 +147,6 @@ class _StartPageButtonsState extends State<StartPageButtons> {
                 ),
               ),
             ),
-
           ],),
           Column(children:
           [

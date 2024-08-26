@@ -15,6 +15,7 @@ class Songs {
    String? bitrate;
    String? bitdepth;
    String? samplerate;
+   int? playCount;
 
   Songs({
     this.id,
@@ -32,6 +33,7 @@ class Songs {
     this.codec,
     this.bitrate,
     this.bitdepth,
-    this.samplerate
+    this.samplerate,
+    this.playCount
   });
 }
