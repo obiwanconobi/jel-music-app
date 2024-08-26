@@ -70,12 +70,12 @@ class SyncHelper{
     return difference > Duration(hours: 1);
   }
 
-  runSync()async{
+  runSync({bool check = false})async{
 
     var lastSyncRaw = await GetStorage().read('lastSync') ?? DateTime.now().add(const Duration(hours:-2)).toString();
     DateTime lastSync = DateTime.parse(lastSyncRaw);
 
-    if(isMoreThanAnHourBefore(lastSync)){
+    if(isMoreThanAnHourBefore(lastSync) || check){
 
       List<FavAlbums> favAlbums = await getFavouriteAlbums();
       List<String> favArtists = await getFavouriteArtists();

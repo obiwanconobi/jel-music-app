@@ -89,7 +89,7 @@ class _MyWidgetState extends State<SettingsPage> {
 
   _saveUrl() async {
 
-    GetStorage().write('serverUrl', _serverUrlTextController.text);
+    await GetStorage().write('serverUrl', _serverUrlTextController.text);
 
 }
 
