@@ -280,7 +280,7 @@ class _LikedSongsState extends State<MostPlayedSongs> {
                                                                     fontFamily: "Segoe UI",
                                                                   ),
                                                                   overflow: TextOverflow.ellipsis, // Set overflow property
-                                                                  maxLines: 2, // Set the maximum number of lines
+                                                                  maxLines: 1, // Set the maximum number of lines
                                                                 ),
                                                               ),
                                                             ],
@@ -292,7 +292,9 @@ class _LikedSongsState extends State<MostPlayedSongs> {
                                                               color: Theme.of(context).textTheme.bodySmall!.color,
                                                               fontWeight: FontWeight.w400,
                                                               fontFamily: "Segoe UI",
-                                                            ),),
+                                                            ),
+                                                                overflow: TextOverflow.ellipsis,
+                                                                maxLines: 1),
                                                           ),
                                                           Container(
                                                             alignment: Alignment.centerLeft,

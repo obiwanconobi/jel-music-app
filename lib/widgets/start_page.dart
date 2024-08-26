@@ -26,7 +26,7 @@ class _StartPageState extends State<StartPage> {
   @override
   void initState() {
     super.initState();
-    syncHelper.runSync(check: true);
+    syncHelper.runSync(false);
     print("StartPage initialized");
     // You could also try forcing a rebuild here
     // WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));

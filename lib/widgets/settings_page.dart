@@ -124,7 +124,7 @@ class _MyWidgetState extends State<SettingsPage> {
     /* helper.getAllArtists();
     albumsHelper.getAllAlbums(); */
   if(_selectedOption == "Jellyfin"){
-   await syncHelper.runSync();
+   await syncHelper.runSync(true);
   }else if (_selectedOption == "Subsonic"){
    await subsonicSyncHelper.runSync();
   }

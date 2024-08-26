@@ -70,7 +70,7 @@ class SyncHelper{
     return difference > Duration(hours: 1);
   }
 
-  runSync({bool check = false})async{
+  runSync(bool check)async{
 
     var lastSyncRaw = await GetStorage().read('lastSync') ?? DateTime.now().add(const Duration(hours:-2)).toString();
     DateTime lastSync = DateTime.parse(lastSyncRaw);
