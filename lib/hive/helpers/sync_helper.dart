@@ -64,7 +64,7 @@ class SyncHelper{
     return imgUrl;
   }
 
-  isMoreThanAnHourBefore(DateTime dateTime) {
+  bool isMoreThanAnHourBefore(DateTime dateTime) {
     DateTime now = DateTime.now();
     Duration difference = now.difference(dateTime);
     return difference > Duration(hours: 1);
@@ -72,8 +72,8 @@ class SyncHelper{
 
   runSync(bool check)async{
 
-    var lastSyncRaw = await GetStorage().read('lastSync') ?? DateTime.now().add(const Duration(hours:-2)).toString();
-    DateTime lastSync = DateTime.parse(lastSyncRaw);
+    var lastSyncRaw = await GetStorage().read('lastSync') ?? DateTime.now().add(Duration(hours:-2)).toString();
+    var lastSync = DateTime.parse(lastSyncRaw);
 
     if(isMoreThanAnHourBefore(lastSync) || check){
 
@@ -155,13 +155,11 @@ class SyncHelper{
           albumsHelper.updateAlbum(album, album.key);
         }
 
-
-
       }
 
       logger.addToLog(LogModel(logType: "Error", logMessage: "Sync Complete", logDateTime: DateTime.now()));
 
-      await GetStorage().write('lastSync', DateTime.now());
+      await GetStorage().write('lastSync', DateTime.now().toString());
 
     }
 
