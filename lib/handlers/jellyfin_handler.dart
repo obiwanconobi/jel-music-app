@@ -19,7 +19,7 @@ class JellyfinHandler{
   }
 
   updateFavouriteStatus(String itemId, bool current)async{
-    await jellyfinRepo.updateFavouriteStatus(itemId, current);
+    await jellyfinRepo.updateFavouriteStatus(itemId, !current);
   }
 
   returnArtistBio(String artistName)async{

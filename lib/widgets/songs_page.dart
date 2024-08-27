@@ -134,24 +134,27 @@ class _SongsPageState extends State<SongsPage> {
     });
   }
 
-  _favouriteSong(String songId, bool current, String artist, String title)async{
+  _favouriteSong(String songId, bool current, String artist, String title, int index)async{
     await songsHelper.openBox();
 
     if(current){
       //unfavourite
       controller.toggleFavouriteSong(songId, false);
       songsHelper.likeSong(artist, title, false);
-      setState(() {
-        songsFuture = controller.onInit();
-      });
+      updateSong(index, true);
     }else{
       //favourite
       controller.toggleFavouriteSong(songId, true);
       songsHelper.likeSong(artist, title, true);
-       setState(() {
-        songsFuture = controller.onInit();
-      });
+      updateSong(index, false);
     }
+  }
+
+  updateSong(int index, bool favourite){
+    setState(() {
+      songsList[index].favourite = !favourite;
+    });
+
   }
 
   _downloadAll(List<Songs> songs)async{
@@ -415,7 +418,7 @@ class _SongsPageState extends State<SongsPage> {
                                                           ),
                                                           Container(
                                                             margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                                            child: IconButton(icon: Icon(Icons.favorite, color: ((songsList[index].favourite ?? false) ? Colors.red : Colors.blueGrey), size:30), onPressed: () {_favouriteSong(songsList[index].id!, songsList[index].favourite!, songsList[index].artist!, songsList[index].title!); },))
+                                                            child: IconButton(icon: Icon(Icons.favorite, color: ((songsList[index].favourite ?? false) ? Colors.red : Colors.blueGrey), size:30), onPressed: () {_favouriteSong(songsList[index].id!, songsList[index].favourite!, songsList[index].artist!, songsList[index].title!, index); },))
                                                         ],
                                                       ),
                                                       Divider(color: Theme.of(context).colorScheme.secondary, indent: 40, endIndent: 40,),
