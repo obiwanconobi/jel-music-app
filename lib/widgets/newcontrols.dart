@@ -62,7 +62,7 @@ class _ControlsState extends State<Controls> {
   }
 
   _favouriteSong(String itemId, bool current){
-    jellyfinHandler.updateFavouriteStatus(itemId, current);
+    jellyfinHandler.updateFavouriteStatus(itemId, !current);
     MusicControllerProvider.of(context, listen: false).updateCurrentSongFavStatus();
   }
 
