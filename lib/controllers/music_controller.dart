@@ -142,6 +142,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
 
 
 
+
       if (playbackState.valueOrNull != null &&
           playbackState.valueOrNull?.processingState !=
               AudioProcessingState.idle &&
@@ -498,6 +499,19 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
     notifyListeners();
   }
 
+  _autoPlay()async{
+
+      try{
+        await songsHelper.openBox();
+        var songsRaw = await songsHelper.returnFavouriteSongs();
+        var songs = await mapper.convertHiveSongsToModelSongs(songsRaw);
+        addPlaylistToQueue(songs);
+      }catch(e){
+        print(e.toString());
+      }
+
+  }
+
  
   //play
   resume() async {
@@ -505,7 +519,6 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
     baseServerUrl = GetStorage().read('serverUrl');
     
     String baseUrl = await getSongUrl(tempId!);
-  //  String baseUrl = "$baseServerUrl/Audio/$tempId/stream";
     List<String> timeParts = tempDuration!.split(':');
 
     var documentsDar = await getApplicationDocumentsDirectory();
@@ -528,21 +541,6 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
                     artUri: Uri.parse(tempPicture!),
                     duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
                   ));
-
-  //  String baseUrl = "https://localhost:44312/api/audio-dl";
-    /* var sourceold = AudioSource.uri(
-                  Uri.parse(baseUrl),
-                  tag: MediaItem(
-                    // Specify a unique ID for each media item:
-                    id: tempId!,
-                    // Metadata to display in the notification:
-                    album: tempArtist ?? "Error",
-                    title: tempAlbum ?? "Error",
-                    extras: {"favourite": tempFavourite ?? false},
-                    artUri: Uri.parse(tempPicture!),
-                    duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
-                  ),
-                ); */
   
       try{
         List<AudioSource> list = [];
@@ -623,7 +621,12 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
   }
 
   nextSong() async{
-    _advancedPlayer.seekToNext();
+      if(_advancedPlayer.currentIndex == (currentQueue!.length - 1) && GetStorage().read('autoPlay')){
+        await _autoPlay();
+      }else{
+        _advancedPlayer.seekToNext();
+      }
+
     setUiElements();
   }
 

@@ -44,6 +44,7 @@ class _MyWidgetState extends State<SettingsPage> {
   ArtistsHelper helper = ArtistsHelper();
   late String totalCachedFileCount = "";
   late bool playbackReporting;
+  late bool autoPlay;
   List<LogModel> logHistory = [];
 
   _login()async{
@@ -101,6 +102,7 @@ class _MyWidgetState extends State<SettingsPage> {
     _selectedOption = GetStorage().read('ServerType');
       getCachedSongs();
       playbackReporting = getPlaybackReporting();
+      autoPlay = getAutoPlay();
    
     getLogInfo();
     syncHelper.songsHelper.openBox();
@@ -159,8 +161,16 @@ class _MyWidgetState extends State<SettingsPage> {
     return GetStorage().read('playbackReporting') ?? false;
   }
 
+  bool getAutoPlay(){
+    return GetStorage().read('autoPlay') ?? false;
+  }
+
    setPlaybackReporting(bool value){
      GetStorage().write('playbackReporting', value);
+   }
+
+   setAutoPlay(bool value){
+    GetStorage().write('autoPlay', value);
    }
 
   getCachedSongs()async{
@@ -235,16 +245,31 @@ class _MyWidgetState extends State<SettingsPage> {
                      children: [
                       const Text("Playback reporting:"),
                       Switch(
-                          value: playbackReporting,
+                          value: autoPlay,
                           onChanged: (value) {
                             setState(() {
                               setPlaybackReporting(value);
-                              playbackReporting = getPlaybackReporting();
+                              autoPlay = getPlaybackReporting();
                             });
                           },
                         ),
                      ],
                    ),
+
+                  Row(
+                    children:[
+                      Text("AutoPlay"),
+                      Switch(
+                        value: playbackReporting,
+                        onChanged: (value) {
+                          setState(() {
+                            setAutoPlay(value);
+                            playbackReporting = getAutoPlay();
+                          });
+                        },
+                      ),
+                    ]
+                  ),
                   SizedBox(
                     height: 30.h,
                       child: TextField(maxLines: null, controller: _logController))

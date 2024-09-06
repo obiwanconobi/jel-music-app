@@ -42,6 +42,11 @@ class _PlaylistPageState extends State<PlaylistPage> {
     MusicControllerProvider.of(context, listen: false).addToQueue(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title));
   }
 
+  _shuffle(List<Songs> allSongs){
+    allSongs.shuffle();
+    _addAllToQueue(allSongs);
+  }
+
   _addAllToQueue(List<Songs> allSongs){
     if(allSongs.isNotEmpty){
         List<StreamModel> playList = [];
@@ -267,6 +272,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       OutlinedButton(onPressed: () => _addAllToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor, foregroundColor: Theme.of(context).canvasColor), child: Text('Play All', style: Theme.of(context).textTheme.bodySmall)),
+                                      OutlinedButton(onPressed: () => _shuffle(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor, foregroundColor: Theme.of(context).canvasColor), child: Text('Shuffle', style: Theme.of(context).textTheme.bodySmall)),
                                     ],
                                   ),
                                   
