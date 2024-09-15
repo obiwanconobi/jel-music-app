@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/music_controller.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
+import 'package:jel_music/handlers/quick_actions_handler.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -21,7 +22,7 @@ class _ControlsState extends State<Controls> {
   //ApiController apiController = ApiController();
  // var apiController = GetIt.instance<ApiController>();
   var jellyfinHandler = GetIt.instance<JellyfinHandler>();
- 
+  final QuickActionsHandler _quickActionsHandler = QuickActionsHandler();
   void onInit(){
 
     MusicControllerProvider.of(context, listen: true).onInit();
@@ -56,8 +57,18 @@ class _ControlsState extends State<Controls> {
     MusicControllerProvider.of(context, listen: false).seek(seek);
   }
 
-  _returnHome(){
-    Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+  _goHome()async{
+    Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false).then((_){
+      _quickActionsHandler.resetBool();
+    }).catchError(onError);
+  }
+
+  void onError(){
+print('error');
+  }
+
+  _returnHome()async{
+    await _goHome();
   //  Navigator.popUntil(context, ModalRoute.withName('/'));
   }
 

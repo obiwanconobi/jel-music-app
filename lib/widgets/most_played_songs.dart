@@ -14,10 +14,10 @@ class MostPlayedSongs extends StatefulWidget {
   const MostPlayedSongs({super.key});
 
   @override
-  State<MostPlayedSongs> createState() => _LikedSongsState();
+  State<MostPlayedSongs> createState() => _MostPlayedSongsState();
 }
 
-class _LikedSongsState extends State<MostPlayedSongs> {
+class _MostPlayedSongsState extends State<MostPlayedSongs> {
   var controller = GetIt.instance<MostPlayedSongsController>();
   Mappers mapper = Mappers();
   late Future<List<Songs>> songsFuture;

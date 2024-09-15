@@ -72,8 +72,11 @@ Future<void> main() async{
     const ShortcutItem(
       type: 'play_liked_songs',
       localizedTitle: 'Play Liked Songs',
-      icon: 'icon_liked_songs', // You need to create this icon
     ),
+    const ShortcutItem(
+      type: 'play_most_played',
+      localizedTitle: 'Play Most Played',
+    )
   ]);
 
 

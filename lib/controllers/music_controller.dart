@@ -75,15 +75,24 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
       // Return your main menu items here
         return [
           const MediaItem(
+            id: 'songs',
+            title: 'songs',
+            playable: true,
+          )
+        ];
+      case 'songs':
+        return [
+          const MediaItem(
             id: 'liked_songs',
             title: 'Liked Songs',
-            playable: false,
+            playable: true,
+          ),
+          const MediaItem(
+            id: 'most_played',
+            title: 'Most Played',
+            playable: true,
           ),
         ];
-      case 'liked_songs':
-      // Here you would typically return the actual playlist items
-      // For now, we'll just return an empty list
-        return [];
       default:
         return [];
     }
@@ -91,9 +100,13 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
 
   @override
   Future<void> playMediaItem(MediaItem mediaItem) async {
-    // This method is called when a menu item is selected
-    if (mediaItem.id == 'liked_songs') {
-      await _autoPlay();
+    switch (mediaItem.id) {
+      case 'liked_songs':
+        await autoPlay();
+        break;
+      case 'most_played':
+        await mostPlayed();
+        break;
     }
   }
 
@@ -530,6 +543,17 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
     isPlaying = _advancedPlayer.playing;
      await Future.delayed(const Duration(milliseconds: 60));
     notifyListeners();
+  }
+
+  mostPlayed()async{
+    try{
+      await songsHelper.openBox();
+      var songsRaw = await songsHelper.returnMostPlayedSongs();
+      var songs = await mapper.convertHiveSongsToModelSongs(songsRaw);
+      addPlaylistToQueue(songs);
+    }catch(e){
+      print(e.toString());
+    }
   }
 
   autoPlay()async{
