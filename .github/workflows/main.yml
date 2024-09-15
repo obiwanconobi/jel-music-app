@@ -67,7 +67,7 @@ jobs:
           PUB_CACHE: /home/runner/.pub-cache
           
       - name: Publish Android Artefacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: release-apk-signed
           path: build/app/outputs/flutter-apk/app-release-signed.apk
