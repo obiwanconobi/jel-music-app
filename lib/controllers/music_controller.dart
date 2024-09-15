@@ -65,6 +65,39 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
   String lastUpdateSong = "";
   bool lastUpdateStatus = false;
 
+
+//android auto menu
+  @override
+  Future<List<MediaItem>> getChildren(String parentMediaId, [Map<String, dynamic>? options]) async {
+    // This is where you define your menu structure
+    switch (parentMediaId) {
+      case AudioService.browsableRootId:
+      // Return your main menu items here
+        return [
+          const MediaItem(
+            id: 'liked_songs',
+            title: 'Liked Songs',
+            playable: false,
+          ),
+        ];
+      case 'liked_songs':
+      // Here you would typically return the actual playlist items
+      // For now, we'll just return an empty list
+        return [];
+      default:
+        return [];
+    }
+  }
+
+  @override
+  Future<void> playMediaItem(MediaItem mediaItem) async {
+    // This method is called when a menu item is selected
+    if (mediaItem.id == 'liked_songs') {
+      await _autoPlay();
+    }
+  }
+
+
   @override
   Future<dynamic> customAction(String name, [Map<String, dynamic>? extras]) async {
     switch (name) {
@@ -497,6 +530,10 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
     isPlaying = _advancedPlayer.playing;
      await Future.delayed(const Duration(milliseconds: 60));
     notifyListeners();
+  }
+
+  autoPlay()async{
+      await _autoPlay();
   }
 
   _autoPlay()async{

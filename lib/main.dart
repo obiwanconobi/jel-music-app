@@ -29,6 +29,7 @@ import 'package:jel_music/repos/jellyfin_repo.dart';
 import 'package:jel_music/repos/subsonic_repo.dart';
 import 'package:sizer/sizer.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:quick_actions/quick_actions.dart';
 
 import 'controllers/music_controller.dart';
 
@@ -65,6 +66,15 @@ Future<void> main() async{
   GetIt.I.registerSingleton<MostPlayedSongsController>(MostPlayedSongsController());
 
  // late MusicController _audioHandler;
+
+  final QuickActions quickActions = QuickActions();
+  quickActions.setShortcutItems(<ShortcutItem>[
+    const ShortcutItem(
+      type: 'play_liked_songs',
+      localizedTitle: 'Play Liked Songs',
+      icon: 'icon_liked_songs', // You need to create this icon
+    ),
+  ]);
 
 
   runApp(const MusicControllerProvider(

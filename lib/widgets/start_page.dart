@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jel_music/handlers/quick_actions_handler.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
 import 'package:jel_music/widgets/favourite_albums.dart';
 import 'package:jel_music/widgets/favourite_artists.dart';
@@ -22,10 +23,12 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> {
 
   SyncHelper syncHelper = SyncHelper();
+  final QuickActionsHandler _quickActionsHandler = QuickActionsHandler();
 
   @override
   void initState() {
     super.initState();
+    _quickActionsHandler.initialize(context);
     syncHelper.runSync(false);
     print("StartPage initialized");
     // You could also try forcing a rebuild here

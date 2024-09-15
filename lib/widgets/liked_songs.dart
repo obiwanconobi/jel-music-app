@@ -11,7 +11,8 @@ import 'package:sizer/sizer.dart';
 
 
 class LikedSongs extends StatefulWidget {
-  const LikedSongs({super.key});
+  final bool autoPlayAll;
+  const LikedSongs({super.key, this.autoPlayAll = false});
 
   @override
   State<LikedSongs> createState() => _LikedSongsState();
@@ -26,7 +27,12 @@ class _LikedSongsState extends State<LikedSongs> {
   void initState() {
     super.initState();
     songsFuture = controller.onInit();
+    if (widget.autoPlayAll) {
+      songsFuture.then((songs) => _addAllToQueue(songs));
+    }
   }
+
+
 
   _addToQueue(Songs song){
     MusicControllerProvider.of(context, listen: false).addToQueue(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title));
