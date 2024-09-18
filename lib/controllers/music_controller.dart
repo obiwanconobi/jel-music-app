@@ -77,7 +77,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
           const MediaItem(
             id: 'songs',
             title: 'songs',
-            playable: true,
+            playable: false,
+
           )
         ];
       case 'songs':
@@ -95,6 +96,33 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
         ];
       default:
         return [];
+    }
+  }
+
+  @override
+  Future<MediaItem?> getMediaItem(String mediaId) async {
+    // Implement this method to return the MediaItem for a given ID
+    switch (mediaId) {
+      case 'songs':
+        return const MediaItem(
+          id: 'songs',
+          title: 'Songs',
+          playable: false,
+        );
+      case 'liked_songs':
+        return const MediaItem(
+          id: 'liked_songs',
+          title: 'Liked Songs',
+          playable: true,
+        );
+      case 'most_played':
+        return const MediaItem(
+          id: 'most_played',
+          title: 'Most Played',
+          playable: true,
+        );
+      default:
+        return null;
     }
   }
 

@@ -32,6 +32,21 @@ class _LikedSongsState extends State<LikedSongs> {
     }
   }
 
+  _playSong(List<Songs> allSongs, index){
+    if(allSongs.isNotEmpty){
+      List<StreamModel> playList = [];
+      for(var song in allSongs){
+        playList.add(returnStream(song));
+      }
+      MusicControllerProvider.of(context, listen: false).addPlaylistToQueue(playList, index: index);
+    }
+
+  }
+  StreamModel returnStream(Songs song){
+    return StreamModel(id: song.id, composer: song.artist, music: song.id, picture: song.albumPicture, title: song.title, long: song.length, isFavourite: song.favourite, downloaded: song.downloaded, codec: song.codec, bitdepth: song.bitdepth, bitrate: song.bitrate, samplerate: song.samplerate);
+  }
+
+
 
 
   _addToQueue(Songs song){
@@ -228,7 +243,7 @@ class _LikedSongsState extends State<LikedSongs> {
                                 return Padding(
                                   padding: EdgeInsets.symmetric(vertical: 8.sp),
                                   child: InkWell(
-                                    onTap:() => _addToQueue(songsList[index]),
+                                    onTap:() => _playSong(songsList, index),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.sp),
                                     ),
