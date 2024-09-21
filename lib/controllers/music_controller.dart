@@ -100,8 +100,11 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
 
   @override
   Future<void> playMediaItem(MediaItem mediaItem) async {
+    logger.addToLog(LogModel(logType: "Error",logMessage: "Inside playMediaItem method", logDateTime: DateTime.now()));
+
     switch (mediaItem.id) {
       case 'liked_songs':
+        logger.addToLog(LogModel(logType: "Error",logMessage: "Trying to play liked songs from Android Auto", logDateTime: DateTime.now()));
         await autoPlay();
         break;
       case 'most_played':
