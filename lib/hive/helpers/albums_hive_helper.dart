@@ -36,6 +36,12 @@ class AlbumsHelper{
       return albumsBox.values.where((albums) => albums.favourite == favourite).toList();
   }
 
+  List<Albums> returnFavouriteAlbumsByPlayCount(){
+    var albumsList =  albumsBox.values.where((albums) => albums.favourite == true).toList();
+    albumsList.sort((a, b) => b.playCount.compareTo(a.playCount));
+    return albumsList;
+  }
+
   List<Albums> returnAlbumsForArtist(String artist){
     //var testx = artistBox.values.where((Artists) => Artists.name == "Jeff Rosenstock");
       return albumsBox.values.where((albums) => albums.artist == artist).toList();

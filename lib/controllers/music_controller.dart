@@ -10,6 +10,8 @@ import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/helpers/ioclient.dart';
 import 'package:jel_music/helpers/mappers.dart';
+import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
+import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/log.dart';
 import 'package:jel_music/models/stream.dart';
@@ -23,7 +25,7 @@ import '../hive/classes/songs.dart';
 
 
 
-class MusicController extends BaseAudioHandler with ChangeNotifier{
+class MusicController extends BaseAudioHandler with ChangeNotifier {
   final AudioPlayer _advancedPlayer = AudioPlayer(
     audioLoadConfiguration: const AudioLoadConfiguration(
       androidLoadControl: AndroidLoadControl(
@@ -36,11 +38,16 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
   final StreamController<Duration> _bufferController = BehaviorSubject();
   var logger = GetIt.instance<LogHandler>();
   Mappers mapper = Mappers();
+
   // StreamController<Duration> _bufferedDurationController = BehaviorSubject();
   SongsHelper songsHelper = SongsHelper();
+  ArtistsHelper artistsHelper = ArtistsHelper();
+  AlbumsHelper albumsHelper = AlbumsHelper();
   bool _isPlaying = false;
+
   // List<StreamModel> queue = [];
   int currentStreamIndex = 0;
+
   // bool get isPlaying => _isPlaying;
   bool? isPlaying;
   String? accessToken;
@@ -64,11 +71,13 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
   int currentIndexSource = 0;
   String lastUpdateSong = "";
   bool lastUpdateStatus = false;
-
+  List<MediaItem> artistMediaItemList = [];
+  List<MediaItem> albumsMediaItemList = [];
 
 //android auto menu
   @override
-  Future<List<MediaItem>> getChildren(String parentMediaId, [Map<String, dynamic>? options]) async {
+  Future<List<MediaItem>> getChildren(String parentMediaId,
+      [Map<String, dynamic>? options]) async {
     // This is where you define your menu structure
     switch (parentMediaId) {
       case AudioService.browsableRootId:
@@ -78,7 +87,17 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
             id: 'songs',
             title: 'Songs',
             playable: false,
-          )
+          ),
+          const MediaItem(
+            id: 'artists',
+            title: 'Artists',
+            playable: false,
+          ),
+         // const MediaItem(
+         //   id: 'albums',
+         //   title: 'Albums',
+         //   playable: false
+         // )
 
         ];
       case 'songs':
@@ -94,19 +113,27 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
             playable: true,
           ),
         ];
+      case 'artists':
+        return artistMediaItemList;
+      //case 'albums':
+      //  return albumsMediaItemList;
       default:
         return [];
     }
   }
 
+
   @override
   Future<void> playFromMediaId(String mediaId, [Map<String, dynamic>? extras]) async {
     // This method is likely to be called by Android Auto
     final mediaItem = await getMediaItem(mediaId);
-    if(mediaItem?.id == "liked_songs"){
+
+    if(mediaItem == null){
+      await playAllSongsFromArtist(mediaId);
+    }else if(mediaItem.id == "liked_songs"){
       logger.addToLog(LogModel(logType: "Error",logMessage: "Trying to play liked songs from Android Auto", logDateTime: DateTime.now()));
       await _autoPlay();
-    }else if(mediaItem?.id == "most_played"){
+    }else if(mediaItem.id == "most_played"){
       await mostPlayed();
     }
   }
@@ -454,9 +481,33 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
     currentSource = getCurrentSong();
 
     baseServerUrl = GetStorage().read('serverUrl') ?? "";
+    loadArtists();
 
+  }
 
+  loadArtists()async{
+    var artistList = artistsHelper.returnFavouriteArtistsByPlayCount();
+    for(var artist in artistList){
+      artistMediaItemList.add(MediaItem(id: 'artist',artist: artist.name, title: artist.name, artUri: Uri(path: artist.picture), playable: true));
+    }
+  }
 
+  loadAlbums()async{
+    var albumsList = albumsHelper.returnFavouriteAlbumsByPlayCount();
+    for(var album in albumsList){
+      albumsMediaItemList.add(MediaItem(id: 'album',artist: album.artist, title: album.name, artUri: Uri(path: album.picture), playable: true));
+    }
+  }
+
+  playSongsInAlbum(String artist, String album)async{
+    try{
+      await songsHelper.openBox();
+      var songs = songsHelper.returnSongsFromAlbum(artist, album);
+      List<StreamModel> streamModels = await mapper.convertHiveSongsToModelSongs(songs);
+      await addPlaylistToQueue(streamModels);
+    }catch(e){
+      logger.addToLog(LogModel(logType: "Error",logMessage: e.toString(), logDateTime: DateTime.now()));
+    }
   }
 
   playAllSongsFromArtist(String artist)async{
