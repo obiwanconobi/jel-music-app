@@ -2,9 +2,11 @@ import 'dart:io';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/songs_controller.dart';
+import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
+import 'package:jel_music/models/log.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -14,6 +16,7 @@ class DownloadController{
     SongsHelper songsHelper = SongsHelper();
     SyncHelper syncHelper = SyncHelper();
     Mappers mapper = Mappers();
+    LogHandler logger = LogHandler();
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
     var songs = <Songs>[];
     late SongsController songsController;
@@ -95,6 +98,8 @@ class DownloadController{
 
         }
     }
+    logger.addToLog(LogModel(logType: "Error", logDateTime: DateTime.now(), logMessage: "Download Sync Complete"));
+
   }
 
   _getSongsFromBox()async{

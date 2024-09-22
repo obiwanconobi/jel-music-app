@@ -105,7 +105,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
     switch (mediaItem.id) {
       case 'liked_songs':
         logger.addToLog(LogModel(logType: "Error",logMessage: "Trying to play liked songs from Android Auto", logDateTime: DateTime.now()));
-        await autoPlay();
+        await _autoPlay();
         break;
       case 'most_played':
         await mostPlayed();

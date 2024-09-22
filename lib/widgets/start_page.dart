@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/handlers/quick_actions_handler.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
 import 'package:jel_music/widgets/favourite_albums.dart';
@@ -23,16 +24,22 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> {
 
   SyncHelper syncHelper = SyncHelper();
+  DownloadController downloadsController = DownloadController();
   final QuickActionsHandler _quickActionsHandler = QuickActionsHandler();
 
   @override
   void initState() {
     super.initState();
     _quickActionsHandler.initialize(context);
-    syncHelper.runSync(false);
+    syncAsync();
     print("StartPage initialized");
     // You could also try forcing a rebuild here
     // WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+  }
+
+  syncAsync()async{
+    await syncHelper.runSync(false);
+    await downloadsController.syncDownloads();
   }
 
   @override

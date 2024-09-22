@@ -1,4 +1,5 @@
 import 'package:get_storage/get_storage.dart';
+import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/hive/classes/albums.dart';
@@ -158,7 +159,6 @@ class SyncHelper{
       }
 
       logger.addToLog(LogModel(logType: "Error", logMessage: "Sync Complete", logDateTime: DateTime.now()));
-
       await GetStorage().write('lastSync', DateTime.now().toString());
 
     }
