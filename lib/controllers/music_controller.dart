@@ -76,7 +76,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
         return [
           const MediaItem(
             id: 'songs',
-            title: 'songs',
+            title: 'Songs',
             playable: false,
           )
         ];
@@ -170,7 +170,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
 
     _audioHandler ??= await AudioService.init(
       builder: () => this,
-      config: const AudioServiceConfig(
+      config: AudioServiceConfig(
+          androidNotificationOngoing: true,
           androidStopForegroundOnPause: false,
           androidNotificationChannelName: "Playback",
           androidNotificationChannelId: "com.pansoft.panaudio.channel.audio"
