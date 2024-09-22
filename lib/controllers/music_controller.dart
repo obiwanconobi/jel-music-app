@@ -79,6 +79,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
             title: 'Songs',
             playable: false,
           )
+
         ];
       case 'songs':
         return [
@@ -95,6 +96,18 @@ class MusicController extends BaseAudioHandler with ChangeNotifier{
         ];
       default:
         return [];
+    }
+  }
+
+  @override
+  Future<void> playFromMediaId(String mediaId, [Map<String, dynamic>? extras]) async {
+    // This method is likely to be called by Android Auto
+    final mediaItem = await getMediaItem(mediaId);
+    if(mediaItem?.id == "liked_songs"){
+      logger.addToLog(LogModel(logType: "Error",logMessage: "Trying to play liked songs from Android Auto", logDateTime: DateTime.now()));
+      await _autoPlay();
+    }else if(mediaItem?.id == "most_played"){
+      await mostPlayed();
     }
   }
 
