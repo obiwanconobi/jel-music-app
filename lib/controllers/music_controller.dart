@@ -481,7 +481,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     currentSource = getCurrentSong();
 
     baseServerUrl = GetStorage().read('serverUrl') ?? "";
-    loadArtists();
+    await loadArtists();
 
   }
 
