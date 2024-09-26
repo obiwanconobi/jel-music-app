@@ -71,14 +71,14 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   int currentIndexSource = 0;
   String lastUpdateSong = "";
   bool lastUpdateStatus = false;
-  List<MediaItem> artistMediaItemList = [];
+  late List<MediaItem> artistMediaItemList;
   List<MediaItem> albumsMediaItemList = [];
 
 //android auto menu
   @override
   Future<List<MediaItem>> getChildren(String parentMediaId,
       [Map<String, dynamic>? options]) async {
-    await loadArtists();
+  //  await loadArtists();
     // This is where you define your menu structure
     switch (parentMediaId) {
       case AudioService.browsableRootId:
