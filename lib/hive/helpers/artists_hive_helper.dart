@@ -31,9 +31,14 @@ class ArtistsHelper{
   }
 
   List<Artists> returnFavouriteArtistsByPlayCount(){
-    var artists = artistBox.values.where((artists) => artists.favourite == true).toList();
-    artists.sort((a, b) => b.playCount.compareTo(a.playCount));
-    return artists;
+    try{
+      var artists = artistBox.values.where((artists) => artists.favourite == true).toList();
+      artists.sort((a, b) => b.playCount.compareTo(a.playCount));
+      return artists;
+    }catch(e){
+      return [];
+    }
+
   }
 
   updateFavouriteStatus(String artistId){

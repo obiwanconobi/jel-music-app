@@ -71,14 +71,14 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   int currentIndexSource = 0;
   String lastUpdateSong = "";
   bool lastUpdateStatus = false;
-  late List<MediaItem> artistMediaItemList;
+  List<MediaItem> artistMediaItemList = [];
   List<MediaItem> albumsMediaItemList = [];
 
 //android auto menu
   @override
   Future<List<MediaItem>> getChildren(String parentMediaId,
       [Map<String, dynamic>? options]) async {
-  //  await loadArtists();
+    loadArtists();
     // This is where you define your menu structure
     switch (parentMediaId) {
       case AudioService.browsableRootId:
@@ -482,17 +482,23 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     currentSource = getCurrentSong();
 
     baseServerUrl = GetStorage().read('serverUrl') ?? "";
-    await loadArtists();
+    loadArtists();
 
   }
 
   loadArtists()async{
-    logger.addToLog(LogModel(logType: "Error",logMessage: "Loading artists for android auto", logDateTime: DateTime.now()));
 
-    var artistList = artistsHelper.returnFavouriteArtistsByPlayCount();
-    for(var artist in artistList){
-      artistMediaItemList.add(MediaItem(id: 'artist',artist: artist.name, title: artist.name, artUri: Uri(path: artist.picture), playable: true));
-    }
+      await logger.addToLog(LogModel(logType: "Error",logMessage: "Loading artists for android auto", logDateTime: DateTime.now()));
+      await artistsHelper.openBox();
+      var artistList = artistsHelper.returnFavouriteArtistsByPlayCount();
+      artistMediaItemList.clear();
+      for(var artist in artistList){
+        artistMediaItemList.add(MediaItem(id: 'artist',artist: artist.name, title: artist.name, artUri: Uri(path: artist.picture), playable: true));
+      }
+      await logger.addToLog(LogModel(logType: "Error",logMessage: "Artist Count: ${artistMediaItemList.length}", logDateTime: DateTime.now()));
+
+
+
   }
 
   loadAlbums()async{
