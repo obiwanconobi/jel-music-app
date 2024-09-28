@@ -79,6 +79,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   Future<List<MediaItem>> getChildren(String parentMediaId,
       [Map<String, dynamic>? options]) async {
     loadArtists();
+    loadAlbums();
     // This is where you define your menu structure
     switch (parentMediaId) {
       case AudioService.browsableRootId:
@@ -141,7 +142,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       var idAlbumArtist = mediaId.split('|');
       if(idAlbumArtist[0] == 'artist'){
         logger.addToLog(LogModel(logType: "Error",logMessage: "Playing from else case", logDateTime: DateTime.now()));
-        await playAllSongsFromArtist(mediaItem.id);
+        await playAllSongsFromArtist(idAlbumArtist[1]);
       }else {
         //play album
         logger.addToLog(LogModel(logType: "Error",logMessage: "Playing album", logDateTime: DateTime.now()));
