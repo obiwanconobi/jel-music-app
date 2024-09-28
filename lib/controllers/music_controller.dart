@@ -94,11 +94,11 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
             title: 'Artists',
             playable: false,
           ),
-         // const MediaItem(
-         //   id: 'albums',
-         //   title: 'Albums',
-         //   playable: false
-         // )
+          const MediaItem(
+            id: 'albums',
+            title: 'Albums',
+            playable: false
+          )
 
         ];
       case 'songs':
@@ -116,8 +116,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
         ];
       case 'artists':
         return artistMediaItemList;
-      //case 'albums':
-      //  return albumsMediaItemList;
+      case 'albums':
+        return albumsMediaItemList;
       default:
         return [];
     }
@@ -138,8 +138,16 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     }else if(mediaItem.id == "most_played"){
       await mostPlayed();
     }else{
-      logger.addToLog(LogModel(logType: "Error",logMessage: "Playing from else case", logDateTime: DateTime.now()));
-      await playAllSongsFromArtist(mediaItem.id);
+      var idAlbumArtist = mediaId.split('|');
+      if(idAlbumArtist[0] == 'artist'){
+        logger.addToLog(LogModel(logType: "Error",logMessage: "Playing from else case", logDateTime: DateTime.now()));
+        await playAllSongsFromArtist(mediaItem.id);
+      }else {
+        //play album
+        logger.addToLog(LogModel(logType: "Error",logMessage: "Playing album", logDateTime: DateTime.now()));
+        await playSongsInAlbum(mediaItem.artist!, mediaItem.title!);
+      }
+
     }
   }
 
@@ -166,7 +174,13 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
           playable: true,
         );
       default:
-        return artistMediaItemList.where((element) => element.id == mediaId).singleOrNull;
+        var idAlbumArtist = mediaId.split('|');
+        if(idAlbumArtist[0] == 'artist'){
+          return artistMediaItemList.where((element) => element.id == idAlbumArtist[1]).singleOrNull;
+        }else if(idAlbumArtist[0] == 'album'){
+          return albumsMediaItemList.where((element) => element.artist == idAlbumArtist[1] && element.album == idAlbumArtist[2]).singleOrNull;
+        }
+        return null;
     }
   }
 
@@ -471,7 +485,6 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     currentSource = getCurrentSong();
 
     baseServerUrl = GetStorage().read('serverUrl') ?? "";
-    loadArtists();
 
   }
 
@@ -484,7 +497,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       artistMediaItemList.clear();
       for(var artist in artistList){
         var pictureUrl = "$baseServerUrl/Items/${artist.id}/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
-        artistMediaItemList.add(MediaItem(id: artist.name,title: artist.name, artUri: Uri(path: artist.picture), playable: true));
+        artistMediaItemList.add(MediaItem(id: 'artist|${artist.name}',title: artist.name, artUri: Uri(path: pictureUrl), playable: true));
       }
       await logger.addToLog(LogModel(logType: "Error",logMessage: "Artist Count: ${artistMediaItemList.length}", logDateTime: DateTime.now()));
 
@@ -493,9 +506,10 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   }
 
   loadAlbums()async{
+    await albumsHelper.openBox();
     var albumsList = albumsHelper.returnFavouriteAlbumsByPlayCount();
     for(var album in albumsList){
-      albumsMediaItemList.add(MediaItem(id: 'album',artist: album.artist, title: album.name, artUri: Uri(path: album.picture), playable: true));
+      albumsMediaItemList.add(MediaItem(id: 'album|${album.artist}|${album.name}',artist: album.artist, title: album.name, artUri: Uri(path: album.picture), playable: true));
     }
   }
 
