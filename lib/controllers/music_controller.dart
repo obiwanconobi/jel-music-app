@@ -130,27 +130,16 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     final mediaItem = await getMediaItem(mediaId);
 
     if(mediaItem == null){
+      logger.addToLog(LogModel(logType: "Error",logMessage: "Playing from null case", logDateTime: DateTime.now()));
       await playAllSongsFromArtist(mediaId);
     }else if(mediaItem.id == "liked_songs"){
       logger.addToLog(LogModel(logType: "Error",logMessage: "Trying to play liked songs from Android Auto", logDateTime: DateTime.now()));
       await _autoPlay();
     }else if(mediaItem.id == "most_played"){
       await mostPlayed();
-    }
-  }
-
-  @override
-  Future<void> playMediaItem(MediaItem mediaItem) async {
-    logger.addToLog(LogModel(logType: "Error",logMessage: "Inside playMediaItem method", logDateTime: DateTime.now()));
-
-    switch (mediaItem.id) {
-      case 'liked_songs':
-        logger.addToLog(LogModel(logType: "Error",logMessage: "Trying to play liked songs from Android Auto", logDateTime: DateTime.now()));
-        await _autoPlay();
-        break;
-      case 'most_played':
-        await mostPlayed();
-        break;
+    }else{
+      logger.addToLog(LogModel(logType: "Error",logMessage: "Playing from else case", logDateTime: DateTime.now()));
+      await playAllSongsFromArtist(mediaItem.id);
     }
   }
 
@@ -177,7 +166,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
           playable: true,
         );
       default:
-        return null;
+        return artistMediaItemList.where((element) => element.id == mediaId).singleOrNull;
     }
   }
 
@@ -491,9 +480,11 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       await logger.addToLog(LogModel(logType: "Error",logMessage: "Loading artists for android auto", logDateTime: DateTime.now()));
       await artistsHelper.openBox();
       var artistList = artistsHelper.returnFavouriteArtistsByPlayCount();
+
       artistMediaItemList.clear();
       for(var artist in artistList){
-        artistMediaItemList.add(MediaItem(id: 'artist',artist: artist.name, title: artist.name, artUri: Uri(path: artist.picture), playable: true));
+        var pictureUrl = "$baseServerUrl/Items/${artist.id}/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+        artistMediaItemList.add(MediaItem(id: artist.name,title: artist.name, artUri: Uri(path: artist.picture), playable: true));
       }
       await logger.addToLog(LogModel(logType: "Error",logMessage: "Artist Count: ${artistMediaItemList.length}", logDateTime: DateTime.now()));
 
@@ -520,6 +511,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   }
 
   playAllSongsFromArtist(String artist)async{
+    logger.addToLog(LogModel(logType: "Error",logMessage:"Trying to play Artist from android auto: $artist}", logDateTime: DateTime.now()));
+
     try{
       await songsHelper.openBox();
       var songs = songsHelper.returnSongsForArtist(artist);
