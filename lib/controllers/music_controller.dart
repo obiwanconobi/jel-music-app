@@ -125,14 +125,22 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   }
 
 
+
   @override
   Future<void> playFromMediaId(String mediaId, [Map<String, dynamic>? extras]) async {
     // This method is likely to be called by Android Auto
     final mediaItem = await getMediaItem(mediaId);
 
     if(mediaItem == null){
-      logger.addToLog(LogModel(logType: "Error",logMessage: "Playing from null case", logDateTime: DateTime.now()));
-      await playAllSongsFromArtist(mediaId);
+      var idAlbumArtist = mediaId.split('|');
+      if(idAlbumArtist[0] == "artist"){
+        logger.addToLog(LogModel(logType: "Error",logMessage: "Playing from else case", logDateTime: DateTime.now()));
+        await playAllSongsFromArtist(idAlbumArtist[1]);
+      }else {
+        //play album
+        logger.addToLog(LogModel(logType: "Error",logMessage: "Playing album", logDateTime: DateTime.now()));
+        await playSongsInAlbum(idAlbumArtist[1], idAlbumArtist[2]);
+      }
     }else if(mediaItem.id == "liked_songs"){
       logger.addToLog(LogModel(logType: "Error",logMessage: "Trying to play liked songs from Android Auto", logDateTime: DateTime.now()));
       await _autoPlay();
@@ -140,13 +148,13 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       await mostPlayed();
     }else{
       var idAlbumArtist = mediaId.split('|');
-      if(idAlbumArtist[0] == 'artist'){
+      if(idAlbumArtist[0] == "artist"){
         logger.addToLog(LogModel(logType: "Error",logMessage: "Playing from else case", logDateTime: DateTime.now()));
-        await playAllSongsFromArtist(idAlbumArtist[1]);
+        await playAllSongsFromArtist(mediaItem.artist!);
       }else {
         //play album
         logger.addToLog(LogModel(logType: "Error",logMessage: "Playing album", logDateTime: DateTime.now()));
-        await playSongsInAlbum(mediaItem.artist!, mediaItem.title!);
+        await playSongsInAlbum(mediaItem.artist!, mediaItem.title);
       }
 
     }
@@ -177,9 +185,9 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       default:
         var idAlbumArtist = mediaId.split('|');
         if(idAlbumArtist[0] == 'artist'){
-          return artistMediaItemList.where((element) => element.id == idAlbumArtist[1]).singleOrNull;
+          return artistMediaItemList.where((element) => element.id == mediaId).singleOrNull;
         }else if(idAlbumArtist[0] == 'album'){
-          return albumsMediaItemList.where((element) => element.artist == idAlbumArtist[1] && element.album == idAlbumArtist[2]).singleOrNull;
+          return albumsMediaItemList.where((element) => element.id == mediaId).singleOrNull;
         }
         return null;
     }
@@ -515,6 +523,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   }
 
   playSongsInAlbum(String artist, String album)async{
+    logger.addToLog(LogModel(logType: "Error",logMessage:"Trying to play album from android auto: $album for $artist}", logDateTime: DateTime.now()));
+
     try{
       await songsHelper.openBox();
       var songs = songsHelper.returnSongsFromAlbum(artist, album);
