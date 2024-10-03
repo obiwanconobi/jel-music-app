@@ -134,7 +134,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     if(mediaItem == null){
       var idAlbumArtist = mediaId.split('|');
       if(idAlbumArtist[0] == "artist"){
-        logger.addToLog(LogModel(logType: "Error",logMessage: "Playing from else case", logDateTime: DateTime.now()));
+        logger.addToLog(LogModel(logType: "Error",logMessage: "Playing from else case. artist: ${idAlbumArtist[1]}", logDateTime: DateTime.now()));
         await playAllSongsFromArtist(idAlbumArtist[1]);
       }else {
         //play album
@@ -183,11 +183,14 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
           playable: true,
         );
       default:
-        var idAlbumArtist = mediaId.split('|');
-        if(idAlbumArtist[0] == 'artist'){
-          return artistMediaItemList.where((element) => element.id == mediaId).singleOrNull;
-        }else if(idAlbumArtist[0] == 'album'){
-          return albumsMediaItemList.where((element) => element.id == mediaId).singleOrNull;
+         var idAlbumArtist = mediaId.split('|');
+         logger.addToLog(LogModel(logType: "Error",logMessage: "Getting MediaItem: $mediaId", logDateTime: DateTime.now()));
+         if(idAlbumArtist[0] == "artist"){
+           logger.addToLog(LogModel(logType: "Error",logMessage: "Media Item: ${idAlbumArtist[1]}", logDateTime: DateTime.now()));
+           return artistMediaItemList.where((element) => element.id == mediaId).singleOrNull;
+        }else if(idAlbumArtist[0] == "album"){
+           logger.addToLog(LogModel(logType: "Error",logMessage: "Media Item: ${idAlbumArtist[1]} - ${idAlbumArtist[2]}", logDateTime: DateTime.now()));
+           return albumsMediaItemList.where((element) => element.id == mediaId).singleOrNull;
         }
         return null;
     }
