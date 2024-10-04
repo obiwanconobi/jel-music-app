@@ -127,14 +127,14 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
 
   @override
-  Future<void> playFromMediaId(String mediaId, [Map<String, dynamic>? extras]) async {
+    Future<void> playFromMediaId(String mediaId, [Map<String, dynamic>? extras]) async {
     // This method is likely to be called by Android Auto
     final mediaItem = await getMediaItem(mediaId);
 
     if(mediaItem == null){
       var idAlbumArtist = mediaId.split('|');
       if(idAlbumArtist[0] == "artist"){
-        logger.addToLog(LogModel(logType: "Error",logMessage: "Playing from else case. artist: ${idAlbumArtist[1]}", logDateTime: DateTime.now()));
+        logger.addToLog(LogModel(logType: "Error",logMessage: "Playing from null case. artist: ${idAlbumArtist[1]}", logDateTime: DateTime.now()));
         await playAllSongsFromArtist(idAlbumArtist[1]);
       }else {
         //play album
@@ -149,8 +149,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     }else{
       var idAlbumArtist = mediaId.split('|');
       if(idAlbumArtist[0] == "artist"){
-        logger.addToLog(LogModel(logType: "Error",logMessage: "Playing from else case", logDateTime: DateTime.now()));
-        await playAllSongsFromArtist(mediaItem.artist!);
+        logger.addToLog(LogModel(logType: "Error",logMessage: "Playing from else case. artist: ${mediaItem.artist}", logDateTime: DateTime.now()));
+        await playAllSongsFromArtist(idAlbumArtist[1]);
       }else {
         //play album
         logger.addToLog(LogModel(logType: "Error",logMessage: "Playing album", logDateTime: DateTime.now()));
@@ -186,10 +186,10 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
          var idAlbumArtist = mediaId.split('|');
          logger.addToLog(LogModel(logType: "Error",logMessage: "Getting MediaItem: $mediaId", logDateTime: DateTime.now()));
          if(idAlbumArtist[0] == "artist"){
-           logger.addToLog(LogModel(logType: "Error",logMessage: "Media Item: ${idAlbumArtist[1]}", logDateTime: DateTime.now()));
+           logger.addToLog(LogModel(logType: "Error",logMessage: "Artist Media Item: ${idAlbumArtist[1]}", logDateTime: DateTime.now()));
            return artistMediaItemList.where((element) => element.id == mediaId).singleOrNull;
         }else if(idAlbumArtist[0] == "album"){
-           logger.addToLog(LogModel(logType: "Error",logMessage: "Media Item: ${idAlbumArtist[1]} - ${idAlbumArtist[2]}", logDateTime: DateTime.now()));
+           logger.addToLog(LogModel(logType: "Error",logMessage: "Album Media Item: ${idAlbumArtist[1]} - ${idAlbumArtist[2]}", logDateTime: DateTime.now()));
            return albumsMediaItemList.where((element) => element.id == mediaId).singleOrNull;
         }
         return null;
