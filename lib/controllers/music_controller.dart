@@ -519,6 +519,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
   loadAlbums()async{
     await albumsHelper.openBox();
+    albumsMediaItemList.clear();
     var albumsList = albumsHelper.returnFavouriteAlbumsByPlayCount();
     for(var album in albumsList){
       albumsMediaItemList.add(MediaItem(id: 'album|${album.artist}|${album.name}',artist: album.artist, title: album.name, artUri: Uri(path: album.picture), playable: true));
