@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:jel_music/controllers/playlist_controller.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/helpers/ioclient.dart';
@@ -36,6 +37,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   );
   final StreamController<Duration> _durationController = BehaviorSubject();
   final StreamController<Duration> _bufferController = BehaviorSubject();
+
   var logger = GetIt.instance<LogHandler>();
   Mappers mapper = Mappers();
 
@@ -43,6 +45,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   SongsHelper songsHelper = SongsHelper();
   ArtistsHelper artistsHelper = ArtistsHelper();
   AlbumsHelper albumsHelper = AlbumsHelper();
+  PlaylistController playlistController = PlaylistController();
   bool _isPlaying = false;
 
   // List<StreamModel> queue = [];
@@ -73,6 +76,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   bool lastUpdateStatus = false;
   List<MediaItem> artistMediaItemList = [];
   List<MediaItem> albumsMediaItemList = [];
+  List<MediaItem> playlistMediaItemList = [];
 
 //android auto menu
   @override
@@ -80,6 +84,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       [Map<String, dynamic>? options]) async {
     loadArtists();
     loadAlbums();
+    loadPlaylists();
     // This is where you define your menu structure
     switch (parentMediaId) {
       case AudioService.browsableRootId:
@@ -96,25 +101,14 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
             playable: false,
           ),
           const MediaItem(
-            id: 'albums',
-            title: 'Albums',
-            playable: false
+              id: 'albums',
+              title: 'Albums',
+              playable: false
           )
 
         ];
       case 'songs':
-        return [
-          const MediaItem(
-            id: 'liked_songs',
-            title: 'Liked Songs',
-            playable: true,
-          ),
-          const MediaItem(
-            id: 'most_played',
-            title: 'Most Played',
-            playable: true,
-          ),
-        ];
+        return playlistMediaItemList;
       case 'artists':
         return artistMediaItemList;
       case 'albums':
@@ -127,7 +121,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
 
   @override
-    Future<void> playFromMediaId(String mediaId, [Map<String, dynamic>? extras]) async {
+  Future<void> playFromMediaId(String mediaId, [Map<String, dynamic>? extras]) async {
     // This method is likely to be called by Android Auto
     final mediaItem = await getMediaItem(mediaId);
 
@@ -144,8 +138,14 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     }else if(mediaItem.id == "liked_songs"){
       logger.addToLog(LogModel(logType: "Error",logMessage: "Trying to play liked songs from Android Auto", logDateTime: DateTime.now()));
       await _autoPlay();
-    }else if(mediaItem.id == "most_played"){
+    }else if(mediaItem.id == "most_played") {
       await mostPlayed();
+    }else if (mediaItem.id == "playlist") {
+      //play playlist
+      logger.addToLog(LogModel(logType: "Error",logMessage: "Trying to play Playlist. Playlist Id To be played: ${mediaItem.title}", logDateTime: DateTime.now()));
+      //get playlist songs
+
+      //play songs
     }else{
       var idAlbumArtist = mediaId.split('|');
       if(idAlbumArtist[0] == "artist"){
@@ -183,14 +183,18 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
           playable: true,
         );
       default:
-         var idAlbumArtist = mediaId.split('|');
-         logger.addToLog(LogModel(logType: "Error",logMessage: "Getting MediaItem: $mediaId", logDateTime: DateTime.now()));
-         if(idAlbumArtist[0] == "artist"){
-           logger.addToLog(LogModel(logType: "Error",logMessage: "Artist Media Item: ${idAlbumArtist[1]}", logDateTime: DateTime.now()));
-           return artistMediaItemList.where((element) => element.id == mediaId).singleOrNull;
+        var idAlbumArtist = mediaId.split('|');
+        logger.addToLog(LogModel(logType: "Error",logMessage: "Getting MediaItem: $mediaId", logDateTime: DateTime.now()));
+        if(idAlbumArtist[0] == "artist"){
+          logger.addToLog(LogModel(logType: "Error",logMessage: "Artist Media Item: ${idAlbumArtist[1]}", logDateTime: DateTime.now()));
+          return artistMediaItemList.where((element) => element.id == mediaId).singleOrNull;
         }else if(idAlbumArtist[0] == "album"){
-           logger.addToLog(LogModel(logType: "Error",logMessage: "Album Media Item: ${idAlbumArtist[1]} - ${idAlbumArtist[2]}", logDateTime: DateTime.now()));
-           return albumsMediaItemList.where((element) => element.id == mediaId).singleOrNull;
+          logger.addToLog(LogModel(logType: "Error",logMessage: "Album Media Item: ${idAlbumArtist[1]} - ${idAlbumArtist[2]}", logDateTime: DateTime.now()));
+          return albumsMediaItemList.where((element) => element.id == mediaId).singleOrNull;
+        }else if(idAlbumArtist[0] == "playlist"){
+          //get playlist Id
+          logger.addToLog(LogModel(logType: "Error",logMessage: "Trying to get Playlist. Playlist Id To be got: ${idAlbumArtist[1]}", logDateTime: DateTime.now()));
+          return MediaItem(id: 'playlist', title: idAlbumArtist[1]);
         }
         return null;
     }
@@ -497,23 +501,47 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     currentSource = getCurrentSong();
 
     baseServerUrl = GetStorage().read('serverUrl') ?? "";
-
+    await loadArtists();
   }
 
   loadArtists()async{
 
-      await logger.addToLog(LogModel(logType: "Error",logMessage: "Loading artists for android auto", logDateTime: DateTime.now()));
-      await artistsHelper.openBox();
-      var artistList = artistsHelper.returnFavouriteArtistsByPlayCount();
+    await logger.addToLog(LogModel(logType: "Error",logMessage: "Loading artists for android auto", logDateTime: DateTime.now()));
+    await artistsHelper.openBox();
+    var artistList = artistsHelper.returnFavouriteArtistsByPlayCount();
 
-      artistMediaItemList.clear();
-      for(var artist in artistList){
-        var pictureUrl = "$baseServerUrl/Items/${artist.id}/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
-        artistMediaItemList.add(MediaItem(id: 'artist|${artist.name}',title: artist.name, artUri: Uri(path: pictureUrl), playable: true));
-      }
-      await logger.addToLog(LogModel(logType: "Error",logMessage: "Artist Count: ${artistMediaItemList.length}", logDateTime: DateTime.now()));
+    artistMediaItemList.clear();
+    for(var artist in artistList){
+      var pictureUri = Uri.parse("$baseServerUrl/Items/${artist.id}/Images/Primary?fillHeight=480&fillWidth=480&quality=96");
+      artistMediaItemList.add(MediaItem(id: 'artist|${artist.name}',title: artist.name, artUri: pictureUri, playable: true));
+    }
+    await logger.addToLog(LogModel(logType: "Error",logMessage: "Artist Count: ${artistMediaItemList.length}", logDateTime: DateTime.now()));
 
+  }
 
+  loadPlaylists()async{
+    playlistMediaItemList.clear();
+    playlistMediaItemList.add(
+        const MediaItem(
+          id: 'liked_songs',
+          title: 'Liked Songs',
+          playable: true,
+        ));
+
+    playlistMediaItemList.add(
+        const MediaItem(
+          id: 'most_played',
+          title: 'Most Played',
+          playable: true,
+        ));
+
+    List<MediaItem> playlistList = [];
+    var playlists = await playlistController.onInit();
+    for(var playlist in playlists){
+      playlistList.add(MediaItem(id: "playlist|${playlist.id}", title: playlist.title!));
+    }
+
+    playlistMediaItemList.addAll(playlistList);
 
   }
 
@@ -522,7 +550,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     albumsMediaItemList.clear();
     var albumsList = albumsHelper.returnFavouriteAlbumsByPlayCount();
     for(var album in albumsList){
-      albumsMediaItemList.add(MediaItem(id: 'album|${album.artist}|${album.name}',artist: album.artist, title: album.name, artUri: Uri(path: album.picture), playable: true));
+      albumsMediaItemList.add(MediaItem(id: 'album|${album.artist}|${album.name}',artist: album.artist, title: album.name, artUri: Uri.parse(album.picture), playable: true));
     }
   }
 

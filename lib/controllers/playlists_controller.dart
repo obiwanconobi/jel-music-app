@@ -29,4 +29,17 @@ class PlaylistsController{
     }
   }
 
+  Future<List<Playlists>> getPlaylists()async{
+    try {
+      // await artistHelper.openBox();
+      clearList();
+
+      playlistsList = await jellyfinHandler.returnPlaylists();
+      return playlistsList;
+    } catch (error) {
+      // Handle errors if needed
+      rethrow;
+    }
+  }
+
 }

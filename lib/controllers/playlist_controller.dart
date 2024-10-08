@@ -27,6 +27,17 @@ class PlaylistController{
     }
   }
 
+  Future<List<Songs>> getPlaylistData(String playlistId)async{
+    try {
+      clearList();
+      playlistList = await jellyfinHandler.returnSongsFromPlaylist(playlistId);
+      return playlistList;
+    } catch (error) {
+      // Handle errors if needed
+      rethrow;
+    }
+  }
+
   Future<void> deleteSongFromPlaylist(String songId, String playlistId)async{
     await jellyfinHandler.deleteSongFromPlaylist(songId, playlistId);
   }
