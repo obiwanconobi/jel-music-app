@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/playlist_controller.dart';
+import 'package:jel_music/controllers/playlists_controller.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/helpers/ioclient.dart';
@@ -45,7 +46,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   SongsHelper songsHelper = SongsHelper();
   ArtistsHelper artistsHelper = ArtistsHelper();
   AlbumsHelper albumsHelper = AlbumsHelper();
-  PlaylistController playlistController = PlaylistController();
+  PlaylistsController playlistController = PlaylistsController();
   bool _isPlaying = false;
 
   // List<StreamModel> queue = [];
@@ -104,7 +105,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
               id: 'albums',
               title: 'Albums',
               playable: false
-          )
+          ),
 
         ];
       case 'songs':
@@ -502,6 +503,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
     baseServerUrl = GetStorage().read('serverUrl') ?? "";
     await loadArtists();
+    await loadPlaylists();
   }
 
   loadArtists()async{
@@ -536,12 +538,17 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
         ));
 
     List<MediaItem> playlistList = [];
-    var playlists = await playlistController.onInit();
-    for(var playlist in playlists){
-      playlistList.add(MediaItem(id: "playlist|${playlist.id}", title: playlist.title!));
+    try{
+      var playlists = await playlistController.onInit();
+      for(var playlist in playlists){
+        playlistList.add(MediaItem(id: "playlist|${playlist.id}", title: playlist.name!));
+      }
+
+      playlistMediaItemList.addAll(playlistList);
+    }catch(e){
+      print(e);
     }
 
-    playlistMediaItemList.addAll(playlistList);
 
   }
 
