@@ -81,7 +81,8 @@ class SongsController {
     List<Songs> songsList = [];
     for(var song in songsRaw){
       String songId = song.albumId;
-      var imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+    //  var imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+      var imgUrl = "$baseServerUrl/api/albumArt?albumId=${song.albumId}";
 
       songsList.add(Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,
           artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length,

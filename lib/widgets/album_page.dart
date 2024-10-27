@@ -35,7 +35,7 @@ class _AlbumPageState extends State<AlbumPage> {
     controller.artistId = artistIds;
     albumsFuture = controller.onInit();
     artistInfo = controller.getArtistInfo();
-    
+
   }
 
 

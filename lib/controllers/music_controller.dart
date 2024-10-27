@@ -502,8 +502,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     currentSource = getCurrentSong();
 
     baseServerUrl = GetStorage().read('serverUrl') ?? "";
-    await loadArtists();
-    await loadPlaylists();
+    await loadAlbums();
   }
 
   loadArtists()async{
@@ -612,6 +611,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       //return "$baseServerUrl/Audio/$id";
     }else if (serverType == "Subsonic"){
       return "$baseServerUrl/rest/download?id=$id";
+    }else if(serverType == "PanAudio"){
+      return "$baseServerUrl/api/audio-stream?songId=$id";
     }
   }
 
@@ -1030,13 +1031,15 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
             "downloaded": stream.downloaded,
 
           },
-          duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
+
+          duration: Duration(seconds: int.parse(stream.long!)),
+          //duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
           artUri: Uri.parse(pictureUrl),
 
         ),);
 
       sourceList.add(source);
-
+//duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
     }
     playlist.addAll(sourceList);
     _advancedPlayer.setAudioSource(playlist, initialIndex: index, initialPosition: Duration.zero);

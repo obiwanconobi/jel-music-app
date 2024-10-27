@@ -103,7 +103,7 @@ class SongsHelper{
     await Hive.close();
   }
 
-  returnSongs()async{
+  Future<List<Songs>> returnSongs()async{
     return songsBox.values.toList();
   }
 

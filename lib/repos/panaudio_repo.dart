@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 class PanaudioRepo{
@@ -7,7 +8,21 @@ class PanaudioRepo{
   String baseServerUrl = "";
 
 
+  getAlbumById(String albumId)async{
+    baseServerUrl = await GetStorage().read('serverUrl');
+    try {
+      String url = "$baseServerUrl/api/songs";
+      http.Response res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   getSongsDataRaw() async{
+    baseServerUrl = await GetStorage().read('serverUrl');
    // var userId = await GetStorage().read('userId');
   //  var uuid = await androidId.getDeviceId();
  //   String deviceId = "PanAudio_${uuid}";

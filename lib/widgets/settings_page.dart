@@ -10,6 +10,7 @@ import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
+import 'package:jel_music/hive/helpers/panaudio_sync_helper.dart';
 import 'package:jel_music/hive/helpers/subsonic_sync_helper.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
 import 'package:jel_music/models/log.dart';
@@ -39,6 +40,7 @@ class _MyWidgetState extends State<SettingsPage> {
   AlbumsHelper albumsHelper = AlbumsHelper();
   SyncHelper syncHelper = SyncHelper();
   SubsonicSyncHelper subsonicSyncHelper = SubsonicSyncHelper();
+  PanaudioSyncHelper panaudioSyncHelper = PanaudioSyncHelper();
   //ApiController apiController = ApiController();
   var apiController = GetIt.instance<ApiController>();
   ArtistsHelper helper = ArtistsHelper();
@@ -129,6 +131,8 @@ class _MyWidgetState extends State<SettingsPage> {
    await syncHelper.runSync(true);
   }else if (_selectedOption == "Subsonic"){
    await subsonicSyncHelper.runSync();
+  }else if(_selectedOption == "PanAudio"){
+    await panaudioSyncHelper.runSync(true);
   }
 
   }
@@ -207,7 +211,7 @@ class _MyWidgetState extends State<SettingsPage> {
                 DropdownButton<String>(
                 value: _selectedOption,
                 onChanged: (String? newValue) {
-                  if (newValue != null && newValue != 'PanAudio') {
+                  if (newValue != null) {
                     setState(() {
                       _selectedOption = newValue;
                       writeServerType(newValue);
@@ -226,7 +230,6 @@ class _MyWidgetState extends State<SettingsPage> {
                   DropdownMenuItem<String>(
                     value: 'PanAudio',
                     child: Text('PanAudio'),
-                    enabled: false,
                   ),
                 ],
               ),

@@ -16,4 +16,8 @@ class PanaudioHandler{
     return await repo.getSongsDataRaw();
     //return await mapper.mapListSongsFromRaw(songsRaw);
   }
+
+  returnArtist()async{
+
+  }
 }
