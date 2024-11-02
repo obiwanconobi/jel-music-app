@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
+import 'package:jel_music/handlers/panaudio_handler.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/models/album.dart';
@@ -15,12 +16,18 @@ class LatestAlbumsController {
     AlbumsHelper albumHelper = AlbumsHelper();
     //JellyfinHandler jellyfinHandler = JellyfinHandler();
      var jellyfinHandler = GetIt.instance<JellyfinHandler>();
-
+      var panaudioHandler = GetIt.instance<PanaudioHandler>();
 
      Future<List<Album>> onInit() async {
+      var serverType = GetStorage().read('ServerType');
     try {
      // await albumHelper.openBox();
-      albums = await jellyfinHandler.returnLatestAlbums();
+      if(serverType == "Jellyfin"){
+        albums = await jellyfinHandler.returnLatestAlbums();
+      }else if(serverType == "PanAudio"){
+        albums = await panaudioHandler.returnLatestAlbums();
+      }
+
       return albums;
     } catch (error) {
       rethrow; // Rethrow the error if necessary

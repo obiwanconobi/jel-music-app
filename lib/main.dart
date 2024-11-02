@@ -19,6 +19,7 @@ import 'package:jel_music/controllers/playlists_controller.dart';
 import 'package:jel_music/controllers/songs_controller.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
+import 'package:jel_music/handlers/panaudio_handler.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/hive/classes/log.dart';
@@ -52,6 +53,7 @@ Future<void> main() async{
 
    //Handlers
   GetIt.I.registerSingleton<JellyfinHandler>(JellyfinHandler());
+  GetIt.I.registerSingleton<PanaudioHandler>(PanaudioHandler());
   GetIt.I.registerSingleton<LogHandler>(LogHandler());
 
   GetIt.I.registerSingleton<ApiController>(ApiController());

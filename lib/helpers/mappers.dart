@@ -1,5 +1,6 @@
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/helpers/conversions.dart';
+import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
@@ -8,6 +9,21 @@ class Mappers{
 
     Conversions conversions = Conversions();
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+
+
+    Future<List<Album>> mapAlbumFromRawPA(dynamic albums)async{
+       List<Album> albumsList = [];
+      for(var album in albums){
+        String albumId = album["id"];
+        String picture =  "$baseServerUrl/api/albumArt?albumId=$albumId";
+
+        //  Albums? albumGot = albumHelper.returnAlbum(artist, title);
+    //    var imgUrl = "$baseServerUrl/Items/$albumId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+        albumsList.add(Album(id: album["id"], title: album["title"],artist: album["artist"], year: album["year"] ?? 1900, picture: picture));
+
+      }
+      return albumsList;
+    }
 
   StreamModel returnStreamModel(Songs song){
     return StreamModel(id: song.id, composer: song.artist, music: song.id, picture: song.albumPicture, title: song.title, long: song.length, isFavourite: song.favourite, discNumber: song.discNumber, downloaded: song.downloaded, codec: song.codec, bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate);
