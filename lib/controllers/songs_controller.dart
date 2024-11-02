@@ -18,10 +18,14 @@ class SongsController {
     AlbumsHelper albumHelper = AlbumsHelper();
     ApiHelper apiHelper = ApiHelper();
     final int currentArtistIndex = 0;
-    String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+    String baseServerUrl = "";
     JellyfinHandler jellyfinHandler = GetIt.instance<JellyfinHandler>();
+    String serverType = "";
   Future<List<Songs>> onInit() async{
+
     try {
+      baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+      serverType = GetStorage().read('ServerType') ?? "ERROR";
      // songs = await fetchSongs(albumId!);
      songs = await _getSongsFromBox(artistId!, albumId!);
       return songs;
@@ -81,8 +85,13 @@ class SongsController {
     List<Songs> songsList = [];
     for(var song in songsRaw){
       String songId = song.albumId;
-    //  var imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
-      var imgUrl = "$baseServerUrl/api/albumArt?albumId=${song.albumId}";
+      String imgUrl = "";
+      if(serverType == "Jellyfin"){
+        imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+      }else if (serverType == "PanAudio"){
+         imgUrl = "$baseServerUrl/api/albumArt?albumId=${song.albumId}";
+      }
+
 
       songsList.add(Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,
           artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length,

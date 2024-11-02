@@ -1032,8 +1032,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
           },
 
-          duration: Duration(seconds: int.parse(stream.long!)),
-          //duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
+        //  duration: Duration(seconds: int.parse(stream.long!)),
+          duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
           artUri: Uri.parse(pictureUrl),
 
         ),);

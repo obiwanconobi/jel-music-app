@@ -9,12 +9,13 @@ class AllAlbumsController {
     String? artistId;
     bool? favouriteVal;
     final int currentArtistIndex = 0;
-    String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+    String baseServerUrl = "";
     AlbumsHelper albumHelper = AlbumsHelper();
 
 
      Future<List<Album>> onInit() async {
     try {
+      baseServerUrl = GetStorage().read('serverUrl');
       await albumHelper.openBox();
       albums = _getAlbumsFromBox(favouriteVal ?? false);
       return albums;

@@ -18,7 +18,7 @@ class AlbumController {
     String? albumId;
     late Artists artistInfo = Artists();
     ApiHelper apiHelper = ApiHelper();
-    String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+    String baseServerUrl = "";
    // ApiController apiController = ApiController();
     var apiController = GetIt.instance<ApiController>();
     AlbumsHelper albumHelper = AlbumsHelper();
@@ -27,6 +27,7 @@ class AlbumController {
 
      Future<List<Album>> onInit() async {
     try {
+      baseServerUrl = GetStorage().read('serverUrl');
       await getArtistInfo();
       await albumHelper.openBox();
       albums =  _getAlbumsFromBox(artistId!);
