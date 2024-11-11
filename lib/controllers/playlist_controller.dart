@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/models/songs.dart';
 
@@ -6,9 +8,10 @@ class PlaylistController{
 
   var playlistList = <Songs>[];
   String playlistId = "";
-  late JellyfinHandler jellyfinHandler;
+  var serverType = GetStorage().read('ServerType');
+  late IHandler handler;
   PlaylistController(){
-      jellyfinHandler = GetIt.instance<JellyfinHandler>();
+      handler = GetIt.instance<IHandler>(instanceName: serverType);
   }
 
 
@@ -19,7 +22,7 @@ class PlaylistController{
   Future<List<Songs>> onInit() async {
     try {
       clearList();
-      playlistList = await jellyfinHandler.returnSongsFromPlaylist(playlistId);
+      playlistList = await handler.returnSongsFromPlaylist(playlistId);
       return playlistList;
     } catch (error) {
       // Handle errors if needed
@@ -30,7 +33,7 @@ class PlaylistController{
   Future<List<Songs>> getPlaylistData(String playlistId)async{
     try {
       clearList();
-      playlistList = await jellyfinHandler.returnSongsFromPlaylist(playlistId);
+      playlistList = await handler.returnSongsFromPlaylist(playlistId);
       return playlistList;
     } catch (error) {
       // Handle errors if needed
@@ -39,7 +42,7 @@ class PlaylistController{
   }
 
   Future<void> deleteSongFromPlaylist(String songId, String playlistId)async{
-    await jellyfinHandler.deleteSongFromPlaylist(songId, playlistId);
+    await handler.deleteSongFromPlaylist(songId, playlistId);
   }
 
 }

@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/hive/classes/artists.dart';
@@ -7,7 +8,7 @@ import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/repos/jellyfin_repo.dart';
 
-class JellyfinHandler{
+class JellyfinHandler implements IHandler{
 
   late JellyfinRepo jellyfinRepo = GetIt.instance<JellyfinRepo>();
   Conversions conversions = Conversions();
@@ -26,11 +27,13 @@ class JellyfinHandler{
   }
 
 
+  @override
   Future<List<Album>>  returnLatestAlbums()async{
     var albumsRaw =  await jellyfinRepo.getLatestAlbums();
     return await mapper.mapAlbumFromRaw(albumsRaw);
   }
 
+  @override
   Future<List<Artists>> fetchArtists()async{
 
       var artistRaw = await jellyfinRepo.getArtistData();
@@ -48,6 +51,7 @@ class JellyfinHandler{
       return artistList;
   }
 
+  @override
   returnSongs()async{
     return await jellyfinRepo.getSongsDataRaw();
     //return await mapper.mapListSongsFromRaw(songsRaw);
@@ -63,12 +67,14 @@ class JellyfinHandler{
     return playlistList;
   }
 
+  @override
   Future<List<Songs>> returnSongsFromPlaylist(String playlistId)async{
     var songsRaw = await jellyfinRepo.getPlaylistSongs(playlistId);
     var mappedSongs = await mapper.mapSongFromRaw(songsRaw["Items"]);
     return mappedSongs;
   }
 
+  @override
   addSongToPlaylist(String songId, String playlistId)async{
     await jellyfinRepo.addSongToPlaylist(songId, playlistId);
   }

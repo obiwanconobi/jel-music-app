@@ -17,6 +17,7 @@ import 'package:jel_music/controllers/most_played_songs_controller.dart';
 import 'package:jel_music/controllers/playlist_controller.dart';
 import 'package:jel_music/controllers/playlists_controller.dart';
 import 'package:jel_music/controllers/songs_controller.dart';
+import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/handlers/panaudio_handler.dart';
@@ -32,6 +33,7 @@ import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/repos/jellyfin_repo.dart';
 import 'package:jel_music/repos/panaudio_repo.dart';
 import 'package:jel_music/repos/subsonic_repo.dart';
+import 'package:jel_music/startup.dart';
 import 'package:sizer/sizer.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:quick_actions/quick_actions.dart';
@@ -52,14 +54,28 @@ Future<void> main() async{
   GetIt.I.registerSingleton<SyncHelper>(SyncHelper());
   GetIt.I.registerSingleton<PanaudioSyncHelper>(PanaudioSyncHelper());
 
+
+
    //Repos
-  GetIt.I.registerSingleton<JellyfinRepo>(JellyfinRepo());
-  GetIt.I.registerSingleton<SubsonicRepo>(SubsonicRepo());
   GetIt.I.registerSingleton<PanaudioRepo>(PanaudioRepo());
+  GetIt.I.registerSingleton<SubsonicRepo>(SubsonicRepo());
+  GetIt.I.registerSingleton<JellyfinHandler>(JellyfinHandler());
+
+
+  //  await startup();
+  var serverType = GetStorage().read('ServerType') ?? "Jellyfin";
+
+  GetIt.I.registerSingleton<IHandler>(
+    JellyfinHandler(),
+    instanceName: 'Jellyfin',
+  );
+
+  GetIt.I.registerSingleton<IHandler>(
+    PanaudioHandler(),
+    instanceName: 'PanAudio',
+  );
 
    //Handlers
-  GetIt.I.registerSingleton<JellyfinHandler>(JellyfinHandler());
-  GetIt.I.registerSingleton<PanaudioHandler>(PanaudioHandler());
   GetIt.I.registerSingleton<LogHandler>(LogHandler());
 
   GetIt.I.registerSingleton<ApiController>(ApiController());
