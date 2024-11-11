@@ -5,15 +5,20 @@ import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/hive/classes/songs.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
+import 'package:jel_music/hive/helpers/isynchelper.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
+import 'package:jel_music/hive/helpers/sync_helper.dart';
 
-class PanaudioSyncHelper{
+class PanaudioSyncHelper implements ISyncHelper {
 
   PanaudioHandler panaudioHandler = PanaudioHandler();
   SongsHelper songsHelper = SongsHelper();
   ArtistsHelper artistHelper = ArtistsHelper();
   AlbumsHelper albumsHelper = AlbumsHelper();
+  String baseUrl = GetStorage().read('serverUrl');
+  @override
   runSync(bool check)async{
+   // baseUrl = await GetStorage().read('serverUrl');
     try{
       await songsHelper.openBox();
       var songs = await panaudioHandler.returnSongs();
@@ -23,8 +28,6 @@ class PanaudioSyncHelper{
       }
 
       var savedSongs = await songsHelper.returnSongs();
-
-      var baseUrl  = await GetStorage().read('serverUrl');
 
       for(var savedSong in savedSongs){
         await artistHelper.openBox();

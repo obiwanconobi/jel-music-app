@@ -9,13 +9,12 @@ import 'package:jel_music/repos/jellyfin_repo.dart';
 
 class JellyfinHandler{
 
-  late JellyfinRepo jellyfinRepo;
+  late JellyfinRepo jellyfinRepo = GetIt.instance<JellyfinRepo>();
   Conversions conversions = Conversions();
   Mappers mapper = Mappers();
   
   JellyfinHandler(){
-    jellyfinRepo = GetIt.instance<JellyfinRepo>();
-  
+    //jellyfinRepo =
   }
 
   updateFavouriteStatus(String itemId, bool current)async{

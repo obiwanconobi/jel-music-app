@@ -89,7 +89,7 @@ class AlbumController {
       for(var album in albumsRaw){
         String albumId = album.id;
         var imgUrl = "$baseServerUrl/Items/$albumId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
-        albumsList.add(Album(id: album.id, title: album.name,artist: album.artist, year: int.parse(album.year!), picture: imgUrl));
+        albumsList.add(Album(id: album.id, title: album.name,artist: album.artist, year: int.parse(album.year!), picture: album.picture));
       }
 
       albumsList.sort((a, b) => a.year!.compareTo(b.year!));

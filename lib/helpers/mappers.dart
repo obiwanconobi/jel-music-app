@@ -9,7 +9,20 @@ class Mappers{
 
     Conversions conversions = Conversions();
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+    String serverType = GetStorage().read('ServerType') ?? "ERROR";
 
+    String getImageUrl(String albumId){
+      serverType = GetStorage().read('ServerType') ?? "ERROR";
+      baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+      if(serverType == "Jellyfin"){
+        return "$baseServerUrl/Items/$albumId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+
+      }else if (serverType == "PanAudio"){
+        return "$baseServerUrl/api/albumArt?albumId=$albumId";
+      }
+
+      return "";
+    }
 
     Future<List<Album>> mapAlbumFromRawPA(dynamic albums)async{
        List<Album> albumsList = [];

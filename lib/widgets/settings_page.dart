@@ -10,6 +10,7 @@ import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
+import 'package:jel_music/hive/helpers/isynchelper.dart';
 import 'package:jel_music/hive/helpers/panaudio_sync_helper.dart';
 import 'package:jel_music/hive/helpers/subsonic_sync_helper.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
@@ -41,6 +42,8 @@ class _MyWidgetState extends State<SettingsPage> {
   SyncHelper syncHelper = SyncHelper();
   SubsonicSyncHelper subsonicSyncHelper = SubsonicSyncHelper();
   PanaudioSyncHelper panaudioSyncHelper = PanaudioSyncHelper();
+
+  late ISyncHelper syncHelperI;
   //ApiController apiController = ApiController();
   var apiController = GetIt.instance<ApiController>();
   ArtistsHelper helper = ArtistsHelper();
@@ -48,6 +51,8 @@ class _MyWidgetState extends State<SettingsPage> {
   late bool playbackReporting;
   late bool autoPlay;
   List<LogModel> logHistory = [];
+
+
 
   _login()async{
     if(_selectedOption == "Jellyfin"){
@@ -101,7 +106,16 @@ class _MyWidgetState extends State<SettingsPage> {
     super.initState();
     GetStorage.init();
 
+
+
     _selectedOption = GetStorage().read('ServerType');
+
+    if(_selectedOption == "Jellyfin"){
+      syncHelperI = SyncHelper();
+    }else if(_selectedOption == "PanAudio"){
+      syncHelperI = PanaudioSyncHelper();
+    }
+
       getCachedSongs();
       playbackReporting = getPlaybackReporting();
       autoPlay = getAutoPlay();
@@ -132,7 +146,8 @@ class _MyWidgetState extends State<SettingsPage> {
   }else if (_selectedOption == "Subsonic"){
    await subsonicSyncHelper.runSync();
   }else if(_selectedOption == "PanAudio"){
-    await panaudioSyncHelper.runSync(true);
+    await syncHelperI.runSync(true);
+    //await panaudioSyncHelper.runSync(true);
   }
 
   }

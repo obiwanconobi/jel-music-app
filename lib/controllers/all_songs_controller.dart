@@ -1,3 +1,4 @@
+import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/hive/classes/songs.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:get_storage/get_storage.dart';
@@ -11,8 +12,7 @@ class AllSongsController {
     final int currentArtistIndex = 0;
     String baseServerUrl = "";
     SongsHelper songsHelper = SongsHelper();
-
-
+    Mappers mappers = Mappers();
      Future<List<song.Songs>> onInit() async {
     try {
       await songsHelper.openBox();
@@ -52,8 +52,7 @@ class AllSongsController {
       
       List<song.Songs> songsList = [];
       for(var songRaw in songsRaw){
-        String albumId = songRaw.albumId;
-        var imgUrl = "$baseServerUrl/Items/$albumId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+        var imgUrl = mappers.getImageUrl(songRaw.albumId);
         //songsList.add(Songs(id: song.id, name: ))
         songsList.add(song.Songs(id: songRaw.id, trackNumber: songRaw.index, title: songRaw.name, album: songRaw.album, artist: songRaw.artist, artistId: songRaw.artistId, albumPicture: imgUrl, favourite: songRaw.favourite, length: songRaw.length));
      //   songsList.add(Songs(index: song.index, id: song.id, name: song.name,artist: song.artist, year:song.year, albumId: imgUrl, artistId: song.artistId, album: song.album, length: song.length));

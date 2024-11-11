@@ -58,8 +58,6 @@ class PanaudioRepo{
   Future<void> updateFavouriteStatus(String input, bool current) async {
 
     String itemId = '${input.substring(0, 8)}-${input.substring(8, 12)}-${input.substring(12, 16)}-${input.substring(16, 20)}-${input.substring(20)}';
-
-
   //  var requestHeaders = await apiHelper.returnJellyfinHeaders();
     String url = "$baseServerUrl/api/favourite?songId=$itemId&favourite=$current";
 

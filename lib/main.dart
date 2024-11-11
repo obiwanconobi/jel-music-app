@@ -24,6 +24,9 @@ import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/hive/classes/log.dart';
 import 'package:jel_music/hive/classes/songs.dart';
+import 'package:jel_music/hive/helpers/isynchelper.dart';
+import 'package:jel_music/hive/helpers/panaudio_sync_helper.dart';
+import 'package:jel_music/hive/helpers/sync_helper.dart';
 import 'package:jel_music/homepage.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/repos/jellyfin_repo.dart';
@@ -45,6 +48,9 @@ Future<void> main() async{
   Hive.registerAdapter(LogAdapter());
 
 
+  //SyncHelpers
+  GetIt.I.registerSingleton<SyncHelper>(SyncHelper());
+  GetIt.I.registerSingleton<PanaudioSyncHelper>(PanaudioSyncHelper());
 
    //Repos
   GetIt.I.registerSingleton<JellyfinRepo>(JellyfinRepo());

@@ -11,9 +11,6 @@ class JellyfinRepo{
   ApiHelper apiHelper = ApiHelper();
   AndroidId androidId = const AndroidId();
 
-  JellyfinRepo(){
-  }
-
   getValues()async{
     accessToken = await GetStorage().read('accessToken');
     baseServerUrl =await GetStorage().read('serverUrl');

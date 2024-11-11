@@ -6,9 +6,9 @@ class PanaudioHandler{
 
   Mappers mapper = Mappers();
 
-  late PanaudioRepo repo;
+  late PanaudioRepo repo = GetIt.instance<PanaudioRepo>();
   PanaudioHandler(){
-    repo = GetIt.instance<PanaudioRepo>();
+   // repo =
   }
 
 
@@ -19,7 +19,7 @@ class PanaudioHandler{
   }
 
   updateFavouriteStatus(String itemId, bool current)async{
-    await repo.updateFavouriteStatus(itemId, !current);
+    await repo.updateFavouriteStatus(itemId, current);
   }
 
   returnSongs()async{

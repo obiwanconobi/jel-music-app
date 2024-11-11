@@ -84,7 +84,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                     );
                                   } else {
                                     var artist = snapshot.data!;
-                                    fav = artist.favourite!;
+                                    fav = artist.favourite ?? false;
                                     return Column(mainAxisSize: MainAxisSize.min,children: 
                                     [
                                       FutureBuilder<List<Album>>(
@@ -111,7 +111,7 @@ class _AlbumPageState extends State<AlbumPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                IconButton(onPressed:()=>{setState(() {artist.favourite = !artist.favourite!;}), _toggleFavourite(artist.id!)}, icon: Icon(Icons.favorite, color: ((artist.favourite!) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30),),
+                                IconButton(onPressed:()=>{setState(() {artist.favourite = artist.favourite ?? false;}), _toggleFavourite(artist.id!)}, icon: Icon(Icons.favorite, color: ((artist.favourite ?? false) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30),),
                                 IconButton(onPressed:()=>{playAll()}, icon: Icon(Icons.play_circle, color: Theme.of(context).colorScheme.secondary, size:30),),
                               ],
                             ),

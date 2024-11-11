@@ -7,14 +7,14 @@ import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/hive/classes/songs.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
+import 'package:jel_music/hive/helpers/isynchelper.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/fav_albums.dart';
 
 import '../../handlers/subsonic_handler.dart';
 import '../../models/log.dart';
 
-
-class SyncHelper{
+class SyncHelper implements ISyncHelper {
   SongsHelper songsHelper = SongsHelper();
   AlbumsHelper albumsHelper = AlbumsHelper();
   ArtistsHelper artistsHelper = ArtistsHelper();
@@ -25,6 +25,11 @@ class SyncHelper{
   Future<List<FavAlbums>> getFavouriteAlbums()async{
     List<FavAlbums> favAlbums = [];
     var albumsRaw = await albumsHelper.getAlbumDataFavourite();
+
+    if(albumsRaw == null){
+      List<FavAlbums> albums = [];
+      return albums;
+    }
 
     for(var album in albumsRaw["Items"]){
 
@@ -71,6 +76,7 @@ class SyncHelper{
     return difference > Duration(hours: 1);
   }
 
+  @override
   runSync(bool check)async{
 
     var lastSyncRaw = await GetStorage().read('lastSync') ?? DateTime.now().add(Duration(hours:-2)).toString();
