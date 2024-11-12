@@ -21,7 +21,7 @@ class ApiController{
      uuid = await androidId.getDeviceId();
    }
 
-  jellyfinLogin() async {
+  login() async {
     try {
       var username = GetStorage().read('username');
       var password = GetStorage().read('password');

@@ -58,4 +58,10 @@ class Conversions{
 
       return timestampString;
     }
+
+  bool isMoreThanAnHourBefore(DateTime dateTime) {
+    DateTime now = DateTime.now();
+    Duration difference = now.difference(dateTime);
+    return difference > Duration(hours: 1);
+  }
 }

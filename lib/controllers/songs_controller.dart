@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/helpers/apihelper.dart';
 import 'package:jel_music/hive/classes/albums.dart';
@@ -19,13 +20,14 @@ class SongsController {
     ApiHelper apiHelper = ApiHelper();
     final int currentArtistIndex = 0;
     String baseServerUrl = "";
-    JellyfinHandler jellyfinHandler = GetIt.instance<JellyfinHandler>();
+    late IHandler jellyfinHandler;
     String serverType = "";
   Future<List<Songs>> onInit() async{
 
     try {
       baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
       serverType = GetStorage().read('ServerType') ?? "ERROR";
+      jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
      // songs = await fetchSongs(albumId!);
      songs = await _getSongsFromBox(artistId!, albumId!);
       return songs;

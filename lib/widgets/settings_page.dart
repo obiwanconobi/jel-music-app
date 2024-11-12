@@ -39,12 +39,8 @@ class _MyWidgetState extends State<SettingsPage> {
   var downloadController = GetIt.instance<DownloadController>();
    var logger = GetIt.instance<LogHandler>();
   AlbumsHelper albumsHelper = AlbumsHelper();
-  SyncHelper syncHelper = SyncHelper();
-  SubsonicSyncHelper subsonicSyncHelper = SubsonicSyncHelper();
-  PanaudioSyncHelper panaudioSyncHelper = PanaudioSyncHelper();
 
-  late ISyncHelper syncHelperI;
-  //ApiController apiController = ApiController();
+  late ISyncHelper syncHelper;
   var apiController = GetIt.instance<ApiController>();
   ArtistsHelper helper = ArtistsHelper();
   late String totalCachedFileCount = "";
@@ -77,7 +73,7 @@ class _MyWidgetState extends State<SettingsPage> {
 
       await GetStorage().write('username', username);
       await GetStorage().write('password', password);
-      await apiController.jellyfinLogin();
+      await apiController.login();
       await getUserId();
   }
 
@@ -110,18 +106,15 @@ class _MyWidgetState extends State<SettingsPage> {
 
     _selectedOption = GetStorage().read('ServerType');
 
-    if(_selectedOption == "Jellyfin"){
-      syncHelperI = SyncHelper();
-    }else if(_selectedOption == "PanAudio"){
-      syncHelperI = PanaudioSyncHelper();
-    }
+    syncHelper = GetIt.instance<ISyncHelper>(instanceName: _selectedOption);
+
 
       getCachedSongs();
       playbackReporting = getPlaybackReporting();
       autoPlay = getAutoPlay();
    
     getLogInfo();
-    syncHelper.songsHelper.openBox();
+    syncHelper.openBox();
     helper.openBox();
     albumsHelper.openBox();
     // Set the initial value of the TextField
@@ -144,9 +137,9 @@ class _MyWidgetState extends State<SettingsPage> {
   if(_selectedOption == "Jellyfin"){
    await syncHelper.runSync(true);
   }else if (_selectedOption == "Subsonic"){
-   await subsonicSyncHelper.runSync();
+
   }else if(_selectedOption == "PanAudio"){
-    await syncHelperI.runSync(true);
+    await syncHelper.runSync(true);
     //await panaudioSyncHelper.runSync(true);
   }
 
@@ -155,7 +148,7 @@ class _MyWidgetState extends State<SettingsPage> {
   void clear(){
     helper.clearArtists();
     albumsHelper.clearAlbums();
-    syncHelper.songsHelper.clearSongs();
+    syncHelper.clearSongs();
   }
 
   void toggleTheme(){

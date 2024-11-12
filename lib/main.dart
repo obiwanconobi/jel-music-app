@@ -1,6 +1,4 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:audio_service/audio_service.dart';
-import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
@@ -30,15 +28,12 @@ import 'package:jel_music/hive/helpers/panaudio_sync_helper.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
 import 'package:jel_music/homepage.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
-import 'package:jel_music/repos/jellyfin_repo.dart';
 import 'package:jel_music/repos/panaudio_repo.dart';
 import 'package:jel_music/repos/subsonic_repo.dart';
-import 'package:jel_music/startup.dart';
 import 'package:sizer/sizer.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:quick_actions/quick_actions.dart';
 
-import 'controllers/music_controller.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,9 +45,8 @@ Future<void> main() async{
   Hive.registerAdapter(LogAdapter());
 
 
-  //SyncHelpers
-  GetIt.I.registerSingleton<SyncHelper>(SyncHelper());
-  GetIt.I.registerSingleton<PanaudioSyncHelper>(PanaudioSyncHelper());
+
+
 
 
 
@@ -64,6 +58,16 @@ Future<void> main() async{
 
   //  await startup();
   var serverType = GetStorage().read('ServerType') ?? "Jellyfin";
+
+  //SyncHelpers
+  GetIt.I.registerSingleton<ISyncHelper>(
+    SyncHelper(),
+    instanceName: 'Jellyfin',
+  );
+  GetIt.I.registerSingleton<ISyncHelper>(
+    PanaudioSyncHelper(),
+    instanceName: 'PanAudio',
+  );
 
   GetIt.I.registerSingleton<IHandler>(
     JellyfinHandler(),
@@ -91,7 +95,6 @@ Future<void> main() async{
   GetIt.I.registerSingleton<PlaylistController>(PlaylistController());
   GetIt.I.registerSingleton<MostPlayedSongsController>(MostPlayedSongsController());
 
- // late MusicController _audioHandler;
 
   final QuickActions quickActions = QuickActions();
   quickActions.setShortcutItems(<ShortcutItem>[

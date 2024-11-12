@@ -2,6 +2,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
+import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/hive/classes/songs.dart';
@@ -19,62 +20,8 @@ class SyncHelper implements ISyncHelper {
   AlbumsHelper albumsHelper = AlbumsHelper();
   ArtistsHelper artistsHelper = ArtistsHelper();
   JellyfinHandler jellyfinHandler = JellyfinHandler();
+  Conversions conversions = Conversions();
   LogHandler logger = LogHandler();
-
-
-  Future<List<FavAlbums>> getFavouriteAlbums()async{
-    List<FavAlbums> favAlbums = [];
-    var albumsRaw = await albumsHelper.getAlbumDataFavourite();
-
-    if(albumsRaw == null){
-      List<FavAlbums> albums = [];
-      return albums;
-    }
-
-    for(var album in albumsRaw["Items"]){
-
-      try{
-        favAlbums.add(FavAlbums(title: album["Name"], artist: album["AlbumArtist"]));
-      }catch(e){
-        //log error
-        logger.addToLog(LogModel(logType: "Error", logDateTime: DateTime.now(), logMessage: "Failed to get favourite albums: $e"));
-
-      }
-    }
-    return favAlbums;
-  }
-
-  Future<List<String>> getFavouriteArtists()async{
-    List<String> favArtists = [];
-    dynamic artistRaw;
-    try{
-      artistRaw = await artistsHelper.getArtistDataFavourite();
-    }catch(e){
-      logger.addToLog(LogModel(logType: "Error", logDateTime: DateTime.now(), logMessage: "Failed to get favourite artists: $e"));
-    }
-
-    try{
-      for(var artist in artistRaw["Items"]){
-        favArtists.add(artist["Name"]);
-      }
-      return favArtists;
-    }catch(e){
-      logger.addToLog(LogModel(logType: "Error", logDateTime: DateTime.now(), logMessage: "Failed to get favourite artists: $e"));
-    }
-    return [];
-  }
-
-  getImageUrl(String Id)async{
-    var baseServerUrl = await GetStorage().read('serverUrl');
-    var imgUrl = "$baseServerUrl/Items/$Id/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
-    return imgUrl;
-  }
-
-  bool isMoreThanAnHourBefore(DateTime dateTime) {
-    DateTime now = DateTime.now();
-    Duration difference = now.difference(dateTime);
-    return difference > Duration(hours: 1);
-  }
 
   @override
   runSync(bool check)async{
@@ -82,7 +29,7 @@ class SyncHelper implements ISyncHelper {
     var lastSyncRaw = await GetStorage().read('lastSync') ?? DateTime.now().add(Duration(hours:-2)).toString();
     var lastSync = DateTime.parse(lastSyncRaw);
 
-    if(isMoreThanAnHourBefore(lastSync) || check){
+    if(conversions.isMoreThanAnHourBefore(lastSync) || check){
 
       List<FavAlbums> favAlbums = await getFavouriteAlbums();
       List<String> favArtists = await getFavouriteArtists();
@@ -169,9 +116,67 @@ class SyncHelper implements ISyncHelper {
 
     }
 
+  }
+
+  @override
+  openBox() async{
+    // TODO: implement openBox
+    await songsHelper.openBox();
+  }
+
+  @override
+  clearSongs() {
+    // TODO: implement clearSongs
+    songsHelper.clearSongs();
+  }
 
 
+  Future<List<FavAlbums>> getFavouriteAlbums()async{
+    List<FavAlbums> favAlbums = [];
+    var albumsRaw = await albumsHelper.getAlbumDataFavourite();
 
+    if(albumsRaw == null){
+      List<FavAlbums> albums = [];
+      return albums;
+    }
+
+    for(var album in albumsRaw["Items"]){
+
+      try{
+        favAlbums.add(FavAlbums(title: album["Name"], artist: album["AlbumArtist"]));
+      }catch(e){
+        //log error
+        logger.addToLog(LogModel(logType: "Error", logDateTime: DateTime.now(), logMessage: "Failed to get favourite albums: $e"));
+
+      }
+    }
+    return favAlbums;
+  }
+
+  Future<List<String>> getFavouriteArtists()async{
+    List<String> favArtists = [];
+    dynamic artistRaw;
+    try{
+      artistRaw = await artistsHelper.getArtistDataFavourite();
+    }catch(e){
+      logger.addToLog(LogModel(logType: "Error", logDateTime: DateTime.now(), logMessage: "Failed to get favourite artists: $e"));
+    }
+
+    try{
+      for(var artist in artistRaw["Items"]){
+        favArtists.add(artist["Name"]);
+      }
+      return favArtists;
+    }catch(e){
+      logger.addToLog(LogModel(logType: "Error", logDateTime: DateTime.now(), logMessage: "Failed to get favourite artists: $e"));
+    }
+    return [];
+  }
+
+  getImageUrl(String Id)async{
+    var baseServerUrl = await GetStorage().read('serverUrl');
+    var imgUrl = "$baseServerUrl/Items/$Id/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+    return imgUrl;
   }
 
 

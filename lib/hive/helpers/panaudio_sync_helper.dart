@@ -16,6 +16,8 @@ class PanaudioSyncHelper implements ISyncHelper {
   ArtistsHelper artistHelper = ArtistsHelper();
   AlbumsHelper albumsHelper = AlbumsHelper();
   String baseUrl = GetStorage().read('serverUrl');
+
+
   @override
   runSync(bool check)async{
    // baseUrl = await GetStorage().read('serverUrl');
@@ -49,4 +51,17 @@ class PanaudioSyncHelper implements ISyncHelper {
       print(e);
     }
   }
+
+  @override
+  openBox() async{
+    // TODO: implement openBox
+   await songsHelper.openBox();
+  }
+  @override
+  clearSongs() {
+    // TODO: implement clearSongs
+    songsHelper.clearSongs();
+  }
+
+
 }

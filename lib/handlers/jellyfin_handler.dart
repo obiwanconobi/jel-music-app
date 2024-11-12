@@ -18,10 +18,12 @@ class JellyfinHandler implements IHandler{
     //jellyfinRepo =
   }
 
+  @override
   updateFavouriteStatus(String itemId, bool current)async{
     await jellyfinRepo.updateFavouriteStatus(itemId, !current);
   }
 
+  @override
   returnArtistBio(String artistName)async{
     return await jellyfinRepo.getArtistBio(artistName);
   }
@@ -57,6 +59,7 @@ class JellyfinHandler implements IHandler{
     //return await mapper.mapListSongsFromRaw(songsRaw);
   }
 
+  @override
   Future<List<Playlists>> returnPlaylists()async{
     var playlistsRaw = await jellyfinRepo.getPlaylists();
     List<Playlists> playlistList = [];
@@ -79,6 +82,7 @@ class JellyfinHandler implements IHandler{
     await jellyfinRepo.addSongToPlaylist(songId, playlistId);
   }
 
+  @override
   deleteSongFromPlaylist(String songId, String playlistId)async{
     await jellyfinRepo.deleteSongFromPlaylist(songId, playlistId);
   }
