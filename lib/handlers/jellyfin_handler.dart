@@ -71,6 +71,14 @@ class JellyfinHandler implements IHandler{
   }
 
   @override
+  updateFavouriteAlbum(String albumId, bool current)async{
+
+  }
+  @override
+  updateFavouriteArtist(String artistId, bool current)async{
+
+  }
+  @override
   Future<List<Songs>> returnSongsFromPlaylist(String playlistId)async{
     var songsRaw = await jellyfinRepo.getPlaylistSongs(playlistId);
     var mappedSongs = await mapper.mapSongFromRaw(songsRaw["Items"]);

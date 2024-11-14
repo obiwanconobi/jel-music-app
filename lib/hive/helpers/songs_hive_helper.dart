@@ -46,8 +46,8 @@ class SongsHelper{
     return songsBox.values.where((element) => element.artist.toLowerCase() == artist.toLowerCase()).toList();
   }
 
-  Songs returnSong(String artist, String title){
-    return songsBox.values.where((element) => element.artist == artist && element.name == title).first;
+  Songs? returnSong(String artist, String title){
+    return songsBox.values.where((element) => element.artist == artist && element.name == title).firstOrNull;
   }
 
   Songs returnSongById(String id){
@@ -85,7 +85,7 @@ class SongsHelper{
 
   likeSong(String artist, String title, bool value){
       var song = returnSong(artist, title);
-      song.favourite = value;
+      song!.favourite = value;
       songsBox.put(song.key,song);
   }
 

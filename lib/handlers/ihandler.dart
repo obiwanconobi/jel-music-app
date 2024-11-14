@@ -5,6 +5,8 @@ import 'package:jel_music/models/playlists.dart';
 
 abstract class IHandler {
   updateFavouriteStatus(String itemId, bool current);
+  updateFavouriteAlbum(String albumId, bool current);
+  updateFavouriteArtist(String artistId, bool current);
   Future<List<Album>>  returnLatestAlbums();
   Future<List<Artists>> fetchArtists();
   returnSongs();

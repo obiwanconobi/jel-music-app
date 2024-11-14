@@ -1,14 +1,19 @@
 import 'package:get_it/get_it.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/models/playlists.dart';
 
 class PlaylistsController{
 
   var playlistsList = <Playlists>[];
+  String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
 
-  late JellyfinHandler jellyfinHandler;
+
+  late IHandler handler;
   PlaylistsController(){
-      jellyfinHandler = GetIt.instance<JellyfinHandler>();
+
+    handler = GetIt.instance<IHandler>(instanceName: serverType);
   }
 
 
@@ -21,7 +26,7 @@ class PlaylistsController{
      // await artistHelper.openBox();
       clearList();
     
-      playlistsList = await jellyfinHandler.returnPlaylists();
+      playlistsList = await handler.returnPlaylists();
       return playlistsList;
     } catch (error) {
       // Handle errors if needed
@@ -34,7 +39,7 @@ class PlaylistsController{
       // await artistHelper.openBox();
       clearList();
 
-      playlistsList = await jellyfinHandler.returnPlaylists();
+      playlistsList = await handler.returnPlaylists();
       return playlistsList;
     } catch (error) {
       // Handle errors if needed

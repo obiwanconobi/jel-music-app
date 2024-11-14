@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/handlers/quick_actions_handler.dart';
+import 'package:jel_music/hive/helpers/isynchelper.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
 import 'package:jel_music/widgets/favourite_albums.dart';
 import 'package:jel_music/widgets/favourite_artists.dart';
@@ -23,13 +26,15 @@ class StartPage extends StatefulWidget {
 
 class _StartPageState extends State<StartPage> {
 
-  SyncHelper syncHelper = SyncHelper();
+  late ISyncHelper syncHelper;
   DownloadController downloadsController = DownloadController();
   final QuickActionsHandler _quickActionsHandler = QuickActionsHandler();
 
   @override
   void initState() {
+    String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
     super.initState();
+    syncHelper = GetIt.instance<ISyncHelper>(instanceName: serverType);
     _quickActionsHandler.initialize(context);
     syncAsync();
     print("StartPage initialized");

@@ -21,30 +21,49 @@ class PanaudioSyncHelper implements ISyncHelper {
   @override
   runSync(bool check)async{
    // baseUrl = await GetStorage().read('serverUrl');
+    int count = 0;
     try{
       await songsHelper.openBox();
       var songs = await panaudioHandler.returnSongs();
       for(var song in songs){
         var addSong = Songs(id: song["id"],name: song["title"], artist: song["artist"], artistId: song["artistId"], album: song["album"], albumId: song["albumId"], favourite: song["favourite"], index: song["trackNumber"], playCount: 0, length: song["length"], year: 1900, codec: "", bitdepth: "", discIndex: 0, downloaded: false, bitrate: "", samplerate: "");
-        songsHelper.addSongToBox(addSong);
-      }
-
-      var savedSongs = await songsHelper.returnSongs();
-
-      for(var savedSong in savedSongs){
-        await artistHelper.openBox();
-        //save artist
-        var artist = artistHelper.returnArtist(savedSong.artist);
-        if(artist == null){
-          artistHelper.addArtistToBox(Artists(name: savedSong.artist, id: savedSong.artistId, picture: "", playCount: 0));
+        var result = songsHelper.returnSong(addSong.artist, addSong.name);
+        if(result == null){
+          songsHelper.addSongToBox(addSong);
+          count++;
         }
 
-        //save album
-        await albumsHelper.openBox();
-        String picture = baseUrl + "/api/albumArt?albumId=${savedSong.albumId}";
-        var album = albumsHelper.returnAlbum(savedSong.artist, savedSong.album);
-        if(album == null){
-          albumsHelper.addAlbumToBox(Albums(id: savedSong.albumId,name: savedSong.album, artist: savedSong.artist, artistId: savedSong.artistId, playCount: 0, picture: picture, favourite: false, year: "1900",),  );
+      }
+      if(count > 0) {
+        var savedSongs = await songsHelper.returnSongs();
+
+        for (var savedSong in savedSongs) {
+          await artistHelper.openBox();
+          //save artist
+          var artist = artistHelper.returnArtist(savedSong.artist);
+          if (artist == null) {
+            artistHelper.addArtistToBox(Artists(name: savedSong.artist,
+                id: savedSong.artistId,
+                picture: "",
+                playCount: 0));
+          }
+
+          //save album
+          await albumsHelper.openBox();
+          String picture = baseUrl +
+              "/api/albumArt?albumId=${savedSong.albumId}";
+          var album = albumsHelper.returnAlbum(
+              savedSong.artist, savedSong.album);
+          if (album == null) {
+            albumsHelper.addAlbumToBox(Albums(id: savedSong.albumId,
+              name: savedSong.album,
+              artist: savedSong.artist,
+              artistId: savedSong.artistId,
+              playCount: 0,
+              picture: picture,
+              favourite: false,
+              year: "1900",),);
+          }
         }
       }
     }catch(e){
@@ -54,12 +73,10 @@ class PanaudioSyncHelper implements ISyncHelper {
 
   @override
   openBox() async{
-    // TODO: implement openBox
    await songsHelper.openBox();
   }
   @override
   clearSongs() {
-    // TODO: implement clearSongs
     songsHelper.clearSongs();
   }
 

@@ -55,11 +55,71 @@ class PanaudioRepo{
     }
   }
 
+  addSongToPlaylist(String playlistId, String songId)async{
+    String url = "$baseServerUrl/api/addSong?playlistId=$playlistId&songId=$songId";
+    http.Response res = await http.put(Uri.parse(url));
+    if (res.statusCode == 200) {
+      return json.decode(res.body);
+    }
+  }
+
+  getPlaylists()async{
+    try {
+    //  var requestHeaders = await apiHelper.returnJellyfinHeaders();
+      String url = "$baseServerUrl/api/playlists";
+      http.Response res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  getPlaylistSongs(String playlistId)async{
+    try {
+     // var requestHeaders = await apiHelper.returnJellyfinHeaders();
+      String url = "$baseServerUrl/api/playlist?playlistId=$playlistId";
+      http.Response res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> updateFavouriteStatus(String input, bool current) async {
 
    // String itemId = '${input.substring(0, 8)}-${input.substring(8, 12)}-${input.substring(12, 16)}-${input.substring(16, 20)}-${input.substring(20)}';
   //  var requestHeaders = await apiHelper.returnJellyfinHeaders();
     String url = "$baseServerUrl/api/favourite?songId=$input&favourite=$current";
+
+    http.Response res = await http.post(Uri.parse(url));
+    if (res.statusCode == 200) {
+      return json.decode(res.body);
+    }
+
+  }
+
+  Future<void> updateFavouriteAlbumStatus(String input, bool current) async {
+
+    // String itemId = '${input.substring(0, 8)}-${input.substring(8, 12)}-${input.substring(12, 16)}-${input.substring(16, 20)}-${input.substring(20)}';
+    //  var requestHeaders = await apiHelper.returnJellyfinHeaders();
+    String url = "$baseServerUrl/api/favourite-album?albumId=$input&favourite=$current";
+
+    http.Response res = await http.post(Uri.parse(url));
+    if (res.statusCode == 200) {
+      return json.decode(res.body);
+    }
+
+  }
+
+  Future<void> updateFavouriteArtistStatus(String input, bool current) async {
+
+    // String itemId = '${input.substring(0, 8)}-${input.substring(8, 12)}-${input.substring(12, 16)}-${input.substring(16, 20)}-${input.substring(20)}';
+    //  var requestHeaders = await apiHelper.returnJellyfinHeaders();
+    String url = "$baseServerUrl/api/favourite-artist?artistId=$input&favourite=$current";
 
     http.Response res = await http.post(Uri.parse(url));
     if (res.statusCode == 200) {

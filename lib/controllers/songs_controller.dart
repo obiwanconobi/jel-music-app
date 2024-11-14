@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/helpers/apihelper.dart';
+import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
@@ -17,6 +18,7 @@ class SongsController {
     String? artistId;
     SongsHelper songsHelper = SongsHelper();
     AlbumsHelper albumHelper = AlbumsHelper();
+    Mappers mappers = Mappers();
     ApiHelper apiHelper = ApiHelper();
     final int currentArtistIndex = 0;
     String baseServerUrl = "";
@@ -47,7 +49,14 @@ class SongsController {
     Albums? album = albumHelper.returnAlbum(artist, title);
     album!.favourite = favourite;
     albumHelper.updateAlbum(album, album.key);
-    jellyfinHandler.updateFavouriteStatus(album.id, !favourite);
+
+    if(serverType == "Jellyfin"){
+      jellyfinHandler.updateFavouriteStatus(album.id, !favourite);
+    }else if(serverType == "PanAudio"){
+      jellyfinHandler.updateFavouriteAlbum(album.id, favourite);
+    }
+
+
   }
 
   Future<bool> returnFavourite(String artist, String album)async{
@@ -80,41 +89,10 @@ class SongsController {
   _getSongsFromBox(String artist, String album)async{
       await songsHelper.openBox();
       var songsRaw = songsHelper.returnSongsFromAlbum(artist, album);
-      return await convertHiveSongsToModelSongs(songsRaw);
+      return await mappers.convertHiveSongsToModelSongs(songsRaw);
   }
 
-  Future<List<Songs>> convertHiveSongsToModelSongs(dynamic songsRaw)async{
-    List<Songs> songsList = [];
-    for(var song in songsRaw){
-      String songId = song.albumId;
-      String imgUrl = "";
-      if(serverType == "Jellyfin"){
-        imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
-      }else if (serverType == "PanAudio"){
-         imgUrl = "$baseServerUrl/api/albumArt?albumId=${song.albumId}";
-      }
 
-
-      songsList.add(Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,
-          artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length,
-          favourite: song.favourite, discNumber: song.discIndex, downloaded: song.downloaded, codec: song.codec,
-          bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate
-      ));
-    }
-    songsList.sort((a, b) {
-      // First compare discNumber
-      int discComparison = a.discNumber!.compareTo(b.discNumber ?? 0);
-
-      // If discNumber is the same, then compare trackNumber
-      if (discComparison == 0) {
-        return a.trackNumber!.compareTo(b.trackNumber ?? 0);
-      } else {
-        return discComparison;
-      }
-    });
-
-    return songsList;
-  }
 
    _getSongsData(String albumIdVal) async{
       try {

@@ -566,7 +566,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     try{
       await songsHelper.openBox();
       var songs = songsHelper.returnSongsFromAlbum(artist, album);
-      List<StreamModel> streamModels = await mapper.convertHiveSongsToModelSongs(songs);
+      List<StreamModel> streamModels = await mapper.convertHiveSongsToStreamModelSongs(songs);
       await addPlaylistToQueue(streamModels);
     }catch(e){
       logger.addToLog(LogModel(logType: "Error",logMessage: e.toString(), logDateTime: DateTime.now()));
@@ -579,7 +579,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     try{
       await songsHelper.openBox();
       var songs = songsHelper.returnSongsForArtist(artist);
-      List<StreamModel> streamModels = await mapper.convertHiveSongsToModelSongs(songs);
+      List<StreamModel> streamModels = await mapper.convertHiveSongsToStreamModelSongs(songs);
       await addPlaylistToQueue(streamModels);
     }catch(e){
       logger.addToLog(LogModel(logType: "Error",logMessage: e.toString(), logDateTime: DateTime.now()));
@@ -710,7 +710,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     try{
       await songsHelper.openBox();
       var songsRaw = await songsHelper.returnMostPlayedSongs();
-      var songs = await mapper.convertHiveSongsToModelSongs(songsRaw);
+      var songs = await mapper.convertHiveSongsToStreamModelSongs(songsRaw);
       addPlaylistToQueue(songs);
     }catch(e){
       print(e.toString());
@@ -726,7 +726,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     try{
       await songsHelper.openBox();
       var songsRaw = await songsHelper.returnFavouriteSongs();
-      var songs = await mapper.convertHiveSongsToModelSongs(songsRaw);
+      var songs = await mapper.convertHiveSongsToStreamModelSongs(songsRaw);
       addPlaylistToQueue(songs);
     }catch(e){
       print(e.toString());
@@ -761,7 +761,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
             "downloaded": tempDownloaded ?? "",
           },
           artUri: Uri.parse(tempPicture!),
-          duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
+          duration: durationParser(tempDuration!),
         ));
 
     try{
@@ -881,20 +881,6 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     String codec = stream.codec!;
     //   String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
     String baseUrl = await getSongUrl(id);
-    List<String> timeParts = stream.long!.split(':');
-    /*   var sourceold = AudioSource.uri(
-                        Uri.parse(baseUrl),
-                        tag: MediaItem(
-                          // Specify a unique ID for each media item:
-                          id: stream.id!,
-                          // Metadata to display in the notification:
-                          album: stream.composer ?? "Error",
-                          title: stream.title ?? "Error",
-                          extras: {"favourite": stream.isFavourite},
-                          duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
-                          artUri: Uri.parse(pictureUrl),
-                        ),
-                      );  */
 
     AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
       cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.$codec'])),
@@ -912,7 +898,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
           "codec": stream.codec,
           "downloaded": stream.downloaded,
         },
-        duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
+        duration: durationParser(stream.long!),
         artUri: Uri.parse(pictureUrl),
       ),);
 
@@ -959,7 +945,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
             "downloaded": value.downloaded,
 
           },
-          duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
+          duration: durationParser(value.long!),
           artUri: Uri.parse(pictureUrl),
         ),);
       playlist.insert(currentIndexSource+1, source);
@@ -982,6 +968,19 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     notifyListeners();
   }
 
+  durationParser(String long){
+    Duration duration;
+
+    if(long!.contains(':')){
+      List<String> timeParts = long!.split(':');
+      duration = Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1]));
+    }else{
+      duration = Duration(seconds: int.parse(long!));
+    }
+
+    return duration;
+  }
+
   addPlaylistToQueue(List<StreamModel> listOfStreams, {int index = 0}) async{
     clearQueue();
     var documentsDar = await getApplicationDocumentsDirectory();
@@ -999,20 +998,10 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       //    String baseUrl = "$baseServerUrl/Audio/$id/stream";
       String baseUrl = await getSongUrl(id);
       //  String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
-      List<String> timeParts = stream.long!.split(':');
-      /*  var sourceold = AudioSource.uri(
-                        Uri.parse(baseUrl),
-                        tag: MediaItem(
-                          // Specify a unique ID for each media item:
-                          id: stream.id!,
-                          // Metadata to display in the notification:
-                          album: stream.composer ?? "Error",
-                          title: stream.title ?? "Error",
-                          extras: {"favourite": stream.isFavourite},
-                          duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
-                          artUri: Uri.parse(pictureUrl),
-                        ),
-                      ); */
+
+
+
+
 
       AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
         cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.$codec'])),
@@ -1033,7 +1022,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
           },
 
         //  duration: Duration(seconds: int.parse(stream.long!)),
-          duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
+          duration: durationParser(stream.long!),
           artUri: Uri.parse(pictureUrl),
 
         ),);

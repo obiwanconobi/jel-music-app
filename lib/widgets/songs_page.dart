@@ -179,6 +179,14 @@ class _SongsPageState extends State<SongsPage> {
     }
   }
 
+  styleSongLength(String input){
+    //This basically checks if the song length is in the format 00:00 or in seconds only. Needs a proper fix but who can be assed
+    if(input.contains(':'))return input;
+
+    Duration duration = Duration(seconds: int.parse(input));
+    return duration.toString().split('.').first.padLeft(8, "0");
+  }
+
   _downloadFile(Songs song)async{
     var result = await MusicControllerProvider.of(context, listen: false).downloadSong(song.id!, song.codec!);
     String? title = song.title;
@@ -401,7 +409,7 @@ class _SongsPageState extends State<SongsPage> {
                                                         children: [
                                                           Container(
                                                             margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                                            child: Text(songsList[index].length.toString(), style:  Theme.of(context).textTheme.bodySmall)),
+                                                            child: Text(styleSongLength(songsList[index].length.toString()), style:  Theme.of(context).textTheme.bodySmall)),
                                                             Container(
                                                             margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                                             child: IconButton(icon: Icon(Icons.download, size: 30, color: ((songsList[index].downloaded ?? false) ? Colors.green : Colors.blueGrey)), onPressed: () { _downloadFile(songsList[index]); }),

@@ -69,7 +69,7 @@ class _ArtistButtonState extends State<ArtistButton> {
                               errorWidget: (context, url, error) => Container(
                               color: const Color(0xFF71B77A),
                               child: const Center(
-                                child: Text("404"),),),),
+                                ),),),
                             ),
                           ),                                             
                            Flexible(
