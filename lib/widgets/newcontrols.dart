@@ -2,7 +2,9 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/music_controller.dart';
+import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/handlers/quick_actions_handler.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
@@ -21,10 +23,11 @@ class Controls extends StatefulWidget {
 class _ControlsState extends State<Controls> {
   //ApiController apiController = ApiController();
  // var apiController = GetIt.instance<ApiController>();
-  var jellyfinHandler = GetIt.instance<JellyfinHandler>();
+  String serverType = GetStorage().read('ServerType');
+  late IHandler jellyfinHandler;
   final QuickActionsHandler _quickActionsHandler = QuickActionsHandler();
   void onInit(){
-
+    jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
     MusicControllerProvider.of(context, listen: true).onInit();
  
   }

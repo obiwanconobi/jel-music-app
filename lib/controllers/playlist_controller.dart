@@ -11,7 +11,7 @@ class PlaylistController{
   var serverType = GetStorage().read('ServerType');
   late IHandler handler;
   PlaylistController(){
-      handler = GetIt.instance<IHandler>(instanceName: serverType);
+
   }
 
 
@@ -20,6 +20,7 @@ class PlaylistController{
   }
 
   Future<List<Songs>> onInit() async {
+    handler = GetIt.instance<IHandler>(instanceName: serverType);
     try {
       clearList();
       playlistList = await handler.returnSongsFromPlaylist(playlistId);

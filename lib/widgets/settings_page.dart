@@ -104,7 +104,7 @@ class _MyWidgetState extends State<SettingsPage> {
 
 
 
-    _selectedOption = GetStorage().read('ServerType');
+    _selectedOption = GetStorage().read('ServerType') ?? "Jellyfin";
 
     syncHelper = GetIt.instance<ISyncHelper>(instanceName: _selectedOption);
 

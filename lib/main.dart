@@ -28,6 +28,7 @@ import 'package:jel_music/hive/helpers/panaudio_sync_helper.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
 import 'package:jel_music/homepage.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
+import 'package:jel_music/repos/jellyfin_repo.dart';
 import 'package:jel_music/repos/panaudio_repo.dart';
 import 'package:jel_music/repos/subsonic_repo.dart';
 import 'package:sizer/sizer.dart';
@@ -53,7 +54,7 @@ Future<void> main() async{
    //Repos
   GetIt.I.registerSingleton<PanaudioRepo>(PanaudioRepo());
   GetIt.I.registerSingleton<SubsonicRepo>(SubsonicRepo());
-  GetIt.I.registerSingleton<JellyfinHandler>(JellyfinHandler());
+  GetIt.I.registerSingleton<JellyfinRepo>(JellyfinRepo());
 
 
   //  await startup();

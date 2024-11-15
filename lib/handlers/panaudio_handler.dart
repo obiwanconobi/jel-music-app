@@ -11,7 +11,7 @@ class PanaudioHandler implements IHandler{
 
   PanaudioMappers mapper = PanaudioMappers();
 
-  late PanaudioRepo repo = GetIt.instance<PanaudioRepo>();
+  PanaudioRepo repo = GetIt.instance<PanaudioRepo>();
   PanaudioHandler(){
    // repo =
   }

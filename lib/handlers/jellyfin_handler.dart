@@ -10,7 +10,7 @@ import 'package:jel_music/repos/jellyfin_repo.dart';
 
 class JellyfinHandler implements IHandler{
 
-  late JellyfinRepo jellyfinRepo = GetIt.instance<JellyfinRepo>();
+  JellyfinRepo jellyfinRepo = GetIt.instance<JellyfinRepo>();
   Conversions conversions = Conversions();
   Mappers mapper = Mappers();
   

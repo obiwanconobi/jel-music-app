@@ -1,6 +1,7 @@
+import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/download_controller.dart';
-import 'package:jel_music/handlers/jellyfin_handler.dart';
+import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/hive/classes/albums.dart';
@@ -19,12 +20,14 @@ class SyncHelper implements ISyncHelper {
   SongsHelper songsHelper = SongsHelper();
   AlbumsHelper albumsHelper = AlbumsHelper();
   ArtistsHelper artistsHelper = ArtistsHelper();
-  JellyfinHandler jellyfinHandler = JellyfinHandler();
+  late IHandler jellyfinHandler;
   Conversions conversions = Conversions();
   LogHandler logger = LogHandler();
 
   @override
   runSync(bool check)async{
+    String serverType = GetStorage().read('ServerType');
+    jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
 
     var lastSyncRaw = await GetStorage().read('lastSync') ?? DateTime.now().add(Duration(hours:-2)).toString();
     var lastSync = DateTime.parse(lastSyncRaw);

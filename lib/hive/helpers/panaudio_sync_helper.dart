@@ -15,7 +15,7 @@ class PanaudioSyncHelper implements ISyncHelper {
   SongsHelper songsHelper = SongsHelper();
   ArtistsHelper artistHelper = ArtistsHelper();
   AlbumsHelper albumsHelper = AlbumsHelper();
-  String baseUrl = GetStorage().read('serverUrl');
+  String baseUrl = GetStorage().read('serverUrl') ?? "ERROR";
 
 
   @override

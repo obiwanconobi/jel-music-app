@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/playlist_controller.dart';
 import 'package:jel_music/controllers/playlists_controller.dart';
-import 'package:jel_music/handlers/jellyfin_handler.dart';
+import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/helpers/ioclient.dart';
 import 'package:jel_music/helpers/mappers.dart';
@@ -78,6 +78,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   List<MediaItem> artistMediaItemList = [];
   List<MediaItem> albumsMediaItemList = [];
   List<MediaItem> playlistMediaItemList = [];
+  late IHandler jellyfinHandler;
 
 //android auto menu
   @override
@@ -384,7 +385,9 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     var playbackLog = GetStorage().read('playbackReporting') ?? false;
     if(playbackLog) {
       var userId = await GetStorage().read('userId');
-      JellyfinHandler jellyfinHandler = JellyfinHandler();
+      String serverType = GetStorage().read('ServerType');
+
+      IHandler jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
       String current = currentSource!.tag.id;
       bool playing = playbackState.valueOrNull?.playing ?? false;
       await jellyfinHandler.updatePlaybackProgress(
@@ -396,7 +399,6 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     var playbackLog = GetStorage().read('playbackReporting') ?? false;
     if(playbackLog) {
       var userId = await GetStorage().read('userId');
-      JellyfinHandler jellyfinHandler = JellyfinHandler();
       String current = currentSource!.tag.id;
       bool playing = playbackState.valueOrNull?.playing ?? false;
       await jellyfinHandler.startPlaybackReporting(current, userId);
@@ -407,7 +409,6 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     var playbackLog = GetStorage().read('playbackReporting') ?? false;
     if(playbackLog){
       var userId = await GetStorage().read('userId');
-      JellyfinHandler jellyfinHandler = JellyfinHandler();
       String current = currentSource!.tag.id;
       bool playing = playbackState.valueOrNull?.playing ?? false;
 
@@ -502,6 +503,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     currentSource = getCurrentSong();
 
     baseServerUrl = GetStorage().read('serverUrl') ?? "";
+    String serverType = GetStorage().read('ServerType');
+    jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
     await loadAlbums();
   }
 
