@@ -26,7 +26,7 @@ class PanaudioSyncHelper implements ISyncHelper {
       await songsHelper.openBox();
       var songs = await panaudioHandler.returnSongs();
       for(var song in songs){
-        var addSong = Songs(id: song["id"],name: song["title"], artist: song["artist"], artistId: song["artistId"], album: song["album"], albumId: song["albumId"], favourite: song["favourite"], index: song["trackNumber"], playCount: 0, length: song["length"], year: 1900, codec: "", bitdepth: "", discIndex: 0, downloaded: false, bitrate: "", samplerate: "");
+        var addSong = Songs(id: song["id"],name: song["title"], artist: song["artist"], artistId: song["artistId"], album: song["album"], albumId: song["albumId"], favourite: song["favourite"], index: song["trackNumber"], playCount: song["playCount"], length: song["length"], year: 1900, codec: "", bitdepth: "", discIndex: 0, downloaded: false, bitrate: "", samplerate: "");
         var result = songsHelper.returnSong(addSong.artist, addSong.name);
         if(result == null){
           songsHelper.addSongToBox(addSong);

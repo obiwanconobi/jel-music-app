@@ -66,6 +66,9 @@ class AlbumController {
   }
 
   Future<List<Album>> returnSimilar()async{
+
+    String serverType = GetStorage().read('ServerType');
+    if(serverType == "PanAudio")return [];
     await albumHelper.openBox();
     var album = albumHelper.returnAlbum(artistId!, albumId!);
     

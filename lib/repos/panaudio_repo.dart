@@ -115,6 +115,8 @@ class PanaudioRepo{
 
   }
 
+
+
   Future<void> updateFavouriteArtistStatus(String input, bool current) async {
 
     // String itemId = '${input.substring(0, 8)}-${input.substring(8, 12)}-${input.substring(12, 16)}-${input.substring(16, 20)}-${input.substring(20)}';
@@ -126,5 +128,14 @@ class PanaudioRepo{
       return json.decode(res.body);
     }
 
+  }
+
+  startPlaybackReporting(String songId)async{
+    String url = "$baseServerUrl/api/playback/start?songId=$songId";
+
+    http.Response res = await http.put(Uri.parse(url));
+    if (res.statusCode == 200) {
+      return json.decode(res.body);
+    }
   }
 }

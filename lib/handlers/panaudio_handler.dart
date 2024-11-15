@@ -93,20 +93,20 @@ class PanaudioHandler implements IHandler{
   }
 
   @override
-  startPlaybackReporting(String songId, String userId) {
+  startPlaybackReporting(String songId, String userId) async{
     // TODO: implement startPlaybackReporting
-    throw UnimplementedError();
+    await repo.startPlaybackReporting(songId);
   }
 
   @override
   stopPlaybackReporting(String songId, String userId) {
     // TODO: implement stopPlaybackReporting
-    throw UnimplementedError();
+   // throw UnimplementedError();
   }
 
   @override
   updatePlaybackProgress(String songId, String userId, bool paused, int ticks) {
     // TODO: implement updatePlaybackProgress
-    throw UnimplementedError();
+    //throw UnimplementedError();
   }
 }

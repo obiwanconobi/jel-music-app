@@ -65,6 +65,10 @@ class _SimilarAlbumsState extends State<SimilarAlbums> {
             scrollDirection: Axis.horizontal,
             child: Column(
               children: [
+                Container(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
+                    alignment: Alignment.centerLeft,
+                    child: Text('Similar Albums', style: Theme.of(context).textTheme.bodyLarge)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
