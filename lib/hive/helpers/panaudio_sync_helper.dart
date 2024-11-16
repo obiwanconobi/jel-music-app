@@ -44,7 +44,7 @@ class PanaudioSyncHelper implements ISyncHelper {
           if (artist == null) {
             artistHelper.addArtistToBox(Artists(name: savedSong.artist,
                 id: savedSong.artistId,
-                picture: "",
+                picture: "$baseUrl/api/artistArt?artistId=${savedSong.artistId}" ,
                 playCount: 0));
           }
 

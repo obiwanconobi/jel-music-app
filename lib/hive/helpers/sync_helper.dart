@@ -27,6 +27,7 @@ class SyncHelper implements ISyncHelper {
   @override
   runSync(bool check)async{
     String serverType = GetStorage().read('ServerType');
+    String baseServerUrl = GetStorage().read('serverType');
     jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
 
     var lastSyncRaw = await GetStorage().read('lastSync') ?? DateTime.now().add(Duration(hours:-2)).toString();
@@ -64,7 +65,7 @@ class SyncHelper implements ISyncHelper {
           var overview = artistFull["Overview"];
 
           try{
-            await artistsHelper.addArtistToBox(Artists(id: song.artistId, name: song.artist, picture: song.artistId, favourite: artistFavourite, overview: overview, playCount: song.playCount));
+            await artistsHelper.addArtistToBox(Artists(id: song.artistId, name: song.artist, picture: "$baseServerUrl/Items/${song.artistId}/Images/Primary?fillHeight=480&fillWidth=480&quality=96", favourite: artistFavourite, overview: overview, playCount: song.playCount));
 
           }catch(e){
             logger.addToLog(LogModel(logType: "Error", logMessage: "Error Adding ${song.artist} to box: ${e.toString()}", logDateTime: DateTime.now()));
