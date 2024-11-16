@@ -154,8 +154,8 @@ class _AlbumPageState extends State<AlbumPage> {
                                                 child: CachedNetworkImage(
                                                   fit: BoxFit.fill,
                                                   imageUrl: albumsList[index].picture ?? "",
-                                                  memCacheHeight: 180,
-                                                  memCacheWidth: 180,
+                                                  memCacheHeight: 400,
+                                                  memCacheWidth: 400,
                                                   errorWidget: (context, url, error) => Container(
                                                     color: const Color(0xFF71B77A),
                                                     child: const Center(

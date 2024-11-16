@@ -100,8 +100,8 @@ class _SimilarArtistsState extends State<SimilarArtists> {
                                             child: CachedNetworkImage(
                                               fit: BoxFit.fill,
                                               imageUrl: artistsList[index].picture ?? "",
-                                              memCacheHeight: 150,
-                                              memCacheWidth: 150,
+                                              memCacheHeight: 400,
+                                              memCacheWidth: 400,
                                               errorWidget: (context, url, error) => Container(
                                                 color: const Color(0xFF71B77A),
                                                 child: const Center(

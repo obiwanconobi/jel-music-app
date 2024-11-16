@@ -95,6 +95,7 @@ class PanaudioHandler implements IHandler{
   @override
   startPlaybackReporting(String songId, String userId) async{
     // TODO: implement startPlaybackReporting
+    if(songId == "TT")return;
     await repo.startPlaybackReporting(songId);
   }
 
