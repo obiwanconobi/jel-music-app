@@ -8,6 +8,7 @@ import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/hive/helpers/isynchelper.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
+import 'package:jel_music/models/album.dart';
 
 class PanaudioSyncHelper implements ISyncHelper {
 
@@ -22,6 +23,8 @@ class PanaudioSyncHelper implements ISyncHelper {
   runSync(bool check)async{
    // baseUrl = await GetStorage().read('serverUrl');
     int count = 0;
+    List<Album> favAlbums = await panaudioHandler.returnFavouriteAlbums();
+    List<String> favArtists = await panaudioHandler.returnFavouriteArtists();
     try{
       await songsHelper.openBox();
       var songs = await panaudioHandler.returnSongs();
@@ -31,6 +34,10 @@ class PanaudioSyncHelper implements ISyncHelper {
         if(result == null){
           songsHelper.addSongToBox(addSong);
           count++;
+        }else{
+          if(addSong.playCount > result.playCount){
+           songsHelper.updateSongPlayCount(addSong.id, addSong.playCount);
+          }
         }
 
       }
@@ -41,28 +48,61 @@ class PanaudioSyncHelper implements ISyncHelper {
           await artistHelper.openBox();
           //save artist
           var artist = artistHelper.returnArtist(savedSong.artist);
+          bool artistFav = false;
+
+          var fav = favArtists.any((e) => e.toString().contains(savedSong.artistId));
+
           if (artist == null) {
             artistHelper.addArtistToBox(Artists(name: savedSong.artist,
                 id: savedSong.artistId,
                 picture: "$baseUrl/api/artistArt?artistId=${savedSong.artistId}" ,
+                favourite: fav,
                 playCount: 0));
+          }else{
+            if(artist.favourite != fav){
+              artist.favourite = fav;
+              artistHelper.updateArtist(artist);
+            }
           }
 
           //save album
           await albumsHelper.openBox();
           String picture = baseUrl +
               "/api/albumArt?albumId=${savedSong.albumId}";
+
+
+          bool favAlbum = false;
+          var fav2 = favAlbums.where((element) => element.id == savedSong.albumId).firstOrNull;
+          if(fav2 != null){
+            favAlbum = true;
+          }
+
+
           var album = albumsHelper.returnAlbum(
               savedSong.artist, savedSong.album);
+
           if (album == null) {
+
+            if(true){
+              print(1);
+            }
+
+
+
             albumsHelper.addAlbumToBox(Albums(id: savedSong.albumId,
               name: savedSong.album,
               artist: savedSong.artist,
               artistId: savedSong.artistId,
               playCount: 0,
               picture: picture,
-              favourite: false,
+              favourite: favAlbum,
               year: "1900",),);
+          }else{
+
+            if(album.favourite != favAlbum){
+              album.favourite = favAlbum;
+              albumsHelper.updateAlbum(album, album.key);
+            }
           }
         }
       }

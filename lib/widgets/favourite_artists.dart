@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/artist_controller.dart';
+import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:jel_music/widgets/album_page.dart';
 import 'package:sizer/sizer.dart';
@@ -14,7 +15,7 @@ class FavouriteArtists extends StatefulWidget {
 }
 
 class _FavouriteArtistsState extends State<FavouriteArtists> {
-
+  Conversions conversions = Conversions();
     @override
   void initState() {
     super.initState();
@@ -87,9 +88,9 @@ class _FavouriteArtistsState extends State<FavouriteArtists> {
                                           memCacheHeight: 180,
                                           memCacheWidth: 180,
                                           errorWidget: (context, url, error) => Container(
-                                            color: const Color(0xFF71B77A),
-                                            child: const Center(
-                                              child: Text("404"),
+                                            color: conversions.returnColor(),
+                                            child:  Center(
+                                              child: Text(conversions.returnName(artistsList[index].name!)),
                                             ),
                                           ),
                                         )

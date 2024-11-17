@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/artist_controller.dart';
+import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:jel_music/widgets/album_page.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
@@ -20,6 +21,7 @@ class _ArtistPageState extends State<ArtistPage> {
   var controller = GetIt.instance<ArtistController>();
   double mainAxis = 250.h;
   final TextEditingController _searchController = TextEditingController();
+  Conversions conversions = Conversions();
 
   late Future<List<Artists>> artistsFuture;
   List<Artists> _filteredArtists = []; // List to hold filtered albums
@@ -45,64 +47,9 @@ class _ArtistPageState extends State<ArtistPage> {
       });
   }
 
-  String returnName(String input){
-    if(input.isEmpty)return "";
-    return input!.split(' ')
-        .where((word) => word.isNotEmpty)
-        .map((word) => word[0])
-        .join();
-  }
-
-  Color returnColor(){
-    final random = Random();
-
-    // Generate a random number between 1 and 7 (inclusive)
-    int randomNumber = random.nextInt(7) + 1;
-    switch(randomNumber) {
-      case 1: {
-        // statements;
-        return const Color(0xFFd0d2ff);
-      }
-
-
-      case 2: {
-        //statements;
-        return const Color(0xFFfdd0ff);
-      }
-
-      case 3: {
-        //statements;
-        return const Color(0xFFd0fffd);
-      }
-      case 4: {
-        //statements;
-        return const Color(0xFF98ffcc);
-      }
-      case 5: {
-        //statements;
-        return const Color(0xFFf4c3d8);
-      }
-
-      case 6: {
-        //statements;
-        return const Color(0xFFc7c3f4);
-      }
-      case 7: {
-        //statements;
-        return const Color(0xFFc3f4c7);
-      }
-
-      default: {
-        return const Color(0xFFc3f4c7);
-        //statements;
-      }
-    }
 
 
 
-
-
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -181,9 +128,9 @@ class _ArtistPageState extends State<ArtistPage> {
                                         memCacheHeight: 150,
                                         memCacheWidth: 150,
                                         errorWidget: (context, url, error) => Container(
-                                          color: returnColor(),
+                                          color: conversions.returnColor(),
                                           child: Center(
-                                            child: Text(returnName(_filteredArtists[index].name ?? "")),
+                                            child: Text(conversions.returnName(_filteredArtists[index].name ?? "")),
                                           ),
                                         ),
                                       ),

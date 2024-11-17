@@ -1,3 +1,6 @@
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:jel_music/hive/classes/log.dart';
 import 'package:jel_music/models/log.dart';
 
@@ -41,6 +44,64 @@ class Conversions{
 
     return timestampString;
   }
+
+  String returnName(String input){
+    if(input.isEmpty)return "";
+    return input!.split(' ')
+        .where((word) => word.isNotEmpty)
+        .map((word) => word[0])
+        .join();
+  }
+
+
+  Color returnColor(){
+    final random = Random();
+
+    // Generate a random number between 1 and 7 (inclusive)
+    int randomNumber = random.nextInt(7) + 1;
+    switch(randomNumber) {
+      case 1: {
+        // statements;
+        return const Color(0xFFd0d2ff);
+      }
+
+
+      case 2: {
+        //statements;
+        return const Color(0xFFfdd0ff);
+      }
+
+      case 3: {
+        //statements;
+        return const Color(0xFFd0fffd);
+      }
+      case 4: {
+        //statements;
+        return const Color(0xFF98ffcc);
+      }
+      case 5: {
+        //statements;
+        return const Color(0xFFf4c3d8);
+      }
+
+      case 6: {
+        //statements;
+        return const Color(0xFFc7c3f4);
+      }
+      case 7: {
+        //statements;
+        return const Color(0xFFc3f4c7);
+      }
+
+      default: {
+        return const Color(0xFFc3f4c7);
+        //statements;
+      }
+    }
+
+
+  }
+
 
   String returnTicksToTimestampString(int ticks) {
     // Ticks per second

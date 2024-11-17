@@ -72,6 +72,15 @@ class PanaudioMappers{
   }
 
 
+  Future<List<String>> mapArtistIdsFromRaw(dynamic artists)async{
+    List<String> artistsList = [];
+    for(var artist in artists){
+      String artistId = artist["id"];
+      artistsList.add(artistId);
+    }
+    return artistsList;
+  }
+
   Future<List<Album>> mapAlbumFromRaw(dynamic albums)async{
     List<Album> albumsList = [];
     for(var album in albums){

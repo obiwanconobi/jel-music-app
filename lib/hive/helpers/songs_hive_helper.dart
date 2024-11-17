@@ -98,6 +98,12 @@ class SongsHelper{
      songsBox = Hive.box('songs');
   }
 
+  updateSongPlayCount(String songId, int playCount)async{
+    var song = returnSongById(songId);
+    song.playCount = playCount;
+    songsBox.put(song.key, song);
+  }
+
 
   closeBox()async{
     await Hive.close();

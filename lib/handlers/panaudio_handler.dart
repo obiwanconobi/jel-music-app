@@ -10,13 +10,22 @@ import 'package:jel_music/repos/panaudio_repo.dart';
 class PanaudioHandler implements IHandler{
 
   PanaudioMappers mapper = PanaudioMappers();
-
+  String lastUpdateId = "TT";
   PanaudioRepo repo = GetIt.instance<PanaudioRepo>();
   PanaudioHandler(){
    // repo =
   }
 
 
+ Future<List<Album>> returnFavouriteAlbums()async{
+    var albums = await repo.getFavouriteAlbums();
+    return await mapper.mapAlbumFromRaw(albums);
+  }
+  Future<List<String>> returnFavouriteArtists()async{
+    var artists = await repo.getFavouriteArtists();
+      return await mapper.mapArtistIdsFromRaw(artists);
+
+  }
 
   @override
   Future<List<Album>> returnLatestAlbums()async{

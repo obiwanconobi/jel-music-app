@@ -7,6 +7,30 @@ class PanaudioRepo{
 
   String baseServerUrl = "";
 
+  getFavouriteAlbums()async{
+    baseServerUrl = await GetStorage().read('serverUrl');
+    try {
+      String url = "$baseServerUrl/api/favourite-albums";
+      http.Response res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+  getFavouriteArtists()async{
+    baseServerUrl = await GetStorage().read('serverUrl');
+    try {
+      String url = "$baseServerUrl/api/favourite-artists";
+      http.Response res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   getLatestAlbums()async{
     baseServerUrl = await GetStorage().read('serverUrl');

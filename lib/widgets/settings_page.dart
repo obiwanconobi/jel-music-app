@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
@@ -11,9 +9,6 @@ import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/hive/helpers/isynchelper.dart';
-import 'package:jel_music/hive/helpers/panaudio_sync_helper.dart';
-import 'package:jel_music/hive/helpers/subsonic_sync_helper.dart';
-import 'package:jel_music/hive/helpers/sync_helper.dart';
 import 'package:jel_music/models/log.dart';
 import 'package:jel_music/widgets/downloads_page.dart';
 import 'package:path/path.dart' as p;
@@ -170,19 +165,20 @@ class _MyWidgetState extends State<SettingsPage> {
   }
 
   bool getPlaybackReporting(){
-    return GetStorage().read('playbackReporting') ?? false;
+    var value = GetStorage().read('playbackReporting') ?? false;
+    return value;
   }
 
   bool getAutoPlay(){
     return GetStorage().read('autoPlay') ?? false;
   }
 
-   setPlaybackReporting(bool value){
-     GetStorage().write('playbackReporting', value);
+    setPlaybackReporting(bool value)async{
+      await GetStorage().write('playbackReporting', value);
    }
 
-   setAutoPlay(bool value){
-    GetStorage().write('autoPlay', value);
+   setAutoPlay(bool value)async{
+    await GetStorage().write('autoPlay', value);
    }
 
   getCachedSongs()async{
@@ -254,7 +250,7 @@ class _MyWidgetState extends State<SettingsPage> {
                    TextButton(onPressed: () { goToDownloads(); }, child: Text('Downloads', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
                    Row(
                      children: [
-                      const Text("Playback reporting:"),
+                      const Text("AutoPlay:"),
                       Switch(
                           value: autoPlay,
                           onChanged: (value) {
@@ -269,7 +265,7 @@ class _MyWidgetState extends State<SettingsPage> {
 
                   Row(
                     children:[
-                      Text("AutoPlay"),
+                      Text("Playback reporting:"),
                       Switch(
                         value: playbackReporting,
                         onChanged: (value) {
