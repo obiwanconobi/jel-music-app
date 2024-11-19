@@ -111,6 +111,12 @@ class JellyfinHandler implements IHandler{
   stopPlaybackReporting(String songId, String userId)async{
     await jellyfinRepo.stopPlaybackReporting(songId, userId);
   }
+
+  @override
+  tryGetArt(String artist, String album) {
+    // TODO: implement tryGetArt
+    throw UnimplementedError();
+  }
   
 
 }

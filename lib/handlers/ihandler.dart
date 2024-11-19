@@ -18,4 +18,5 @@ abstract class IHandler {
   startPlaybackReporting(String songId, String userId);
   updatePlaybackProgress(String songId, String userId, bool paused, int ticks);
   stopPlaybackReporting(String songId, String userId);
+  tryGetArt(String artist, String album);
 }

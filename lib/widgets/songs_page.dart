@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
@@ -37,6 +38,7 @@ class _SongsPageState extends State<SongsPage> {
   AlbumsHelper albumHelper = AlbumsHelper();
   var albumController = GetIt.instance<AlbumController>();
   var downloadController= GetIt.instance<DownloadController>();
+  var serverType = GetStorage().read('ServerType');
   late Future<bool> favourite;
   late Future<List<Songs>> songsFuture;
   SongsHelper songsHelper = SongsHelper();
@@ -157,6 +159,10 @@ class _SongsPageState extends State<SongsPage> {
 
   }
 
+  _tryGetArt(String artist, String album){
+    controller.tryGetArt(songsList[0].artist!, songsList[0].album!);
+  }
+
   _downloadAll(List<Songs> songs)async{
     for(var song in songs){
       try{
@@ -171,11 +177,17 @@ class _SongsPageState extends State<SongsPage> {
     }
   }
 
+  _getArt()async{
+
+  }
+
   extraTasks(String task)async{
     if(task == "DOWNLOAD"){
      await _downloadAll(songsList);
     }else if (task == "SHUFFLE"){
       await _addShuffledToQueue(songsList);
+    }else if(task == "GETART"){
+      await _tryGetArt(songsList[0].artist!, songsList[0].album!);
     }
   }
 
@@ -328,6 +340,18 @@ class _SongsPageState extends State<SongsPage> {
                                                   ],
                                                 ),
                                               ),
+                                              PopupMenuItem(
+                                                    value: 'GETART',
+                                                    child: Visibility(
+                                                      visible:(serverType == "PanAudio"),
+                                                      child: const Row(
+                                                        children: [
+                                                          Icon(Icons.download),
+                                                          Text('Try Get Art')
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
                                             ],),
                                           //   IconButton(onPressed:()=>{_addShuffledToQueue(songsList)}, icon: Icon(Icons.shuffle, size: 40, color: Theme.of(context).colorScheme.secondary),),
                                        //   IconButton(onPressed:()=>{_downloadAll(songsList)}, icon: Icon(Icons.download, size: 40, color: Theme.of(context).colorScheme.secondary),),

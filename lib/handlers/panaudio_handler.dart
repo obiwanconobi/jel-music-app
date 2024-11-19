@@ -17,6 +17,10 @@ class PanaudioHandler implements IHandler{
   }
 
 
+  tryGetArt(String artist, String album)async{
+    await repo.tryGetArt(artist, album);
+  }
+
  Future<List<Album>> returnFavouriteAlbums()async{
     var albums = await repo.getFavouriteAlbums();
     return await mapper.mapAlbumFromRaw(albums);

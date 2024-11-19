@@ -40,6 +40,10 @@ class SongsController {
     }
   }
 
+  tryGetArt(String artist, String album)async{
+    await jellyfinHandler.tryGetArt(artist, album);
+  }
+
   toggleFavouriteSong(String itemId, bool current)async{
     await jellyfinHandler.updateFavouriteStatus(itemId, current);
   }

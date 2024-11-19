@@ -7,6 +7,19 @@ class PanaudioRepo{
 
   String baseServerUrl = "";
 
+  tryGetArt(String artist, String album)async{
+    baseServerUrl = GetStorage().read('serverUrl');
+    try {
+      String url = "$baseServerUrl/setalbumpicture?artistName=" + artist + "&albumName=" + album;
+      http.Response res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   getFavouriteAlbums()async{
     baseServerUrl = await GetStorage().read('serverUrl');
     try {

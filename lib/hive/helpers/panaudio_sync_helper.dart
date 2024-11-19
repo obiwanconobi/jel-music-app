@@ -37,6 +37,7 @@ class PanaudioSyncHelper implements ISyncHelper {
         }else{
           if(addSong.playCount > result.playCount){
            songsHelper.updateSongPlayCount(addSong.id, addSong.playCount);
+           count++;
           }
         }
 
