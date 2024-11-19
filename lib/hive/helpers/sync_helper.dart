@@ -26,8 +26,8 @@ class SyncHelper implements ISyncHelper {
 
   @override
   runSync(bool check)async{
-    String serverType = GetStorage().read('ServerType');
-    String baseServerUrl = GetStorage().read('serverType');
+    String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
+    String baseServerUrl = GetStorage().read('serverUrl');
     jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
 
     var lastSyncRaw = await GetStorage().read('lastSync') ?? DateTime.now().add(Duration(hours:-2)).toString();
