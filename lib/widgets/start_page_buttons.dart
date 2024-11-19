@@ -50,20 +50,6 @@ class _StartPageButtonsState extends State<StartPageButtons> {
               child: SizedBox(
                 width: 45.w, // Set the desired width here
                 height: 12.w,
-                child: Button(text: "Artists",
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const ArtistPage()),
-                    );
-                  },)
-                )
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                width: 45.w, // Set the desired width here
-                height: 12.w,
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(

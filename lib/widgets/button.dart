@@ -9,6 +9,7 @@ class Button extends StatelessWidget {
   final double width;
   final double height;
   final double fontSize;
+  final Widget child;
 
   const Button({
     Key? key,
@@ -20,6 +21,7 @@ class Button extends StatelessWidget {
     this.width = double.infinity,
     this.height = 50.0,
     this.fontSize = 16.0,
+    required this.child
   }) : super(key: key);
 
   @override
@@ -56,13 +58,18 @@ class Button extends StatelessWidget {
 
         // Center the text within the container
         child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              color: textColor,
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-            ),
+          child: Row(
+            children: [
+              child,
+              Text(
+                text,
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
       ),
