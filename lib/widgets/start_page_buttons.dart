@@ -5,6 +5,7 @@ import 'package:jel_music/models/log.dart';
 import 'package:jel_music/widgets/all_albums_page.dart';
 import 'package:jel_music/widgets/all_songs_part.dart';
 import 'package:jel_music/widgets/artists_page.dart';
+import 'package:jel_music/widgets/button.dart';
 import 'package:jel_music/widgets/downloads_page.dart';
 import 'package:jel_music/widgets/liked_songs.dart';
 import 'package:jel_music/widgets/most_played_songs.dart';
@@ -49,36 +50,14 @@ class _StartPageButtonsState extends State<StartPageButtons> {
               child: SizedBox(
                 width: 45.w, // Set the desired width here
                 height: 12.w,
-                child: ElevatedButton(
+                child: Button(text: "Artists",
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const ArtistPage()),
                     );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                        child: SvgPicture.asset(
-                          'assets/svg/artist.svg',
-                          width: 24,
-                          height: 24,
-                          color: Theme.of(context).textTheme.bodyMedium!.color,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                        child: Text(
-                            'Artists',
-                            style: Theme.of(context).textTheme.bodyMedium
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                  },)
+                )
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
