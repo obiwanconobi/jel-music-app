@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/all_albums_controller.dart';
 import 'package:jel_music/models/album.dart';
+import 'package:jel_music/widgets/shared_widgets.dart';
 import 'package:jel_music/widgets/songs_page.dart';
 import 'package:jel_music/widgets/start_page_buttons.dart';
 import 'package:sizer/sizer.dart';
@@ -24,6 +25,7 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
     albumsFuture = controller.onInit(); 
   }
   var controller = GetIt.instance<AllAlbumsController>();
+    SharedWidgets sharedWidgets = SharedWidgets();
   late Future<List<Album>> albumsFuture;
   @override
   Widget build(BuildContext context) {
@@ -89,12 +91,8 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
                                           imageUrl: albumsList[index].picture ?? "",
                                           memCacheHeight: 400,
                                           memCacheWidth: 400,
-                                          errorWidget: (context, url, error) => Container(
-                                            color: const Color(0xFF71B77A),
-                                            child: const Center(
-                                              child: Text("404"),
-                                            ),
-                                          ),
+                                          placeholder: (context, url) => sharedWidgets.albumImage404(albumsList[index].artist!, albumsList[index].title!, context),
+                                          errorWidget: (context, url, error) => sharedWidgets.albumImage404(albumsList[index].artist!, albumsList[index].title!, context)
                                         )
                                       ),
                                     ),

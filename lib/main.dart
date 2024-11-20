@@ -165,6 +165,7 @@ static ThemeData lightTheme = ThemeData(
       )
     ),
     textTheme: const TextTheme(
+      displayLarge: TextStyle(color:Colors.black, fontSize:36, fontWeight: FontWeight.w600),
       labelLarge: TextStyle(color: Colors.black, fontSize:26, fontWeight: FontWeight.w600),
       bodyLarge: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600), // Text color for dark theme
       bodyMedium: TextStyle(color: Colors.black, fontSize: 18),
@@ -196,6 +197,7 @@ static ThemeData lightTheme = ThemeData(
       backgroundColor: const Color(0xFF1C1B1B), // Your secondary color
     ), // Your accent color for dark mode
     textTheme: const TextTheme(
+      displayLarge: TextStyle(color:Colors.white, fontSize:36, fontWeight: FontWeight.w600),
       labelLarge: TextStyle(color: Colors.white, fontSize:26, fontWeight: FontWeight.w600),
       bodyLarge: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600), // Text color for dark theme
       bodyMedium: TextStyle(color: Colors.white, fontSize: 18),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/latest_albums_controller.dart';
 import 'package:jel_music/models/album.dart';
+import 'package:jel_music/widgets/shared_widgets.dart';
 import 'package:jel_music/widgets/songs_page.dart';
 import 'package:sizer/sizer.dart';
 
@@ -24,6 +25,7 @@ class _LatestAlbumsState extends State<LatestAlbums> {
   }
   var controller = GetIt.instance<LatestAlbumsController>();
   late Future<List<Album>> albumsFuture;
+  SharedWidgets sharedWidgets = SharedWidgets();
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Album>>(
@@ -87,12 +89,9 @@ class _LatestAlbumsState extends State<LatestAlbums> {
                                           imageUrl: albumsList[index].picture ?? "",
                                           memCacheHeight: 180,
                                           memCacheWidth: 180,
-                                          errorWidget: (context, url, error) => Container(
-                                            color: const Color(0xFF71B77A),
-                                            child: const Center(
-                                              child: Text("404"),
-                                            ),
-                                          ),
+                                            placeholder: (context, url) => sharedWidgets.albumImage404(albumsList[index].artist!, albumsList[index].title!, context),
+                                            errorWidget: (context, url, error) => sharedWidgets.albumImage404(albumsList[index].artist!, albumsList[index].title!, context)
+
                                         )
                                       ),
                                     ),

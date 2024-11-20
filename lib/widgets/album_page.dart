@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/models/artist.dart';
@@ -23,8 +24,9 @@ class AlbumPage extends StatefulWidget {
 }
 
 class _AlbumPageState extends State<AlbumPage> {
+  late Artists artist;
   var controller = GetIt.instance<AlbumController>();
-  
+  var serverType = GetStorage().read('ServerType') ?? "ERROR";
   late Future<List<Album>> albumsFuture;
   late Future<Artists> artistInfo;
   bool fav = false;
@@ -48,6 +50,10 @@ class _AlbumPageState extends State<AlbumPage> {
   _toggleFavourite(String artistId)async{
     var current = controller.artistInfo.favourite;
     await controller.toggleArtistFavourite(artistId, current!);
+    setState(() {
+     // artist.favourite;
+      artist.favourite = !artist.favourite!;
+    });
   }
 
   @override
@@ -83,7 +89,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                       child: Text('No artists available.'),
                                     );
                                   } else {
-                                    var artist = snapshot.data!;
+                                    artist = snapshot.data!;
                                     fav = artist.favourite ?? false;
                                     return Column(mainAxisSize: MainAxisSize.min,children: 
                                     [
@@ -111,7 +117,7 @@ class _AlbumPageState extends State<AlbumPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                IconButton(onPressed:()=>{setState(() {artist.favourite = artist.favourite ?? false;}), _toggleFavourite(artist.id!)}, icon: Icon(Icons.favorite, color: ((artist.favourite ?? false) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30),),
+                                IconButton(onPressed:()=>{_toggleFavourite(artist.id!)}, icon: Icon(Icons.favorite, color: ((artist.favourite ?? false) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30),),
                                 IconButton(onPressed:()=>{playAll()}, icon: Icon(Icons.play_circle, color: Theme.of(context).colorScheme.secondary, size:30),),
                               ],
                             ),

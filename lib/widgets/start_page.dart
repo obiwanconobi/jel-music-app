@@ -72,27 +72,6 @@ class _StartPageState extends State<StartPage> {
             child: Column( 
                 children: [
                   const StartPageButtons(),
-                  Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                          width: 45.w, // Set the desired width here
-                          height: 12.w,
-                          child: Button(text: "Artists",
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const ArtistPage()),
-                              );
-                            },
-                            child: SvgPicture.asset(
-                              'assets/svg/artist.svg',
-                              width: 24,
-                              height: 24,
-                              color: Theme.of(context).textTheme.bodyMedium!.color,
-                            ),
-                          )
-                      )
-                  ),
                   const SizedBox(height:20),
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),

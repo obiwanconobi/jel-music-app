@@ -48,6 +48,7 @@ class AlbumController {
      await artistsHelper.openBox();
      String artistIds = "";
      var artistRaw = artistsHelper.returnArtist(artistId!);
+
      artistInfo.id = artistRaw!.id;
      artistIds = artistRaw.id;
      artistInfo.name = artistRaw.name;
@@ -60,7 +61,12 @@ class AlbumController {
   }
 
   toggleArtistFavourite(String itemId, bool current)async{
-    await jellyfinHandler.updateFavouriteStatus(artistInfo.id!, current);
+    var serverType = GetStorage().read('ServerType') ?? "ERROR";
+    if(serverType == "Jellyfin"){
+      jellyfinHandler.updateFavouriteStatus(itemId, !current);
+    }else if(serverType == "PanAudio"){
+      jellyfinHandler.updateFavouriteArtist(itemId, !current);
+    }
     artistsHelper.openBox();
     artistsHelper.updateFavouriteStatus(itemId);
   }

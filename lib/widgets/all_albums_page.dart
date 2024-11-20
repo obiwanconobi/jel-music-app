@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/all_albums_controller.dart';
+import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
+import 'package:jel_music/widgets/shared_widgets.dart';
 import 'package:jel_music/widgets/songs_page.dart';
 import 'package:sizer/sizer.dart';
 bool? favouriteBool;
@@ -20,7 +22,9 @@ class AllAlbumsPage extends StatefulWidget {
 
 class _AlbumPageState extends State<AllAlbumsPage> {
   final TextEditingController _searchController = TextEditingController();
+  SharedWidgets sharedWidgets = SharedWidgets();
   var controller = GetIt.instance<AllAlbumsController>();
+  Conversions conversions = Conversions();
   late Future<List<Album>> albumsFuture;
   List<Album> _filteredAlbums = []; // List to hold filtered albums
   List<Album> albumsList = [];
@@ -50,6 +54,9 @@ class _AlbumPageState extends State<AllAlbumsPage> {
         }
       });
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -136,12 +143,8 @@ class _AlbumPageState extends State<AllAlbumsPage> {
                                                     imageUrl: _filteredAlbums[index].picture ?? "",
                                                     memCacheHeight: 400,
                                                     memCacheWidth: 400,
-                                                    errorWidget: (context, url, error) => Container(
-                                                      color: const Color(0xFF71B77A),
-                                                      child: const Center(
-                                                        child: Text("404"),
-                                                      ),
-                                                    ),
+                                                    placeholder: (context, url) => sharedWidgets.albumImage404(_filteredAlbums[index].artist!, _filteredAlbums[index].title!, context),
+                                                    errorWidget: (context, url, error) => sharedWidgets.albumImage404(_filteredAlbums[index].artist!, _filteredAlbums[index].title!, context)
                                                   )
                                                 ),
                                               ),

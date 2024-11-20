@@ -5,6 +5,7 @@ import 'package:jel_music/controllers/artist_controller.dart';
 import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:jel_music/widgets/album_page.dart';
+import 'package:jel_music/widgets/shared_widgets.dart';
 import 'package:sizer/sizer.dart';
 
 class FavouriteArtists extends StatefulWidget {
@@ -24,6 +25,7 @@ class _FavouriteArtistsState extends State<FavouriteArtists> {
     artistsFuture = controller.onInit();
   }
   var controller = GetIt.instance<ArtistController>();
+    SharedWidgets sharedWidgets = SharedWidgets();
   late Future<List<Artists>> artistsFuture;
   @override
   Widget build(BuildContext context) {
@@ -87,12 +89,8 @@ class _FavouriteArtistsState extends State<FavouriteArtists> {
                                           imageUrl: artistsList[index].picture ?? "",
                                           memCacheHeight: 180,
                                           memCacheWidth: 180,
-                                          errorWidget: (context, url, error) => Container(
-                                            color: conversions.returnColor(),
-                                            child:  Center(
-                                              child: Text(conversions.returnName(artistsList[index].name!)),
-                                            ),
-                                          ),
+                                          placeholder: (context, url) => sharedWidgets.artistImage404(artistsList[index].name ?? "", context),
+                                          errorWidget: (context, url, error) => sharedWidgets.artistImage404(artistsList[index].name ?? "", context),
                                         )
                                       ),
                                     ),

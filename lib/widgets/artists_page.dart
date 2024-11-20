@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/artist_controller.dart';
 import 'package:jel_music/helpers/conversions.dart';
+import 'package:jel_music/widgets/shared_widgets.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:jel_music/widgets/album_page.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
@@ -21,8 +22,8 @@ class _ArtistPageState extends State<ArtistPage> {
   var controller = GetIt.instance<ArtistController>();
   double mainAxis = 250.h;
   final TextEditingController _searchController = TextEditingController();
+  SharedWidgets sharedWidgets = SharedWidgets();
   Conversions conversions = Conversions();
-
   late Future<List<Artists>> artistsFuture;
   List<Artists> _filteredArtists = []; // List to hold filtered albums
   List<Artists> artistsList  = [];
@@ -45,8 +46,9 @@ class _ArtistPageState extends State<ArtistPage> {
           _filteredArtists = List.from(artistsList); // Reset to original list if search text is empty
         }
       });
-  }
 
+
+  }
 
 
 
@@ -127,12 +129,8 @@ class _ArtistPageState extends State<ArtistPage> {
                                         imageUrl: _filteredArtists[index].picture ?? "",
                                         memCacheHeight: 150,
                                         memCacheWidth: 150,
-                                        errorWidget: (context, url, error) => Container(
-                                          color: conversions.returnColor(),
-                                          child: Center(
-                                            child: Text(conversions.returnName(_filteredArtists[index].name ?? "")),
-                                          ),
-                                        ),
+                                        placeholder: (context, url) => sharedWidgets.artistImage404(_filteredArtists[index].name ?? "", context),
+                                        errorWidget: (context, url, error) => sharedWidgets.artistImage404(_filteredArtists[index].name ?? "", context),
                                       ),
                                     ),
                                   ),

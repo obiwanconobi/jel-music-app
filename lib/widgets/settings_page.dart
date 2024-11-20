@@ -255,8 +255,8 @@ class _MyWidgetState extends State<SettingsPage> {
                           value: autoPlay,
                           onChanged: (value) {
                             setState(() {
-                              setPlaybackReporting(value);
-                              autoPlay = getPlaybackReporting();
+                              setAutoPlay(value);
+                              autoPlay = getAutoPlay();
                             });
                           },
                         ),
@@ -270,8 +270,8 @@ class _MyWidgetState extends State<SettingsPage> {
                         value: playbackReporting,
                         onChanged: (value) {
                           setState(() {
-                            setAutoPlay(value);
-                            playbackReporting = getAutoPlay();
+                            setPlaybackReporting(value);
+                            playbackReporting = getPlaybackReporting();
                           });
                         },
                       ),
