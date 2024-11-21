@@ -91,7 +91,7 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
                                           imageUrl: albumsList[index].picture ?? "",
                                           memCacheHeight: 400,
                                           memCacheWidth: 400,
-                                          placeholder: (context, url) => sharedWidgets.albumImage404(albumsList[index].artist!, albumsList[index].title!, context),
+                                          //placeholder: (context, url) => sharedWidgets.albumImage404(albumsList[index].artist!, albumsList[index].title!, context),
                                           errorWidget: (context, url, error) => sharedWidgets.albumImage404(albumsList[index].artist!, albumsList[index].title!, context)
                                         )
                                       ),

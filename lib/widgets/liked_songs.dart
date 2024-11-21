@@ -101,7 +101,7 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[0].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                                        placeholder: (context, url) => sharedWidgets.albumImage404("", "", context),
+                                                        //placeholder: (context, url) => sharedWidgets.albumImage404("", "", context),
                                                         errorWidget: (context, url, error) => sharedWidgets.albumImage404("","", context)
 
                                     ),
@@ -109,7 +109,7 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[1].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                                          placeholder: (context, url) => sharedWidgets.albumImage404("", "", context),
+                                                        //  placeholder: (context, url) => sharedWidgets.albumImage404("", "", context),
                                                           errorWidget: (context, url, error) => sharedWidgets.albumImage404("", "", context)
 
                                                       ),
@@ -117,7 +117,7 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[2].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                                          placeholder: (context, url) => sharedWidgets.albumImage404("", "", context),
+                                                          //placeholder: (context, url) => sharedWidgets.albumImage404("", "", context),
                                                           errorWidget: (context, url, error) => sharedWidgets.albumImage404("", "" ,context),
 
                                                       ),
@@ -129,7 +129,7 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[3].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                        placeholder: (context, url) => sharedWidgets.albumImage404("","", context),
+                                       // placeholder: (context, url) => sharedWidgets.albumImage404("","", context),
                                         errorWidget: (context, url, error) => sharedWidgets.albumImage404("", "", context)
 
                                     ),
@@ -137,7 +137,7 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[4].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                                          placeholder: (context, url) => sharedWidgets.albumImage404("","", context),
+                                                        //  placeholder: (context, url) => sharedWidgets.albumImage404("","", context),
                                                           errorWidget: (context, url, error) => sharedWidgets.albumImage404("","", context)
 
                                                       ),
@@ -145,7 +145,7 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[5].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                                          placeholder: (context, url) => sharedWidgets.albumImage404("", "", context),
+                                                       //   placeholder: (context, url) => sharedWidgets.albumImage404("", "", context),
                                                           errorWidget: (context, url, error) => sharedWidgets.albumImage404("", "", context)
 
                                                       ),
@@ -157,7 +157,7 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[6].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                        placeholder: (context, url) => sharedWidgets.albumImage404("", "", context),
+                                      //  placeholder: (context, url) => sharedWidgets.albumImage404("", "", context),
                                         errorWidget: (context, url, error) => sharedWidgets.albumImage404("", "", context)
 
                                     ),
@@ -165,7 +165,7 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[7].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                                          placeholder: (context, url) => sharedWidgets.albumImage404("", "", context),
+                                                       //   placeholder: (context, url) => sharedWidgets.albumImage404("", "", context),
                                                           errorWidget: (context, url, error) => sharedWidgets.albumImage404("", "", context)
 
                                                       ),
@@ -173,7 +173,7 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         imageUrl: songsList[8].albumPicture ?? "",
                                                         memCacheHeight: 50,
                                                         memCacheWidth: 50,
-                                                          placeholder: (context, url) => sharedWidgets.albumImage404("", "", context),
+                                                     //     placeholder: (context, url) => sharedWidgets.albumImage404("", "", context),
                                                           errorWidget: (context, url, error) => sharedWidgets.albumImage404("", "", context)
 
                                                       ),
@@ -228,7 +228,7 @@ class _LikedSongsState extends State<LikedSongs> {
                                                     imageUrl: songsList[index].albumPicture ?? "",
                                                     memCacheHeight: 150,
                                                     memCacheWidth: 150,
-                                                      placeholder: (context, url) => sharedWidgets.albumImage404("", "", context),
+                                                    //  placeholder: (context, url) => sharedWidgets.albumImage404("", "", context),
                                                       errorWidget: (context, url, error) => sharedWidgets.albumImage404("", "", context)
 
                                                   ),

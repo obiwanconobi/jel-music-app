@@ -143,7 +143,6 @@ class _AlbumPageState extends State<AllAlbumsPage> {
                                                     imageUrl: _filteredAlbums[index].picture ?? "",
                                                     memCacheHeight: 400,
                                                     memCacheWidth: 400,
-                                                    placeholder: (context, url) => sharedWidgets.albumImage404(_filteredAlbums[index].artist!, _filteredAlbums[index].title!, context),
                                                     errorWidget: (context, url, error) => sharedWidgets.albumImage404(_filteredAlbums[index].artist!, _filteredAlbums[index].title!, context)
                                                   )
                                                 ),
