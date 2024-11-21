@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/helpers/mappers.dart';
@@ -50,6 +52,11 @@ class PanaudioHandler implements IHandler{
   @override
   updateFavouriteArtist(String artistId, bool current)async{
     await repo.updateFavouriteArtistStatus(artistId, current);
+  }
+
+  @override
+  uploadArt(String albumId, File image){
+    return  repo.uploadArt(albumId, image);
   }
 
   @override

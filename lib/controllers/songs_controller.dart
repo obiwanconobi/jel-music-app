@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/helpers/apihelper.dart';
@@ -38,6 +40,11 @@ class SongsController {
      
       rethrow; // Rethrow the error if necessary
     }
+  }
+
+  uploadArt(String albumId, XFile xfile)async{
+    File file = File(xfile.path);
+    await jellyfinHandler.uploadArt(albumId, file);
   }
 
   tryGetArt(String artist, String album)async{

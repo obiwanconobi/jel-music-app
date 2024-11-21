@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/models/playlists.dart';
@@ -19,4 +21,5 @@ abstract class IHandler {
   updatePlaybackProgress(String songId, String userId, bool paused, int ticks);
   stopPlaybackReporting(String songId, String userId);
   tryGetArt(String artist, String album);
+  uploadArt(String albumId, File image);
 }

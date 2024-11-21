@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
@@ -159,6 +160,21 @@ class _SongsPageState extends State<SongsPage> {
 
   }
 
+  _uploadArt()async{
+    final ImagePicker picker = ImagePicker();
+    var response = await picker.pickImage(source: ImageSource.gallery);
+    if (response == null) {
+      return;
+    }
+
+    if (response != null) {
+     //uploadFile
+     await controller.uploadArt( songsList[0].albumId!,response);
+    } else {
+
+    }
+  }
+
   _tryGetArt(String artist, String album){
     controller.tryGetArt(songsList[0].artist!, songsList[0].album!);
   }
@@ -188,6 +204,8 @@ class _SongsPageState extends State<SongsPage> {
       await _addShuffledToQueue(songsList);
     }else if(task == "GETART"){
       await _tryGetArt(songsList[0].artist!, songsList[0].album!);
+    }else if(task == "UPLOADART"){
+      await _uploadArt();
     }
   }
 
@@ -341,17 +359,25 @@ class _SongsPageState extends State<SongsPage> {
                                                 ),
                                               ),
                                               PopupMenuItem(
-                                                    value: 'GETART',
-                                                    child: Visibility(
-                                                      visible:(serverType == "PanAudio"),
-                                                      child: const Row(
-                                                        children: [
-                                                          Icon(Icons.download),
-                                                          Text('Try Get Art')
-                                                        ],
-                                                      ),
+                                                enabled: (serverType == "PanAudio"),
+                                                value: 'GETART',
+                                                child: const Row(
+                                                      children: [
+                                                        Icon(Icons.download),
+                                                        Text('Try Get Art')
+                                                      ],
                                                     ),
                                                   ),
+                                              PopupMenuItem(
+                                                enabled: (serverType == "PanAudio"),
+                                                value: 'UPLOADART',
+                                                child: const Row(
+                                                  children: [
+                                                    Icon(Icons.upload),
+                                                    Text('Upload Art')
+                                                  ],
+                                                ),
+                                              ),
                                             ],),
                                           //   IconButton(onPressed:()=>{_addShuffledToQueue(songsList)}, icon: Icon(Icons.shuffle, size: 40, color: Theme.of(context).colorScheme.secondary),),
                                        //   IconButton(onPressed:()=>{_downloadAll(songsList)}, icon: Icon(Icons.download, size: 40, color: Theme.of(context).colorScheme.secondary),),

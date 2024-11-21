@@ -54,6 +54,7 @@ dependencies:
   expandable_text: 2.3.0  
   device_info_plus: ^10.1.2
   quick_actions: ^1.0.7
+  image_picker: ^1.1.2
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6

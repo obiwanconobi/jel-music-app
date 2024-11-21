@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
@@ -89,6 +90,26 @@ class PanaudioRepo{
       }
     } catch (e) {
       rethrow;
+    }
+  }
+
+  uploadArt(String albumId, File image)async{
+    String url = "$baseServerUrl/upload-album";
+    var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(url)
+    );
+    request.files.add(await http.MultipartFile.fromPath('file', image.path));
+    request.fields['albumId'] = albumId;
+    try {
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        print('Image uploaded successfully');
+      } else {
+        print('Upload failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error uploading image: $e');
     }
   }
 

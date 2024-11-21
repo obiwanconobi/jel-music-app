@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/helpers/conversions.dart';
@@ -70,6 +72,10 @@ class JellyfinHandler implements IHandler{
     return playlistList;
   }
 
+  @override
+  uploadArt(String albumId, File image){
+
+  }
   @override
   updateFavouriteAlbum(String albumId, bool current)async{
 
