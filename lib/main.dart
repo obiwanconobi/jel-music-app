@@ -49,7 +49,7 @@ Future<void> main() async{
 
 
 
-
+  GetIt.I.registerSingleton<LogHandler>(LogHandler());
 
    //Repos
   GetIt.I.registerSingleton<PanaudioRepo>(PanaudioRepo());
@@ -81,7 +81,7 @@ Future<void> main() async{
   );
 
    //Handlers
-  GetIt.I.registerSingleton<LogHandler>(LogHandler());
+
 
   GetIt.I.registerSingleton<ApiController>(ApiController());
   GetIt.I.registerSingleton<AllSongsController>(AllSongsController());
