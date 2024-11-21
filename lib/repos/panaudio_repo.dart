@@ -1,12 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:jel_music/handlers/logger_handler.dart';
+import 'package:jel_music/models/log.dart';
 
 class PanaudioRepo{
 
   String baseServerUrl = "";
+  var logger = GetIt.instance<LogHandler>();
 
   tryGetArt(String artist, String album)async{
     baseServerUrl = GetStorage().read('serverUrl');
@@ -184,6 +188,8 @@ class PanaudioRepo{
     http.Response res = await http.post(Uri.parse(url));
     if (res.statusCode == 200) {
       return json.decode(res.body);
+    }else{
+
     }
 
   }
@@ -194,6 +200,8 @@ class PanaudioRepo{
     http.Response res = await http.put(Uri.parse(url));
     if (res.statusCode == 200) {
       return json.decode(res.body);
+    }else{
+      await logger.addToLog(LogModel(logType: "Error", logMessage: "Error logging playback for song: ${songId}. Err: ${res.body}", logDateTime: DateTime.now()));
     }
   }
 }
