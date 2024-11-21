@@ -94,13 +94,13 @@ class PanaudioRepo{
   }
 
   uploadArt(String albumId, File image)async{
-    String url = "$baseServerUrl/api/upload-album";
+    String url = "$baseServerUrl/api/upload-album?albumId=$albumId";
     var request = http.MultipartRequest(
         'POST',
         Uri.parse(url)
     );
     request.files.add(await http.MultipartFile.fromPath('file', image.path));
-    request.fields['albumId'] = albumId;
+  //  request.fields['albumId'] = albumId;
     try {
       var response = await request.send();
       if (response.statusCode == 200) {
