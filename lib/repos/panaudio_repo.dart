@@ -94,7 +94,7 @@ class PanaudioRepo{
   }
 
   uploadArt(String albumId, File image)async{
-    String url = "$baseServerUrl/upload-album";
+    String url = "$baseServerUrl/api/upload-album";
     var request = http.MultipartRequest(
         'POST',
         Uri.parse(url)
