@@ -104,6 +104,15 @@ class SongsHelper{
     songsBox.put(song.key, song);
   }
 
+  updateSong(String key, Songs song)async{
+    try{
+      await songsBox.put(key, song);
+    }catch(e){
+      print(e);
+    }
+
+  }
+
 
   closeBox()async{
     await Hive.close();

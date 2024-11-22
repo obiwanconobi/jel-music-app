@@ -20,7 +20,11 @@ class AllAlbumsPage extends StatefulWidget {
   State<AllAlbumsPage> createState() => _AlbumPageState();
 }
 
-class _AlbumPageState extends State<AllAlbumsPage> {
+class _AlbumPageState extends State<AllAlbumsPage> with AutomaticKeepAliveClientMixin {
+
+  @override
+  bool get wantKeepAlive => true;
+
   final TextEditingController _searchController = TextEditingController();
   SharedWidgets sharedWidgets = SharedWidgets();
   var controller = GetIt.instance<AllAlbumsController>();
@@ -112,12 +116,13 @@ class _AlbumPageState extends State<AllAlbumsPage> {
                              shrinkWrap: true,
                               itemCount: _filteredAlbums.length,
                               physics: const BouncingScrollPhysics(),
+                              addAutomaticKeepAlives: true,
                               itemBuilder: (context, index) {
                                 return SizedBox(
                                   child: InkWell(
                                     onTap:() => {
                                       Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => SongsPage(albumId: _filteredAlbums[index].title!, artistId: _filteredAlbums[index].artist!,)),
+                                        MaterialPageRoute(maintainState: true, builder: (context) => SongsPage(albumId: _filteredAlbums[index].title!, artistId: _filteredAlbums[index].artist!,)),
                                       )}, 
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.sp),
@@ -143,6 +148,8 @@ class _AlbumPageState extends State<AllAlbumsPage> {
                                                     imageUrl: _filteredAlbums[index].picture ?? "",
                                                     memCacheHeight: 400,
                                                     memCacheWidth: 400,
+                                                      // Cache key for unique identification
+                                                    cacheKey: _filteredAlbums[index].picture ?? "",
                                                     errorWidget: (context, url, error) => sharedWidgets.albumImage404(_filteredAlbums[index].artist!, _filteredAlbums[index].title!, context)
                                                   )
                                                 ),

@@ -10,7 +10,7 @@ import audio_session
 import device_info_plus
 import file_selector_macos
 import just_audio
-import path_provider_macos
+import path_provider_foundation
 import shared_preferences_foundation
 import sqflite_darwin
 

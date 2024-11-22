@@ -19,6 +19,8 @@ class PanaudioSyncHelper implements ISyncHelper {
   String baseUrl = GetStorage().read('serverUrl') ?? "ERROR";
 
 
+
+
   @override
   runSync(bool check)async{
    // baseUrl = await GetStorage().read('serverUrl');
@@ -35,8 +37,8 @@ class PanaudioSyncHelper implements ISyncHelper {
           songsHelper.addSongToBox(addSong);
           count++;
         }else{
-          if(addSong.playCount > result.playCount){
-           songsHelper.updateSongPlayCount(addSong.id, addSong.playCount);
+          if((addSong.playCount != result.playCount) || (addSong.favourite != result.favourite)){
+           songsHelper.updateSong(result.key.toString(),addSong);
            count++;
           }
         }
