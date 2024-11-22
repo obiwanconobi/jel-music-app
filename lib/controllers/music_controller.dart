@@ -397,6 +397,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
   _startPlaybackProgress()async{
     var playbackLog = GetStorage().read('playbackReporting') ?? false;
+    await logger.addToLog(LogModel(logType: "Error",logMessage: "Playback Logging. Logging song: ${currentSource!.tag.title}", logDateTime: DateTime.now()));
     if(true) {
       var userId = await GetStorage().read('userId');
       String current = currentSource!.tag.id;

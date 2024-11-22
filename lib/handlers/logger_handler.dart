@@ -20,7 +20,12 @@ class LogHandler{
   addToLog(LogModel log)async{
     log.id = const Uuid().v4().toString();
     await logHelper.openBox();
-    logHelper.addToLog(conversions.returnLogFromLogModel(log));
+    try{
+      logHelper.addToLog(conversions.returnLogFromLogModel(log));
+    }catch(e){
+      //log
+    }
+
    // logHelper.addToLog(Log(id: log.id!, logType: log.logType!, logMessage: log.logMessage!, logDateTime: log.logDateTime! ));
   }
 
