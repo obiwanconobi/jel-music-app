@@ -59,8 +59,8 @@ class AlbumsHelper{
     albumsBox.add(album);
   }
 
-  void clearAlbums(){
-    albumsBox.clear();
+  clearAlbums()async{
+    await albumsBox.clear();
   }
 
   void getAllAlbums()async{

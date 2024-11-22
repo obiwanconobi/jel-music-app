@@ -397,7 +397,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
   _startPlaybackProgress()async{
     var playbackLog = GetStorage().read('playbackReporting') ?? false;
-    if(playbackLog) {
+    if(true) {
       var userId = await GetStorage().read('userId');
       String current = currentSource!.tag.id;
       bool playing = playbackState.valueOrNull?.playing ?? false;

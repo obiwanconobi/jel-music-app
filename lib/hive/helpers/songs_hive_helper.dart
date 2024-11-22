@@ -89,8 +89,8 @@ class SongsHelper{
       songsBox.put(song.key,song);
   }
 
-  clearSongs(){
-    songsBox.clear();
+  clearSongs()async{
+    await songsBox.clear();
   }
 
   Future<void> openBox()async{

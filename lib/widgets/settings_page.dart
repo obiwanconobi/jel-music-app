@@ -140,10 +140,10 @@ class _MyWidgetState extends State<SettingsPage> {
 
   }
 
-  void clear(){
-    helper.clearArtists();
-    albumsHelper.clearAlbums();
-    syncHelper.clearSongs();
+  void clear()async{
+    await helper.clearArtists();
+    await albumsHelper.clearAlbums();
+    await syncHelper.clearSongs();
   }
 
   void toggleTheme(){

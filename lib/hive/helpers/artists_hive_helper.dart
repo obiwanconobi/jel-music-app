@@ -27,7 +27,8 @@ class ArtistsHelper{
 
 
   List<Artists> returnFavouriteArtists(bool favourite){
-    return artistBox.values.where((artists) => artists.favourite == favourite).toList();
+    var artists =  artistBox.values.where((artists) => artists.favourite == true).toList();
+    return artists;
   }
 
   List<Artists> returnFavouriteArtistsByPlayCount(){
@@ -51,8 +52,8 @@ class ArtistsHelper{
     artistBox.put(artist.key, artist);
   }
   
-  clearArtists(){
-    artistBox.clear();
+  clearArtists()async{
+    await artistBox.clear();
   }
 
   addArtistToBox(Artists artist){
@@ -64,7 +65,8 @@ class ArtistsHelper{
   }
 
   Artists? returnArtist(String name){
-    return artistBox.values.where((artists) => artists.name.toLowerCase() == name.toLowerCase()).firstOrNull;
+    var artist = artistBox.values.where((artists) => artists.name.toLowerCase() == name.toLowerCase()).firstOrNull;
+    return artist;
   }
 
   Artists? returnArtistById(String id){

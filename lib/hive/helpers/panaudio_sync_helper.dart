@@ -51,10 +51,8 @@ class PanaudioSyncHelper implements ISyncHelper {
           await artistHelper.openBox();
           //save artist
           var artist = artistHelper.returnArtist(savedSong.artist);
-          bool artistFav = false;
 
           var fav = favArtists.any((e) => e.toString().contains(savedSong.artistId));
-
           if (artist == null) {
             artistHelper.addArtistToBox(Artists(name: savedSong.artist,
                 id: savedSong.artistId,
@@ -119,8 +117,8 @@ class PanaudioSyncHelper implements ISyncHelper {
    await songsHelper.openBox();
   }
   @override
-  clearSongs() {
-    songsHelper.clearSongs();
+  clearSongs() async{
+    await songsHelper.clearSongs();
   }
 
 
