@@ -5,8 +5,6 @@ import 'package:jel_music/models/log.dart';
 import 'package:jel_music/widgets/all_albums_page.dart';
 import 'package:jel_music/widgets/all_songs_part.dart';
 import 'package:jel_music/widgets/artists_page.dart';
-import 'package:jel_music/widgets/button.dart';
-import 'package:jel_music/widgets/downloads_page.dart';
 import 'package:jel_music/widgets/liked_songs.dart';
 import 'package:jel_music/widgets/most_played_songs.dart';
 import 'package:jel_music/widgets/playlists_page.dart';

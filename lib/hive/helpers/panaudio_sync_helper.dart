@@ -7,7 +7,6 @@ import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/hive/helpers/isynchelper.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
-import 'package:jel_music/hive/helpers/sync_helper.dart';
 import 'package:jel_music/models/album.dart';
 
 class PanaudioSyncHelper implements ISyncHelper {
@@ -24,6 +23,7 @@ class PanaudioSyncHelper implements ISyncHelper {
   @override
   runSync(bool check)async{
    // baseUrl = await GetStorage().read('serverUrl');
+    baseUrl = GetStorage().read('serverUrl') ?? "ERROR";
     int count = 0;
     List<Album> favAlbums = await panaudioHandler.returnFavouriteAlbums();
     List<String> favArtists = await panaudioHandler.returnFavouriteArtists();
@@ -68,8 +68,7 @@ class PanaudioSyncHelper implements ISyncHelper {
 
           //save album
           await albumsHelper.openBox();
-          String picture = baseUrl +
-              "/api/albumArt?albumId=${savedSong.albumId}";
+          String picture = "$baseUrl/api/albumArt?albumId=${savedSong.albumId}";
 
 
           bool favAlbum = false;

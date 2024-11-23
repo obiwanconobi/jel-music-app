@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:jel_music/handlers/ihandler.dart';
-import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/helpers/apihelper.dart';
 import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/hive/classes/albums.dart';

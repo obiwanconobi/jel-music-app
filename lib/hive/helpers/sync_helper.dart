@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/helpers/conversions.dart';
@@ -13,7 +12,6 @@ import 'package:jel_music/hive/helpers/isynchelper.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/fav_albums.dart';
 
-import '../../handlers/subsonic_handler.dart';
 import '../../models/log.dart';
 
 class SyncHelper implements ISyncHelper {
@@ -27,10 +25,10 @@ class SyncHelper implements ISyncHelper {
   @override
   runSync(bool check)async{
     String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
-    String baseServerUrl = GetStorage().read('serverUrl');
+    String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
     jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
 
-    var lastSyncRaw = await GetStorage().read('lastSync') ?? DateTime.now().add(Duration(hours:-2)).toString();
+    var lastSyncRaw = await GetStorage().read('lastSync') ?? DateTime.now().add(const Duration(hours:-2)).toString();
     var lastSync = DateTime.parse(lastSyncRaw);
 
     if(conversions.isMoreThanAnHourBefore(lastSync) || check){

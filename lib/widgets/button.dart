@@ -12,7 +12,7 @@ class Button extends StatelessWidget {
   final Widget child;
 
   const Button({
-    Key? key,
+    super.key,
     required this.text,
     this.onPressed,
     this.backgroundColor = Colors.blue,
@@ -22,7 +22,7 @@ class Button extends StatelessWidget {
     this.height = 50.0,
     this.fontSize = 16.0,
     required this.child
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

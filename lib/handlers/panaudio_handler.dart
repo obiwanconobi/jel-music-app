@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/handlers/ihandler.dart';
-import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/helpers/panaudiomappers.dart';
 import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/models/album.dart';
@@ -19,6 +18,7 @@ class PanaudioHandler implements IHandler{
   }
 
 
+  @override
   tryGetArt(String artist, String album)async{
     await repo.tryGetArt(artist, album);
   }
@@ -115,7 +115,6 @@ class PanaudioHandler implements IHandler{
   @override
   startPlaybackReporting(String songId, String userId) async{
     // TODO: implement startPlaybackReporting
-    if(songId == "TT")return;
     await repo.startPlaybackReporting(songId);
   }
 

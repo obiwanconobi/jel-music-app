@@ -97,7 +97,7 @@ Future<void> main() async{
   GetIt.I.registerSingleton<MostPlayedSongsController>(MostPlayedSongsController());
 
 
-  final QuickActions quickActions = QuickActions();
+  const QuickActions quickActions = QuickActions();
   quickActions.setShortcutItems(<ShortcutItem>[
     const ShortcutItem(
       type: 'play_liked_songs',

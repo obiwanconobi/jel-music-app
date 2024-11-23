@@ -101,6 +101,7 @@ class JellyfinHandler implements IHandler{
     await jellyfinRepo.deleteSongFromPlaylist(songId, playlistId);
   }
 
+  @override
   startPlaybackReporting(String songId, String userId)async{
     try{
       await jellyfinRepo.startPlaybackReporting(songId, userId);
@@ -110,10 +111,12 @@ class JellyfinHandler implements IHandler{
 
   }
 
+  @override
   updatePlaybackProgress(String songId, String userId, bool paused, int ticks)async{
     await jellyfinRepo.updatePlaybackProgress(songId, userId, paused, ticks);
   }
 
+  @override
   stopPlaybackReporting(String songId, String userId)async{
     await jellyfinRepo.stopPlaybackReporting(songId, userId);
   }

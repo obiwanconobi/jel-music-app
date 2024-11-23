@@ -1,7 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/handlers/ihandler.dart';
-import 'package:jel_music/handlers/jellyfin_handler.dart';
-import 'package:jel_music/handlers/panaudio_handler.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/models/album.dart';

@@ -229,7 +229,7 @@ class JellyfinRepo{
   getSongsDataRaw() async{
     var userId = await GetStorage().read('userId');
     var uuid = await androidId.getDeviceId();
-    String deviceId = "PanAudio_${uuid}";
+    String deviceId = "PanAudio_$uuid";
     try {
       Map<String, String> requestHeaders = {
         'Content-type': 'application/json',

@@ -167,13 +167,9 @@ class _SongsPageState extends State<SongsPage> {
       return;
     }
 
-    if (response != null) {
-     //uploadFile
-     await controller.uploadArt( songsList[0].albumId!,response);
-    } else {
-
+   //uploadFile
+   await controller.uploadArt( songsList[0].albumId!,response);
     }
-  }
 
   _tryGetArt(String artist, String album){
     controller.tryGetArt(songsList[0].artist!, songsList[0].album!);

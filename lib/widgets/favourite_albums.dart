@@ -5,7 +5,6 @@ import 'package:jel_music/controllers/all_albums_controller.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/widgets/shared_widgets.dart';
 import 'package:jel_music/widgets/songs_page.dart';
-import 'package:jel_music/widgets/start_page_buttons.dart';
 import 'package:sizer/sizer.dart';
 
 class FavouriteAlbums extends StatefulWidget {

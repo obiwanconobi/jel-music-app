@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/handlers/quick_actions_handler.dart';
 import 'package:jel_music/hive/helpers/isynchelper.dart';
-import 'package:jel_music/hive/helpers/sync_helper.dart';
-import 'package:jel_music/widgets/artists_page.dart';
-import 'package:jel_music/widgets/button.dart';
 import 'package:jel_music/widgets/favourite_albums.dart';
 import 'package:jel_music/widgets/favourite_artists.dart';
 import 'package:jel_music/widgets/latest_albums.dart';

@@ -15,7 +15,7 @@ class PanaudioRepo{
   tryGetArt(String artist, String album)async{
     baseServerUrl = GetStorage().read('serverUrl');
     try {
-      String url = "$baseServerUrl/setalbumpicture?artistName=" + artist + "&albumName=" + album;
+      String url = "$baseServerUrl/setalbumpicture?artistName=$artist&albumName=$album";
       http.Response res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
         return json.decode(res.body);
@@ -198,10 +198,10 @@ class PanaudioRepo{
     String url = "$baseServerUrl/api/playback/start?songId=$songId";
     http.Response res = await http.put(Uri.parse(url));
     if (res.statusCode == 200) {
-      await logger.addToLog(LogModel(logType: "Error", logMessage: "Logged playback for song: ${songId}. Url: ${url}", logDateTime: DateTime.now()));
+      await logger.addToLog(LogModel(logType: "Error", logMessage: "Logged playback for song: $songId. Url: $url", logDateTime: DateTime.now()));
       return json.decode(res.body);
     }else{
-      await logger.addToLog(LogModel(logType: "Error", logMessage: "Error logging playback for song: ${songId}. Err: ${res.body}", logDateTime: DateTime.now()));
+      await logger.addToLog(LogModel(logType: "Error", logMessage: "Error logging playback for song: $songId. Err: ${res.body}", logDateTime: DateTime.now()));
     }
   }
 }

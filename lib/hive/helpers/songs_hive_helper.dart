@@ -167,7 +167,7 @@ class SongsHelper{
 
       var songName = song["Name"];
       if(songName.contains("�")){
-        await logger.addToLog(LogModel(logType: "Error", logMessage: "Error adding song: ${songName}", logDateTime: DateTime.now()));
+        await logger.addToLog(LogModel(logType: "Error", logMessage: "Error adding song: $songName", logDateTime: DateTime.now()));
         continue;
       }
 

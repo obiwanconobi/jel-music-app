@@ -5,11 +5,9 @@ import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/music_controller.dart';
 import 'package:jel_music/handlers/ihandler.dart';
-import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/handlers/quick_actions_handler.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
@@ -23,7 +21,7 @@ class Controls extends StatefulWidget {
 class _ControlsState extends State<Controls> {
   //ApiController apiController = ApiController();
  // var apiController = GetIt.instance<ApiController>();
-  String serverType = GetStorage().read('ServerType');
+  String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
   late IHandler jellyfinHandler;
   final QuickActionsHandler _quickActionsHandler = QuickActionsHandler();
   void onInit(){

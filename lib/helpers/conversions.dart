@@ -47,7 +47,7 @@ class Conversions{
 
   String returnName(String input){
     if(input.isEmpty)return "";
-    return input!.split(' ')
+    return input.split(' ')
         .where((word) => word.isNotEmpty)
         .map((word) => word[0])
         .join();
@@ -123,6 +123,6 @@ class Conversions{
   bool isMoreThanAnHourBefore(DateTime dateTime) {
     DateTime now = DateTime.now();
     Duration difference = now.difference(dateTime);
-    return difference > Duration(hours: 1);
+    return difference > const Duration(hours: 1);
   }
 }

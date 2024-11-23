@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:jel_music/controllers/playlist_controller.dart';
 import 'package:jel_music/controllers/playlists_controller.dart';
 import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
@@ -23,7 +22,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:path/path.dart' as p;
 
-import '../hive/classes/songs.dart';
 
 
 
@@ -232,7 +230,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
     _audioHandler ??= await AudioService.init(
       builder: () => this,
-      config: AudioServiceConfig(
+      config: const AudioServiceConfig(
           androidNotificationOngoing: true,
           androidStopForegroundOnPause: true,
           androidNotificationChannelName: "Playback",
@@ -399,10 +397,12 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     var playbackLog = GetStorage().read('playbackReporting') ?? false;
     await logger.addToLog(LogModel(logType: "Error",logMessage: "Playback Logging. Logging song: ${currentSource!.tag.title}", logDateTime: DateTime.now()));
     if(true) {
-      var userId = await GetStorage().read('userId');
+      var userId = await GetStorage().read('userId') ?? "NoUser";
       String current = currentSource!.tag.id;
-      bool playing = playbackState.valueOrNull?.playing ?? false;
-      await jellyfinHandler.startPlaybackReporting(current, userId);
+      if(current != "TT"){
+        await jellyfinHandler.startPlaybackReporting(current, userId);
+      }
+
     }
   }
 
@@ -975,11 +975,11 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   durationParser(String long){
     Duration duration;
 
-    if(long!.contains(':')){
-      List<String> timeParts = long!.split(':');
+    if(long.contains(':')){
+      List<String> timeParts = long.split(':');
       duration = Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1]));
     }else{
-      duration = Duration(seconds: int.parse(long!));
+      duration = Duration(seconds: int.parse(long));
     }
 
     return duration;

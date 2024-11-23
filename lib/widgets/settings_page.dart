@@ -265,7 +265,7 @@ class _MyWidgetState extends State<SettingsPage> {
 
                   Row(
                     children:[
-                      Text("Playback reporting:"),
+                      const Text("Playback reporting:"),
                       Switch(
                         value: playbackReporting,
                         onChanged: (value) {
