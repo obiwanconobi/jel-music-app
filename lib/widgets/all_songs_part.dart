@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/all_songs_controller.dart';
+import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
@@ -24,6 +25,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
   final TextEditingController _searchController = TextEditingController();
   var controller = GetIt.instance<AllSongsController>();
   late Future<List<Songs>> songsFuture;
+  SongsHelper songsHelper = SongsHelper();
   List<Songs> _filteredSongs = []; // List to hold filtered albums
   List<Songs> songsList = [];
   int _currentPage = 1;
@@ -69,6 +71,28 @@ class _AllSongsPageState extends State<AllSongsPage> {
 
    _playSong(Songs song){
     MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length));
+  }
+
+  _favouriteSong(String songId, bool current, String artist, String title, int index)async{
+    await songsHelper.openBox();
+
+    if(current){
+      //unfavourite
+      controller.toggleFavouriteSong(songId, false);
+      songsHelper.likeSong(artist, title, false);
+      updateSong(index, true);
+    }else{
+      //favourite
+      controller.toggleFavouriteSong(songId, true);
+      songsHelper.likeSong(artist, title, true);
+      updateSong(index, false);
+    }
+  }
+
+  updateSong(int index, bool favourite){
+    setState(() {
+      songsList[index].favourite = !favourite;
+    });
   }
 
   _sortList(SortOptions sort){
@@ -236,9 +260,14 @@ class _AllSongsPageState extends State<AllSongsPage> {
                                                       ),
                                                     ],
                                                   ),
+
                                                 ],
                                               ),
-                                            )
+                                            ),
+                                            Container(
+                                                margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                                child: IconButton(icon: Icon(Icons.favorite, color: ((songsList[index].favourite ?? false) ? Colors.red : Colors.blueGrey), size:30), onPressed: () {_favouriteSong(songsList[index].id!, songsList[index].favourite!, songsList[index].artist!, songsList[index].title!, index); },))
+
                                           ],
                                         ),
                                       ),

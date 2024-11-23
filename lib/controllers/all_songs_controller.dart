@@ -1,3 +1,5 @@
+import 'package:get_it/get_it.dart';
+import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/hive/classes/songs.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
@@ -13,15 +15,23 @@ class AllSongsController {
     String baseServerUrl = "";
     SongsHelper songsHelper = SongsHelper();
     Mappers mappers = Mappers();
-     Future<List<song.Songs>> onInit() async {
-    try {
-      await songsHelper.openBox();
-      clearSongsList();
-      songs = _getSongsFromBox(favouriteVal ?? false);
-      return songs;
-    } catch (error) {
-      rethrow; // Rethrow the error if necessary
-    }
+    late IHandler jellyfinHandler;
+
+    Future<List<song.Songs>> onInit() async {
+      baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+      var serverType = GetStorage().read('ServerType') ?? "ERROR";
+      jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
+
+      try {
+        await songsHelper.openBox();
+        clearSongsList();
+        songs = _getSongsFromBox(favouriteVal ?? false);
+        return songs;
+      } catch (error) {
+        rethrow; // Rethrow the error if necessary
+      }
+
+
   }
 
   clearSongsList(){
@@ -29,7 +39,7 @@ class AllSongsController {
   }
 
   AllSongsController(){
-    baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+
   }
   
   orderByNameAsc(){
@@ -42,6 +52,10 @@ class AllSongsController {
 
   shuffleOrder(){
     songs.shuffle();
+  }
+
+  toggleFavouriteSong(String itemId, bool current)async{
+      await jellyfinHandler.updateFavouriteStatus(itemId, current);
   }
 
   List<song.Songs> _getSongsFromBox(bool favourite){
