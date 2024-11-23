@@ -67,12 +67,6 @@ class _StartPageState extends State<StartPage> {
           child: SingleChildScrollView(
             child: Column( 
                 children: [
-                  const StartPageButtons(),
-                  const SizedBox(height:20),
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    alignment: Alignment.centerLeft,
-                    child: Text('Favourite Albums', style: Theme.of(context).textTheme.bodyLarge,)),
                   // ignore: prefer_const_constructors
                   FavouriteAlbums(),
                   Container(
