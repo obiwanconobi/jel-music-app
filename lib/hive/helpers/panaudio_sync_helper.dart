@@ -38,7 +38,9 @@ class PanaudioSyncHelper implements ISyncHelper {
           count++;
         }else{
           if((addSong.playCount != result.playCount) || (addSong.favourite != result.favourite)){
-           songsHelper.updateSong(result.key.toString(),addSong);
+            result.playCount = addSong.playCount;
+            result.favourite = addSong.favourite;
+           songsHelper.updateSong(result);
            count++;
           }
         }

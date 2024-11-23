@@ -104,9 +104,9 @@ class SongsHelper{
     songsBox.put(song.key, song);
   }
 
-  updateSong(String key, Songs song)async{
+  updateSong(Songs song)async{
     try{
-      await songsBox.put(key, song);
+      await songsBox.put(song.key, song);
     }catch(e){
       print(e);
     }
