@@ -53,67 +53,71 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
             child: Column(
               children: [
                 const StartPageButtons(),
-                const SizedBox(height:20),
-                Container(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    alignment: Alignment.centerLeft,
-                    child: Text('Favourite Albums', style: Theme.of(context).textTheme.bodyLarge,)),
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 22.h,
-                      width: MediaQuery.of(context).size.width,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: albumsList.length,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return SizedBox(
-                            child: InkWell(
-                              onTap:() => {
-                                Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => SongsPage(albumId: albumsList[index].title!, artistId: albumsList[index].artist!,)),
-                                )},
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.sp),
-                              ),
-                              child: Container(
-                                  width: 38.w,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.sp),
-                                    ),
+                    const SizedBox(height:20),
+                    Container(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                        child: Text('Favourite Albums', style: Theme.of(context).textTheme.bodyLarge,)),
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 50.w,
+                          width: MediaQuery.of(context).size.width,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: albumsList.length,
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return SizedBox(
+                                child: InkWell(
+                                  onTap:() => {
+                                    Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) => SongsPage(albumId: albumsList[index].title!, artistId: albumsList[index].artist!,)),
+                                    )},
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10.sp),
                                   ),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                                        child: SizedBox(
-                                          height:35.w,
-                                          width: 37.w,
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(4.w),
-                                            child: CachedNetworkImage(
-                                              fit: BoxFit.fill,
-                                              imageUrl: albumsList[index].picture ?? "",
-                                              memCacheHeight: 400,
-                                              memCacheWidth: 400,
-                                              //placeholder: (context, url) => sharedWidgets.albumImage404(albumsList[index].artist!, albumsList[index].title!, context),
-                                              errorWidget: (context, url, error) => sharedWidgets.albumImage404(albumsList[index].artist!, albumsList[index].title!, context)
-                                            )
-                                          ),
+                                  child: Container(
+                                      width: 38.w,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(10.sp),
                                         ),
                                       ),
-                                      Text(albumsList[index].title ?? "", overflow: TextOverflow.clip, maxLines: 1, style: Theme.of(context).textTheme.bodySmall),
-                                      Text(albumsList[index].artist ?? "",  overflow: TextOverflow.clip, maxLines: 1 , style: Theme.of(context).textTheme.bodySmall)
-                                    ],
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                            child: SizedBox(
+                                              height:35.w,
+                                              width: 37.w,
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(4.w),
+                                                child: CachedNetworkImage(
+                                                  fit: BoxFit.fill,
+                                                  imageUrl: albumsList[index].picture ?? "",
+                                                  memCacheHeight: 400,
+                                                  memCacheWidth: 400,
+                                                  //placeholder: (context, url) => sharedWidgets.albumImage404(albumsList[index].artist!, albumsList[index].title!, context),
+                                                  errorWidget: (context, url, error) => sharedWidgets.albumImage404(albumsList[index].artist!, albumsList[index].title!, context)
+                                                )
+                                              ),
+                                            ),
+                                          ),
+                                          Text(albumsList[index].title ?? "", overflow: TextOverflow.clip, maxLines: 1, style: Theme.of(context).textTheme.bodySmall),
+                                          Text(albumsList[index].artist ?? "",  overflow: TextOverflow.clip, maxLines: 1 , style: Theme.of(context).textTheme.bodySmall)
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                          );
-                        },
-                      ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

@@ -109,9 +109,9 @@ class _AlbumPageState extends State<AllAlbumsPage> with AutomaticKeepAliveClient
                           children: [
                             GridView.builder(
                               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 250, // Adjust this value according to your needs
-                                  mainAxisSpacing: 18,
-                                  mainAxisExtent: 25.h,
+                                maxCrossAxisExtent: 60.w, // Adjust this value according to your needs
+                                mainAxisSpacing: 6.w,
+                                mainAxisExtent: 52.w,
                                 ),
                              shrinkWrap: true,
                               itemCount: _filteredAlbums.length,
@@ -137,10 +137,10 @@ class _AlbumPageState extends State<AllAlbumsPage> with AutomaticKeepAliveClient
                                           children: [
                                             Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                              const EdgeInsets.fromLTRB(0, 0, 0, 0),
                                               child: SizedBox(
                                                 height:40.w,
-                                                width: 42.w,
+                                                width: 40.w,
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.circular(4.w),
                                                   child: CachedNetworkImage(

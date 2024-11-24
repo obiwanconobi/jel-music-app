@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
@@ -251,6 +252,7 @@ class _SongsPageState extends State<SongsPage> {
     songsList = controller.songs;
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(centerTitle: true, title: Text('', style: Theme.of(context).textTheme.bodyLarge),),
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,
@@ -283,21 +285,21 @@ class _SongsPageState extends State<SongsPage> {
                       return SingleChildScrollView(
                         child: Column(
                           children: [
+                            CachedNetworkImage(
+                              fit: BoxFit.cover,
+                              imageUrl: songsList[0].albumPicture ?? "",
+                              memCacheHeight: 400,
+                              memCacheWidth: 400,
+                              errorWidget: (context, url, error) => Container(
+                                color: const Color(0xFF71B77A),
+                                child: const Center(
+                                  child: Text("404"),
+                                ),
+                              ),
+                            ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Image.network(
-                                songsList[0].albumPicture ?? "", // this image doesn't exist
-                                fit: BoxFit.cover,
-                                height:100.w,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                  //  color: Colors.amber,
-                                    alignment: Alignment.center,
-                                    child: Image.asset('assets/images/album.png', height: 250),
-                                  );
-                                },
-                              ),
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(10, 10, 0, 5),
                                   child: Text(songsList[0].album.toString(), style: Theme.of(context).textTheme.bodyLarge),
