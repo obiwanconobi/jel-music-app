@@ -1,35 +1,92 @@
-name: Flutter CI
+name: Flutter Windows Release
 
-on: push
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  build-and-release-windows:
+  build-and-release:
     runs-on: windows-latest
-
+    
     steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
+      - uses: actions/checkout@v3
+      
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.24.5'
-      - name: Install project dependencies
-        run: flutter pub get
-      - name: Generate intermediates
-        run: flutter pub run build_runner build --delete-conflicting-outputs
-      - name: Enable windows build
-        run: flutter config --enable-windows-desktop
-      - name: Build artifacts
-        run: flutter build windows --release
-      - name: Archive Release
-        uses: thedoctor0/zip-release@master
-        with:
-          type: 'zip'
-          filename: MacRecoveryX-${{github.ref_name}}-windows.zip
-          directory: build/windows/runner/Release
-      - name: Windows Release
-        uses: softprops/action-gh-release@v1
+          cache: true
+      
+      - name: Install WiX Toolset
+        run: |
+          $installBuilder = "https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311.exe"
+          Invoke-WebRequest -Uri $installBuilder -OutFile "wix311.exe"
+          Start-Process -FilePath "wix311.exe" -ArgumentList "/install","/quiet" -Wait
+          
+      - name: Get version from pubspec
+        id: version
+        run: |
+          $version = (Get-Content pubspec.yaml | Select-String 'version:').ToString().Split(' ')[1].Trim()
+          echo "VERSION=$version" >> $env:GITHUB_ENV
+          
+      - name: Flutter Build
+        run: |
+          flutter config --enable-windows-desktop
+          flutter pub get
+          flutter build windows --release
+          
+      - name: Create MSI
+        run: |
+          $env:PATH += ";C:\Program Files (x86)\WiX Toolset v3.11\bin"
+          mkdir build\windows\runner\Release\installer
+          $APP_NAME = "PanAudio"  # Replace with your app name
+          
+          # Create WiX source file
+          @"
+          <?xml version="1.0" encoding="UTF-8"?>
+          <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+            <Product Id="*" Name="$APP_NAME" Language="1033" Version="$env:VERSION" Manufacturer="Pansoft" UpgradeCode="baf69f3d-7030-4635-af9c-28e23f660fca">
+              <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+              <MajorUpgrade DowngradeErrorMessage="A newer version is already installed." />
+              <MediaTemplate EmbedCab="yes" />
+              <Directory Id="TARGETDIR" Name="SourceDir">
+                <Directory Id="ProgramFilesFolder">
+                  <Directory Id="INSTALLFOLDER" Name="$APP_NAME" />
+                </Directory>
+                <Directory Id="ProgramMenuFolder">
+                  <Directory Id="ApplicationProgramsFolder" Name="$APP_NAME"/>
+                </Directory>
+              </Directory>
+              <DirectoryRef Id="INSTALLFOLDER">
+                <Component Id="ApplicationFiles" Guid="*">
+                  <File Id="AppEXE" Source="build\windows\runner\Release\${APP_NAME}.exe" KeyPath="yes">
+                    <Shortcut Id="StartMenuShortcut" Directory="ApplicationProgramsFolder" Name="$APP_NAME" WorkingDirectory="INSTALLFOLDER" Advertise="yes" />
+                  </File>
+                </Component>
+              </DirectoryRef>
+              <DirectoryRef Id="ApplicationProgramsFolder">
+                <Component Id="ApplicationShortcut" Guid="*">
+                  <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
+                  <RegistryValue Root="HKCU" Key="Software\$APP_NAME" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+                </Component>
+              </DirectoryRef>
+              <Feature Id="MainApplication" Title="Main Application" Level="1">
+                <ComponentRef Id="ApplicationFiles" />
+                <ComponentRef Id="ApplicationShortcut" />
+              </Feature>
+            </Product>
+          </Wix>
+          "@ | Out-File -FilePath "build\windows\runner\Release\installer\installer.wxs" -Encoding UTF8
+          
+          # Build MSI
+          candle.exe "build\windows\runner\Release\installer\installer.wxs" -o "build\windows\runner\Release\installer\installer.wixobj"
+          light.exe "build\windows\runner\Release\installer\installer.wixobj" -o "build\windows\runner\Release\installer\${APP_NAME}-${env:VERSION}.msi"
+          
+      - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')
-        env:
-          GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
+        uses: softprops/action-gh-release@v1
         with:
-          files: build/windows/runner/Release/MacRecoveryX-${{github.ref_name}}-windows.zip
+          files: build/windows/runner/Release/installer/*.msi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
