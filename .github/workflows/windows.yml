@@ -48,7 +48,7 @@ jobs:
         run: |
           $env:PATH += ";C:\Program Files (x86)\WiX Toolset v3.11\bin"
           mkdir build\windows\runner\Release\installer
-          $APP_NAME = "JelMusic"  # Replace with your app name
+          $APP_NAME = "jel_music"  # Replace with your app name
           
           # Create WiX source file
           @"
