@@ -323,7 +323,6 @@ class _MyWidgetState extends State<SettingsPage> {
                         ),
                      ],
                    ),
-
                   Row(
                     children:[
                       const Text("Playback reporting:"),
