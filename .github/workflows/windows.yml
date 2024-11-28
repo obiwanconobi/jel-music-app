@@ -27,8 +27,16 @@ jobs:
       - name: Get version from pubspec
         id: version
         run: |
-          $version = (Get-Content pubspec.yaml | Select-String 'version:').ToString().Split(' ')[1].Trim()
-          echo "VERSION=$version" >> $env:GITHUB_ENV
+          $rawVersion = (Get-Content pubspec.yaml | Select-String 'version:').ToString().Split(' ')[1].Trim()
+          # Extract version without build number and ensure it has 3 parts
+          $version = ($rawVersion -split '\+')[0]
+          $versionParts = $version -split '\.'
+          # Pad with .0 if needed to make it x.x.x
+          while ($versionParts.Length -lt 3) {
+            $versionParts += "0"
+          }
+          $formattedVersion = [string]::Join(".", $versionParts)
+          echo "VERSION=$formattedVersion" >> $env:GITHUB_ENV
           
       - name: Flutter Build
         run: |
@@ -40,13 +48,13 @@ jobs:
         run: |
           $env:PATH += ";C:\Program Files (x86)\WiX Toolset v3.11\bin"
           mkdir build\windows\runner\Release\installer
-          $APP_NAME = "PanAudio"  # Replace with your app name
+          $APP_NAME = "JelMusic"  # Replace with your app name
           
           # Create WiX source file
           @"
           <?xml version="1.0" encoding="UTF-8"?>
           <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-            <Product Id="*" Name="$APP_NAME" Language="1033" Version="$env:VERSION" Manufacturer="Pansoft" UpgradeCode="baf69f3d-7030-4635-af9c-28e23f660fca">
+            <Product Id="*" Name="$APP_NAME" Language="1033" Version="$env:VERSION" Manufacturer="YourCompany" UpgradeCode="YOUR-GUID-HERE">
               <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
               <MajorUpgrade DowngradeErrorMessage="A newer version is already installed." />
               <MediaTemplate EmbedCab="yes" />
