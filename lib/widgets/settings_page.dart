@@ -223,38 +223,88 @@ class _MyWidgetState extends State<SettingsPage> {
               child: Column(
                 children: 
                 [
-                DropdownButton<String>(
-                value: _selectedOption,
-                onChanged: (String? newValue) {
-                  if (newValue != null) {
-                    setState(() {
-                      _selectedOption = newValue;
-                      writeServerType(newValue);
-                    });
-                  }
-                },
-                items: const <DropdownMenuItem<String>>[
-                  DropdownMenuItem<String>(
-                    value: 'Jellyfin',
-                    child: Text('Jellyfin'),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: 'Subsonic',
-                    child: Text('Subsonic'),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: 'PanAudio',
-                    child: Text('PanAudio'),
-                  ),
-                ],
+                GridView(
+                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 60.w, // Adjust this value according to your needs
+                mainAxisSpacing: 6.w,
+                mainAxisExtent: 52.w,
               ),
-                   Text('Server URL', style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color)),
-                  TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _serverUrlTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_saveUrl),)),),
-                  TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _usernameTextController,),
-                  TextField(obscureText: true, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _passwordTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_login),)),),
-                  TextButton(onPressed: () { sync(); }, child: Text('Sync', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
-                  TextButton(onPressed: () { check(); }, child: Text('Check', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
-                  TextButton(onPressed: () { clear(); }, child: Text('Clear', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
+                  shrinkWrap: true,
+                  children: [
+                    Card(
+                      child: Padding(
+                        padding: EdgeInsets.all(3.w),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text('Server Type', style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color)),
+                            DropdownButton<String>(
+                            value: _selectedOption,
+                            onChanged: (String? newValue) {
+                              if (newValue != null) {
+                                setState(() {
+                                  _selectedOption = newValue;
+                                  writeServerType(newValue);
+                                });
+                              }
+                            },
+                            items: const <DropdownMenuItem<String>>[
+                              DropdownMenuItem<String>(
+                                value: 'Jellyfin',
+                                child: Text('Jellyfin'),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: 'Subsonic',
+                                child: Text('Subsonic'),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: 'PanAudio',
+                                child: Text('PanAudio'),
+                              ),
+                            ],
+                                          ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Card(child:
+                    Padding(
+                      padding: EdgeInsets.all(3.w),
+                      child: Column(
+                        children: [
+                          TextButton(onPressed: () { sync(); }, child: Text('Sync', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
+                          TextButton(onPressed: () { clear(); }, child: Text('Clear', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
+                        ],
+                      ),
+                    )),
+                    Card(child:
+                    Padding(
+                      padding: EdgeInsets.all(3.w),
+                      child: Column(
+                        children: [
+                          Text('Server URL', style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color)),
+                          TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _serverUrlTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_saveUrl),)),),
+                        ],
+                      ),
+                    )),
+                    Card(child:
+                    Padding(
+                      padding: EdgeInsets.all(3.w),
+                      child: Column(
+                        children: [
+                          Text("Login Details"),
+                          TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _usernameTextController,),
+                          TextField(obscureText: true, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _passwordTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_login),)),),
+
+                        ],
+                      ),
+                    )),
+                  ],
+                ),
+
+
+
+
                   TextButton(onPressed: () { toggleTheme(); }, child: Text('Toggle Theme', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
                    TextButton(onPressed: () { clearCache(); }, child: Text('Clear Cache', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
                   Text("Cached Songs: $totalCachedFileCount"),

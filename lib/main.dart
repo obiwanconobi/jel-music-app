@@ -131,6 +131,7 @@ static ThemeData lightTheme = ThemeData(
         statusBarColor: Color.fromARGB(255, 204, 204, 204),
       )
     ),
+    cardTheme: const CardTheme(color: Color.fromARGB(255, 179, 179, 179)),
     scaffoldBackgroundColor:const Color.fromARGB(255, 204, 204, 204),
     primaryColor: Colors.teal, // Your primary color for dark mode
     canvasColor:const Color.fromARGB(255, 179, 179, 179),
@@ -186,6 +187,7 @@ static ThemeData lightTheme = ThemeData(
         statusBarColor: Color(0xFF1C1B1B),
       )
     ),
+    cardTheme: const CardTheme(color: Color.fromARGB(255, 37, 37, 37)),
     scaffoldBackgroundColor: const Color(0xFF1C1B1B),
     primaryColor: Colors.teal, // Your primary color for dark mode
     canvasColor:const Color.fromARGB(255, 37, 37, 37),
