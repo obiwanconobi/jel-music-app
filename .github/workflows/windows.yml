@@ -54,7 +54,7 @@ jobs:
           @"
           <?xml version="1.0" encoding="UTF-8"?>
           <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-            <Product Id="*" Name="$APP_NAME" Language="1033" Version="$env:VERSION" Manufacturer="YourCompany" UpgradeCode="YOUR-GUID-HERE">
+            <Product Id="*" Name="$APP_NAME" Language="1033" Version="$env:VERSION" Manufacturer="YourCompany" UpgradeCode="baf69f3d-7030-4635-af9c-28e23f660fca">
               <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
               <MajorUpgrade DowngradeErrorMessage="A newer version is already installed." />
               <MediaTemplate EmbedCab="yes" />
