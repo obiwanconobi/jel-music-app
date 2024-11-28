@@ -85,12 +85,6 @@ class PanaudioSyncHelper implements ISyncHelper {
 
           if (album == null) {
 
-            if(true){
-              print(1);
-            }
-
-
-
             albumsHelper.addAlbumToBox(Albums(id: savedSong.albumId,
               name: savedSong.album,
               artist: savedSong.artist,

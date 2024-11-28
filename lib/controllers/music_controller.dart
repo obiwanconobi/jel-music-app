@@ -396,7 +396,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   _startPlaybackProgress()async{
     var playbackLog = GetStorage().read('playbackReporting') ?? false;
     await logger.addToLog(LogModel(logType: "Error",logMessage: "Playback Logging. Logging song: ${currentSource!.tag.title}", logDateTime: DateTime.now()));
-    if(true) {
+    if(playbackLog) {
       var userId = await GetStorage().read('userId') ?? "NoUser";
       String current = currentSource!.tag.id;
       if(current != "TT"){
@@ -952,7 +952,11 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
           duration: durationParser(value.long!),
           artUri: Uri.parse(pictureUrl),
         ),);
-      playlist.insert(currentIndexSource+1, source);
+
+      int indexVal = _advancedPlayer.currentIndex!+1;
+      playlist.insert(indexVal, source);
+      setUiElements();
+      notifyListeners();
     }
 
 

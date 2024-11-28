@@ -70,7 +70,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
       }
 
    _playSong(Songs song){
-    MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length));
+    MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length, bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate, codec: song.codec));
   }
 
   _favouriteSong(String songId, bool current, String artist, String title, int index)async{
@@ -266,7 +266,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
                                             ),
                                             Container(
                                                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                                child: IconButton(icon: Icon(Icons.favorite, color: ((songsList[index].favourite ?? false) ? Colors.red : Colors.blueGrey), size:30), onPressed: () {_favouriteSong(songsList[index].id!, songsList[index].favourite!, songsList[index].artist!, songsList[index].title!, index); },))
+                                                child: IconButton(icon: Icon(Icons.favorite, color: ((_filteredSongs[index].favourite ?? false) ? Colors.red : Colors.blueGrey), size:30), onPressed: () {_favouriteSong(_filteredSongs[index].id!, _filteredSongs[index].favourite!, _filteredSongs[index].artist!, _filteredSongs[index].title!, index); },))
 
                                           ],
                                         ),

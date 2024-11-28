@@ -14,7 +14,7 @@ import 'package:jel_music/widgets/downloads_page.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sizer/sizer.dart';
-
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 
 class SettingsPage extends StatefulWidget {
@@ -182,9 +182,20 @@ class _MyWidgetState extends State<SettingsPage> {
    }
 
   getCachedSongs()async{
-    var documentsDar = await getApplicationDocumentsDirectory();
-    final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync();
-      totalCachedFileCount = (files.length/2).toString();
+    try{
+
+      if (kIsWeb) {
+        // Set web-specific directory
+      } else {
+        var documentsDar = await getApplicationDocumentsDirectory();
+        final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync();
+        totalCachedFileCount = (files.length/2).toString();
+      }
+
+    }catch(e){
+      print(e);
+    }
+
   }
 
   goToDownloads()async{

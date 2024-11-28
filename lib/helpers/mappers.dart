@@ -7,11 +7,17 @@ import 'package:jel_music/models/stream.dart';
 class Mappers{
 
     Conversions conversions = Conversions();
-    String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
-    String serverType = GetStorage().read('ServerType') ?? "ERROR";
+    String baseServerUrl = "";
+    String serverType = "";
+
+    getValues(){
+      baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+      serverType = GetStorage().read('ServerType') ?? "ERROR";
+    }
 
 
     Future<List<Songs>> convertHiveSongsToModelSongs(dynamic songsRaw)async{
+      getValues();
       List<Songs> songsList = [];
       for(var song in songsRaw){
         String songId = song.albumId;
@@ -45,8 +51,7 @@ class Mappers{
     }
 
     String getImageUrl(String albumId){
-      serverType = GetStorage().read('ServerType') ?? "ERROR";
-      baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+      getValues();
       if(serverType == "Jellyfin"){
         return "$baseServerUrl/Items/$albumId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
 
@@ -64,6 +69,7 @@ class Mappers{
   }
 
     Future<List<StreamModel>> convertHiveSongsToStreamModelSongs(dynamic songsRaw)async{
+      getValues();
       List<StreamModel> songsList = [];
       for(var song in songsRaw){
         String songId = song.albumId;
@@ -79,6 +85,7 @@ class Mappers{
 
   
   Future<List<Songs>> mapListSongsFromRaw(dynamic songs)async{
+    getValues();
     List<Songs> songsList = [];
       for(var song in songs){
       String songId = song.albumId;
@@ -97,6 +104,7 @@ class Mappers{
   }
 
   Future<List<Album>> mapAlbumFromRaw(dynamic albums)async{
+    getValues();
     List<Album> albumsList = [];
     for(var album in albums["Items"]){
           String albumId = album["Id"];
@@ -109,6 +117,7 @@ class Mappers{
   }
 
   Future<List<Songs>> mapSongFromRaw(dynamic songs) async {
+    getValues();
     List<Songs> songsList = [];
     Conversions conversions = Conversions();
      String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";

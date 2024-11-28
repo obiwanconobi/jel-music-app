@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class IoClient {
+
   static Future<String?> download(
       {required String url, required String path}) async {
     try {

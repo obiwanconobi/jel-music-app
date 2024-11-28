@@ -11,12 +11,13 @@ class LatestAlbumsController {
     String? artistId;
     bool? favouriteVal;
     final int currentArtistIndex = 0;
-    String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+    String baseServerUrl = "";
     String serverType = "";
     AlbumsHelper albumHelper = AlbumsHelper();
     late IHandler handler;
 
      Future<List<Album>> onInit() async {
+       baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
        serverType = GetStorage().read('ServerType') ?? "Jellyfin";
        handler = GetIt.instance<IHandler>(instanceName: serverType);
       try {

@@ -18,7 +18,8 @@ class FavouriteAlbums extends StatefulWidget {
 }
 
 class _FavouriteAlbumsState extends State<FavouriteAlbums> {
-    @override
+
+  @override
   void initState() {
     super.initState();
     controller.favouriteVal = true;
@@ -29,31 +30,31 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
   late Future<List<Album>> albumsFuture;
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Album>>(
-      future: albumsFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: Text('Offline')
-          );
-        } else if (snapshot.hasError) {
-          return Center(
-            child: Text('Error: ${snapshot.error}'),
-          );
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(
-            child: Text('No artists available.'),
-          );
-        } else {
-          // Data is available, build the list
-          List<Album> albumsList = snapshot.data!;
-          albumsList.shuffle();
-          return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Column(
-              children: [
-                const StartPageButtons(),
-                Column(
+    return Column(
+      children: [
+        const StartPageButtons(),
+        FutureBuilder<List<Album>>(
+          future: albumsFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: Text('Offline')
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Error: ${snapshot.error}'),
+              );
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(
+                child: Text('No artists available.'),
+              );
+            } else {
+              // Data is available, build the list
+              List<Album> albumsList = snapshot.data!;
+              albumsList.shuffle();
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height:20),
@@ -121,11 +122,11 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
                     ),
                   ],
                 ),
-              ],
-            ),
-          );
-        }
-      }
+              );
+            }
+          }
+        ),
+      ],
     );
   }
 }
