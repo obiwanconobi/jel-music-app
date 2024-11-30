@@ -13,6 +13,10 @@ class LogHandler{
     await logHelper.openBox();
   }
 
+  clearLogs()async{
+    logHelper.clearLog();
+  }
+
   listLogsFromBox(){
     return logHelper.listFromLog();
   }

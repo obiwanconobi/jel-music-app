@@ -11,6 +11,7 @@ import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/hive/helpers/isynchelper.dart';
 import 'package:jel_music/models/log.dart';
 import 'package:jel_music/widgets/downloads_page.dart';
+import 'package:jel_music/widgets/log_box.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sizer/sizer.dart';
@@ -151,6 +152,9 @@ class _MyWidgetState extends State<SettingsPage> {
 
   }
 
+  clearLogs()async{
+  }
+
   void clearCache()async{
   //  MusicControllerProvider.of(context, listen:false).clearCache();
     await downloadController.clearDownloads();
@@ -203,6 +207,10 @@ class _MyWidgetState extends State<SettingsPage> {
       Navigator.push(context, MaterialPageRoute(builder: (context) =>  DownloadsPage()),);
   }
 
+  goToLogBox()async{
+    // ignore: prefer_const_constructors
+    Navigator.push(context, MaterialPageRoute(builder: (context) =>  LogBox()),);
+  }
   writeServerType(String serverType)async{
     await GetStorage().write('ServerType', serverType);
   }
@@ -218,130 +226,146 @@ class _MyWidgetState extends State<SettingsPage> {
       body:
           Container(
           padding: const EdgeInsets.all(20),
-          child: 
+          child:
             SingleChildScrollView(
               child: Column(
-                children: 
-                [
-                GridView(
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 60.w, // Adjust this value according to your needs
-                mainAxisSpacing: 6.w,
-                mainAxisExtent: 52.w,
-              ),
-                  shrinkWrap: true,
-                  children: [
-                    Card(
-                      child: Padding(
+                children: [
+                  GridView(
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 60.w, // Adjust this value according to your needs
+                  mainAxisSpacing: 6.w,
+                  mainAxisExtent: 52.w,
+                                ),
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    children: [
+                      Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(3.w),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text('Server Type', style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color)),
+                              DropdownButton<String>(
+                              value: _selectedOption,
+                              onChanged: (String? newValue) {
+                                if (newValue != null) {
+                                  setState(() {
+                                    _selectedOption = newValue;
+                                    writeServerType(newValue);
+                                  });
+                                }
+                              },
+                              items: const <DropdownMenuItem<String>>[
+                                DropdownMenuItem<String>(
+                                  value: 'Jellyfin',
+                                  child: Text('Jellyfin'),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'Subsonic',
+                                  child: Text('Subsonic'),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'PanAudio',
+                                  child: Text('PanAudio'),
+                                ),
+                              ],
+                                            ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Card(child:
+                      Padding(
                         padding: EdgeInsets.all(3.w),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text('Server Type', style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color)),
-                            DropdownButton<String>(
-                            value: _selectedOption,
-                            onChanged: (String? newValue) {
-                              if (newValue != null) {
-                                setState(() {
-                                  _selectedOption = newValue;
-                                  writeServerType(newValue);
-                                });
-                              }
-                            },
-                            items: const <DropdownMenuItem<String>>[
-                              DropdownMenuItem<String>(
-                                value: 'Jellyfin',
-                                child: Text('Jellyfin'),
-                              ),
-                              DropdownMenuItem<String>(
-                                value: 'Subsonic',
-                                child: Text('Subsonic'),
-                              ),
-                              DropdownMenuItem<String>(
-                                value: 'PanAudio',
-                                child: Text('PanAudio'),
-                              ),
-                            ],
-                                          ),
+                            TextButton(onPressed: () { sync(); }, child: Text('Sync', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
+                            TextButton(onPressed: () { clear(); }, child: Text('Clear', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
                           ],
                         ),
-                      ),
-                    ),
-                    Card(child:
-                    Padding(
-                      padding: EdgeInsets.all(3.w),
-                      child: Column(
-                        children: [
-                          TextButton(onPressed: () { sync(); }, child: Text('Sync', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
-                          TextButton(onPressed: () { clear(); }, child: Text('Clear', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
-                        ],
-                      ),
-                    )),
-                    Card(child:
-                    Padding(
-                      padding: EdgeInsets.all(3.w),
-                      child: Column(
-                        children: [
-                          Text('Server URL', style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color)),
-                          TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _serverUrlTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_saveUrl),)),),
-                        ],
-                      ),
-                    )),
-                    Card(child:
-                    Padding(
-                      padding: EdgeInsets.all(3.w),
-                      child: Column(
-                        children: [
-                          Text("Login Details"),
-                          TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _usernameTextController,),
-                          TextField(obscureText: true, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _passwordTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_login),)),),
-
-                        ],
-                      ),
-                    )),
-                  ],
-                ),
-
-
-
-
-                  TextButton(onPressed: () { toggleTheme(); }, child: Text('Toggle Theme', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
-                   TextButton(onPressed: () { clearCache(); }, child: Text('Clear Cache', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
-                  Text("Cached Songs: $totalCachedFileCount"),
-                   TextButton(onPressed: () { goToDownloads(); }, child: Text('Downloads', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
-                   Row(
-                     children: [
-                      const Text("AutoPlay:"),
-                      Switch(
-                          value: autoPlay,
-                          onChanged: (value) {
-                            setState(() {
-                              setAutoPlay(value);
-                              autoPlay = getAutoPlay();
-                            });
-                          },
+                      )),
+                      Card(child:
+                      Padding(
+                        padding: EdgeInsets.all(3.w),
+                        child: Column(
+                          children: [
+                            Text('Server URL', style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color)),
+                            TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _serverUrlTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_saveUrl),)),),
+                          ],
                         ),
-                     ],
-                   ),
-                  Row(
-                    children:[
-                      const Text("Playback reporting:"),
-                      Switch(
-                        value: playbackReporting,
-                        onChanged: (value) {
-                          setState(() {
-                            setPlaybackReporting(value);
-                            playbackReporting = getPlaybackReporting();
-                          });
-                        },
-                      ),
-                    ]
+                      )),
+                      Card(child:
+                      Padding(
+                        padding: EdgeInsets.all(3.w),
+                        child: Column(
+                          children: [
+                            Text("Login Details"),
+                            TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _usernameTextController,),
+                            TextField(obscureText: true, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _passwordTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_login),)),),
+
+                          ],
+                        ),
+                      )),
+
+                      Card(child:
+                      Padding(
+                        padding: EdgeInsets.all(3.w),
+                        child: Column(
+                          children: [
+                            Text("Advanced"),
+                            TextButton(onPressed: () { toggleTheme(); }, child: Text('Toggle Theme', style: Theme.of(context).textTheme.bodySmall)),
+                            Row(
+                              children: [
+                                Text("AutoPlay:",  style: Theme.of(context).textTheme.bodySmall),
+                                Switch(
+                                  value: autoPlay,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      setAutoPlay(value);
+                                      autoPlay = getAutoPlay();
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                            Row(
+                                children:[
+                                  Text("Report:",  style: Theme.of(context).textTheme.bodySmall),
+                                  Switch(
+                                    value: playbackReporting,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        setPlaybackReporting(value);
+                                        playbackReporting = getPlaybackReporting();
+                                      });
+                                    },
+                                  ),
+                                ]
+                            ),
+                          ],
+                        ),
+                      )),
+                      Card(child:
+                      Padding(
+                        padding: EdgeInsets.all(3.w),
+                        child: Column(
+                          children: [
+                            Text("Downloads",  style: Theme.of(context).textTheme.bodySmall),
+                            TextButton(onPressed: () { clearCache(); }, child: Text('Clear Cache', style:  Theme.of(context).textTheme.bodySmall)),
+                            TextButton(onPressed: () { goToDownloads(); }, child: Text('Downloads', style: Theme.of(context).textTheme.bodySmall)),
+                            TextButton(onPressed: () { goToLogBox(); }, child: Text('Log Box', style: Theme.of(context).textTheme.bodySmall)),
+
+                            Text("Cached Songs: $totalCachedFileCount", style: Theme.of(context).textTheme.bodySmall),
+                          ],
+                        ),
+                      )),
+
+                    ],
                   ),
-                  SizedBox(
-                    height: 30.h,
-                      child: TextField(maxLines: null, controller: _logController))
+                  Text("Log Box", style: Theme.of(context).textTheme.bodyMedium),
+
                 ],
-              
               ),
             ),
 

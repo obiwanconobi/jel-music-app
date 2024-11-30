@@ -132,28 +132,28 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
         await playAllSongsFromArtist(idAlbumArtist[1]);
       }else {
         //play album
-        logger.addToLog(LogModel(logType: "Error",logMessage: "Playing album", logDateTime: DateTime.now()));
+        logger.addToLog(LogModel(logType: "Log",logMessage: "Playing album", logDateTime: DateTime.now()));
         await playSongsInAlbum(idAlbumArtist[1], idAlbumArtist[2]);
       }
     }else if(mediaItem.id == "liked_songs"){
-      logger.addToLog(LogModel(logType: "Error",logMessage: "Trying to play liked songs from Android Auto", logDateTime: DateTime.now()));
+      logger.addToLog(LogModel(logType: "Log",logMessage: "Trying to play liked songs from Android Auto", logDateTime: DateTime.now()));
       await _autoPlay();
     }else if(mediaItem.id == "most_played") {
       await mostPlayed();
     }else if (mediaItem.id == "playlist") {
       //play playlist
-      logger.addToLog(LogModel(logType: "Error",logMessage: "Trying to play Playlist. Playlist Id To be played: ${mediaItem.title}", logDateTime: DateTime.now()));
+      logger.addToLog(LogModel(logType: "Log",logMessage: "Trying to play Playlist. Playlist Id To be played: ${mediaItem.title}", logDateTime: DateTime.now()));
       //get playlist songs
 
       //play songs
     }else{
       var idAlbumArtist = mediaId.split('|');
       if(idAlbumArtist[0] == "artist"){
-        logger.addToLog(LogModel(logType: "Error",logMessage: "Playing from else case. artist: ${mediaItem.artist}", logDateTime: DateTime.now()));
+        logger.addToLog(LogModel(logType: "Log",logMessage: "Playing from else case. artist: ${mediaItem.artist}", logDateTime: DateTime.now()));
         await playAllSongsFromArtist(idAlbumArtist[1]);
       }else {
         //play album
-        logger.addToLog(LogModel(logType: "Error",logMessage: "Playing album", logDateTime: DateTime.now()));
+        logger.addToLog(LogModel(logType: "Log",logMessage: "Playing album", logDateTime: DateTime.now()));
         await playSongsInAlbum(mediaItem.artist!, mediaItem.title);
       }
 
@@ -184,16 +184,16 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
         );
       default:
         var idAlbumArtist = mediaId.split('|');
-        logger.addToLog(LogModel(logType: "Error",logMessage: "Getting MediaItem: $mediaId", logDateTime: DateTime.now()));
+        logger.addToLog(LogModel(logType: "Log",logMessage: "Getting MediaItem: $mediaId", logDateTime: DateTime.now()));
         if(idAlbumArtist[0] == "artist"){
-          logger.addToLog(LogModel(logType: "Error",logMessage: "Artist Media Item: ${idAlbumArtist[1]}", logDateTime: DateTime.now()));
+          logger.addToLog(LogModel(logType: "Log",logMessage: "Artist Media Item: ${idAlbumArtist[1]}", logDateTime: DateTime.now()));
           return artistMediaItemList.where((element) => element.id == mediaId).singleOrNull;
         }else if(idAlbumArtist[0] == "album"){
-          logger.addToLog(LogModel(logType: "Error",logMessage: "Album Media Item: ${idAlbumArtist[1]} - ${idAlbumArtist[2]}", logDateTime: DateTime.now()));
+          logger.addToLog(LogModel(logType: "Log",logMessage: "Album Media Item: ${idAlbumArtist[1]} - ${idAlbumArtist[2]}", logDateTime: DateTime.now()));
           return albumsMediaItemList.where((element) => element.id == mediaId).singleOrNull;
         }else if(idAlbumArtist[0] == "playlist"){
           //get playlist Id
-          logger.addToLog(LogModel(logType: "Error",logMessage: "Trying to get Playlist. Playlist Id To be got: ${idAlbumArtist[1]}", logDateTime: DateTime.now()));
+          logger.addToLog(LogModel(logType: "Log",logMessage: "Trying to get Playlist. Playlist Id To be got: ${idAlbumArtist[1]}", logDateTime: DateTime.now()));
           return MediaItem(id: 'playlist', title: idAlbumArtist[1]);
         }
         return null;
@@ -395,11 +395,11 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
   _startPlaybackProgress()async{
     var playbackLog = GetStorage().read('playbackReporting') ?? false;
-    await logger.addToLog(LogModel(logType: "Error",logMessage: "Playback Logging. Logging song: ${currentSource!.tag.title}", logDateTime: DateTime.now()));
     if(playbackLog) {
       var userId = await GetStorage().read('userId') ?? "NoUser";
       String current = currentSource!.tag.id;
       if(current != "TT"){
+        await logger.addToLog(LogModel(logType: "Log",logMessage: "Playback Logging. Logging song: ${currentSource!.tag.title}", logDateTime: DateTime.now()));
         await jellyfinHandler.startPlaybackReporting(current, userId);
       }
 

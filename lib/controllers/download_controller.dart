@@ -98,7 +98,7 @@ class DownloadController{
 
         }
     }
-    logger.addToLog(LogModel(logType: "Error", logDateTime: DateTime.now(), logMessage: "Download Sync Complete"));
+    logger.addToLog(LogModel(logType: "Log", logDateTime: DateTime.now(), logMessage: "Download Sync Complete"));
 
   }
 
