@@ -126,7 +126,7 @@ jobs:
           
           # Build MSI
           candle.exe "build\windows\runner\Release\installer\installer.wxs" -o "build\windows\runner\Release\installer\installer.wixobj"
-          light.exe "build\windows\runner\Release\installer\installer.wixobj" -o "build\windows\runner\Release\installer\${APP_NAME}-${env:VERSION}.msi"
+          light.exe "build\windows\runner\Release\installer\installer.wixobj" -o "build\windows\runner\Release\installer\${APP_NAME}.msi"
           
       - name: Set tag to current date and time
         id: set_tag
@@ -152,6 +152,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /home/runner/work/jel-music-app/jel-music-app/build/windows/runner/Release/installer/*.msi
+          asset_path: ./build/windows/runner/Release/installer/jel_music.msi
           asset_name: panaudio.msi
           asset_content_type: application/octet-stream
