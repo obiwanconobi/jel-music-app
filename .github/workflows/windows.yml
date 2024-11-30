@@ -134,4 +134,15 @@ jobs:
         with:
           files: build/windows/runner/Release/installer/*.msi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
+
+      - name: Upload artifact to release
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: /home/runner/work/jel-music-app/jel-music-app/build/windows/runner/Release/installer/*.msi
+          asset_name: panaudio.msi
+          asset_content_type: application/octet-stream
