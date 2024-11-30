@@ -28,10 +28,8 @@ jobs:
         id: version
         run: |
           $rawVersion = (Get-Content pubspec.yaml | Select-String 'version:').ToString().Split(' ')[1].Trim()
-          # Extract version without build number and ensure it has 3 parts
           $version = ($rawVersion -split '\+')[0]
           $versionParts = $version -split '\.'
-          # Pad with .0 if needed to make it x.x.x
           while ($versionParts.Length -lt 3) {
             $versionParts += "0"
           }
@@ -48,39 +46,56 @@ jobs:
         run: |
           $env:PATH += ";C:\Program Files (x86)\WiX Toolset v3.11\bin"
           mkdir build\windows\runner\Release\installer
-          $APP_NAME = "jel_music"  # Replace with your app name
+          $APP_NAME = "jel_music"
           
           # Create WiX source file
           @"
           <?xml version="1.0" encoding="UTF-8"?>
           <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-            <Product Id="*" Name="$APP_NAME" Language="1033" Version="$env:VERSION" Manufacturer="YourCompany" UpgradeCode="baf69f3d-7030-4635-af9c-28e23f660fca">
+            <Product Id="*" Name="Jel Music" Language="1033" Version="$env:VERSION" Manufacturer="YourCompany" UpgradeCode="baf69f3d-7030-4635-af9c-28e23f660fca">
               <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
               <MajorUpgrade DowngradeErrorMessage="A newer version is already installed." />
               <MediaTemplate EmbedCab="yes" />
               <Directory Id="TARGETDIR" Name="SourceDir">
                 <Directory Id="ProgramFilesFolder">
-                  <Directory Id="INSTALLFOLDER" Name="$APP_NAME" />
+                  <Directory Id="INSTALLFOLDER" Name="Jel Music" />
                 </Directory>
                 <Directory Id="ProgramMenuFolder">
-                  <Directory Id="ApplicationProgramsFolder" Name="$APP_NAME"/>
+                  <Directory Id="ApplicationProgramsFolder" Name="Jel Music"/>
                 </Directory>
               </Directory>
+              
               <DirectoryRef Id="INSTALLFOLDER">
                 <Component Id="ApplicationFiles" Guid="*">
-                  <File Id="AppEXE" Source="build\windows\runner\Release\${APP_NAME}.exe" KeyPath="yes">
-                    <Shortcut Id="StartMenuShortcut" Directory="ApplicationProgramsFolder" Name="$APP_NAME" WorkingDirectory="INSTALLFOLDER" Advertise="yes" />
+                  <File Id="AppEXE" Source="build\windows\x64\runner\Release\${APP_NAME}.exe" KeyPath="yes">
+                    <Shortcut Id="StartMenuShortcut" Directory="ApplicationProgramsFolder" Name="Jel Music" WorkingDirectory="INSTALLFOLDER" Advertise="yes" />
                   </File>
+                  <File Id="FlutterDLL" Source="build\windows\x64\runner\Release\flutter_windows.dll" />
+                  <File Id="AudioPluginDLL" Source="build\windows\x64\runner\Release\just_audio_windows_plugin.dll" />
+                  <File Id="FileSelectorDLL" Source="build\windows\x64\runner\Release\file_selector_windows_plugin.dll" />
                 </Component>
+
+                <Directory Id="DataFolder" Name="data">
+                  <Component Id="DataFiles" Guid="*">
+                    <File Id="AssetManifest" Source="build\windows\x64\runner\Release\data\app.so" />
+                    <File Id="FontManifest" Source="build\windows\x64\runner\Release\data\flutter_assets\FontManifest.json" />
+                    <File Id="AssetManifestJson" Source="build\windows\x64\runner\Release\data\flutter_assets\AssetManifest.json" />
+                    <File Id="MaterialIconsFont" Source="build\windows\x64\runner\Release\data\flutter_assets\fonts\MaterialIcons-Regular.otf" />
+                    <!-- Add any other files from the data directory that your app needs -->
+                  </Component>
+                </Directory>
               </DirectoryRef>
+
               <DirectoryRef Id="ApplicationProgramsFolder">
                 <Component Id="ApplicationShortcut" Guid="*">
                   <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
-                  <RegistryValue Root="HKCU" Key="Software\$APP_NAME" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+                  <RegistryValue Root="HKCU" Key="Software\JelMusic" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
                 </Component>
               </DirectoryRef>
+
               <Feature Id="MainApplication" Title="Main Application" Level="1">
                 <ComponentRef Id="ApplicationFiles" />
+                <ComponentRef Id="DataFiles" />
                 <ComponentRef Id="ApplicationShortcut" />
               </Feature>
             </Product>
