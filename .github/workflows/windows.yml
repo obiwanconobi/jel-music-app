@@ -1,10 +1,8 @@
 name: Flutter Windows Release
-
 on:
   push:
     branches:
       - main
-
 jobs:
   build-and-release:
     runs-on: windows-latest
@@ -42,91 +40,9 @@ jobs:
           flutter pub get
           flutter build windows --release
           
-      - name: Create MSI
+      - name: Create ZIP archive
         run: |
-          $env:PATH += ";C:\Program Files (x86)\WiX Toolset v3.11\bin"
-          mkdir build\windows\runner\Release\installer
-          $APP_NAME = "jel_music"
-          
-          # Create WiX source file
-          @"
-          <?xml version="1.0" encoding="UTF-8"?>
-          <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-            <Product Id="*" Name="Jel Music" Language="1033" Version="$env:VERSION" Manufacturer="YourCompany" UpgradeCode="1209F8F7-2E3B-4F41-8376-84C3E2DB0CA4">
-              <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
-              <MajorUpgrade DowngradeErrorMessage="A newer version is already installed." />
-              <MediaTemplate EmbedCab="yes" />
-              <Directory Id="TARGETDIR" Name="SourceDir">
-                <Directory Id="ProgramFilesFolder">
-                  <Directory Id="INSTALLFOLDER" Name="Jel Music">
-                    <Directory Id="DataFolder" Name="data" />
-                  </Directory>
-                </Directory>
-                <Directory Id="ProgramMenuFolder">
-                  <Directory Id="ApplicationProgramsFolder" Name="Jel Music"/>
-                </Directory>
-              </Directory>
-              
-              <DirectoryRef Id="INSTALLFOLDER">
-                <!-- Main executable -->
-                <Component Id="MainExecutable" Guid="82F4645F-D3E2-4B0D-8F40-C7DB76EE2217">
-                  <File Id="AppEXE" Source="build\windows\x64\runner\Release\${APP_NAME}.exe" KeyPath="yes">
-                    <Shortcut Id="StartMenuShortcut" Directory="ApplicationProgramsFolder" Name="Jel Music" WorkingDirectory="INSTALLFOLDER" Advertise="yes" />
-                  </File>
-                </Component>
-
-                <!-- Flutter DLL -->
-                <Component Id="FlutterDLL" Guid="A617EA99-4C32-4E4A-8DDB-D4F7E1D4B3A1">
-                  <File Id="FlutterDLL" Source="build\windows\x64\runner\Release\flutter_windows.dll" KeyPath="yes" />
-                </Component>
-
-                <!-- Audio Plugin DLL -->
-                <Component Id="AudioPluginDLL" Guid="B5E71BD9-4C0E-4E42-A9C3-106E42D516C2">
-                  <File Id="AudioPluginDLL" Source="build\windows\x64\runner\Release\just_audio_windows_plugin.dll" KeyPath="yes" />
-                </Component>
-
-                <!-- File Selector Plugin DLL -->
-                <Component Id="FileSelectorDLL" Guid="C8F12E98-4A3E-4F42-B1D3-829E42D516C3">
-                  <File Id="FileSelectorDLL" Source="build\windows\x64\runner\Release\file_selector_windows_plugin.dll" KeyPath="yes" />
-                </Component>
-              </DirectoryRef>
-
-              <DirectoryRef Id="DataFolder">
-                <!-- Data Files -->
-                <Component Id="AppData" Guid="D7E91BD9-4C0E-4E42-A9C3-106E42D516C4">
-                  <File Id="AppSO" Source="build\windows\x64\runner\Release\data\app.so" KeyPath="yes" />
-                </Component>
-
-                <Component Id="FlutterAssets" Guid="E1F12E98-4A3E-4F42-B1D3-829E42D516C5">
-                  <File Id="FontManifest" Source="build\windows\x64\runner\Release\data\flutter_assets\FontManifest.json" KeyPath="yes" />
-                  <File Id="AssetManifestJson" Source="build\windows\x64\runner\Release\data\flutter_assets\AssetManifest.json" />
-                  <File Id="MaterialIconsFont" Source="build\windows\x64\runner\Release\data\flutter_assets\fonts\MaterialIcons-Regular.otf" />
-                </Component>
-              </DirectoryRef>
-
-              <DirectoryRef Id="ApplicationProgramsFolder">
-                <Component Id="ApplicationShortcut" Guid="F9F12E98-4A3E-4F42-B1D3-829E42D516C6">
-                  <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
-                  <RegistryValue Root="HKCU" Key="Software\JelMusic" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
-                </Component>
-              </DirectoryRef>
-
-              <Feature Id="MainApplication" Title="Main Application" Level="1">
-                <ComponentRef Id="MainExecutable" />
-                <ComponentRef Id="FlutterDLL" />
-                <ComponentRef Id="AudioPluginDLL" />
-                <ComponentRef Id="FileSelectorDLL" />
-                <ComponentRef Id="AppData" />
-                <ComponentRef Id="FlutterAssets" />
-                <ComponentRef Id="ApplicationShortcut" />
-              </Feature>
-            </Product>
-          </Wix>
-          "@ | Out-File -FilePath "build\windows\runner\Release\installer\installer.wxs" -Encoding UTF8
-          
-          # Build MSI
-          candle.exe "build\windows\runner\Release\installer\installer.wxs" -o "build\windows\runner\Release\installer\installer.wixobj"
-          light.exe "build\windows\runner\Release\installer\installer.wixobj" -o "build\windows\runner\Release\installer\${APP_NAME}.msi"
+          Compress-Archive -Path "build/windows/runner/Release/*" -DestinationPath "build/windows/runner/Release/panaudio_full.zip"
           
       - name: Set tag to current date and time
         id: set_tag
@@ -145,8 +61,7 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload artifact to release
-        id: upload-release-asset
+      - name: Upload MSI installer to release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
@@ -155,3 +70,13 @@ jobs:
           asset_path: ./build/windows/runner/Release/installer/jel_music.msi
           asset_name: panaudio.msi
           asset_content_type: application/octet-stream
+
+      - name: Upload ZIP archive to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/windows/runner/Release/panaudio_full.zip
+          asset_name: panaudio_full.zip
+          asset_content_type: application/zip
