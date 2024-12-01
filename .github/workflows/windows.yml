@@ -42,7 +42,7 @@ jobs:
           
       - name: Create ZIP archive
         run: |
-          Compress-Archive -Path "build/windows/runner/Release/*" -DestinationPath "build/windows/runner/Release/panaudio_full.zip"
+          Compress-Archive -Path "build/windows/x64/runner/Release*" -DestinationPath "build/windows/x64/runner/Release/panaudio_full.zip"
           
       - name: Set tag to current date and time
         id: set_tag
@@ -61,22 +61,12 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload MSI installer to release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/windows/runner/Release/installer/jel_music.msi
-          asset_name: panaudio.msi
-          asset_content_type: application/octet-stream
-
       - name: Upload ZIP archive to release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/windows/runner/Release/panaudio_full.zip
+          asset_path: ./build/windows/x64/runner/Release/panaudio_full.zip
           asset_name: panaudio_full.zip
           asset_content_type: application/zip
