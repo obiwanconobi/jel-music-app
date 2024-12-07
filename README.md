@@ -20,7 +20,7 @@ Or via Google Play.
 2. Download the app https://play.google.com/store/apps/details?id=com.pansoft.jel_music
 
 ## Windows
-Releases coming soon
+Download and extract .zip from releases section. Copy contents to disired folder and create shortcut for jel_music.exe
 
 ## Info
 Bugs: There will be bugs. Report any you find with as much info as you can provide and i'll fix as soon as possible!
