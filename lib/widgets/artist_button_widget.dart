@@ -73,7 +73,7 @@ class _ArtistButtonState extends State<ArtistButton> {
                             ),
                           ),                                             
                            Flexible(
-                                child: Text(artist.name!, style: Theme.of(context).textTheme.bodyMedium,
+                                child: Text(artist.name!, style: Theme.of(context).textTheme.bodySmall,
                                 overflow: TextOverflow.ellipsis, // Set overflow property
                                 maxLines: 2,),
                               ),

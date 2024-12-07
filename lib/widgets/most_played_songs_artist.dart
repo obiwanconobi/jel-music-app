@@ -61,7 +61,7 @@ class _MostPlayedSongsArtistState extends State<MostPlayedSongsArtist> {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                child: Text('Most Played', style: Theme.of(context).textTheme.bodySmall),
+                child: Text('Most Played', style: Theme.of(context).textTheme.bodyLarge),
               ),
               GridView.builder(
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(

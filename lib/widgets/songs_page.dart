@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -46,6 +47,7 @@ class _SongsPageState extends State<SongsPage> {
   SongsHelper songsHelper = SongsHelper();
   List<Songs> songsList = [];
   bool? fave;
+  bool android = false;
 
   List<PopupMenuEntry<String>> playlistMenuItems = [];
 
@@ -59,6 +61,9 @@ class _SongsPageState extends State<SongsPage> {
   @override
   void initState(){
     super.initState();
+    if(Platform.isAndroid){
+      android = true;
+    }
     favourite = controller.returnFavourite(artistIds!, albumIds!);
     controller.albumId = albumIds;
     controller.artistId = artistIds;
@@ -252,7 +257,7 @@ class _SongsPageState extends State<SongsPage> {
     songsList = controller.songs;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(centerTitle: true, title: Text('', style: Theme.of(context).textTheme.bodyLarge),),
+        appBar: (android ? null : AppBar(centerTitle: true, title: Text('', style: Theme.of(context).textTheme.bodyLarge),)),
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,

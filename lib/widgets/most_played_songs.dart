@@ -28,8 +28,9 @@ class _MostPlayedSongsState extends State<MostPlayedSongs> {
     songsFuture = controller.onInit();
   }
 
-  _addToQueue(Songs song){
-    MusicControllerProvider.of(context, listen: false).addToQueue(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title));
+  _addToQueue(List<Songs> songs, int index){
+    var sm = mapper.returnStreamModelsList(songs);
+    MusicControllerProvider.of(context, listen: false).addPlaylistToQueue(sm, index: index);
   }
 
   _shuffle(List<Songs> allSongs){
@@ -229,7 +230,7 @@ class _MostPlayedSongsState extends State<MostPlayedSongs> {
                                       return Padding(
                                         padding: EdgeInsets.symmetric(vertical: 8.sp),
                                         child: InkWell(
-                                          onTap:() => _addToQueue(songsList[index]),
+                                          onTap:() => _addToQueue(songsList, index),
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10.sp),
                                           ),

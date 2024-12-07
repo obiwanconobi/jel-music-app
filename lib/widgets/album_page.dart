@@ -113,6 +113,7 @@ class _AlbumPageState extends State<AlbumPage> {
                       // Data is available, build the list
                       List<Album> albumsList = snapshot.data!;
                       return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.max,
                         children: [
                             Row(
@@ -123,6 +124,10 @@ class _AlbumPageState extends State<AlbumPage> {
                               ],
                             ),
                           MostPlayedSongsArtist(ArtistName: artist.name!),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10,0,0,10),
+                            child: Text('Albums', style: Theme.of(context).textTheme.bodyLarge),
+                          ),
                           GridView.builder(
                             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: 60.w, // Adjust this value according to your needs
@@ -221,10 +226,7 @@ class _AlbumPageState extends State<AlbumPage> {
                   }
                 ),
 
-                Container(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
-                          alignment: Alignment.centerLeft,
-                          child:  Text('Similar Artists', style:Theme.of(context).textTheme.bodyLarge)),
+
                           SimilarArtists(artistId: artistIds!,),
 
                 if(artist.overview != null)Padding(

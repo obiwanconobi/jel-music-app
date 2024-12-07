@@ -48,7 +48,7 @@ class _SimilarArtistsState extends State<SimilarArtists> {
           return const Center(child:  Text('Offline'));
         } else if (snapshot.hasError) {
           return const Center(
-            child: Text("Error")
+            child: Text("")
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return 
@@ -63,6 +63,10 @@ class _SimilarArtistsState extends State<SimilarArtists> {
             scrollDirection: Axis.horizontal,
             child: Column(
               children: [
+                Container(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
+                    alignment: Alignment.centerLeft,
+                    child:  Text('Similar Artists', style:Theme.of(context).textTheme.bodyLarge)),
                 Row(
                   children: [
                     SizedBox(

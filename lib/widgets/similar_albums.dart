@@ -56,7 +56,7 @@ class _SimilarAlbumsState extends State<SimilarAlbums> {
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(
-            child: Text('No artists available.'),
+            child: Text(''),
           );
         } else {
           // Data is available, build the list
