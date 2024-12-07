@@ -198,7 +198,7 @@ class PanaudioRepo{
     String url = "$baseServerUrl/api/playback/start?songId=$songId";
     http.Response res = await http.put(Uri.parse(url));
     if (res.statusCode == 200) {
-      await logger.addToLog(LogModel(logType: "Error", logMessage: "Logged playback for song: $songId. Url: $url", logDateTime: DateTime.now()));
+      await logger.addToLog(LogModel(logType: "Log", logMessage: "Logged playback for song: $songId. Url: $url", logDateTime: DateTime.now()));
      // return json.decode(res.body);
     }else{
       await logger.addToLog(LogModel(logType: "Error", logMessage: "Error logging playback for song: $songId. Err: ${res.body}", logDateTime: DateTime.now()));

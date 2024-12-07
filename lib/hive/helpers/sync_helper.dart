@@ -113,7 +113,7 @@ class SyncHelper implements ISyncHelper {
 
       }
 
-      logger.addToLog(LogModel(logType: "Error", logMessage: "Sync Complete", logDateTime: DateTime.now()));
+      logger.addToLog(LogModel(logType: "Log", logMessage: "Sync Complete", logDateTime: DateTime.now()));
       await GetStorage().write('lastSync', DateTime.now().toString());
 
     }

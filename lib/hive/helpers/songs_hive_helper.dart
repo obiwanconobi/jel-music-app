@@ -126,6 +126,12 @@ class SongsHelper{
     return songsBox.values.where((element) => element.favourite == true).toList();
   }
 
+  returnMostPlayedSongsArtist(String artistName)async{
+    var songs = songsBox.values.where((element) => element.artist == artistName).where((element) => element.playCount > 0).toList();
+    songs.sort((a, b) => b.playCount.compareTo(a.playCount));
+    return songs.take(100);
+  }
+
   returnMostPlayedSongs()async{
     var songs = songsBox.values.toList();
     songs.sort((a, b) => b.playCount.compareTo(a.playCount));

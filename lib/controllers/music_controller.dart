@@ -511,7 +511,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
   loadArtists()async{
 
-    await logger.addToLog(LogModel(logType: "Error",logMessage: "Loading artists for android auto", logDateTime: DateTime.now()));
+    await logger.addToLog(LogModel(logType: "Log",logMessage: "Loading artists for android auto", logDateTime: DateTime.now()));
     await artistsHelper.openBox();
     var artistList = artistsHelper.returnFavouriteArtistsByPlayCount();
 
@@ -520,7 +520,6 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       var pictureUri = Uri.parse("$baseServerUrl/Items/${artist.id}/Images/Primary?fillHeight=480&fillWidth=480&quality=96");
       artistMediaItemList.add(MediaItem(id: 'artist|${artist.name}',title: artist.name, artUri: pictureUri, playable: true));
     }
-    await logger.addToLog(LogModel(logType: "Error",logMessage: "Artist Count: ${artistMediaItemList.length}", logDateTime: DateTime.now()));
 
   }
 
@@ -578,7 +577,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   }
 
   playAllSongsFromArtist(String artist)async{
-    logger.addToLog(LogModel(logType: "Error",logMessage:"Trying to play Artist from android auto: $artist}", logDateTime: DateTime.now()));
+    logger.addToLog(LogModel(logType: "Log",logMessage:"Trying to play Artist: $artist}", logDateTime: DateTime.now()));
 
     try{
       await songsHelper.openBox();

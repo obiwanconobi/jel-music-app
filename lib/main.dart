@@ -12,6 +12,7 @@ import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/controllers/latest_albums_controller.dart';
 import 'package:jel_music/controllers/liked_controller.dart';
 import 'package:jel_music/controllers/log_box_controller.dart';
+import 'package:jel_music/controllers/most_played_songs_artist_controller.dart';
 import 'package:jel_music/controllers/most_played_songs_controller.dart';
 import 'package:jel_music/controllers/playlist_controller.dart';
 import 'package:jel_music/controllers/playlists_controller.dart';
@@ -96,6 +97,7 @@ Future<void> main() async{
   GetIt.I.registerSingleton<PlaylistsController>(PlaylistsController());
   GetIt.I.registerSingleton<PlaylistController>(PlaylistController());
   GetIt.I.registerSingleton<MostPlayedSongsController>(MostPlayedSongsController());
+  GetIt.I.registerSingleton<MostPlayedSongsArtistController>(MostPlayedSongsArtistController());
 
 
   const QuickActions quickActions = QuickActions();
@@ -167,7 +169,7 @@ static ThemeData lightTheme = ThemeData(
       )
     ),
     textTheme: const TextTheme(
-      displayLarge: TextStyle(color:Colors.black, fontSize:36, fontWeight: FontWeight.w600),
+      displayLarge: TextStyle(color:Colors.black, fontSize:36, fontWeight: FontWeight.w600,),
       labelLarge: TextStyle(color: Colors.black, fontSize:26, fontWeight: FontWeight.w600),
       bodyLarge: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600), // Text color for dark theme
       bodyMedium: TextStyle(color: Colors.black, fontSize: 18),

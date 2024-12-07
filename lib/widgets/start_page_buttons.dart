@@ -25,8 +25,6 @@ class _StartPageButtonsState extends State<StartPageButtons> {
   @override
   void initState() {
     super.initState();
-    logger.openBox();
-    logger.addToLog(LogModel(logType: "Error", logMessage: "Loading buttons", logDateTime: DateTime.now()));
     setState(() {
       visible = true;
     //  logger.addToLog(LogModel(logType: "Error", logMessage: "Loading buttons from set state", logDateTime: DateTime.now()));

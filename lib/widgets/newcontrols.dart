@@ -292,7 +292,7 @@ print('error');
                                                              child: Text(musicController.playlist.sequence[index].tag.title!,
                                                                style: Theme.of(context).textTheme.bodyMedium,
                                                                overflow: TextOverflow.ellipsis, // Set overflow property
-                                                               maxLines: 2, // Set the maximum number of lines
+                                                               maxLines: 1, // Set the maximum number of lines
                                                              ),
                                                            ),
                                                          ],
@@ -300,7 +300,8 @@ print('error');
                                                        Container(
                                                          alignment: Alignment.centerLeft,
                                                          child: Text(musicController.playlist.sequence[index].tag.album,
-                                                          style: Theme.of(context).textTheme.bodySmall,),
+                                                          style: Theme.of(context).textTheme.bodySmall,
+                                                         overflow: TextOverflow.ellipsis),
                                                        ),
                                                      ],
                                                    ),

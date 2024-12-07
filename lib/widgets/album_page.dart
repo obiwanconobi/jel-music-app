@@ -6,6 +6,7 @@ import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
+import 'package:jel_music/widgets/most_played_songs_artist.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/similar_artists.dart';
 import 'package:jel_music/widgets/songs_page.dart';
@@ -121,6 +122,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                 IconButton(onPressed:()=>{playAll()}, icon: Icon(Icons.play_circle, color: Theme.of(context).colorScheme.secondary, size:30),),
                               ],
                             ),
+                          MostPlayedSongsArtist(ArtistName: artist.name!),
                           GridView.builder(
                             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: 60.w, // Adjust this value according to your needs

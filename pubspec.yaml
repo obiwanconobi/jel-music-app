@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.2.1+4
+version: 1.2.2+5
 
 environment:
   flutter: 3.24.5
@@ -47,7 +47,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   adaptive_theme: ^3.6.0
-  flutter_svg: ^0.22.0
+  flutter_svg: ^2.0.16
   path_provider: 2.1.4
   get_it: ^7.7.0
   top_snackbar_flutter: ^3.1.0
@@ -75,6 +75,18 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+  msix: ^3.16.8
+
+msix_config:
+  display_name: PanAudio
+  publisher_display_name: C Pansoft
+  identity_name: CPansoft.PanAudio
+  msix_version: 1.0.0.0
+  logo_path: C:\Users\conner\Documents\GitHub\jel-music-app\windows\runner\resources\app_icon.ico
+  capabilities: internetClient
+  architecture: x64
+  publisher: CPansoft.PanAudio
+  store: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -97,6 +109,7 @@ flutter:
     - assets/svg/artist.svg
     - assets/svg/album.svg
     - assets/svg/song.svg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

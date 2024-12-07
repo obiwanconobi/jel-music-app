@@ -62,6 +62,13 @@ class Mappers{
       return "";
     }
 
+    List<StreamModel> returnStreamModelsList(List<Songs> songs){
+      List<StreamModel> returnList = [];
+      for(var song in songs){
+        returnList.add(returnStreamModel(song));
+      }
+      return returnList;
+    }
 
 
   StreamModel returnStreamModel(Songs song){
