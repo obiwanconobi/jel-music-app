@@ -13,7 +13,6 @@ import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/playback_days_chart.dart';
 import 'package:sizer/sizer.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 
 class MostPlayedSongs extends StatefulWidget {
