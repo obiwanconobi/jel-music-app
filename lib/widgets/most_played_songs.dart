@@ -1,13 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:jel_music/controllers/PlaybackByDaysController.dart';
 import 'package:jel_music/controllers/most_played_songs_controller.dart';
 import 'package:jel_music/helpers/mappers.dart';
+import 'package:jel_music/models/bar%20chart/bar_data.dart';
+import 'package:jel_music/models/playback_days.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
+import 'package:jel_music/widgets/playback_days_chart.dart';
 import 'package:sizer/sizer.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 
 class MostPlayedSongs extends StatefulWidget {
@@ -19,8 +25,10 @@ class MostPlayedSongs extends StatefulWidget {
 
 class _MostPlayedSongsState extends State<MostPlayedSongs> {
   var controller = GetIt.instance<MostPlayedSongsController>();
+  var serverType = GetStorage().read('ServerType') ?? "ERROR";
   Mappers mapper = Mappers();
   late Future<List<Songs>> songsFuture;
+
 
   @override
   void initState() {
@@ -51,6 +59,7 @@ class _MostPlayedSongsState extends State<MostPlayedSongs> {
 
 
 
+
   @override
   Widget build(BuildContext context) {
     var songsList = controller.songs;
@@ -67,7 +76,7 @@ class _MostPlayedSongsState extends State<MostPlayedSongs> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Expanded(
+                Flexible(
                     child: FutureBuilder<List<Songs>>(
                         future: songsFuture,
                         builder: (context, snapshot) {
@@ -89,6 +98,9 @@ class _MostPlayedSongsState extends State<MostPlayedSongs> {
                             return SingleChildScrollView(
                               child: Column(
                                 children: [
+                                  Visibility(
+                                      visible: (serverType == "PanAudio" ? true: false),
+                                      child: PlaybackDaysChart()),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -214,10 +226,10 @@ class _MostPlayedSongsState extends State<MostPlayedSongs> {
                                           children: [
                                             OutlinedButton(onPressed: () => _addAllToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor, foregroundColor: Theme.of(context).canvasColor), child: Text('Play All', style: Theme.of(context).textTheme.bodySmall)),
                                             OutlinedButton(onPressed: () => _shuffle(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor, foregroundColor: Theme.of(context).canvasColor), child: Text('Shuffle', style: Theme.of(context).textTheme.bodySmall)),
-
+                                          
                                           ],
                                         ),
-
+                                          
                                       ],
                                     ),
                                   ),
@@ -265,7 +277,7 @@ class _MostPlayedSongsState extends State<MostPlayedSongs> {
                                                     ),
                                                   ),
                                                 ),
-                                                Expanded(
+                                                Flexible(
                                                   child: Column(
                                                     mainAxisAlignment:
                                                     MainAxisAlignment.center,
@@ -331,7 +343,7 @@ class _MostPlayedSongsState extends State<MostPlayedSongs> {
                           }
                         }
                     )
-
+            
                 ),
               ],
             ),

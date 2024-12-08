@@ -126,6 +126,12 @@ class JellyfinHandler implements IHandler{
     // TODO: implement tryGetArt
     throw UnimplementedError();
   }
+
+  @override
+  getPlaybackByDays() {
+    // TODO: implement getPlaybackByDays
+    throw UnimplementedError();
+  }
   
 
 }

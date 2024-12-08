@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:jel_music/controllers/PlaybackByDaysController.dart';
 import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/controllers/all_albums_controller.dart';
 import 'package:jel_music/controllers/all_songs_controller.dart';
@@ -98,6 +99,7 @@ Future<void> main() async{
   GetIt.I.registerSingleton<PlaylistController>(PlaylistController());
   GetIt.I.registerSingleton<MostPlayedSongsController>(MostPlayedSongsController());
   GetIt.I.registerSingleton<MostPlayedSongsArtistController>(MostPlayedSongsArtistController());
+  GetIt.I.registerSingleton<PlaybackByDaysController>(PlaybackByDaysController());
 
 
   const QuickActions quickActions = QuickActions();

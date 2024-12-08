@@ -17,6 +17,10 @@ class PanaudioHandler implements IHandler{
    // repo =
   }
 
+  @override
+  getPlaybackByDays()async{
+    return await repo.getPlaybackDays();
+  }
 
   @override
   tryGetArt(String artist, String album)async{

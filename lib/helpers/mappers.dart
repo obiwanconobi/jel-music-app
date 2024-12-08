@@ -1,6 +1,7 @@
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/models/album.dart';
+import 'package:jel_music/models/playback_days.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
 
@@ -15,6 +16,14 @@ class Mappers{
       serverType = GetStorage().read('ServerType') ?? "ERROR";
     }
 
+
+    List<PlaybackDays> convertRawToPlaybackDays(dynamic raw){
+      List<PlaybackDays> returnList = [];
+      for(var data in raw){
+        returnList.add(PlaybackDays(Day: DateTime.parse(data["day"]), TotalSeconds: data["totalSeconds"]));
+      }
+      return returnList;
+    }
 
     Future<List<Songs>> convertHiveSongsToModelSongs(dynamic songsRaw)async{
       getValues();

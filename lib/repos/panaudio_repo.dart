@@ -12,6 +12,19 @@ class PanaudioRepo{
   String baseServerUrl = "";
   var logger = GetIt.instance<LogHandler>();
 
+  getPlaybackDays()async{
+    baseServerUrl = GetStorage().read('serverUrl');
+    try {
+      String url = "$baseServerUrl/api/playback/historydays?startDate=12%2F07%2F2024&endDate=12%2F09%2F2024";
+      http.Response res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   tryGetArt(String artist, String album)async{
     baseServerUrl = GetStorage().read('serverUrl');
     try {

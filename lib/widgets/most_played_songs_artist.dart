@@ -59,9 +59,12 @@ class _MostPlayedSongsArtistState extends State<MostPlayedSongsArtist> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                child: Text('Most Played', style: Theme.of(context).textTheme.bodyLarge),
+              Visibility(
+                visible: (songs.isNotEmpty),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                  child: Text('Most Played', style: Theme.of(context).textTheme.bodyLarge),
+                ),
               ),
               GridView.builder(
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
