@@ -18,8 +18,8 @@ class PanaudioHandler implements IHandler{
   }
 
   @override
-  getPlaybackByDays()async{
-    return await repo.getPlaybackDays();
+  getPlaybackByDays(DateTime inOldDate, DateTime inCurDate)async{
+    return await repo.getPlaybackDays(inOldDate, inCurDate);
   }
 
   @override

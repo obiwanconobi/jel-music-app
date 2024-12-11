@@ -22,5 +22,5 @@ abstract class IHandler {
   stopPlaybackReporting(String songId, String userId);
   tryGetArt(String artist, String album);
   uploadArt(String albumId, File image);
-  getPlaybackByDays();
+  getPlaybackByDays(DateTime inOldDate, DateTime inCurDate);
 }

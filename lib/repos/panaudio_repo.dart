@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
+import 'package:jel_music/helpers/datetime_extensions.dart';
 import 'package:jel_music/models/log.dart';
 
 class PanaudioRepo{
@@ -12,10 +14,13 @@ class PanaudioRepo{
   String baseServerUrl = "";
   var logger = GetIt.instance<LogHandler>();
 
-  getPlaybackDays()async{
+  getPlaybackDays(DateTime inOldDate, DateTime inCurDate)async{
     baseServerUrl = GetStorage().read('serverUrl');
     try {
-      String url = "$baseServerUrl/api/playback/historydays?startDate=12%2F07%2F2024&endDate=12%2F09%2F2024";
+
+      var curDate = inCurDate.formatDate();
+      var oldDate = inOldDate.formatDate();
+      String url = "$baseServerUrl/api/playback/historydays?startDate=$oldDate&endDate=$curDate";
       http.Response res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
         return json.decode(res.body);

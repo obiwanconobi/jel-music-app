@@ -128,10 +128,11 @@ class JellyfinHandler implements IHandler{
   }
 
   @override
-  getPlaybackByDays() {
+  getPlaybackByDays(DateTime inOldDate, DateTime inCurDate) {
     // TODO: implement getPlaybackByDays
     throw UnimplementedError();
   }
+
   
 
 }
