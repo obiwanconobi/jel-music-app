@@ -158,12 +158,12 @@ class PanaudioRepo{
     try {
       var response = await request.send();
       if (response.statusCode == 200) {
-        print('Image uploaded successfully');
+
       } else {
-        print('Upload failed with status: ${response.statusCode}');
+
       }
     } catch (e) {
-      print('Error uploading image: $e');
+
     }
   }
 

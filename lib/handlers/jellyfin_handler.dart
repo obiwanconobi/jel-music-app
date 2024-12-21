@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/handlers/ihandler.dart';
+import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/hive/classes/artists.dart';
+import 'package:jel_music/models/log.dart';
 import 'package:jel_music/models/playlists.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/album.dart';
@@ -15,7 +17,7 @@ class JellyfinHandler implements IHandler{
   JellyfinRepo jellyfinRepo = GetIt.instance<JellyfinRepo>();
   Conversions conversions = Conversions();
   Mappers mapper = Mappers();
-  
+  LogHandler logger = LogHandler();
   JellyfinHandler(){
     //jellyfinRepo =
   }
@@ -106,7 +108,7 @@ class JellyfinHandler implements IHandler{
     try{
       await jellyfinRepo.startPlaybackReporting(songId, userId);
     }catch(e){
-      print(e);
+      await logger.addToLog(LogModel(logType: "Error", logMessage: "Error starting playback: $songId", logDateTime: DateTime.now()));
     }
 
   }

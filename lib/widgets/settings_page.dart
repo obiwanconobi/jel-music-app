@@ -219,7 +219,7 @@ _getVersionNumber()async{
       }
 
     }catch(e){
-      print(e);
+      await logger.addToLog(LogModel(logType: "Error", logMessage: "Error getting cached songs", logDateTime: DateTime.now()));
     }
 
   }

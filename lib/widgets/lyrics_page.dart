@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/lyrics_page_controller.dart';
-import 'package:jel_music/controllers/music_controller.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 
 class LyricsPage extends StatefulWidget {
@@ -29,7 +28,6 @@ class _LyricsPageState extends State<LyricsPage> {
       lyricsFuture = test;
     });
 
-   // print(lyricsFuture);
   }
 
   @override

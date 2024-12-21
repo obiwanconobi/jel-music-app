@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -7,8 +5,6 @@ import 'package:jel_music/controllers/PlaybackByDaysController.dart';
 import 'package:jel_music/helpers/datetime_extensions.dart';
 import 'package:jel_music/models/bar%20chart/bar_data.dart';
 import 'package:jel_music/models/playback_days.dart';
-import 'package:jel_music/widgets/most_played_songs_artist.dart';
-import 'package:jel_music/widgets/playback_history_day_list.dart';
 import 'package:sizer/sizer.dart';
 
 class PlaybackDaysChart extends StatefulWidget {
@@ -183,7 +179,7 @@ class _PlaybackDaysChartState extends State<PlaybackDaysChart> with SingleTicker
                                       BarChartRodData(toY: data.y, width:25, borderRadius: BorderRadius.circular(15), color: const Color.fromRGBO(15, 195, 207, 1.0), backDrawRodData: BackgroundBarChartRodData(show: true, toY: maxSize, color:const Color.fromRGBO(30, 39, 48, 1.0),))])).toList(),
                                 borderData: FlBorderData(
                                     border: const Border(bottom: BorderSide(width: 0), left: BorderSide(width: 0))),
-                                gridData: FlGridData(show: false),
+                                gridData: const FlGridData(show: false),
                                 barTouchData: BarTouchData(
                                   touchTooltipData: BarTouchTooltipData(
                                     getTooltipItem: (
@@ -213,9 +209,9 @@ class _PlaybackDaysChartState extends State<PlaybackDaysChart> with SingleTicker
                                           getBottomTitles(value, meta),
                                     ),
                                   ),
-                                  leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                                  rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                                  topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                                  leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                                  rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                                  topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                                 ),
                               )
                           ),

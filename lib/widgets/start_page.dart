@@ -36,7 +36,6 @@ class _StartPageState extends State<StartPage> {
     syncHelper = GetIt.instance<ISyncHelper>(instanceName: serverType);
     _quickActionsHandler.initialize(context);
     syncAsync();
-    print("StartPage initialized");
     // You could also try forcing a rebuild here
     // WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }

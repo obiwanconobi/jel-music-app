@@ -265,7 +265,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
         logger.addToLog(LogModel(logType: "Error",logMessage: e.message, logDateTime: DateTime.now()));
         nextSong();
       } else {
-        print('An error occurred: $e');
+
       }
     });
 
@@ -421,7 +421,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
           await jellyfinHandler.startPlaybackReporting(current, userId);
         }else{
           //update song progress
-          print('test');
+
           await jellyfinHandler.updatePlaybackProgress(current, userId, false, currentTicks!);
         }
 
@@ -548,7 +548,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
       playlistMediaItemList.addAll(playlistList);
     }catch(e){
-      print(e);
+      await logger.addToLog(LogModel(logType: "Error", logMessage: "Error Loading playlist", logDateTime: DateTime.now()));
     }
 
 
@@ -716,7 +716,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       var songs = await mapper.convertHiveSongsToStreamModelSongs(songsRaw);
       addPlaylistToQueue(songs);
     }catch(e){
-      print(e.toString());
+      await logger.addToLog(LogModel(logType: "Error", logMessage: "Error getting most played", logDateTime: DateTime.now()));
     }
   }
 
@@ -732,7 +732,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       var songs = await mapper.convertHiveSongsToStreamModelSongs(songsRaw);
       addPlaylistToQueue(songs);
     }catch(e){
-      print(e.toString());
+      await logger.addToLog(LogModel(logType: "Error", logMessage: "Error auto playing", logDateTime: DateTime.now()));
     }
 
   }

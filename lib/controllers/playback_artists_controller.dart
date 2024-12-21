@@ -25,15 +25,10 @@ class PlaybackArtistsController{
     var data = await handler.getPlaybackByArtists(oldDate, curDate);
     var mappedData = mapper.convertRawToPlaybackArtists(data);
     mappedData.sort((a, b) => b.totalSeconds!.compareTo(a.totalSeconds!));
-    int totalSecondsSum = mappedData.fold(0, (sum, artist) => sum + (artist.totalSeconds ?? 0));
-    var artists = mappedData;
     return mappedData;
   }
 
   Future<List<PlaybackArtists>> changeDate(int month)async{
-
-    var startofMonth = DateTime(2024, DateTime.now().month - month, 1);
-
     var oldDate = DateTime(DateTime.now().year, DateTime.now().month, 1);
     var startOfMonth = DateTime(DateTime.now().year, DateTime.now().month, 1);
     return await fetchData(oldDate, startOfMonth);

@@ -1,11 +1,8 @@
-import 'dart:math';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:jel_music/controllers/playback_artists_controller.dart';
-import 'package:jel_music/main.dart';
 import 'package:jel_music/models/playback_artists.dart';
 import 'package:sizer/sizer.dart';
 
@@ -162,11 +159,11 @@ class _PlaybackByArtistChartState extends State<PlaybackByArtistChart> with Sing
                                 Row(
                                   children: [
                                     Text("${((playbackArtists[index].totalSeconds ?? 0)/60).round()} mins"),
-                                    Text(" - "),
+                                    const Text(" - "),
                                     Text("${playbackArtists[index].playCount} plays"),
                                   ],
                                 ),
-                                Divider(height: 2,)
+                                const Divider(height: 2,)
                               ],
                             ),
                           );

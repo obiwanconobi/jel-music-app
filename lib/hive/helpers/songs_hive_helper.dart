@@ -108,7 +108,7 @@ class SongsHelper{
     try{
       await songsBox.put(song.key, song);
     }catch(e){
-      print(e);
+      await logger.addToLog(LogModel(logType: "Error", logMessage: "Error updating song: ${song.name}", logDateTime: DateTime.now()));
     }
 
   }
@@ -187,7 +187,7 @@ class SongsHelper{
             samplerate: "$samplerate kHz", playCount: song["UserData"]["PlayCount"] ?? 0));
         }catch(e){
          //log error
-        print('error');
+
         }
      }
      for(var song in songsList){
@@ -203,7 +203,7 @@ class SongsHelper{
 
 
       }catch(e){
-        print(e);
+        //log error
       }
        
      }

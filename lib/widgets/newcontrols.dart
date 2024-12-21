@@ -66,7 +66,7 @@ class _ControlsState extends State<Controls> {
   }
 
   void onError(){
-print('error');
+
   }
 
   _returnHome()async{
@@ -203,7 +203,7 @@ print('error');
                                                  total: musicController.currentSource!.tag.duration,
                                                  onSeek: (duration) {
                                                    _seekSong(duration);
-                                                  // print('User selected a new time: $duration');
+
                                                  },
                                                ),
 

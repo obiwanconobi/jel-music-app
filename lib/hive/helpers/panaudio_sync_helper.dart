@@ -1,4 +1,5 @@
 import 'package:get_storage/get_storage.dart';
+import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/handlers/panaudio_handler.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/classes/artists.dart';
@@ -8,6 +9,7 @@ import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/hive/helpers/isynchelper.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/album.dart';
+import 'package:jel_music/models/log.dart';
 
 class PanaudioSyncHelper implements ISyncHelper {
 
@@ -16,6 +18,7 @@ class PanaudioSyncHelper implements ISyncHelper {
   ArtistsHelper artistHelper = ArtistsHelper();
   AlbumsHelper albumsHelper = AlbumsHelper();
   String baseUrl = GetStorage().read('serverUrl') ?? "ERROR";
+  LogHandler logger = LogHandler();
 
 
 
@@ -104,7 +107,7 @@ class PanaudioSyncHelper implements ISyncHelper {
         }
       }
     }catch(e){
-      print(e);
+      await logger.addToLog(LogModel(logType: "Error", logMessage: "Error with PanAudio Sync", logDateTime: DateTime.now()));
     }
   }
 
