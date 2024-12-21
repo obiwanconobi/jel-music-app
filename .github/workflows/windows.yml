@@ -22,18 +22,6 @@ jobs:
           Invoke-WebRequest -Uri $installBuilder -OutFile "wix311.exe"
           Start-Process -FilePath "wix311.exe" -ArgumentList "/install","/quiet" -Wait
           
-      - name: Get version from pubspec
-        id: version
-        run: |
-          $rawVersion = (Get-Content pubspec.yaml | Select-String 'version:').ToString().Split(' ')[1].Trim()
-          $version = ($rawVersion -split '\+')[0]
-          $versionParts = $version -split '\.'
-          while ($versionParts.Length -lt 3) {
-            $versionParts += "0"
-          }
-          $formattedVersion = [string]::Join(".", $versionParts)
-          echo "VERSION=$formattedVersion" >> $env:GITHUB_ENV
-          
       - name: Flutter Build
         run: |
           flutter config --enable-windows-desktop
