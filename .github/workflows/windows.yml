@@ -22,36 +22,6 @@ jobs:
           Invoke-WebRequest -Uri $installBuilder -OutFile "wix311.exe"
           Start-Process -FilePath "wix311.exe" -ArgumentList "/install","/quiet" -Wait
           
-      - name: Debug Location
-        run: |
-          Write-Host "Current Directory: $(Get-Location)"
-          Write-Host "Directory Contents:"
-          Get-ChildItem -Recurse -Depth 1
-          Write-Host "Looking for pubspec.yaml:"
-          Get-ChildItem -Recurse -Filter "pubspec.yaml"
-
-      - name: Get version from pubspec
-        id: version
-        run: |
-          # Get the full path to pubspec.yaml
-          $pubspecPath = Get-ChildItem -Recurse -Filter "pubspec.yaml" | Select-Object -First 1 -ExpandProperty FullName
-          
-          if (-not $pubspecPath) {
-            Write-Error "pubspec.yaml not found!"
-            exit 1
-          }
-          
-          Write-Host "Found pubspec at: $pubspecPath"
-          
-          $rawVersion = (Get-Content $pubspecPath | Select-String 'version:').ToString().Split(' ')[1].Trim()
-          $version = ($rawVersion -split '\+')[0]
-          $versionParts = $version -split '\.'
-          while ($versionParts.Length -lt 3) {
-            $versionParts += "0"
-          }
-          $formattedVersion = [string]::Join(".", $versionParts)
-          echo "VERSION=$formattedVersion" >> $env:GITHUB_ENV
-          
       - name: Flutter Build
         run: |
           flutter config --enable-windows-desktop
