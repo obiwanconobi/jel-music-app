@@ -8,9 +8,12 @@
 panaudio is a music streaming app with support for Android and Windows currently compatiable with Jellyfin and [PanAudio](https://github.com/obiwanconobi/panaudio-server). It is stable for both.
 
 ## Features
-Favourite artists, albums and songs.
-Playlist support.
-Download and offline support.
+- Favourite artists, albums and songs.
+- Playlist support.
+- Download and offline support.
+- Lyrics (from [LrcLib](https://lrclib.net/))
+- Playback reporting
+- Playback stats and history (PanAudio server only)
 
 ## Android
 The android app is currently available from the releases section here.
