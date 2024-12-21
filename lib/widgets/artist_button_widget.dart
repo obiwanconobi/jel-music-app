@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jel_music/controllers/artist_button_controller.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:jel_music/widgets/album_page.dart';
+import 'package:jel_music/widgets/shared_widgets.dart';
 import 'package:sizer/sizer.dart';
 
 String? artistIds;
@@ -23,6 +24,7 @@ class ArtistButton extends StatefulWidget {
 class _ArtistButtonState extends State<ArtistButton> {
 
   ArtistButtonController controller = ArtistButtonController();
+  SharedWidgets sharedWidgets = SharedWidgets();
   late Future<Artists> artistsFuture;
 
   @override
@@ -66,10 +68,8 @@ class _ArtistButtonState extends State<ArtistButton> {
                                imageUrl: artist!.picture ?? "",
                                memCacheHeight: 150,
                               memCacheWidth: 150,
-                              errorWidget: (context, url, error) => Container(
-                              color: const Color(0xFF71B77A),
-                              child: const Center(
-                                ),),),
+                                errorWidget: (context, url, error) => sharedWidgets.artistImage404(artist.name ?? "", context, Theme.of(context).textTheme.bodySmall!,11.w),
+                              ),
                             ),
                           ),                                             
                            Flexible(

@@ -7,6 +7,7 @@ import 'package:jel_music/controllers/music_controller.dart';
 import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/quick_actions_handler.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
+import 'package:jel_music/widgets/lyrics_page.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
@@ -228,7 +229,10 @@ print('error');
                                  child: Row(
                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                    children: [
-                                   ElevatedButton(onPressed: () => { _clearQueue() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Clear', style: Theme.of(context).textTheme.bodySmall)),
+                                     ElevatedButton(onPressed: () => { Navigator.push(context,
+                                       MaterialPageRoute(builder: (context) => LyricsPage(),)),
+                                     }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Lyrics', style: Theme.of(context).textTheme.bodySmall)),
+                                     ElevatedButton(onPressed: () => { _clearQueue() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Clear', style: Theme.of(context).textTheme.bodySmall)),
                                  ],),
                                ),
                                ListView.builder(

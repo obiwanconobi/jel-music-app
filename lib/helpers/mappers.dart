@@ -1,7 +1,9 @@
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/models/album.dart';
+import 'package:jel_music/models/playback_artists.dart';
 import 'package:jel_music/models/playback_days.dart';
+import 'package:jel_music/models/playback_history.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
 
@@ -16,6 +18,23 @@ class Mappers{
       serverType = GetStorage().read('ServerType') ?? "ERROR";
     }
 
+    List<PlaybackHistory> convertRawToPlaybackHistory(dynamic raw){
+      List<PlaybackHistory> list = [];
+      for(var data in raw){
+        var rr = PlaybackHistory(SongId: data["songId"], PlaybackStart: DateTime.parse(data["playbackStart"]), Seconds: data["seconds"]);
+        list.add(rr);
+      }
+      return list;
+    }
+
+
+    List<PlaybackArtists> convertRawToPlaybackArtists(dynamic raw){
+      List<PlaybackArtists> returnList = [];
+      for(var data in raw){
+        returnList.add(PlaybackArtists(artistId: data["artistId"], artistName: data["artistName"], playCount: data['playCount'], totalSeconds: data['totalSeconds']));
+      }
+      return returnList;
+    }
 
     List<PlaybackDays> convertRawToPlaybackDays(dynamic raw){
       List<PlaybackDays> returnList = [];
@@ -23,6 +42,23 @@ class Mappers{
         returnList.add(PlaybackDays(Day: DateTime.parse(data["day"]), TotalSeconds: data["totalSeconds"]));
       }
       return returnList;
+    }
+
+    convertHiveSongToModelSong(dynamic song){
+      getValues();
+      String imgUrl = "";
+      String songId = song.albumId;
+      if(serverType == "Jellyfin"){
+        imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
+      }else if (serverType == "PanAudio"){
+        imgUrl = "$baseServerUrl/api/albumArt?albumId=${song.albumId}";
+      }
+      return Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,
+          artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length,
+          favourite: song.favourite, discNumber: song.discIndex, downloaded: song.downloaded, codec: song.codec,
+          bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate
+      );
+
     }
 
     Future<List<Songs>> convertHiveSongsToModelSongs(dynamic songsRaw)async{

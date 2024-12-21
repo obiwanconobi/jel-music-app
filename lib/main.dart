@@ -10,14 +10,19 @@ import 'package:jel_music/controllers/all_songs_controller.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/artist_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
+import 'package:jel_music/controllers/individual_song_controller.dart';
 import 'package:jel_music/controllers/latest_albums_controller.dart';
 import 'package:jel_music/controllers/liked_controller.dart';
 import 'package:jel_music/controllers/log_box_controller.dart';
+import 'package:jel_music/controllers/lyrics_page_controller.dart';
 import 'package:jel_music/controllers/most_played_songs_artist_controller.dart';
 import 'package:jel_music/controllers/most_played_songs_controller.dart';
+import 'package:jel_music/controllers/playback_artists_controller.dart';
+import 'package:jel_music/controllers/playback_history_day_list_controller.dart';
 import 'package:jel_music/controllers/playlist_controller.dart';
 import 'package:jel_music/controllers/playlists_controller.dart';
 import 'package:jel_music/controllers/songs_controller.dart';
+import 'package:jel_music/controllers/songs_list_item_controller.dart';
 import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
@@ -100,6 +105,11 @@ Future<void> main() async{
   GetIt.I.registerSingleton<MostPlayedSongsController>(MostPlayedSongsController());
   GetIt.I.registerSingleton<MostPlayedSongsArtistController>(MostPlayedSongsArtistController());
   GetIt.I.registerSingleton<PlaybackByDaysController>(PlaybackByDaysController());
+  GetIt.I.registerSingleton<PlaybackArtistsController>(PlaybackArtistsController());
+  GetIt.I.registerSingleton<SongsListItemController>(SongsListItemController());
+  GetIt.I.registerSingleton<PlaybackHistoryDayListController>(PlaybackHistoryDayListController());
+  GetIt.I.registerSingleton<IndividualSongController>(IndividualSongController());
+  GetIt.I.registerSingleton<LyricsPageController>(LyricsPageController());
 
 
   const QuickActions quickActions = QuickActions();

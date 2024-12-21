@@ -9,6 +9,15 @@ extension DateFormatter on DateTime{
 
 extension IntExtension on int{
 
+  String convertMinuteInt(){
+    var length = this.toString().length;
+    if(length == 1){
+      return "0${this}";
+    }else{
+      return toString();
+    }
+  }
+
   String intWithSuff() {
 
     if(this >= 11 && this <=13)return "${this}th";

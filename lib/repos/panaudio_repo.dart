@@ -14,6 +14,38 @@ class PanaudioRepo{
   String baseServerUrl = "";
   var logger = GetIt.instance<LogHandler>();
 
+  getPlaybackForDay(DateTime day)async{
+    baseServerUrl = GetStorage().read('serverUrl');
+    try {
+
+      var date = day.formatDate();
+
+      String url = "$baseServerUrl/api/playback/playbackday?day=$date";
+      http.Response res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  getPlaybackArtists(DateTime inOldDate, DateTime inCurDate)async{
+    baseServerUrl = GetStorage().read('serverUrl');
+    try {
+
+      var curDate = inCurDate.formatDate();
+      var oldDate = inOldDate.formatDate();
+      String url = "$baseServerUrl/api/playback/historyartists?startDate=$oldDate&endDate=$curDate";
+      http.Response res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   getPlaybackDays(DateTime inOldDate, DateTime inCurDate)async{
     baseServerUrl = GetStorage().read('serverUrl');
     try {
@@ -135,11 +167,19 @@ class PanaudioRepo{
     }
   }
 
+  deleteSongFromPlaylist(String playlistId, String songId)async{
+    String url = "$baseServerUrl/api/deleteSong?playlistId=$playlistId&songId=$songId";
+    http.Response res = await http.put(Uri.parse(url));
+    if (res.statusCode == 200) {
+      return true;
+    }
+  }
+
   addSongToPlaylist(String playlistId, String songId)async{
     String url = "$baseServerUrl/api/addSong?playlistId=$playlistId&songId=$songId";
     http.Response res = await http.put(Uri.parse(url));
     if (res.statusCode == 200) {
-      return json.decode(res.body);
+      return true;
     }
   }
 
@@ -177,7 +217,7 @@ class PanaudioRepo{
 
     http.Response res = await http.post(Uri.parse(url));
     if (res.statusCode == 200) {
-      return json.decode(res.body);
+
     }
 
   }

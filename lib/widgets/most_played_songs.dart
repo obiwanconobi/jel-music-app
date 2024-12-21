@@ -97,9 +97,6 @@ class _MostPlayedSongsState extends State<MostPlayedSongs> {
                             return SingleChildScrollView(
                               child: Column(
                                 children: [
-                                  Visibility(
-                                      visible: (serverType == "PanAudio" ? true: false),
-                                      child: PlaybackDaysChart()),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.center,

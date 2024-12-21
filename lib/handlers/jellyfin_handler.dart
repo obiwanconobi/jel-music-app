@@ -133,6 +133,18 @@ class JellyfinHandler implements IHandler{
     throw UnimplementedError();
   }
 
+  @override
+  getPlaybackByArtists(DateTime inOldDate, DateTime inCurDate) {
+    // TODO: implement getPlaybackByArtists
+    throw UnimplementedError();
+  }
+
+  @override
+  getPlaybackForDay(DateTime day) {
+    // TODO: implement getPlaybackForDay
+    throw UnimplementedError();
+  }
+
   
 
 }

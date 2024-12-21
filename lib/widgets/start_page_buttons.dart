@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/models/log.dart';
 import 'package:jel_music/widgets/all_albums_page.dart';
@@ -8,6 +9,7 @@ import 'package:jel_music/widgets/artists_page.dart';
 import 'package:jel_music/widgets/liked_songs.dart';
 import 'package:jel_music/widgets/most_played_songs.dart';
 import 'package:jel_music/widgets/playlists_page.dart';
+import 'package:jel_music/widgets/stats_page.dart';
 import 'package:sizer/sizer.dart';
 
 class StartPageButtons extends StatefulWidget {
@@ -18,12 +20,15 @@ class StartPageButtons extends StatefulWidget {
 }
 
 class _StartPageButtonsState extends State<StartPageButtons> {
-
+  String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
   LogHandler logger = LogHandler();
-
+  bool panAudio = false;
   bool visible = true;
   @override
   void initState() {
+    if(serverType == "PanAudio"){
+      panAudio = true;
+    }
     super.initState();
     setState(() {
       visible = true;
@@ -113,33 +118,70 @@ class _StartPageButtonsState extends State<StartPageButtons> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                width: 45.w, // Set the desired width here
-                height: 12.w,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const MostPlayedSongs()),
-                    );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      /*Padding(
-                                          padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                          child: Icon(Icons.save, color: Theme.of(context).textTheme.bodyLarge!.color, size:24)
-                                        ),*/
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                        child: Text(
-                            'Most Played',
-                            style: Theme.of(context).textTheme.bodyMedium
+            Visibility(
+              visible: panAudio,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: 45.w, // Set the desired width here
+                  height: 12.w,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const StatsPage()),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                                            padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                            child: Icon(Icons.save, color: Theme.of(context).textTheme.bodyLarge!.color, size:24)
+                                          ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                          child: Text(
+                              'Statistics',
+                              style: Theme.of(context).textTheme.bodyMedium
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: !panAudio,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: 45.w, // Set the desired width here
+                  height: 12.w,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const MostPlayedSongs()),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                                            padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                            child: Icon(Icons.save, color: Theme.of(context).textTheme.bodyLarge!.color, size:24)
+                                          ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                          child: Text(
+                              'Most Played',
+                              style: Theme.of(context).textTheme.bodyMedium
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

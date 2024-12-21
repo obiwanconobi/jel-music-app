@@ -19,7 +19,7 @@ class PanaudioMappers{
     var songsList = [];
     Conversions conversions = Conversions();
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
-
+    await songsHelper.openBox();
     for(var playlistItems in songs){
       var song = playlistItems["song"];
       //var songId = song["Id"];

@@ -23,4 +23,6 @@ abstract class IHandler {
   tryGetArt(String artist, String album);
   uploadArt(String albumId, File image);
   getPlaybackByDays(DateTime inOldDate, DateTime inCurDate);
+  getPlaybackByArtists(DateTime inOldDate, DateTime inCurDate);
+  getPlaybackForDay(DateTime day);
 }

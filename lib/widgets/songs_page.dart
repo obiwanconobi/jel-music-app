@@ -16,6 +16,7 @@ import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/widgets/artist_button_widget.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/similar_albums.dart';
+import 'package:jel_music/widgets/songs_list_item.dart';
 import 'package:sizer/sizer.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
@@ -143,21 +144,7 @@ class _SongsPageState extends State<SongsPage> {
     });
   }
 
-  _favouriteSong(String songId, bool current, String artist, String title, int index)async{
-    await songsHelper.openBox();
 
-    if(current){
-      //unfavourite
-      controller.toggleFavouriteSong(songId, false);
-      songsHelper.likeSong(artist, title, false);
-      updateSong(index, true);
-    }else{
-      //favourite
-      controller.toggleFavouriteSong(songId, true);
-      songsHelper.likeSong(artist, title, true);
-      updateSong(index, false);
-    }
-  }
 
   updateSong(int index, bool favourite){
     setState(() {
@@ -343,41 +330,54 @@ class _SongsPageState extends State<SongsPage> {
                                             ),
                                             onSelected: (item) => setState(() => extraTasks(item!)),
                                             itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                                              const PopupMenuItem(
+                                              PopupMenuItem(
                                                 value: 'SHUFFLE',
                                                 child: Row(
                                                   children: [
-                                                    Icon(Icons.shuffle),
-                                                    Text('Shuffle')
+                                                    Padding(
+                                                      padding: EdgeInsets.fromLTRB(0, 0, 2.w, 0),
+                                                      child: const Icon(Icons.shuffle),
+                                                    ),
+                                                    Text('Shuffle', style: Theme.of(context).textTheme.bodySmall)
                                                   ],
                                                 ),
                                               ),
-                                              const PopupMenuItem(
+                                              PopupMenuItem(
                                                 value: 'DOWNLOAD',
                                                 child: Row(
                                                   children: [
-                                                    Icon(Icons.download),
-                                                    Text('Download')
+                                                    Padding(
+                                                      padding:EdgeInsets.fromLTRB(0, 0, 2.w, 0),
+                                                      child: const Icon(Icons.download),
+                                                    ),
+                                                    Text('Download', style: Theme.of(context).textTheme.bodySmall)
                                                   ],
                                                 ),
                                               ),
                                               PopupMenuItem(
                                                 enabled: (serverType == "PanAudio"),
                                                 value: 'GETART',
-                                                child: const Row(
+                                                child: Row(
                                                       children: [
-                                                        Icon(Icons.download),
-                                                        Text('Try Get Art')
+                                                        Padding(
+                                                          padding: EdgeInsets.fromLTRB(0, 0, 2.w, 0),
+                                                          child: const Icon(Icons.download),
+                                                        ),
+                                                        Text('Try Get Art', style: Theme.of(context).textTheme.bodySmall)
                                                       ],
                                                     ),
                                                   ),
                                               PopupMenuItem(
                                                 enabled: (serverType == "PanAudio"),
                                                 value: 'UPLOADART',
-                                                child: const Row(
+                                                child: Row(
                                                   children: [
-                                                    Icon(Icons.upload),
-                                                    Text('Upload Art')
+                                                    Padding(
+                                                      padding: EdgeInsets.fromLTRB(0, 0, 2.w, 0),
+                                                      child: const Icon(Icons.upload),
+                                                    ),
+
+                                                    Text('Upload Art', style: Theme.of(context).textTheme.bodySmall)
                                                   ],
                                                 ),
                                               ),
@@ -412,84 +412,7 @@ class _SongsPageState extends State<SongsPage> {
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: EdgeInsets.symmetric(vertical: 8.sp),
-                                  child: InkWell(
-                                    onTap:() => _playSong(songsList, index),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.sp),
-                                    ),
-                                    child: Container(
-                                        height: 69.sp,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.sp),
-                                          ),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                                        child: Row(
-                                                          mainAxisSize: MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment.start,
-                                                          children: [
-                                                            Text('${songsList[index].trackNumber}. ', style: Theme.of(context).textTheme.bodyMedium),
-                                                            Flexible(
-                                                              child: Text(songsList[index].title!,
-                                                                style: Theme.of(context).textTheme.bodyMedium,
-                                                                softWrap: true,
-                                                                overflow: TextOverflow.ellipsis, // Set overflow property
-                                                                maxLines: 1, // Set the maximum number of lines
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: [
-                                                          Container(
-                                                            margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                                            child: Text(styleSongLength(songsList[index].length.toString()), style:  Theme.of(context).textTheme.bodySmall)),
-                                                            Container(
-                                                            margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                                            child: IconButton(icon: Icon(Icons.download, size: 30, color: ((songsList[index].downloaded ?? false) ? Colors.green : Colors.blueGrey)), onPressed: () { _downloadFile(songsList[index]); }),
-                                                          ),
-                                                          Container(
-                                                            margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                                            child:PopupMenuButton<String>(
-                                                              icon: const Icon(Icons.playlist_add, color: Colors.blueGrey), // Set your desired icon here
-                                                              onSelected: (String value) {
-                                                                _addToPlaylist(songsList[index].id!, value);
-                                                              },
-                                                              itemBuilder: (context) => playlistMenuItems.toList(),
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                                            child: IconButton(icon: Icon(Icons.favorite, color: ((songsList[index].favourite ?? false) ? Colors.red : Colors.blueGrey), size:30), onPressed: () {_favouriteSong(songsList[index].id!, songsList[index].favourite!, songsList[index].artist!, songsList[index].title!, index); },))
-                                                        ],
-                                                      ),
-                                                      Divider(color: Theme.of(context).colorScheme.secondary, indent: 40, endIndent: 40,),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                                  child: SongsListItem(songsList: songsList, index: index),
                                   );
                               },
                             ),

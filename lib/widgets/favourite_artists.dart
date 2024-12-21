@@ -20,13 +20,12 @@ class _FavouriteArtistsState extends State<FavouriteArtists> {
     @override
   void initState() {
     super.initState();
-
     controller.favourite = true;
     artistsFuture = controller.onInit();
   }
   var controller = GetIt.instance<ArtistController>();
     SharedWidgets sharedWidgets = SharedWidgets();
-  late Future<List<Artists>> artistsFuture;
+  late final Future<List<Artists>> artistsFuture;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Artists>>(
@@ -89,8 +88,8 @@ class _FavouriteArtistsState extends State<FavouriteArtists> {
                                           imageUrl: artistsList[index].picture ?? "",
                                           memCacheHeight: 180,
                                           memCacheWidth: 180,
-                                          placeholder: (context, url) => sharedWidgets.artistImage404(artistsList[index].name ?? "", context),
-                                          errorWidget: (context, url, error) => sharedWidgets.artistImage404(artistsList[index].name ?? "", context),
+                                          placeholder: (context, url) => sharedWidgets.artistImage404(artistsList[index].name ?? "", context, Theme.of(context).textTheme.displayLarge!, 180),
+                                          errorWidget: (context, url, error) => sharedWidgets.artistImage404(artistsList[index].name ?? "", context, Theme.of(context).textTheme.displayLarge!, 180),
                                         )
                                       ),
                                     ),

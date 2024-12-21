@@ -50,7 +50,7 @@ class PanaudioHandler implements IHandler{
 
   @override
   updateFavouriteStatus(String itemId, bool current)async{
-    await repo.updateFavouriteStatus(itemId, current);
+   await repo.updateFavouriteStatus(itemId, current);
   }
 
   @override
@@ -81,13 +81,13 @@ class PanaudioHandler implements IHandler{
   @override
   addSongToPlaylist(String songId, String playlistId) async{
     // TODO: implement addSongToPlaylist
-     await repo.addSongToPlaylist(playlistId, songId);
+    return await repo.addSongToPlaylist(playlistId, songId);
   }
 
   @override
-  deleteSongFromPlaylist(String songId, String playlistId) {
+  deleteSongFromPlaylist(String songId, String playlistId) async{
     // TODO: implement deleteSongFromPlaylist
-    throw UnimplementedError();
+    await repo.deleteSongFromPlaylist(playlistId, songId);
   }
 
   @override
@@ -132,5 +132,17 @@ class PanaudioHandler implements IHandler{
   updatePlaybackProgress(String songId, String userId, bool paused, int ticks) {
     // TODO: implement updatePlaybackProgress
     //throw UnimplementedError();
+  }
+
+  @override
+  getPlaybackByArtists(DateTime inOldDate, DateTime inCurDate)async {
+    // TODO: implement getPlaybackByArtists
+    return await repo.getPlaybackArtists(inOldDate, inCurDate);
+  }
+
+  @override
+  getPlaybackForDay(DateTime day)async {
+    // TODO: implement getPlaybackForDay
+    return await repo.getPlaybackForDay(day);
   }
 }

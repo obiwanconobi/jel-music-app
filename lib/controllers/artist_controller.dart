@@ -7,7 +7,7 @@ import 'package:get_storage/get_storage.dart';
 
 
 class ArtistController {
-    var artistsList = <Artists>[];
+  //  var artistsList = <Artists>[];
     Future<List<Artists>>? futureList;
     final int currentArtistIndex = 0;
     String? baseServerUrl;
@@ -18,7 +18,7 @@ class ArtistController {
     var apiController = GetIt.instance<ApiController>();
 
   clearList(){
-    artistsList.clear();
+  //  artistsList.clear();
   }
 
   Future<List<Artists>> onInit() async {
@@ -26,8 +26,8 @@ class ArtistController {
       baseServerUrl = GetStorage().read('serverUrl');
       await artistHelper.openBox();
       clearList();
-      artistsList = _getArtistsFromBox(favourite);
-      return artistsList;
+      return _getArtistsFromBox(favourite);
+     // return artistsList;
     } catch (error) {
       // Handle errors if needed
        rethrow;
@@ -61,6 +61,7 @@ class ArtistController {
 
 
   List<Artists> _getArtistsFromBox(bool? favourite){
+      List<Artists> artistsList = [];
       favourite ??= false;
       clearList();
       var artistsRaw = [];

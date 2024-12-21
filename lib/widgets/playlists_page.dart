@@ -13,7 +13,7 @@ class PlaylistsPage extends StatefulWidget {
   State<PlaylistsPage> createState() => _PlaylistsPageState();
 }
 
-class _PlaylistsPageState extends State<PlaylistsPage> {
+class _PlaylistsPageState extends State<PlaylistsPage> with SingleTickerProviderStateMixin {
   var controller = GetIt.instance<PlaylistsController>();
   double mainAxis = 250.h;
   final TextEditingController _searchController = TextEditingController();

@@ -12,6 +12,7 @@ import 'package:jel_music/hive/helpers/isynchelper.dart';
 import 'package:jel_music/models/log.dart';
 import 'package:jel_music/widgets/downloads_page.dart';
 import 'package:jel_music/widgets/log_box.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sizer/sizer.dart';
@@ -32,6 +33,18 @@ class _MyWidgetState extends State<SettingsPage> {
   final TextEditingController _usernameTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
   final TextEditingController _logController = TextEditingController();
+
+  PackageInfo _packageInfo = PackageInfo(
+    appName: 'Unknown',
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+    buildSignature: 'Unknown',
+    installerStore: 'Unknown',
+  );
+
+  late Future<PackageInfo> packageInfo;
+  String version = "";
   var downloadController = GetIt.instance<DownloadController>();
    var logger = GetIt.instance<LogHandler>();
   AlbumsHelper albumsHelper = AlbumsHelper();
@@ -93,12 +106,21 @@ class _MyWidgetState extends State<SettingsPage> {
 
 }
 
+_getVersionNumber()async{
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  setState(() {
+    _packageInfo = packageInfo;
+  });
+
+}
+
    @override
    void  initState() {
     super.initState();
     GetStorage.init();
 
 
+    _getVersionNumber();
 
     _selectedOption = GetStorage().read('ServerType') ?? "Jellyfin";
 
@@ -363,7 +385,7 @@ class _MyWidgetState extends State<SettingsPage> {
 
                     ],
                   ),
-                  Text("Log Box", style: Theme.of(context).textTheme.bodyMedium),
+                  Text("Version: ${_packageInfo.version}", style: Theme.of(context).textTheme.bodyMedium),
 
                 ],
               ),

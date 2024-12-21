@@ -8,6 +8,7 @@ import 'package:jel_music/helpers/datetime_extensions.dart';
 import 'package:jel_music/models/bar%20chart/bar_data.dart';
 import 'package:jel_music/models/playback_days.dart';
 import 'package:jel_music/widgets/most_played_songs_artist.dart';
+import 'package:jel_music/widgets/playback_history_day_list.dart';
 import 'package:sizer/sizer.dart';
 
 class PlaybackDaysChart extends StatefulWidget {
@@ -23,6 +24,7 @@ class _PlaybackDaysChartState extends State<PlaybackDaysChart> with SingleTicker
   late Future<List<PlaybackDays>> daysFuture;
   List<PlaybackDays> days = [];
   int currentWeek = 1;
+
 
   @override
   void initState() {
@@ -101,7 +103,6 @@ class _PlaybackDaysChartState extends State<PlaybackDaysChart> with SingleTicker
   void previous7Days()async{
     currentWeek++;
     setState(() {
-
       daysFuture = daysController.changeDate(currentWeek);
     });
 
@@ -159,17 +160,12 @@ class _PlaybackDaysChartState extends State<PlaybackDaysChart> with SingleTicker
                       satAmount:  ((days[5].TotalSeconds ?? 0)/60).round().toDouble(),
                       sunAmount: ((days[6].TotalSeconds ?? 0)/60).round().toDouble(),);
                     barData.initializeBarData();
-
-
-
-
-
                   var maxSize = getHighestTotal(days)/60;
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                     child: SizedBox(
                       height: 35.h,
-                      width: 100.w,
+                      width: 90.w,
                       child: Container(
                         decoration: BoxDecoration(
                           color: const Color.fromRGBO(30, 39, 48, 1.0),

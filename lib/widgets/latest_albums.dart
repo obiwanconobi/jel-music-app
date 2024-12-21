@@ -89,7 +89,7 @@ class _LatestAlbumsState extends State<LatestAlbums> {
                                           imageUrl: albumsList[index].picture ?? "",
                                           memCacheHeight: 180,
                                           memCacheWidth: 180,
-                                          errorWidget: (context, url, error) => sharedWidgets.albumImage404(albumsList[index].artist!, albumsList[index].title!, context)
+                                          errorWidget: (context, url, error) => sharedWidgets.albumImage404(albumsList[index].artist!, albumsList[index].title!, context, )
 
                                         )
                                       ),
