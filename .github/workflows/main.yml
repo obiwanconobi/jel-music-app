@@ -65,7 +65,7 @@ jobs:
       
       - name: Set tag to current date and time
         id: set_tag
-        run: echo "tag=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_OUTPUT
+        run: echo "tag=$('Android ' +date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_OUTPUT
       
       - name: Create GitHub Release
         id: create_release
