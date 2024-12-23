@@ -36,7 +36,7 @@ jobs:
         id: set_tag
         run: |
           $date = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
-          echo "tag=$('Windows ' + date)" >> $env:GITHUB_OUTPUT
+          echo "tag=$(date)" >> $env:GITHUB_OUTPUT
       
       - name: Create GitHub Release
         id: create_release
@@ -45,7 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
         with:
           tag_name: ${{ steps.set_tag.outputs.tag }}
-          release_name: Release ${{ steps.set_tag.outputs.tag }}
+          release_name: Windows ${{ steps.set_tag.outputs.tag }}
           draft: false
           prerelease: false
 
