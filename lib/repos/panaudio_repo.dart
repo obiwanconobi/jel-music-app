@@ -259,7 +259,7 @@ class PanaudioRepo{
       await logger.addToLog(LogModel(logType: "Log", logMessage: "Logged playback for song: $songId. Url: $url", logDateTime: DateTime.now()));
      // return json.decode(res.body);
     }else{
-      await logger.addToLog(LogModel(logType: "Error", logMessage: "Error logging playback for song: $songId. Err: ${res.body}", logDateTime: DateTime.now()));
+      await logger.addToLog(LogModel(logType: "Error", logMessage: "Error logging playback for song: $songId. Network Issue", logDateTime: DateTime.now()));
     }
   }
 }
