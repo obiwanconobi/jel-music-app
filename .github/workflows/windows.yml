@@ -34,9 +34,7 @@ jobs:
           
       - name: Set tag to current date and time
         id: set_tag
-        run: |
-          $date = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
-          echo "tag=$(date)" >> $env:GITHUB_OUTPUT
+        run: echo "tag=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_OUTPUT
       
       - name: Create GitHub Release
         id: create_release
