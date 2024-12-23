@@ -65,7 +65,7 @@ jobs:
       
       - name: Set tag to current date and time
         id: set_tag
-        run: echo "tag=$('Android ' +date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_OUTPUT
+        run: echo "tag=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_OUTPUT
       
       - name: Create GitHub Release
         id: create_release
@@ -74,7 +74,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
         with:
           tag_name: ${{ steps.set_tag.outputs.tag }}
-          release_name: Release ${{ steps.set_tag.outputs.tag }}
+          release_name: Android ${{ steps.set_tag.outputs.tag }}
           draft: false
           prerelease: false
       
