@@ -32,9 +32,10 @@ jobs:
         run: |
           Compress-Archive -Path "build/windows/x64/runner/Release*" -DestinationPath "build/windows/x64/runner/Release/panaudio_full.zip"
           
-      - name: Set tag to current date and time
-        id: set_tag
-        run: echo "tag=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_OUTPUT
+      - name: Get current date
+        shell: pwsh
+        run: |
+          echo "CURRENT_DATE=$(Get-Date -Format 'yyyy-MM-dd_HH-mm')" >> $env:GITHUB_ENV
       
       - name: Create GitHub Release
         id: create_release
@@ -43,7 +44,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
         with:
           tag_name: Windows
-          release_name: Windows ${{ steps.set_tag.outputs.tag }}
+          release_name: Windows ${{ env.CURRENT_DATE }}
           draft: false
           prerelease: false
 
