@@ -43,7 +43,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
         with:
-          tag_name: Windows ${{ env.CURRENT_DATE }}
+          tag_name: Windows_${{ env.CURRENT_DATE }}
           release_name: Windows ${{ env.CURRENT_DATE }}
           draft: false
           prerelease: false
