@@ -30,3 +30,13 @@ Bugs: There will be bugs. Report any you find with as much info as you can provi
 
 Android Auto: This works for me, however, due to Google shenanigans you have to enable developer options for Android auto.
 
+## Screenshots
+# Home Page
+![Home Page](https://github.com/obiwanconobi/obiwanconobi/blob/main/Home.PNG?raw=true)
+
+# Artist Page
+![Artist Page](https://github.com/obiwanconobi/obiwanconobi/blob/main/Artist_Page.PNG?raw=true)
+
+![Gif of Media Playback](https://github.com/obiwanconobi/obiwanconobi/blob/main/Playing.gif?raw=true)
+
+
