@@ -383,7 +383,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     var playbackLog = GetStorage().read('playbackReporting') ?? false;
     if(playbackLog) {
       var userId = await GetStorage().read('userId');
-      String serverType = GetStorage().read('ServerType');
+      String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
 
       IHandler jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
       String current = currentSource!.tag.id;
@@ -504,7 +504,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     currentSource = getCurrentSong();
 
     baseServerUrl = GetStorage().read('serverUrl') ?? "";
-    String serverType = GetStorage().read('ServerType');
+    String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
     jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
     await loadAlbums();
   }
@@ -607,7 +607,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   }
 
   getSongUrl(String id)async{
-    var serverType = await GetStorage().read('ServerType');
+    var serverType = await GetStorage().read('ServerType') ?? "Jellyfin";
     if(serverType == "Jellyfin"){
       await getToken();
       return "$baseServerUrl/Items/$id/Download?api_key=$accessToken";

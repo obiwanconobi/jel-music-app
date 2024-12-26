@@ -12,7 +12,12 @@ class ArtistsHelper{
   var accessToken = GetStorage().read('accessToken');
   var baseServerUrl = GetStorage().read('serverUrl');
    ApiHelper apiHelper = ApiHelper();
-  
+
+
+   getValues(){
+     accessToken = GetStorage().read('accessToken');
+     baseServerUrl = GetStorage().read('serverUrl');
+   }
 
 
 
@@ -113,6 +118,7 @@ class ArtistsHelper{
     }
 
      _getArtistData() async{
+       getValues();
     try {
       var userId = await GetStorage().read('userId');
     
@@ -128,6 +134,7 @@ class ArtistsHelper{
   }
 
        _getAlbumData() async{
+         getValues();
         var userId = await GetStorage().read('userId');
       try {
          var requestHeaders = await apiHelper.returnJellyfinHeaders();
@@ -142,6 +149,7 @@ class ArtistsHelper{
    }
 
   Future<List<Albums>> fetchAlbums() async{
+    getValues();
     var albumsRaw = await _getAlbumData();
 
     List<Albums> albumsList = [];

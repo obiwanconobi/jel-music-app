@@ -26,7 +26,7 @@ class AlbumController {
     late IHandler jellyfinHandler;
 
      Future<List<Album>> onInit() async {
-       String serverType = GetStorage().read('ServerType');
+       String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
        jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
     try {
       baseServerUrl = GetStorage().read('serverUrl');
@@ -72,7 +72,7 @@ class AlbumController {
 
   Future<List<Album>> returnSimilar()async{
 
-    String serverType = GetStorage().read('ServerType');
+    String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
     if(serverType == "PanAudio")return [];
     await albumHelper.openBox();
     var album = albumHelper.returnAlbum(artistId!, albumId!);

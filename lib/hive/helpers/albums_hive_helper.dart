@@ -8,8 +8,8 @@ import 'package:http/http.dart' as http;
 class AlbumsHelper{
 
   late Box<Albums> albumsBox;
-  var accessToken = GetStorage().read('accessToken');
-  var baseServerUrl = GetStorage().read('serverUrl');
+  var accessToken = GetStorage().read('accessToken') ?? "";
+  var baseServerUrl = GetStorage().read('serverUrl') ?? "";
    ApiHelper apiHelper = ApiHelper();
   
 
