@@ -47,7 +47,7 @@ class _IndividualSongState extends State<IndividualSong> {
           } else {
             var song = snapshot.data;
             return SizedBox(
-              width:100.w,
+              width:95.w,
               height: 12.w,
               child: Row(
                 children: [

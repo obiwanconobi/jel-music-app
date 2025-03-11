@@ -155,6 +155,14 @@ class _PlaybackByArtistChartState extends State<PlaybackByArtistChart> with Sing
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Container(
+                                  width: 20,
+                                  height: 20,
+                                  decoration: BoxDecoration(
+                                    color: ((index < 8) ? colours[index] : colours[8]) ,  // Change this to any color you want
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
                                 Text(playbackArtists[index].artistName!),
                                 Row(
                                   children: [

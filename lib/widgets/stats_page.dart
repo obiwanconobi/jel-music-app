@@ -79,7 +79,7 @@ class _StatsPageState extends State<StatsPage> {
               }
           ),
           SizedBox(
-            height: 88.h,
+            height: 85.h,
             child: PageView.builder(
               itemCount: 3,
               scrollDirection: Axis.horizontal,
