@@ -289,12 +289,7 @@ class _MostPlayedSongsState extends State<MostPlayedSongs> {
                                                             children: [
                                                               Flexible(
                                                                 child: Text(songsList[index].title!,
-                                                                  style: TextStyle(
-                                                                    fontSize: 12.sp,
-                                                                    color: Theme.of(context).textTheme.bodySmall!.color,
-                                                                    fontWeight: FontWeight.w400,
-                                                                    fontFamily: "Segoe UI",
-                                                                  ),
+                                                                  style: Theme.of(context).textTheme.bodyMedium,
                                                                   overflow: TextOverflow.ellipsis, // Set overflow property
                                                                   maxLines: 1, // Set the maximum number of lines
                                                                 ),
@@ -303,23 +298,13 @@ class _MostPlayedSongsState extends State<MostPlayedSongs> {
                                                           ),
                                                           Container(
                                                             alignment: Alignment.centerLeft,
-                                                            child: Text(songsList[index].artist.toString(), style: TextStyle(
-                                                              fontSize: 10.sp,
-                                                              color: Theme.of(context).textTheme.bodySmall!.color,
-                                                              fontWeight: FontWeight.w400,
-                                                              fontFamily: "Segoe UI",
-                                                            ),
+                                                            child: Text(songsList[index].artist.toString(), style: Theme.of(context).textTheme.bodySmall,
                                                                 overflow: TextOverflow.ellipsis,
                                                                 maxLines: 1),
                                                           ),
                                                           Container(
                                                             alignment: Alignment.centerLeft,
-                                                            child: Text('Play Count: ${songsList[index].playCount.toString()}', style: TextStyle(
-                                                              fontSize: 8.sp,
-                                                              color: Theme.of(context).textTheme.bodySmall!.color,
-                                                              fontWeight: FontWeight.w400,
-                                                              fontFamily: "Segoe UI",
-                                                            ),),
+                                                            child: Text('Play Count: ${songsList[index].playCount.toString()}', style:  Theme.of(context).textTheme.bodySmall,),
                                                           ),
                                                         ],
                                                       ),

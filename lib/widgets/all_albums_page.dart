@@ -80,7 +80,7 @@ class _AlbumPageState extends State<AllAlbumsPage> with AutomaticKeepAliveClient
             children: [
               Padding(
                 padding: const EdgeInsets.all(7.0),
-                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle:  TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)), style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)),
+                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle: Theme.of(context).textTheme.bodyMedium), style: Theme.of(context).textTheme.bodyMedium),
               ),
               Expanded(
                 child: FutureBuilder<List<Album>>(
@@ -172,12 +172,7 @@ class _AlbumPageState extends State<AllAlbumsPage> with AutomaticKeepAliveClient
                                                         child: Center(
                                                           child: Text(
                                                             _filteredAlbums[index].title!,
-                                                            style: TextStyle(
-                                                              fontSize: 13.sp,
-                                                              color: Theme.of(context).textTheme.bodySmall!.color,
-                                                              fontWeight: FontWeight.bold,
-                                                              fontFamily: "Segoe UI",
-                                                            ),
+                                                            style: Theme.of(context).textTheme.bodyMedium,
                                                             overflow: TextOverflow.ellipsis, // Set overflow property
                                                             maxLines: 1, // Set the maximum number of lines
                                                           ),

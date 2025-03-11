@@ -181,13 +181,13 @@ static ThemeData lightTheme = ThemeData(
       )
     ),
     textTheme: const TextTheme(
-      displayLarge: TextStyle(color:Colors.black, fontSize:36, fontWeight: FontWeight.w600,),
-      displaySmall: TextStyle(color: Colors.black, fontSize:16, fontWeight: FontWeight.w600),
-      labelLarge: TextStyle(color: Colors.black, fontSize:26, fontWeight: FontWeight.w600),
-      bodyLarge: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600), // Text color for dark theme
-      bodyMedium: TextStyle(color: Colors.black, fontSize: 18),
-      bodySmall: TextStyle(color: Colors.black, fontSize: 16),
-      labelSmall: TextStyle(color: Colors.black, fontSize: 11)
+      displayLarge: TextStyle(color:Colors.black, fontSize:36, fontWeight: FontWeight.w600, fontFamily: 'Inconsolata'),
+      displaySmall: TextStyle(color: Colors.black, fontSize:16, fontWeight: FontWeight.w600, fontFamily: 'Inconsolata'),
+      labelLarge: TextStyle(color: Colors.black, fontSize:26, fontWeight: FontWeight.w600, fontFamily: 'Inconsolata'),
+      bodyLarge: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600, fontFamily: 'Inconsolata'), // Text color for dark theme
+      bodyMedium: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w500, fontFamily: 'Inconsolata'),
+      bodySmall: TextStyle(color: Colors.black, fontSize: 16,fontWeight: FontWeight.w500,fontFamily: 'Inconsolata'),
+      labelSmall: TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.w500, fontFamily: 'Inconsolata')
     ),
     // Add other dark theme properties here
   );
@@ -215,13 +215,14 @@ static ThemeData lightTheme = ThemeData(
       backgroundColor: const Color(0xFF1C1B1B), // Your secondary color
     ), // Your accent color for dark mode
     textTheme: const TextTheme(
-      displayLarge: TextStyle(color:Colors.black, fontSize:36, fontWeight: FontWeight.w600),
-        displaySmall: TextStyle(color: Colors.white, fontSize:16, fontWeight: FontWeight.w600),
-      labelLarge: TextStyle(color: Colors.white, fontSize:26, fontWeight: FontWeight.w600),
-      bodyLarge: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600), // Text color for dark theme
-      bodyMedium: TextStyle(color: Colors.white, fontSize: 18),
-      bodySmall: TextStyle(color: Colors.white, fontSize: 16),
-      labelSmall: TextStyle(color: Colors.white, fontSize: 11)
+
+      displayLarge: TextStyle(color:Colors.black, fontSize:36, fontWeight: FontWeight.w600, fontFamily: 'Inconsolata'),
+        displaySmall: TextStyle(color: Colors.white, fontSize:16, fontWeight: FontWeight.w600, fontFamily: 'Inconsolata'),
+      labelLarge: TextStyle(color: Colors.white, fontSize:26, fontWeight: FontWeight.w600,fontFamily: 'Inconsolata'),
+      bodyLarge: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600,fontFamily: 'Inconsolata'), // Text color for dark theme
+      bodyMedium: TextStyle(color: Colors.white, fontSize: 18,fontWeight: FontWeight.w500,fontFamily: 'Inconsolata'),
+      bodySmall: TextStyle(color: Colors.white, fontSize: 16,fontWeight: FontWeight.w500,fontFamily: 'Inconsolata'),
+      labelSmall: TextStyle(color: Colors.white, fontSize: 13,fontWeight: FontWeight.w500,fontFamily: 'Inconsolata')
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(

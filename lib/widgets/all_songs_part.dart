@@ -150,7 +150,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(7.0),
-                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle:  TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)), style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)),
+                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle:  Theme.of(context).textTheme.bodyMedium), style: Theme.of(context).textTheme.bodyMedium),
               ),
               Expanded(
                 child: FutureBuilder<List<Songs>>(
@@ -191,7 +191,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
                                       Radius.circular(10.sp),
                                     ),
                                     child: Container(
-                                        height: 52.sp,
+                                        height: 55.sp,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10.sp),
@@ -237,12 +237,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
                                                         children: [
                                                           Flexible(
                                                             child: Text(_filteredSongs[index].title!,
-                                                              style: TextStyle(
-                                                                fontSize: 12.sp,
-                                                                color: Theme.of(context).textTheme.bodySmall!.color,
-                                                                fontWeight: FontWeight.w400,
-                                                                fontFamily: "Segoe UI",
-                                                              ),
+                                                              style: Theme.of(context).textTheme.bodyMedium,
                                                               overflow: TextOverflow.ellipsis, // Set overflow property
                                                               maxLines: 2, // Set the maximum number of lines
                                                             ),
@@ -251,12 +246,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
                                                       ),
                                                       Container(
                                                         alignment: Alignment.centerLeft,
-                                                        child: Text(_filteredSongs[index].artist.toString(), style: TextStyle(
-                                                                  fontSize: 10.sp,
-                                                                  color: Theme.of(context).textTheme.bodySmall!.color,
-                                                                  fontWeight: FontWeight.w400,
-                                                                  fontFamily: "Segoe UI",
-                                                                ),),
+                                                        child: Text(_filteredSongs[index].artist.toString(), style: Theme.of(context).textTheme.bodySmall),
                                                       ),
                                                     ],
                                                   ),

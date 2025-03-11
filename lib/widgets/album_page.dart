@@ -196,12 +196,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                                       child: Center(
                                                         child: Text(
                                                           albumsList[index].title!,
-                                                          style: TextStyle(
-                                                            fontSize: 13.sp,
-                                                            color: Theme.of(context).textTheme.bodySmall!.color,
-                                                            fontWeight: FontWeight.bold,
-                                                            fontFamily: "Segoe UI",
-                                                          ),
+                                                          style: Theme.of(context).textTheme.bodySmall,
                                                           overflow: TextOverflow.ellipsis, // Set overflow property
                                                           maxLines: 1, // Set the maximum number of lines
                                                         ),

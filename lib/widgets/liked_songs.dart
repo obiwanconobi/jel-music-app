@@ -209,7 +209,7 @@ class _LikedSongsState extends State<LikedSongs> {
                                       Radius.circular(10.sp),
                                     ),
                                     child: Container(
-                                        height: 52.sp,
+                                        height: 55.sp,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10.sp),
@@ -252,12 +252,7 @@ class _LikedSongsState extends State<LikedSongs> {
                                                         children: [
                                                           Flexible(
                                                             child: Text(songsList[index].title!,
-                                                              style: TextStyle(
-                                                                fontSize: 12.sp,
-                                                                color: Theme.of(context).textTheme.bodySmall!.color,
-                                                                fontWeight: FontWeight.w400,
-                                                                fontFamily: "Segoe UI",
-                                                              ),
+                                                              style: Theme.of(context).textTheme.bodyMedium,
                                                               overflow: TextOverflow.ellipsis, // Set overflow property
                                                               maxLines: 2, // Set the maximum number of lines
                                                             ),
@@ -266,12 +261,7 @@ class _LikedSongsState extends State<LikedSongs> {
                                                       ),
                                                       Container(
                                                         alignment: Alignment.centerLeft,
-                                                        child: Text(songsList[index].artist.toString(), style: TextStyle(
-                                                                  fontSize: 10.sp,
-                                                                  color: Theme.of(context).textTheme.bodySmall!.color,
-                                                                  fontWeight: FontWeight.w400,
-                                                                  fontFamily: "Segoe UI",
-                                                                ),),
+                                                        child: Text(songsList[index].artist.toString(), style: Theme.of(context).textTheme.bodySmall,),
                                                       ),
                                                     ],
                                                   ),

@@ -58,7 +58,7 @@ class _ArtistPageState extends State<ArtistPage> {
       child: Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Artists", style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.bodySmall!.color)),
+        title: Text("Artists", style: Theme.of(context).textTheme.bodyLarge),
       ), 
       body: Padding(
           padding: EdgeInsets.only(
@@ -72,7 +72,7 @@ class _ArtistPageState extends State<ArtistPage> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(7.0),
-                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle:  TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)), style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)),
+                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle:  Theme.of(context).textTheme.bodyMedium), style: Theme.of(context).textTheme.bodyMedium),
               ),
               Expanded(
                 child:
@@ -148,13 +148,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                               padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                               child: Text(
                                                 _filteredArtists[index].name!,
-                                                style: TextStyle(
-                                                  fontSize: 10.sp,
-                                                  color: Theme.of(context).textTheme.bodySmall!.color,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: "Segoe UI",
-                                                  
-                                                ),
+                                                style: Theme.of(context).textTheme.bodySmall,
                                                 overflow: TextOverflow.ellipsis, // Set overflow property
                                                 maxLines: 2, 
                                                 textAlign: TextAlign.center,
