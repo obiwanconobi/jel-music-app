@@ -44,7 +44,7 @@ class AlbumsHelper{
 
   List<Albums> returnAlbumsForArtist(String artist){
     //var testx = artistBox.values.where((Artists) => Artists.name == "Jeff Rosenstock");
-      return albumsBox.values.where((albums) => albums.artist == artist).toList();
+      return albumsBox.values.where((albums) => albums.artist!.toLowerCase() == artist.toLowerCase()).toList();
   }
 
   Albums? returnAlbum(String artist, String album){

@@ -370,7 +370,7 @@ _getVersionNumber()async{
                       )),
                       Card(child:
                       Padding(
-                        padding: EdgeInsets.all(3.w),
+                        padding: EdgeInsets.all(1.w),
                         child: Column(
                           children: [
                             Text("Downloads",  style: Theme.of(context).textTheme.bodySmall),
@@ -379,10 +379,9 @@ _getVersionNumber()async{
                             TextButton(onPressed: () { goToLogBox(); }, child: Text('Log Box', style: Theme.of(context).textTheme.bodySmall)),
 
                             Text("Cached Songs: $totalCachedFileCount", style: Theme.of(context).textTheme.bodySmall),
-                          ],
-                        ),
+                          ]
                       )),
-
+                      )
                     ],
                   ),
                   Text("Version: ${_packageInfo.version}", style: Theme.of(context).textTheme.bodyMedium),

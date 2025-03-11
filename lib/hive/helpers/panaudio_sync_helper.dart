@@ -34,6 +34,10 @@ class PanaudioSyncHelper implements ISyncHelper {
       await songsHelper.openBox();
       var songs = await panaudioHandler.returnSongs();
       for(var song in songs){
+        if(song["album"] == "Get Warmer"){
+          print('stop');
+        }
+
         var addSong = Songs(id: song["id"],name: song["title"], artist: song["artist"], artistId: song["artistId"], album: song["album"], albumId: song["albumId"], favourite: song["favourite"], index: song["trackNumber"], playCount: song["playCount"], length: song["length"], year: 1900, codec: song["codec"], bitdepth: song["bitDepth"], discIndex: song["discNumber"] ?? 1, downloaded: false, bitrate: song["bitRate"], samplerate: song["sampleRate"]);
         var result = songsHelper.returnSong(addSong.artist, addSong.name);
         if(result == null){
@@ -55,6 +59,9 @@ class PanaudioSyncHelper implements ISyncHelper {
 
         for (var savedSong in savedSongs) {
           await artistHelper.openBox();
+          if(savedSong.artist == "Bomb The Music Industry!" && savedSong.album == "Get Warmer"){
+            print('stop');
+          }
           //save artist
           var artist = artistHelper.returnArtist(savedSong.artist);
 

@@ -86,14 +86,14 @@ class _PlaybackDaysChartState extends State<PlaybackDaysChart> with SingleTicker
 
   Widget getBottomTitles(double value, TitleMeta meta) {
     const style = TextStyle(
-      color: Colors.grey,
-      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontWeight: FontWeight.normal,
     );
     Widget text;
 
     var ff = days[value.toInt() - 1].Day?.weekday.intToStringDay();
     var ffff = days[value.toInt()-1].Day?.day.intWithSuff();
-    return SideTitleWidget(axisSide: meta.axisSide, child: Text(ffff ?? "X"));
+    return SideTitleWidget(axisSide: meta.axisSide, child: Text(ffff ?? "X", style:  style,));
   }
 
   void previous7Days()async{
@@ -189,8 +189,8 @@ class _PlaybackDaysChartState extends State<PlaybackDaysChart> with SingleTicker
                                         int rodIndex,
                                         ) {
                                       final color = rod.gradient?.colors.first ?? rod.color;
-                                      final textStyle = TextStyle(
-                                        color: color,
+                                      const textStyle = TextStyle(
+                                        color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 14,
                                       );
