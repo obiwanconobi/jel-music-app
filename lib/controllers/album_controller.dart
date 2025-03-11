@@ -29,7 +29,7 @@ class AlbumController {
        String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
        jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
     try {
-      baseServerUrl = GetStorage().read('serverUrl');
+      setServerUrl();
       await getArtistInfo();
       await albumHelper.openBox();
       albums =  _getAlbumsFromBox(artistId!);
@@ -39,11 +39,16 @@ class AlbumController {
     }
   }
 
+  setServerUrl(){
+       baseServerUrl = GetStorage().read('serverUrl');
+  }
+
   playAllSongsFromArtist()async{
 
   }
 
   Future<Artists> getArtistInfo()async{
+    setServerUrl();
      await artistsHelper.openBox();
      String artistIds = "";
      var artistRaw = artistsHelper.returnArtist(artistId!);
@@ -71,7 +76,7 @@ class AlbumController {
   }
 
   Future<List<Album>> returnSimilar()async{
-
+    setServerUrl();
     String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
     if(serverType == "PanAudio")return [];
     await albumHelper.openBox();
@@ -93,6 +98,7 @@ class AlbumController {
 
 
   List<Album> _getAlbumsFromBox(String artistIdVal){
+    setServerUrl();
       List<Albums> albumsRaw = [];
       albumsRaw = albumHelper.returnAlbumsForArtist(artistIdVal);
      
@@ -108,6 +114,7 @@ class AlbumController {
   }
 
    _getAlbumData(String artistIdVal) async{
+     setServerUrl();
       try {
 
         String artistId = artistIdVal;
@@ -130,6 +137,7 @@ class AlbumController {
    }
 
   Future<List<Album>> fetchAlbums(String artistId) async{
+    setServerUrl();
     var albumsRaw = await _getAlbumData(artistId);
 
     List<Album> albumsList = [];

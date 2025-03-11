@@ -28,6 +28,7 @@ class Conversions{
 
   codecCleanup(String codec){
       if(codec.startsWith('PCM'))return "wav";
+      if(codec.startsWith('AAC'))return "m4a";
       if(codec.startsWith('ALAC'))return "m4a";
       if(codec.startsWith('FLAC'))return "flac";
       if(codec.startsWith('MP3'))return "mp3";
