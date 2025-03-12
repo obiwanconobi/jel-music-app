@@ -31,7 +31,7 @@ class SongsListItemController{
     try{
       await jellyfinHandler.updateFavouriteStatus(itemId, current);
     }catch(e){
-      print(e);
+      //print(e);
     }
 
   }

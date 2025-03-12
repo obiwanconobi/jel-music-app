@@ -30,7 +30,7 @@ class _LyricsPageState extends State<LyricsPage> {
     _getData();
   }
 
-  _updateLyrics(Duration currentDuration){
+  _updateLyrics(Duration currentDuration) {
     for (var lyric in syncedLyrics) {
       lyric.active = false;
     }
@@ -38,7 +38,8 @@ class _LyricsPageState extends State<LyricsPage> {
     // Find the correct lyric to activate
     for (int i = 0; i < syncedLyrics.length; i++) {
       // Convert timestamp strings to Duration objects
-      Duration currentLyricTime = conversions.parseTimeStamp(syncedLyrics[i].timeStamp!);
+      Duration currentLyricTime = conversions.parseTimeStamp(
+          syncedLyrics[i].timeStamp!);
 
       // If this is the last lyric
       if (i == syncedLyrics.length - 1) {
@@ -49,10 +50,12 @@ class _LyricsPageState extends State<LyricsPage> {
       }
 
       // Get next lyric timestamp
-      Duration nextLyricTime = conversions.parseTimeStamp(syncedLyrics[i + 1].timeStamp!);
+      Duration nextLyricTime = conversions.parseTimeStamp(
+          syncedLyrics[i + 1].timeStamp!);
 
       // Check if current duration is between current and next timestamp
-      if (currentDuration >= currentLyricTime && currentDuration < nextLyricTime) {
+      if (currentDuration >= currentLyricTime &&
+          currentDuration < nextLyricTime) {
         syncedLyrics[i].active = true;
         break;
       }
@@ -61,8 +64,6 @@ class _LyricsPageState extends State<LyricsPage> {
     // Trigger a rebuild if needed
 
   }
-
-
 
   setSongPosition(Duration duration){
     MusicControllerProvider.of(context, listen: false).seek(duration);
