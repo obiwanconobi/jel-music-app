@@ -11,7 +11,10 @@ class PlaylistsController{
 
   late IHandler handler;
   PlaylistsController(){
-
+    if(serverType == "Roboto"){
+      GetStorage().write('ServerType', "Jellyfin");
+      serverType = "Jellyfin";
+    }
     handler = GetIt.instance<IHandler>(instanceName: serverType);
   }
 

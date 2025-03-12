@@ -18,6 +18,27 @@ class Conversions{
     return 0;
   }
 
+  Duration parseTimeStamp(String timestamp) {
+    //timestamp.replaceRange(0, 0, "");
+    //timestamp.replaceRange(timestamp.length, timestamp.length, "")
+    timestamp = timestamp.replaceAll('[', '');
+    timestamp = timestamp.replaceAll(']', '');
+    // Assuming timestamp format is "mm:ss.ms" or similar
+    // You'll need to adjust this based on your actual timestamp format
+    List<String> parts = timestamp.split(':');
+    int minutes = int.parse(parts[0]);
+
+    List<String> secondsParts = parts[1].split('.');
+    int seconds = int.parse(secondsParts[0]);
+    int milliseconds = secondsParts.length > 1 ? int.parse(secondsParts[1]) : 0;
+
+    return Duration(
+        minutes: minutes,
+        seconds: seconds,
+        milliseconds: milliseconds
+    );
+  }
+
   Log returnLogFromLogModel(LogModel log){
     return Log(id: log.id!, logType: log.logType!, logMessage: log.logMessage!, logDateTime: log.logDateTime!);
   }
@@ -33,6 +54,10 @@ class Conversions{
       if(codec.startsWith('FLAC'))return "flac";
       if(codec.startsWith('MP3'))return "mp3";
       
+  }
+
+  String returnSecondsFromTimeStamp(DateTime time){
+    return "";
   }
 
   String returnSecondsToTimestampString(int totalSeconds){

@@ -8,7 +8,8 @@ class LyricsPageController{
   Future<String> onInit() async {
     try {
       var value = await handler.getLyrics(artist,track);
-      return value["plainLyrics"];
+     // return new Map<value["syncedLyrics"], "Synced">;
+      return value["syncedLyrics"] ?? value["plainLyrics"];
     } catch (error) {
       // Handle errors if needed
 

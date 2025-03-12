@@ -10,6 +10,8 @@ import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/hive/helpers/isynchelper.dart';
 import 'package:jel_music/models/log.dart';
+import 'package:jel_music/themes/dark_theme.dart';
+import 'package:jel_music/themes/light_theme.dart';
 import 'package:jel_music/widgets/downloads_page.dart';
 import 'package:jel_music/widgets/log_box.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -123,7 +125,7 @@ _getVersionNumber()async{
     _getVersionNumber();
 
     _selectedOption = GetStorage().read('ServerType') ?? "Jellyfin";
-
+    _font = GetStorage().read('font') ?? "Inconsolata";
     syncHelper = GetIt.instance<ISyncHelper>(instanceName: _selectedOption);
 
 
@@ -236,14 +238,38 @@ _getVersionNumber()async{
   writeServerType(String serverType)async{
     await GetStorage().write('ServerType', serverType);
   }
+
+  writeFont(String font)async{
+    await GetStorage().write('font', font);
+  }
+
+  setThemes(){
+    AdaptiveTheme.of(context).setTheme(
+      light: getLightTheme(),
+      dark: getDarkTheme()
+    );
+
+  }
+
+  setLightTheme(){
+    setThemes();
+    AdaptiveTheme.of(context).setLight();
+  }
+
+  setDarkTheme(){
+    setThemes();
+    AdaptiveTheme.of(context).setDark();
+  }
+
   String? _selectedOption = 'Jellyfin';
+  String _font = 'Inconsolata';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Settings", style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.bodySmall!.color)),
+        title: Text("Settings", style: Theme.of(context).textTheme.bodyLarge),
       ),
       body:
           Container(
@@ -267,7 +293,7 @@ _getVersionNumber()async{
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text('Server Type', style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color)),
+                              Text('Server Type', style: Theme.of(context).textTheme.bodySmall),
                               DropdownButton<String>(
                               value: _selectedOption,
                               onChanged: (String? newValue) {
@@ -278,18 +304,18 @@ _getVersionNumber()async{
                                   });
                                 }
                               },
-                              items: const <DropdownMenuItem<String>>[
+                              items:  <DropdownMenuItem<String>>[
                                 DropdownMenuItem<String>(
                                   value: 'Jellyfin',
-                                  child: Text('Jellyfin'),
+                                  child: Text('Jellyfin',  style: Theme.of(context).textTheme.bodySmall),
                                 ),
                                 DropdownMenuItem<String>(
                                   value: 'Subsonic',
-                                  child: Text('Subsonic'),
+                                  child: Text('Subsonic',  style: Theme.of(context).textTheme.bodySmall),
                                 ),
                                 DropdownMenuItem<String>(
                                   value: 'PanAudio',
-                                  child: Text('PanAudio'),
+                                  child: Text('PanAudio',  style: Theme.of(context).textTheme.bodySmall),
                                 ),
                               ],
                                             ),
@@ -302,8 +328,8 @@ _getVersionNumber()async{
                         padding: EdgeInsets.all(3.w),
                         child: Column(
                           children: [
-                            TextButton(onPressed: () { sync(); }, child: Text('Sync', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
-                            TextButton(onPressed: () { clear(); }, child: Text('Clear', style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color)),),
+                            TextButton(onPressed: () { sync(); }, child: Text('Sync', style:  Theme.of(context).textTheme.bodySmall),),
+                            TextButton(onPressed: () { clear(); }, child: Text('Clear', style:  Theme.of(context).textTheme.bodySmall),),
                           ],
                         ),
                       )),
@@ -312,8 +338,35 @@ _getVersionNumber()async{
                         padding: EdgeInsets.all(3.w),
                         child: Column(
                           children: [
-                            Text('Server URL', style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color)),
-                            TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _serverUrlTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_saveUrl),)),),
+                            Text('Server URL', style: Theme.of(context).textTheme.bodySmall),
+                            TextField(obscureText: false, style: Theme.of(context).textTheme.bodySmall, controller: _serverUrlTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_saveUrl),)),),
+                            DropdownButton<String>(
+                              value: _font,
+                              onChanged: (String? newValue) {
+                                if (newValue != null) {
+                                  setState(() {
+                                    _font = newValue;
+                                    writeFont(newValue);
+                                    setThemes();
+                                  });
+                                }
+                              },
+                              items: const <DropdownMenuItem<String>>[
+                                DropdownMenuItem<String>(
+                                  value: 'Inconsolata',
+                                  child: Text('Inconsolata'),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'Roboto',
+                                  child: Text('Roboto'),
+                                ),
+                              ],
+                            ),
+                            Row(children: [
+                              TextButton(onPressed: () { setLightTheme(); }, child: Text('Light', style:  Theme.of(context).textTheme.bodySmall),),
+                              TextButton(onPressed: () { setDarkTheme(); }, child: Text('Dark', style:  Theme.of(context).textTheme.bodySmall),),
+
+                            ],)
                           ],
                         ),
                       )),
@@ -323,8 +376,8 @@ _getVersionNumber()async{
                         child: Column(
                           children: [
                             Text("Login Details"),
-                            TextField(obscureText: false, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _usernameTextController,),
-                            TextField(obscureText: true, style: TextStyle(color:Theme.of(context).textTheme.bodySmall!.color), controller: _passwordTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_login),)),),
+                            TextField(obscureText: false, style: Theme.of(context).textTheme.bodySmall, controller: _usernameTextController,),
+                            TextField(obscureText: true, style:Theme.of(context).textTheme.bodySmall, controller: _passwordTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_login),)),),
 
                           ],
                         ),

@@ -39,6 +39,8 @@ import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/repos/jellyfin_repo.dart';
 import 'package:jel_music/repos/panaudio_repo.dart';
 import 'package:jel_music/repos/subsonic_repo.dart';
+import 'package:jel_music/themes/dark_theme.dart';
+import 'package:jel_music/themes/light_theme.dart';
 import 'package:sizer/sizer.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:quick_actions/quick_actions.dart';
@@ -136,128 +138,13 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
-
-static ThemeData lightTheme = ThemeData(
-  useMaterial3: true,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Color.fromARGB(255, 204, 204, 204),
-      foregroundColor:  Colors.black,
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Color.fromARGB(255, 204, 204, 204),
-      )
-    ),
-    cardTheme: const CardTheme(color: Color.fromARGB(255, 179, 179, 179)),
-    scaffoldBackgroundColor:const Color.fromARGB(255, 204, 204, 204),
-    primaryColor: Colors.teal, // Your primary color for dark mode
-    canvasColor:const Color.fromARGB(255, 179, 179, 179),
-    focusColor: Colors.red,
-    colorScheme: ColorScheme.fromSwatch(
-      primarySwatch: Colors.grey, // Use your primary color here
-      accentColor: const Color.fromARGB(255, 69, 69, 69),
-      backgroundColor: const Color.fromARGB(255, 204, 204, 204), // Your secondary color
-    ), // Your accent color for dark mode
-    popupMenuTheme: const PopupMenuThemeData(
-      color: Color.fromARGB(255, 179, 179, 179),
-      iconColor: Color.fromARGB(255, 179, 179, 179),
-    ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor:  WidgetStateProperty.all<Color>(const Color.fromARGB(255, 179, 179, 179)),
-        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
-          ),
-        ),
-      )
-    ),
-    textButtonTheme: TextButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.all<Color>(const Color.fromARGB(255, 179, 179, 179)),
-        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
-          ),
-        ),
-      )
-    ),
-    textTheme: const TextTheme(
-      displayLarge: TextStyle(color:Colors.black, fontSize:36, fontWeight: FontWeight.w600, fontFamily: 'Inconsolata'),
-      displaySmall: TextStyle(color: Colors.black, fontSize:16, fontWeight: FontWeight.w600, fontFamily: 'Inconsolata'),
-      labelLarge: TextStyle(color: Colors.black, fontSize:26, fontWeight: FontWeight.w600, fontFamily: 'Inconsolata'),
-      bodyLarge: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600, fontFamily: 'Inconsolata'), // Text color for dark theme
-      bodyMedium: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w500, fontFamily: 'Inconsolata'),
-      bodySmall: TextStyle(color: Colors.black, fontSize: 16,fontWeight: FontWeight.w500,fontFamily: 'Inconsolata'),
-      labelSmall: TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.w500, fontFamily: 'Inconsolata')
-    ),
-    // Add other dark theme properties here
-  );
-
-
-
-  static ThemeData darkTheme = ThemeData(
-    useMaterial3: true,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Color(0xFF1C1B1B),
-      foregroundColor:  Colors.white,
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Color(0xFF1C1B1B),
-      )
-    ),
-    cardTheme: const CardTheme(color: Color.fromARGB(255, 37, 37, 37)),
-    scaffoldBackgroundColor: const Color(0xFF1C1B1B),
-    primaryColor: Colors.teal, // Your primary color for dark mode
-    canvasColor:const Color.fromARGB(255, 37, 37, 37),
-    focusColor: Colors.red,
-    colorScheme: ColorScheme.fromSwatch(
-      primarySwatch: Colors.grey, // Use your primary color here
-      accentColor: Colors.blueGrey,
-      errorColor: Colors.blueGrey,
-      backgroundColor: const Color(0xFF1C1B1B), // Your secondary color
-    ), // Your accent color for dark mode
-    textTheme: const TextTheme(
-
-      displayLarge: TextStyle(color:Colors.black, fontSize:36, fontWeight: FontWeight.w600, fontFamily: 'Inconsolata'),
-        displaySmall: TextStyle(color: Colors.white, fontSize:16, fontWeight: FontWeight.w600, fontFamily: 'Inconsolata'),
-      labelLarge: TextStyle(color: Colors.white, fontSize:26, fontWeight: FontWeight.w600,fontFamily: 'Inconsolata'),
-      bodyLarge: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600,fontFamily: 'Inconsolata'), // Text color for dark theme
-      bodyMedium: TextStyle(color: Colors.white, fontSize: 18,fontWeight: FontWeight.w500,fontFamily: 'Inconsolata'),
-      bodySmall: TextStyle(color: Colors.white, fontSize: 16,fontWeight: FontWeight.w500,fontFamily: 'Inconsolata'),
-      labelSmall: TextStyle(color: Colors.white, fontSize: 13,fontWeight: FontWeight.w500,fontFamily: 'Inconsolata')
-    ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all<Color>(const Color.fromARGB(255, 37, 37, 37)),
-            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
-              ),
-            ),
-          )
-      ),
-    textButtonTheme: TextButtonThemeData(
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all<Color>(const Color.fromARGB(255, 37, 37, 37)),
-            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
-              ),
-            ),
-          )
-      ),
-    popupMenuTheme: const PopupMenuThemeData(
-        color: Color.fromARGB(255, 37, 37, 37),
-        iconColor: Color.fromARGB(255, 37, 37, 37),
-      ),
-    iconTheme: const IconThemeData(color: Colors.blueGrey)
-    // Add other dark theme properties here
-  );
   
   @override
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, deviceType) {
       return  AdaptiveTheme(
-        light: lightTheme,
-        dark: darkTheme,
+        light: getLightTheme(),
+        dark: getDarkTheme(),
         initial: AdaptiveThemeMode.system,
         builder: (theme, darkTheme) => MaterialApp(
           debugShowCheckedModeBanner: false,
