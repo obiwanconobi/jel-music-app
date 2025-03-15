@@ -17,8 +17,8 @@ abstract class IHandler {
   deleteSongFromPlaylist(String songId, String playlistId);
   Future<List<Playlists>> returnPlaylists();
   returnArtistBio(String artistName);
-  startPlaybackReporting(String songId, String userId);
-  updatePlaybackProgress(String songId, String userId, bool paused, int ticks);
+  startPlaybackReporting(String songId, String? userId);
+  updatePlaybackProgress(String songId, String? userId, bool paused, int ticks);
   stopPlaybackReporting(String songId, String userId);
   tryGetArt(String artist, String album);
   uploadArt(String albumId, File image);

@@ -117,7 +117,7 @@ class PanaudioHandler implements IHandler{
   }
 
   @override
-  startPlaybackReporting(String songId, String userId) async{
+  startPlaybackReporting(String songId, String? userId) async{
     // TODO: implement startPlaybackReporting
     await repo.startPlaybackReporting(songId);
   }
@@ -129,7 +129,7 @@ class PanaudioHandler implements IHandler{
   }
 
   @override
-  updatePlaybackProgress(String songId, String userId, bool paused, int ticks) {
+  updatePlaybackProgress(String songId, String? userId, bool paused, int ticks) {
     // TODO: implement updatePlaybackProgress
     //throw UnimplementedError();
   }

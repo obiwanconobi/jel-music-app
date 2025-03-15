@@ -89,6 +89,20 @@ class _ControlsState extends State<Controls> {
   }
 
 
+  void _changeSongOnSwipe(DragUpdateDetails details) {
+    if (details.delta.dx > 20) {
+      // Swipe right
+      setState(() {
+       MusicControllerProvider.of(context, listen: false).skipToPrevious();
+      });
+    } else if (details.delta.dx < -20) {
+      // Swipe left
+      setState(() {
+        MusicControllerProvider.of(context, listen: false).skipToNext();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     onInit();
@@ -163,17 +177,22 @@ class _ControlsState extends State<Controls> {
                              children: [
                                Column(
                                  children: [
-                                   Image.network(
-                                     (musicController.currentSource!.tag.artUri.toString()), // this image doesn't exist
-                                     fit: BoxFit.cover,
-                                     height:100.w,
-                                     width: 100.w,
-                                     errorBuilder: (context, error, stackTrace) {
-                                       return Container(
-                                         alignment: Alignment.center,
-                                         child: Image.asset('assets/images/album.png', height: 100.w),
-                                       );
-                                     },
+                                   GestureDetector(
+                                     onHorizontalDragUpdate: (details){
+                                      _changeSongOnSwipe(details);
+                                    },
+                                     child: Image.network(
+                                       (musicController.currentSource!.tag.artUri.toString()), // this image doesn't exist
+                                       fit: BoxFit.cover,
+                                       height:100.w,
+                                       width: 100.w,
+                                       errorBuilder: (context, error, stackTrace) {
+                                         return Container(
+                                           alignment: Alignment.center,
+                                           child: Image.asset('assets/images/album.png', height: 100.w),
+                                         );
+                                       },
+                                     ),
                                    ),
                                    Text(musicController.currentSource?.tag.title, style: Theme.of(context).textTheme.bodyMedium),
                                    Text(musicController.currentSource?.tag.album, style: Theme.of(context).textTheme.bodySmall),
@@ -212,8 +231,8 @@ class _ControlsState extends State<Controls> {
                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                            children: [
                                              Text(musicController.currentSource?.tag.extras["codec"], style:  Theme.of(context).textTheme.labelSmall),
-                                             Text(musicController.currentSource?.tag.extras["bitrate"], style: Theme.of(context).textTheme.labelSmall),
-                                             Text(musicController.currentSource?.tag.extras["bitdepth"], style: Theme.of(context).textTheme.labelSmall),
+                                             Text(musicController.currentSource?.tag.extras["bitrate"] + "kbps", style: Theme.of(context).textTheme.labelSmall),
+                                             Text(musicController.currentSource?.tag.extras["bitdepth"] + "bit", style: Theme.of(context).textTheme.labelSmall),
                                              Text(musicController.currentSource?.tag.extras["samplerate"], style: Theme.of(context).textTheme.labelSmall),
                                            ],
                                          ),

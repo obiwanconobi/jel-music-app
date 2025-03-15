@@ -104,9 +104,9 @@ class JellyfinHandler implements IHandler{
   }
 
   @override
-  startPlaybackReporting(String songId, String userId)async{
+  startPlaybackReporting(String songId, String? userId)async{
     try{
-      await jellyfinRepo.startPlaybackReporting(songId, userId);
+      await jellyfinRepo.startPlaybackReporting(songId, userId!);
     }catch(e){
       await logger.addToLog(LogModel(logType: "Error", logMessage: "Error starting playback: $songId", logDateTime: DateTime.now()));
     }
@@ -114,8 +114,8 @@ class JellyfinHandler implements IHandler{
   }
 
   @override
-  updatePlaybackProgress(String songId, String userId, bool paused, int ticks)async{
-    await jellyfinRepo.updatePlaybackProgress(songId, userId, paused, ticks);
+  updatePlaybackProgress(String songId, String? userId, bool paused, int ticks)async{
+    await jellyfinRepo.updatePlaybackProgress(songId, userId!, paused, ticks);
   }
 
   @override
