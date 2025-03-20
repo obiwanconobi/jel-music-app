@@ -117,7 +117,7 @@ _getVersionNumber()async{
 }
 
    @override
-   void  initState() {
+   void initState() {
     super.initState();
     GetStorage.init();
 
@@ -142,6 +142,7 @@ _getVersionNumber()async{
     _usernameTextController.text = GetStorage().read('username') ?? 'Username';
     _passwordTextController.text = GetStorage().read('password') ?? 'Password';
   }
+
 
    @override
   void dispose() {
@@ -216,8 +217,11 @@ _getVersionNumber()async{
         // Set web-specific directory
       } else {
         var documentsDar = await getApplicationDocumentsDirectory();
-        final files = Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).listSync();
-        totalCachedFileCount = (files.length/2).toString();
+        final files = await Directory(p.joinAll([documentsDar.path, 'panaudio/cache/'])).list().toList();
+        setState(() {
+          totalCachedFileCount = (files.length/2).toString();
+        });
+
       }
 
     }catch(e){

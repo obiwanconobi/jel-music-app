@@ -51,7 +51,8 @@ class SongsHelper{
   }
 
   Songs returnSongById(String id){
-    return songsBox.values.where((element)=>element.id == id).first;
+    var song = songsBox.values.where((element)=>element.id == id).firstOrNull;
+    return song ?? Songs(name: 'ERROR', id: 'ERROR', artist: 'ERROR', artistId: 'ERROR', album: 'ERROR', albumId: 'ERROR', index: 0, year: 1000, length: '1', playCount: 0);
   }
 
   returnDownloadedSongs()async{
@@ -76,7 +77,8 @@ class SongsHelper{
 
   setDownloaded(String id){
     var song = returnSongById(id);
-    if(song.downloaded == null || song.downloaded == false){
+
+    if((song.downloaded == null || song.downloaded == false) && song.id != "ERROR"){
       song.downloaded = true;
       songsBox.put(song.key,song);
     }
