@@ -8,6 +8,8 @@ import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import 'auto_scroll_text.dart';
+
 class LyricsPage extends StatefulWidget {
   const LyricsPage({super.key});
 
@@ -94,7 +96,13 @@ class _LyricsPageState extends State<LyricsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: Text("Lyrics", style: Theme.of(context).textTheme.bodyLarge),),
+      appBar: AppBar(centerTitle: true, title: AutoScrollText(
+          MusicControllerProvider.of(context, listen: false)
+              .currentSource
+              ?.tag
+              .title ??
+              ''),
+      ),
       body: SingleChildScrollView(child: !synced ?
     Text(lyricsFuture) :
     Consumer<MusicController>(

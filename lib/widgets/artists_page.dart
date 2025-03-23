@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/artist_controller.dart';
 import 'package:jel_music/helpers/conversions.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/widgets/shared_widgets.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:jel_music/widgets/album_page.dart';
@@ -58,7 +59,7 @@ class _ArtistPageState extends State<ArtistPage> {
       child: Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Artists", style: Theme.of(context).textTheme.bodyLarge),
+        title: Text("artist_title".localise(), style: Theme.of(context).textTheme.bodyLarge),
       ), 
       body: Padding(
           padding: EdgeInsets.only(
@@ -72,7 +73,7 @@ class _ArtistPageState extends State<ArtistPage> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(7.0),
-                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle:  Theme.of(context).textTheme.bodyMedium), style: Theme.of(context).textTheme.bodyMedium),
+                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'search'.localise(),hintStyle:  Theme.of(context).textTheme.bodyMedium), style: Theme.of(context).textTheme.bodyMedium),
               ),
               Expanded(
                 child:
@@ -88,8 +89,8 @@ class _ArtistPageState extends State<ArtistPage> {
                         child: Text('Error: ${snapshot.error}'),
                       );
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(
-                        child: Text('No artists available.'),
+                      return Center(
+                        child: Text('no_artist_error'.localise()),
                       );
                     } else {
                       // Data is available, build the list

@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
+import 'package:jel_music/helpers/app_translations.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/hive/helpers/isynchelper.dart';
@@ -58,6 +59,7 @@ class _MyWidgetState extends State<SettingsPage> {
   late bool playbackReporting;
   late bool autoPlay;
   List<LogModel> logHistory = [];
+
 
 
 
@@ -128,6 +130,7 @@ _getVersionNumber()async{
 
     _selectedOption = GetStorage().read('ServerType') ?? "Jellyfin";
     _font = GetStorage().read('font') ?? "Inconsolata";
+    _language = GetStorage().read('language') ?? "en";
     syncHelper = GetIt.instance<ISyncHelper>(instanceName: _selectedOption);
 
       playbackReporting = getPlaybackReporting();
@@ -261,6 +264,11 @@ _getVersionNumber()async{
     await GetStorage().write('font', font);
   }
 
+  writeLanguage(String language)async{
+    await GetStorage().write('language', language);
+    AppTranslations.reload('assets/language/$language.json');
+  }
+
   setThemes(){
     AdaptiveTheme.of(context).setTheme(
       light: getLightTheme(),
@@ -281,6 +289,7 @@ _getVersionNumber()async{
 
   String? _selectedOption = 'Jellyfin';
   String _font = 'Inconsolata';
+  String? _language = "en";
 
   @override
   Widget build(BuildContext context) {
@@ -348,6 +357,27 @@ _getVersionNumber()async{
                           children: [
                             TextButton(onPressed: () { sync(); }, child: Text('Sync', style:  Theme.of(context).textTheme.bodySmall),),
                             TextButton(onPressed: () { clear(); }, child: Text('Clear', style:  Theme.of(context).textTheme.bodySmall),),
+                            DropdownButton<String>(
+                              value: _language,
+                              onChanged: (String? newValue) {
+                                if (newValue != null) {
+                                  setState(() {
+                                    _language = newValue;
+                                    writeLanguage(newValue);
+                                  });
+                                }
+                              },
+                              items: const <DropdownMenuItem<String>>[
+                                DropdownMenuItem<String>(
+                                  value: 'en',
+                                  child: Text('English'),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'it',
+                                  child: Text('Italian'),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       )),

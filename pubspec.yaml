@@ -116,6 +116,8 @@ flutter:
     - assets/svg/artist.svg
     - assets/svg/album.svg
     - assets/svg/song.svg
+    - assets/language/en.json
+    - assets/language/it.json
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

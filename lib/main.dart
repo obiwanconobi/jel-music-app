@@ -27,6 +27,7 @@ import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/handlers/panaudio_handler.dart';
+import 'package:jel_music/helpers/app_translations.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/hive/classes/log.dart';
@@ -46,6 +47,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:quick_actions/quick_actions.dart';
 
 
+
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
@@ -57,7 +59,8 @@ Future<void> main() async{
 
 
 
-
+  var language = GetStorage().read('language') ?? "en";
+  await AppTranslations.load('assets/language/$language.json');
 
   GetIt.I.registerSingleton<LogHandler>(LogHandler());
 
