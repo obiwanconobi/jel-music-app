@@ -8,6 +8,7 @@
         android:label="Pan Audio"
         android:usesCleartextTraffic="true"
         android:name="${applicationName}"
+        android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name="com.ryanheise.audioservice.AudioServiceActivity"

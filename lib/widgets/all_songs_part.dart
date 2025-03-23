@@ -45,6 +45,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
     songsFuture = controller.onInit();
     _searchController.addListener(_filterAlbums);
 
+
   }
 
    void _filterAlbums() {

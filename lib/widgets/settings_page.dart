@@ -97,9 +97,11 @@ class _MyWidgetState extends State<SettingsPage> {
   getLogInfo()async{
     await logger.openBox();
     logHistory = logger.listFromLog();
-    for (var log in logHistory){
-      _logController.text +=("\n${log.logMessage!}");
+    StringBuffer logBuffer = StringBuffer();
+    for (var log in logHistory) {
+      logBuffer.writeln(log.logMessage);
     }
+    _logController.text = logBuffer.toString();
   }
 
   _saveUrl() async {
@@ -122,25 +124,37 @@ _getVersionNumber()async{
     GetStorage.init();
 
 
-    _getVersionNumber();
+
 
     _selectedOption = GetStorage().read('ServerType') ?? "Jellyfin";
     _font = GetStorage().read('font') ?? "Inconsolata";
     syncHelper = GetIt.instance<ISyncHelper>(instanceName: _selectedOption);
 
-
-      getCachedSongs();
       playbackReporting = getPlaybackReporting();
       autoPlay = getAutoPlay();
-   
-    getLogInfo();
-    syncHelper.openBox();
-    helper.openBox();
-    albumsHelper.openBox();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getVersionNumber();
+      getCachedSongs();
+      getLogInfo();
+    });
+
+    Future.wait([
+      openBox()
+    ]);
+
+
     // Set the initial value of the TextField
     _serverUrlTextController.text = GetStorage().read('serverUrl') ?? 'No Server Set';
     _usernameTextController.text = GetStorage().read('username') ?? 'Username';
     _passwordTextController.text = GetStorage().read('password') ?? 'Password';
+  }
+
+
+  Future<void> openBox() async{
+   await syncHelper.openBox();
+   await helper.openBox();
+   await albumsHelper.openBox();
   }
 
 
