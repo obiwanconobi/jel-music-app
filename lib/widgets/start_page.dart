@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/handlers/quick_actions_handler.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/hive/helpers/isynchelper.dart';
 import 'package:jel_music/widgets/favourite_albums.dart';
 import 'package:jel_music/widgets/favourite_artists.dart';
@@ -71,13 +72,13 @@ class _StartPageState extends State<StartPage> {
                   Container(
                       padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                     alignment: Alignment.centerLeft,
-                    child: Text('Favourite Artists', style: Theme.of(context).textTheme.bodyLarge)),
+                    child: Text('fav_artists_title'.localise(), style: Theme.of(context).textTheme.bodyLarge)),
                   // ignore: prefer_const_constructors
                   FavouriteArtists(),
                   Container(
                       padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                     alignment: Alignment.centerLeft,
-                    child: Text('Latest Albums', style: Theme.of(context).textTheme.bodyLarge)),
+                    child: Text('latest_albums_title'.localise(), style: Theme.of(context).textTheme.bodyLarge)),
                   // ignore: prefer_const_constructors
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 0, 70),

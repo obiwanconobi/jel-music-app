@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/all_albums_controller.dart';
 import 'package:jel_music/helpers/conversions.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/shared_widgets.dart';
@@ -67,7 +68,7 @@ class _AlbumPageState extends State<AllAlbumsPage> with AutomaticKeepAliveClient
     controller.artistId = artistIds;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(centerTitle: true, title: Text('Albums', style: Theme.of(context).textTheme.bodyLarge),),
+        appBar: AppBar(centerTitle: true, title: Text('albums_title'.localise(), style: Theme.of(context).textTheme.bodyLarge),),
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,
@@ -80,7 +81,7 @@ class _AlbumPageState extends State<AllAlbumsPage> with AutomaticKeepAliveClient
             children: [
               Padding(
                 padding: const EdgeInsets.all(7.0),
-                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle: Theme.of(context).textTheme.bodyMedium), style: Theme.of(context).textTheme.bodyMedium),
+                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'search'.localise(),hintStyle: Theme.of(context).textTheme.bodyMedium), style: Theme.of(context).textTheme.bodyMedium),
               ),
               Expanded(
                 child: FutureBuilder<List<Album>>(
@@ -95,8 +96,8 @@ class _AlbumPageState extends State<AllAlbumsPage> with AutomaticKeepAliveClient
                         child: Text('Error: ${snapshot.error}'),
                       );
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(
-                        child: Text('No artists available.'),
+                      return Center(
+                        child: Text('no_albums_error'.localise()),
                       );
                     } else {
                       // Data is available, build the list

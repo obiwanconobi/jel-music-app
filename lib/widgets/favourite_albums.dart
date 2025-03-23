@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/all_albums_controller.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/widgets/shared_widgets.dart';
 import 'package:jel_music/widgets/songs_page.dart';
@@ -45,8 +46,8 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
                 child: Text('Error: ${snapshot.error}'),
               );
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(
-                child: Text('No artists available.'),
+              return Center(
+                child: Text('no_albums_error'.localise()),
               );
             } else {
               // Data is available, build the list
@@ -60,7 +61,7 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
                     const SizedBox(height:20),
                     Container(
                         padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                        child: Text('Favourite Albums', style: Theme.of(context).textTheme.bodyLarge,)),
+                        child: Text('fav_albums_title'.localise(), style: Theme.of(context).textTheme.bodyLarge,)),
                     Row(
                       children: [
                         SizedBox(

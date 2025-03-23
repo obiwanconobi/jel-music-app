@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/latest_albums_controller.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/widgets/shared_widgets.dart';
 import 'package:jel_music/widgets/songs_page.dart';
@@ -40,8 +41,8 @@ class _LatestAlbumsState extends State<LatestAlbums> {
             child: Text('Error: ${snapshot.error}'),
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(
-            child: Text('No artists available.'),
+          return Center(
+            child: Text('no_albums_error'.localise()),
           );
         } else {
           // Data is available, build the list

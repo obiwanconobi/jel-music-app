@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/liked_controller.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
@@ -59,7 +60,7 @@ class _LikedSongsState extends State<LikedSongs> {
     var songsList = controller.songs;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(centerTitle: true, title: Text('Liked Songs', style: Theme.of(context).textTheme.bodyLarge),),
+        appBar: AppBar(centerTitle: true, title: Text('liked_songs_title'.localise(), style: Theme.of(context).textTheme.bodyLarge),),
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,
@@ -83,8 +84,8 @@ class _LikedSongsState extends State<LikedSongs> {
                         child: Text('Error: ${snapshot.error}'),
                       );
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(
-                        child: Text('No artists available.'),
+                      return Center(
+                        child: Text('no_songs_error'.localise()),
                       );
                     } else {
                       // Data is available, build the list

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/album_controller.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
@@ -86,8 +87,8 @@ class _AlbumPageState extends State<AlbumPage> {
                                       child: Text('Error: ${snapshot.error}'),
                                     );
                                   } else if (!snapshot.hasData) {
-                                    return const Center(
-                                      child: Text('No artists available.'),
+                                    return Center(
+                                      child: Text('no_albums_error'.localise()),
                                     );
                                   } else {
                                     artist = snapshot.data!;
@@ -106,8 +107,8 @@ class _AlbumPageState extends State<AlbumPage> {
                         child: Text('Error: ${snapshot.error}'),
                       );
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(
-                        child: Text('No artists available.'),
+                      return Center(
+                        child: Text('no_albums_error'.localise()),
                       );
                     } else {
                       // Data is available, build the list
@@ -126,7 +127,7 @@ class _AlbumPageState extends State<AlbumPage> {
                           MostPlayedSongsArtist(ArtistName: artist.name!),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(10,0,0,10),
-                            child: Text('Albums', style: Theme.of(context).textTheme.bodyLarge),
+                            child: Text('albums_title'.localise(), style: Theme.of(context).textTheme.bodyLarge),
                           ),
                           GridView.builder(
                             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(

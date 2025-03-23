@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/artist_controller.dart';
 import 'package:jel_music/helpers/conversions.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:jel_music/widgets/album_page.dart';
 import 'package:jel_music/widgets/shared_widgets.dart';
@@ -40,8 +41,8 @@ class _FavouriteArtistsState extends State<FavouriteArtists> {
             child: Text('Error: ${snapshot.error}'),
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(
-            child: Text('No artists available.'),
+          return Center(
+            child: Text('no_artists_error'.localise()),
           );
         } else {
           // Data is available, build the list

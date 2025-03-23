@@ -1,5 +1,14 @@
 {
   "artist_title": "Artists",
   "search": "Search",
-  "no_artist_error": "No Artists Available"
+  "no_artists_error": "No Artists Available",
+  "no_albums_error": "No Albums Available",
+  "no_songs_error": "No Songs Available",
+  "albums_title": "Albums",
+  "all_songs_title": "All Songs",
+  "downloads_title": "Downloads",
+  "fav_albums_title": "Favourite Albums",
+  "fav_artists_title": "Favourite Artists",
+  "latest_albums_title": "Latest Albums",
+  "liked_songs_title": "Liked Songs"
 }

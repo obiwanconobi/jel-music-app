@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jel_music/controllers/artist_button_controller.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:jel_music/widgets/album_page.dart';
 import 'package:jel_music/widgets/shared_widgets.dart';
@@ -47,8 +48,8 @@ class _ArtistButtonState extends State<ArtistButton> {
                         child: Text('Error: ${snapshot.error}'),
                       );
                     } else if (!snapshot.hasData) {
-                      return const Center(
-                        child: Text('No artists available.'),
+                      return Center(
+                        child: Text('no_artists_error'.localise()),
                       );
                     } else {
                       var artist = snapshot.data;

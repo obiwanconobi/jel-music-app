@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/download_controller.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
 import 'package:jel_music/models/songs.dart';
@@ -93,7 +94,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(centerTitle: true, title: Text('Downloads', style: Theme.of(context).textTheme.bodyLarge),),
+        appBar: AppBar(centerTitle: true, title: Text('downloads_title'.localise(), style: Theme.of(context).textTheme.bodyLarge),),
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,
@@ -115,7 +116,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
                             ),
               Padding(
                 padding: const EdgeInsets.all(7.0),
-                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle:  Theme.of(context).textTheme.bodyMedium), style: Theme.of(context).textTheme.bodyMedium),
+                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'search'.localise(),hintStyle:  Theme.of(context).textTheme.bodyMedium), style: Theme.of(context).textTheme.bodyMedium),
               ),
               Expanded(
                 child: FutureBuilder<List<Songs>>(
@@ -130,8 +131,8 @@ class _DownloadsPageState extends State<DownloadsPage> {
                         child: Text('Error: ${snapshot.error}'),
                       );
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(
-                        child: Text('No artists available.'),
+                      return Center(
+                        child: Text('no_songs_error'.localise()),
                       );
                     } else {
                       // Data is available, build the list

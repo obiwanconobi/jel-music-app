@@ -90,7 +90,7 @@ class _ArtistPageState extends State<ArtistPage> {
                       );
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                       return Center(
-                        child: Text('no_artist_error'.localise()),
+                        child: Text('no_artists_error'.localise()),
                       );
                     } else {
                       // Data is available, build the list

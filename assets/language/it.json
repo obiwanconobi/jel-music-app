@@ -1,5 +1,14 @@
 {
   "artist_title": "Artisti",
   "search": "Ricera",
-  "no_artist_error": "Nessun artists disponibile"
+  "no_artists_error": "Nessun Artisti disponibile",
+  "no_albums_error": "Nessun Albums disponibile",
+  "no_songs_error": "No Songs Available",
+  "albums_title": "Album",
+  "all_songs_title": "Tutti I Brani",
+  "downloads_title": "Download",
+  "fav_albums_title": "Album Preferiti",
+  "fav_artists_title": "Artisti Preferiti",
+  "latest_albums_title": "Ultimi Album",
+  "liked_songs_title": "Canzoni Apprezzate"
 }
