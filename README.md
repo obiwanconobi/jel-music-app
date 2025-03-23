@@ -11,7 +11,7 @@ panaudio is a music streaming app with support for Android and Windows currently
 - Favourite artists, albums and songs.
 - Playlist support.
 - Download and offline support.
-- Lyrics (from [LrcLib](https://lrclib.net/))
+- Synced Lyrics (from [LrcLib](https://lrclib.net/))
 - Playback reporting
 - Playback stats and history (PanAudio server only)
 
