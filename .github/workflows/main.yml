@@ -37,11 +37,11 @@ jobs:
         uses: android-actions/setup-android@v2
         with:
           sdk-platform: 'android-33' # or the appropriate SDK version
-          build-tools: '33.0.0' # or the appropriate build tools version
+          build-tools: '33.0.1' # or the appropriate build tools version
       
       - name: Sign APK
         run: |
-          $ANDROID_SDK_ROOT/build-tools/33.0.0/apksigner sign --verbose \
+          $ANDROID_SDK_ROOT/build-tools/33.0.1/apksigner sign --verbose \
             --ks /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks \
             --ks-key-alias nutella \
             --ks-pass env:STORE_PASSWORD \
