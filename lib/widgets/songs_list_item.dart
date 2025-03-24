@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/songs_list_item_controller.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
@@ -65,10 +66,10 @@ class _SongsListItemState extends State<SongsListItem> {
     if (result == true){
       showTopSnackBar(
         Overlay.of(context),
-        const CustomSnackBar.success(
+        CustomSnackBar.success(
           maxLines: 2,
           message:
-          "Added to Playlist",
+          "added_to_playlist".localise(),
         ),
       );
     }

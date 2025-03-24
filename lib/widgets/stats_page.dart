@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/widgets/most_played_songs.dart';
 import 'package:jel_music/widgets/playback_by_artist_chart.dart';
 import 'package:jel_music/widgets/playback_days_chart.dart';
@@ -63,7 +64,7 @@ class _StatsPageState extends State<StatsPage> {
   Widget build(BuildContext context) {
     return SafeArea(child:
     Scaffold(
-      appBar: AppBar(centerTitle: true, title: Text('Statistics', style: Theme.of(context).textTheme.bodyLarge),
+      appBar: AppBar(centerTitle: true, title: Text('statistics'.localise(), style: Theme.of(context).textTheme.bodyLarge),
           actions: [Padding(padding: const EdgeInsets.fromLTRB(0, 0, 15, 0), child: IconButton(icon: const Icon(Icons.format_list_numbered), onPressed: () { Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const MostPlayedSongs()),

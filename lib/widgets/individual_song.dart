@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/individual_song_controller.dart';
 import 'package:jel_music/helpers/datetime_extensions.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:sizer/sizer.dart';
 
@@ -41,8 +42,8 @@ class _IndividualSongState extends State<IndividualSong> {
               child: Text('Error: ${snapshot.error}'),
             );
           } else if (!snapshot.hasData) {
-            return const Center(
-              child: Text('No data available.'),
+            return Center(
+              child: Text('no_songs_error'.localise()),
             );
           } else {
             var song = snapshot.data;

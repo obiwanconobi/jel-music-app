@@ -8,6 +8,7 @@ import 'package:jel_music/controllers/album_controller.dart';
 import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/controllers/songs_controller.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/songs.dart';
@@ -268,8 +269,8 @@ class _SongsPageState extends State<SongsPage> {
                         child: Text('Error: ${snapshot.error}'),
                       );
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(
-                        child: Text('No artists available.'),
+                      return Center(
+                        child: Text('no_songs_error'.localise()),
                       );
                     } else {
                       // Data is available, build the list
@@ -338,7 +339,7 @@ class _SongsPageState extends State<SongsPage> {
                                                       padding: EdgeInsets.fromLTRB(0, 0, 2.w, 0),
                                                       child: const Icon(Icons.shuffle),
                                                     ),
-                                                    Text('Shuffle', style: Theme.of(context).textTheme.bodySmall)
+                                                    Text('shuffle'.localise(), style: Theme.of(context).textTheme.bodySmall)
                                                   ],
                                                 ),
                                               ),
@@ -350,7 +351,7 @@ class _SongsPageState extends State<SongsPage> {
                                                       padding:EdgeInsets.fromLTRB(0, 0, 2.w, 0),
                                                       child: const Icon(Icons.download),
                                                     ),
-                                                    Text('Download', style: Theme.of(context).textTheme.bodySmall)
+                                                    Text('download'.localise(), style: Theme.of(context).textTheme.bodySmall)
                                                   ],
                                                 ),
                                               ),
@@ -363,7 +364,7 @@ class _SongsPageState extends State<SongsPage> {
                                                           padding: EdgeInsets.fromLTRB(0, 0, 2.w, 0),
                                                           child: const Icon(Icons.download),
                                                         ),
-                                                        Text('Try Get Art', style: Theme.of(context).textTheme.bodySmall)
+                                                        Text('try_get_art'.localise(), style: Theme.of(context).textTheme.bodySmall)
                                                       ],
                                                     ),
                                                   ),
@@ -377,7 +378,7 @@ class _SongsPageState extends State<SongsPage> {
                                                       child: const Icon(Icons.upload),
                                                     ),
 
-                                                    Text('Upload Art', style: Theme.of(context).textTheme.bodySmall)
+                                                    Text('upload_art'.localise(), style: Theme.of(context).textTheme.bodySmall)
                                                   ],
                                                 ),
                                               ),

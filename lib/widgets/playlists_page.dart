@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/playlists_controller.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/playlists.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/playlist_page.dart';
@@ -45,7 +46,7 @@ class _PlaylistsPageState extends State<PlaylistsPage> with SingleTickerProvider
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(centerTitle: true, title: Text('Playlists', style: Theme.of(context).textTheme.bodyLarge),),
+        appBar: AppBar(centerTitle: true, title: Text('playlists_title'.localise(), style: Theme.of(context).textTheme.bodyLarge),),
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,
@@ -58,7 +59,7 @@ class _PlaylistsPageState extends State<PlaylistsPage> with SingleTickerProvider
             children: [
               Padding(
                 padding: const EdgeInsets.all(7.0),
-                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'Search',hintStyle:  TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)), style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)),
+                child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'search'.localise(),hintStyle:  TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)), style: TextStyle(color: Theme.of(context).textTheme.bodySmall!.color, fontSize: 18)),
               ),
               Expanded(
                 child:
@@ -74,8 +75,8 @@ class _PlaylistsPageState extends State<PlaylistsPage> with SingleTickerProvider
                         child: Text('Error: ${snapshot.error}'),
                       );
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(
-                        child: Text('No playlists available.'),
+                      return Center(
+                        child: Text('no_data_error'.localise()),
                       );
                     } else {
                       // Data is available, build the list

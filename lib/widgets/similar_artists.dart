@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/artist_controller.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/artist.dart';
 import 'package:jel_music/widgets/album_page.dart';
 import 'package:sizer/sizer.dart';
@@ -52,8 +53,8 @@ class _SimilarArtistsState extends State<SimilarArtists> {
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return 
-              const Center(
-                child: Text('No artists available.'),
+               Center(
+                child: Text('no_artists_error'.localise()),
               );
             
         } else {
@@ -66,7 +67,7 @@ class _SimilarArtistsState extends State<SimilarArtists> {
                 Container(
                     padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
                     alignment: Alignment.centerLeft,
-                    child:  Text('Similar Artists', style:Theme.of(context).textTheme.bodyLarge)),
+                    child:  Text('similar_artists'.localise(), style:Theme.of(context).textTheme.bodyLarge)),
                 Row(
                   children: [
                     SizedBox(

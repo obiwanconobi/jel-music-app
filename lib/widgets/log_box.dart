@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/log_box_controller.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/log.dart';
 
 class LogBox extends StatefulWidget {
@@ -67,7 +68,7 @@ class _LogBoxState extends State<LogBox> {
   Widget build(BuildContext context) {
     return SafeArea(child:
     Scaffold(
-      appBar: AppBar(centerTitle: true, title: Text('Log Box', style: Theme.of(context).textTheme.bodyLarge), actions: [Padding(padding: const EdgeInsets.fromLTRB(0, 0, 15, 0), child: IconButton(icon:  const Icon(Icons.delete_forever),
+      appBar: AppBar(centerTitle: true, title: Text('log_box_title'.localise(), style: Theme.of(context).textTheme.bodyLarge), actions: [Padding(padding: const EdgeInsets.fromLTRB(0, 0, 15, 0), child: IconButton(icon:  const Icon(Icons.delete_forever),
           onPressed: () { clearLog(); }))],),
       body: Column(children: [
         SegmentedButton<SortOptions>(
@@ -75,15 +76,15 @@ class _LogBoxState extends State<LogBox> {
           segments: <ButtonSegment<SortOptions>>[
             ButtonSegment<SortOptions>(
                 value: SortOptions.all,
-                label: Text('All', style: Theme.of(context).textTheme.bodySmall,),
+                label: Text('log_box_all'.localise(), style: Theme.of(context).textTheme.bodySmall,),
                 icon: const Icon(Icons.warning)),
             ButtonSegment<SortOptions>(
                 value: SortOptions.error,
-                label: Text('Errors', style: Theme.of(context).textTheme.bodyMedium),
+                label: Text('log_box_errors'.localise(), style: Theme.of(context).textTheme.bodyMedium),
                 icon: const Icon(Icons.error)),
             ButtonSegment<SortOptions>(
                 value: SortOptions.log,
-                label: Text('Logs', style: Theme.of(context).textTheme.bodySmall,),
+                label: Text('logs_box_logs'.localise(), style: Theme.of(context).textTheme.bodySmall,),
                 icon: const Icon(Icons.note)),
           ],
           selected: <SortOptions>{sortOptionsView},
@@ -110,8 +111,8 @@ class _LogBoxState extends State<LogBox> {
                     child: Text('Error: ${snapshot.error}'),
                   );
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(
-                    child: Text('No artists available.'),
+                  return Center(
+                    child: Text('no_data_error'.localise()),
                   );
                 } else {
                   // Data is available, build the list

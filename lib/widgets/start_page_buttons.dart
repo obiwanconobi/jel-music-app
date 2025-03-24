@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/log.dart';
 import 'package:jel_music/widgets/all_albums_page.dart';
 import 'package:jel_music/widgets/all_songs_part.dart';
@@ -73,7 +74,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                         child: Text(
-                            'Artists',
+                            'artist_title'.localise(),
                             style: Theme.of(context).textTheme.bodyMedium
                         ),
                       ),
@@ -109,7 +110,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                         child: Text(
-                            'Albums',
+                            'albums_title'.localise(),
                             style: Theme.of(context).textTheme.bodyMedium
                         ),
                       ),
@@ -142,7 +143,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                           child: Text(
-                              'Statistics',
+                              'statistics'.localise(),
                               style: Theme.of(context).textTheme.bodyMedium
                           ),
                         ),
@@ -176,7 +177,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                           child: Text(
-                              'Most Played',
+                              'most_played'.localise(),
                               style: Theme.of(context).textTheme.bodyMedium
                           ),
                         ),
@@ -211,7 +212,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                         child: Text(
-                            'Liked Songs',
+                            'liked_songs_title'.localise(),
                             style: Theme.of(context).textTheme.bodyMedium
                         ),
                       ),
@@ -247,7 +248,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                         child: Text(
-                            'All Songs',
+                            'all_songs_title'.localise(),
                             style: Theme.of(context).textTheme.bodyMedium
                         ),
                       ),
@@ -283,7 +284,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                         child: Text(
-                            'Playlists',
+                            'playlists_title'.localise(),
                             style: Theme.of(context).textTheme.bodyMedium
                         ),
                       ),

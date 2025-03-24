@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/PlaybackByDaysController.dart';
 import 'package:jel_music/controllers/most_played_songs_controller.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/models/bar%20chart/bar_data.dart';
 import 'package:jel_music/models/playback_days.dart';
@@ -64,7 +65,7 @@ class _MostPlayedSongsState extends State<MostPlayedSongs> {
     var songsList = controller.songs;
     return SafeArea(
       child: Scaffold(
-          appBar: AppBar(centerTitle: true, title: Text('Most Played Songs', style: Theme.of(context).textTheme.bodyLarge),),
+          appBar: AppBar(centerTitle: true, title: Text('most_played_songs_title'.localise(), style: Theme.of(context).textTheme.bodyLarge),),
           body: Padding(
             padding: EdgeInsets.only(
               top: 0.h,
@@ -88,8 +89,8 @@ class _MostPlayedSongsState extends State<MostPlayedSongs> {
                               child: Text('Error: ${snapshot.error}'),
                             );
                           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                            return const Center(
-                              child: Text('No artists available.'),
+                            return Center(
+                              child: Text('no_songs_error'.localise()),
                             );
                           } else {
                             // Data is available, build the list
@@ -304,7 +305,7 @@ class _MostPlayedSongsState extends State<MostPlayedSongs> {
                                                           ),
                                                           Container(
                                                             alignment: Alignment.centerLeft,
-                                                            child: Text('Play Count: ${songsList[index].playCount.toString()}', style:  Theme.of(context).textTheme.bodySmall,),
+                                                            child: Text('${'play_count'.localise()}: ${songsList[index].playCount.toString()}', style:  Theme.of(context).textTheme.bodySmall,),
                                                           ),
                                                         ],
                                                       ),

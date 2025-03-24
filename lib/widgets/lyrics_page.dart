@@ -109,7 +109,7 @@ class _LyricsPageState extends State<LyricsPage> {
         builder: (context, musicController, snapshot) {
       if (musicController.currentQueue == null) {
         return const Center(
-          child: Text('No artists available.'),
+          child: Text('no_data_error'),
         );
       } else {
         return StreamBuilder<Duration>(

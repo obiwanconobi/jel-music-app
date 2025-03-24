@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:jel_music/controllers/playback_artists_controller.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/playback_artists.dart';
 import 'package:sizer/sizer.dart';
 
@@ -93,15 +94,15 @@ class _PlaybackByArtistChartState extends State<PlaybackByArtistChart> with Sing
                 );
               } else if (!snapshot.hasData || snapshot.data!.isEmpty ||
                   snapshot.data!.length < 7) {
-                return const Center(
-                  child: Text('No data available.'),
+                return Center(
+                  child: Text('no_data_error'.localise()),
                 );
               } else {
                 playbackArtists = snapshot.data!;
                 sections = getSections();
                 return Column(
                   children: [
-                    Text('Favourite Artists', style: Theme.of(context).textTheme.bodyLarge),
+                    Text('fav_artists_title'.localise(), style: Theme.of(context).textTheme.bodyLarge),
                     Padding(
                       padding: EdgeInsets.fromLTRB(0, 20.w, 0, 0),
                       child: Container(

@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/music_controller.dart';
 import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/quick_actions_handler.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/widgets/lyrics_page.dart';
 import 'package:provider/provider.dart';
@@ -166,8 +167,8 @@ class _ControlsState extends State<Controls> {
                  Consumer<MusicController>(
                    builder: (context, musicController, snapshot) {
                    if (musicController.currentQueue == null) {
-                     return const Center(
-                       child: Text('No artists available.'),
+                     return Center(
+                       child: Text('no_songs_error'.localise()),
                      );
                    } else {
                          return Center(
@@ -250,8 +251,8 @@ class _ControlsState extends State<Controls> {
                                    children: [
                                      ElevatedButton(onPressed: () => { Navigator.push(context,
                                        MaterialPageRoute(builder: (context) => LyricsPage(),)),
-                                     }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Lyrics', style: Theme.of(context).textTheme.bodySmall)),
-                                     ElevatedButton(onPressed: () => { _clearQueue() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('Clear', style: Theme.of(context).textTheme.bodySmall)),
+                                     }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('lyrics'.localise(), style: Theme.of(context).textTheme.bodySmall)),
+                                     ElevatedButton(onPressed: () => { _clearQueue() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('clear'.localise(), style: Theme.of(context).textTheme.bodySmall)),
                                  ],),
                                ),
                                ListView.builder(

@@ -7,6 +7,7 @@ import 'package:jel_music/controllers/api_controller.dart';
 import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/helpers/app_translations.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
 import 'package:jel_music/hive/helpers/isynchelper.dart';
@@ -296,7 +297,7 @@ _getVersionNumber()async{
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Settings", style: Theme.of(context).textTheme.bodyLarge),
+        title: Text("settings_title".localise(), style: Theme.of(context).textTheme.bodyLarge),
       ),
       body:
           Container(
@@ -320,7 +321,7 @@ _getVersionNumber()async{
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text('Server Type', style: Theme.of(context).textTheme.bodySmall),
+                              Text('server_type'.localise(), style: Theme.of(context).textTheme.bodySmall),
                               DropdownButton<String>(
                               value: _selectedOption,
                               onChanged: (String? newValue) {
@@ -356,7 +357,7 @@ _getVersionNumber()async{
                         child: Column(
                           children: [
                             TextButton(onPressed: () { sync(); }, child: Text('Sync', style:  Theme.of(context).textTheme.bodySmall),),
-                            TextButton(onPressed: () { clear(); }, child: Text('Clear', style:  Theme.of(context).textTheme.bodySmall),),
+                            TextButton(onPressed: () { clear(); }, child: Text('clear'.localise(), style:  Theme.of(context).textTheme.bodySmall),),
                             DropdownButton<String>(
                               value: _language,
                               onChanged: (String? newValue) {
@@ -367,14 +368,14 @@ _getVersionNumber()async{
                                   });
                                 }
                               },
-                              items: const <DropdownMenuItem<String>>[
+                              items: <DropdownMenuItem<String>>[
                                 DropdownMenuItem<String>(
                                   value: 'en',
-                                  child: Text('English'),
+                                  child: Text('English',style: Theme.of(context).textTheme.bodySmall),
                                 ),
                                 DropdownMenuItem<String>(
                                   value: 'it',
-                                  child: Text('Italian'),
+                                  child: Text('Italian',style: Theme.of(context).textTheme.bodySmall),
                                 ),
                               ],
                             ),
@@ -399,14 +400,14 @@ _getVersionNumber()async{
                                   });
                                 }
                               },
-                              items: const <DropdownMenuItem<String>>[
+                              items: <DropdownMenuItem<String>>[
                                 DropdownMenuItem<String>(
                                   value: 'Inconsolata',
-                                  child: Text('Inconsolata'),
+                                  child: Text('Inconsolata', style: Theme.of(context).textTheme.bodySmall),
                                 ),
                                 DropdownMenuItem<String>(
                                   value: 'Roboto',
-                                  child: Text('Roboto'),
+                                  child: Text('Roboto',style: Theme.of(context).textTheme.bodySmall),
                                 ),
                               ],
                             ),
@@ -423,7 +424,7 @@ _getVersionNumber()async{
                         padding: EdgeInsets.all(3.w),
                         child: Column(
                           children: [
-                            Text("Login Details"),
+                            Text("login_details".localise()),
                             TextField(obscureText: false, style: Theme.of(context).textTheme.bodySmall, controller: _usernameTextController,),
                             TextField(obscureText: true, style:Theme.of(context).textTheme.bodySmall, controller: _passwordTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_login),)),),
 
@@ -436,7 +437,7 @@ _getVersionNumber()async{
                         padding: EdgeInsets.all(3.w),
                         child: Column(
                           children: [
-                            Text("Advanced"),
+                            Text("advanced".localise()),
                             TextButton(onPressed: () { toggleTheme(); }, child: Text('Toggle Theme', style: Theme.of(context).textTheme.bodySmall)),
                             Row(
                               children: [

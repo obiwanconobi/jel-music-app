@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/most_played_songs_artist_controller.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:sizer/sizer.dart';
@@ -51,7 +52,7 @@ class _MostPlayedSongsArtistState extends State<MostPlayedSongsArtist> {
           );
         } else if (!snapshot.hasData) {
           return const Center(
-            child: Text('No artists available.'),
+            child: Text('no_artists_error'),
           );
         } else {
           songsFull = snapshot.data!;
@@ -63,7 +64,7 @@ class _MostPlayedSongsArtistState extends State<MostPlayedSongsArtist> {
                 visible: (songs.isNotEmpty),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                  child: Text('Most Played', style: Theme.of(context).textTheme.bodyLarge),
+                  child: Text('most_played'.localise(), style: Theme.of(context).textTheme.bodyLarge),
                 ),
               ),
               GridView.builder(
@@ -86,7 +87,7 @@ class _MostPlayedSongsArtistState extends State<MostPlayedSongsArtist> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("${index+1}. ${songs[index].title!}", style: Theme.of(context).textTheme.bodySmall, overflow: TextOverflow.ellipsis,),
-                        Text("${songs[index].album!}", style: Theme.of(context).textTheme.labelSmall, overflow: TextOverflow.ellipsis),
+                        Text(songs[index].album!, style: Theme.of(context).textTheme.labelSmall, overflow: TextOverflow.ellipsis),
                       ],
                     ),
                   );

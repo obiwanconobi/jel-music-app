@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/album_controller.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/widgets/songs_page.dart';
 import 'package:sizer/sizer.dart';
@@ -68,7 +69,7 @@ class _SimilarAlbumsState extends State<SimilarAlbums> {
                 Container(
                     padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
                     alignment: Alignment.centerLeft,
-                    child: Text('Similar Albums', style: Theme.of(context).textTheme.bodyLarge)),
+                    child: Text('similar_albums'.localise(), style: Theme.of(context).textTheme.bodyLarge)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

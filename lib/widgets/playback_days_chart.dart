@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/PlaybackByDaysController.dart';
 import 'package:jel_music/helpers/datetime_extensions.dart';
+import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/bar%20chart/bar_data.dart';
 import 'package:jel_music/models/playback_days.dart';
 import 'package:sizer/sizer.dart';
@@ -138,8 +139,8 @@ class _PlaybackDaysChartState extends State<PlaybackDaysChart> with SingleTicker
                     child: Text('Error: ${snapshot.error}'),
                   );
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty || snapshot.data!.length < 7) {
-                  return const Center(
-                    child: Text('No data available.'),
+                  return  Center(
+                    child: Text('no_data_error'.localise()),
                   );
                 } else {
                   days = snapshot.data!;
