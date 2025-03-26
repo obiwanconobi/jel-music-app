@@ -189,7 +189,7 @@ class _LikedSongsState extends State<LikedSongs> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      OutlinedButton(onPressed: () => _addAllToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor, foregroundColor: Theme.of(context).canvasColor), child: Text('Play All', style: Theme.of(context).textTheme.bodySmall)),
+                                      OutlinedButton(onPressed: () => _addAllToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor, foregroundColor: Theme.of(context).canvasColor), child: Text('play'.localise(), style: Theme.of(context).textTheme.bodySmall)),
                                     ],
                                   ),
                                   

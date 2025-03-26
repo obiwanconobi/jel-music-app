@@ -33,5 +33,8 @@
   "shuffle": "Shuffle",
   "try_get_art": "Try Get Art",
   "upload_art": "Upload Art",
-  "statistics": "Statistics"
+  "statistics": "Statistics",
+  "play": "Play",
+  "play_all": "Play All",
+  "sync": "Sync"
 }

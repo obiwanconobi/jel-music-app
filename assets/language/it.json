@@ -33,5 +33,8 @@
   "shuffle": "Mischiare",
   "try_get_art": "Ottenere l'arte",
   "upload_art": "Caricare l'arte",
-  "statistics": "Statistiche"
+  "statistics": "Statistiche",
+  "play": "Riprodurre",
+  "play_all": "Riprodurre Musica",
+  "sync": "Sync"
 }

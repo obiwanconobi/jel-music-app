@@ -80,11 +80,11 @@ class _LogBoxState extends State<LogBox> {
                 icon: const Icon(Icons.warning)),
             ButtonSegment<SortOptions>(
                 value: SortOptions.error,
-                label: Text('log_box_errors'.localise(), style: Theme.of(context).textTheme.bodyMedium),
+                label: Text('log_box_error'.localise(), style: Theme.of(context).textTheme.bodyMedium),
                 icon: const Icon(Icons.error)),
             ButtonSegment<SortOptions>(
                 value: SortOptions.log,
-                label: Text('logs_box_logs'.localise(), style: Theme.of(context).textTheme.bodySmall,),
+                label: Text('log_box_logs'.localise(), style: Theme.of(context).textTheme.bodySmall,),
                 icon: const Icon(Icons.note)),
           ],
           selected: <SortOptions>{sortOptionsView},
