@@ -18,7 +18,7 @@ class IndividualSong extends StatefulWidget {
 class _IndividualSongState extends State<IndividualSong> {
 
   late IndividualSongController controller;
-  late Future<Songs> songFuture;
+  late Future<ModelSongs> songFuture;
 
 
   @override

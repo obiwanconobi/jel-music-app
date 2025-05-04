@@ -25,10 +25,10 @@ class _AllSongsPageState extends State<AllSongsPage> {
   final _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
   var controller = GetIt.instance<AllSongsController>();
-  late Future<List<Songs>> songsFuture;
+  late Future<List<ModelSongs>> songsFuture;
   SongsHelper songsHelper = SongsHelper();
-  List<Songs> _filteredSongs = []; // List to hold filtered albums
-  List<Songs> songsList = [];
+  List<ModelSongs> _filteredSongs = []; // List to hold filtered albums
+  List<ModelSongs> songsList = [];
   int _currentPage = 1;
   SortOptions sortOptionsView = SortOptions.random;
  
@@ -71,7 +71,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
         }
       }
 
-   _playSong(Songs song){
+   _playSong(ModelSongs song){
     MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length, bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate, codec: song.codec));
   }
 
@@ -155,7 +155,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
                 child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'search'.localise(),hintStyle:  Theme.of(context).textTheme.bodyMedium), style: Theme.of(context).textTheme.bodyMedium),
               ),
               Expanded(
-                child: FutureBuilder<List<Songs>>(
+                child: FutureBuilder<List<ModelSongs>>(
                   future: songsFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {

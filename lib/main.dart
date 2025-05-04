@@ -27,6 +27,7 @@ import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/jellyfin_handler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/handlers/panaudio_handler.dart';
+import 'package:jel_music/handlers/subsonic_handler.dart';
 import 'package:jel_music/helpers/app_translations.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/classes/artists.dart';
@@ -34,6 +35,7 @@ import 'package:jel_music/hive/classes/log.dart';
 import 'package:jel_music/hive/classes/songs.dart';
 import 'package:jel_music/hive/helpers/isynchelper.dart';
 import 'package:jel_music/hive/helpers/panaudio_sync_helper.dart';
+import 'package:jel_music/hive/helpers/subsonic_sync_helper.dart';
 import 'package:jel_music/hive/helpers/sync_helper.dart';
 import 'package:jel_music/homepage.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
@@ -83,6 +85,11 @@ Future<void> main() async{
     instanceName: 'PanAudio',
   );
 
+  GetIt.I.registerSingleton<ISyncHelper>(
+    SubsonicSyncHelper(),
+    instanceName: 'Subsonic',
+  );
+
   GetIt.I.registerSingleton<IHandler>(
     JellyfinHandler(),
     instanceName: 'Jellyfin',
@@ -93,7 +100,12 @@ Future<void> main() async{
     instanceName: 'PanAudio',
   );
 
-   //Handlers
+  GetIt.I.registerSingleton<IHandler>(
+    SubsonicHandler(),
+    instanceName: 'Subsonic',
+  );
+
+  //Handlers
 
   GetIt.I.registerSingleton<LogBoxController>(LogBoxController());
   GetIt.I.registerSingleton<ApiController>(ApiController());

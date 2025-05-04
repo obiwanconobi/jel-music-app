@@ -8,7 +8,7 @@ class IndividualSongController{
 
 
 
-  Future<Songs> onInit(String songId)async{
+  Future<ModelSongs> onInit(String songId)async{
     await helper.openBox();
     var song = helper.returnSongById(songId);
     var mappedSong =  mapper.convertHiveSongToModelSong(song);

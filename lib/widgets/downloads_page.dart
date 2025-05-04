@@ -24,9 +24,9 @@ class _DownloadsPageState extends State<DownloadsPage> {
   SyncHelper syncHelper = SyncHelper();
   var controller = GetIt.instance<DownloadController>();
   Mappers mapper = Mappers();
-  late Future<List<Songs>> songsFuture;
-  List<Songs> _filteredSongs = []; // List to hold filtered albums
-  List<Songs> songsList = [];
+  late Future<List<ModelSongs>> songsFuture;
+  List<ModelSongs> _filteredSongs = []; // List to hold filtered albums
+  List<ModelSongs> songsList = [];
 
   @override
   void dispose() {
@@ -55,7 +55,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
       });
   }
 
-   _playSong(Songs song){
+   _playSong(ModelSongs song){
     MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length));
   }
 
@@ -80,7 +80,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
     });
   }
 
-  _playAll(List<Songs> allSongs){
+  _playAll(List<ModelSongs> allSongs){
      if(allSongs.isNotEmpty){
         List<StreamModel> playList = [];
         for(var song in allSongs){
@@ -119,7 +119,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
                 child: TextField(controller: _searchController, decoration: InputDecoration.collapsed(hintText: 'search'.localise(),hintStyle:  Theme.of(context).textTheme.bodyMedium), style: Theme.of(context).textTheme.bodyMedium),
               ),
               Expanded(
-                child: FutureBuilder<List<Songs>>(
+                child: FutureBuilder<List<ModelSongs>>(
                   future: songsFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {

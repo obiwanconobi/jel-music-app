@@ -87,7 +87,7 @@ class JellyfinHandler implements IHandler{
 
   }
   @override
-  Future<List<Songs>> returnSongsFromPlaylist(String playlistId)async{
+  Future<List<ModelSongs>> returnSongsFromPlaylist(String playlistId)async{
     var songsRaw = await jellyfinRepo.getPlaylistSongs(playlistId);
     var mappedSongs = await mapper.mapSongFromRaw(songsRaw["Items"]);
     return mappedSongs;

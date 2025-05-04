@@ -15,7 +15,7 @@ class PanaudioMappers{
 }
 
   //FIX THIS
-  Future<List<Songs>> mapSongFromRaw(dynamic songs) async {
+  Future<List<ModelSongs>> mapSongFromRaw(dynamic songs) async {
     var songsList = [];
     Conversions conversions = Conversions();
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
@@ -38,8 +38,8 @@ class PanaudioMappers{
   }
 
 
-  Future<List<Songs>> convertHiveSongsToModelSongs(dynamic songsRaw)async{
-    List<Songs> songsList = [];
+  Future<List<ModelSongs>> convertHiveSongsToModelSongs(dynamic songsRaw)async{
+    List<ModelSongs> songsList = [];
     for(var song in songsRaw){
       String songId = song.albumId;
       String imgUrl = "";
@@ -50,7 +50,7 @@ class PanaudioMappers{
       }
 
 
-      songsList.add(Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,
+      songsList.add(ModelSongs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,
           artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length,
           favourite: song.favourite, discNumber: song.discIndex, downloaded: song.downloaded, codec: song.codec,
           bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate

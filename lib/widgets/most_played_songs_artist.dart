@@ -22,8 +22,8 @@ var controller = GetIt.instance<MostPlayedSongsArtistController>();
 
 class _MostPlayedSongsArtistState extends State<MostPlayedSongsArtist> {
 
-  late Future<List<Songs>> songsFuture;
-  List<Songs> songsFull = [];
+  late Future<List<ModelSongs>> songsFuture;
+  List<ModelSongs> songsFull = [];
 
   @override
   void initState() {
@@ -56,7 +56,7 @@ class _MostPlayedSongsArtistState extends State<MostPlayedSongsArtist> {
           );
         } else {
           songsFull = snapshot.data!;
-          List<Songs> songs = songsFull.take(5).toList();
+          List<ModelSongs> songs = songsFull.take(5).toList();
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

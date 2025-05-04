@@ -68,7 +68,7 @@ class AlbumController {
     var serverType = GetStorage().read('ServerType') ?? "ERROR";
     if(serverType == "Jellyfin"){
       jellyfinHandler.updateFavouriteStatus(itemId, !current);
-    }else if(serverType == "PanAudio"){
+    }else if(serverType == "PanAudio" || serverType == "Subsonic"){
       jellyfinHandler.updateFavouriteArtist(itemId, !current);
     }
     artistsHelper.openBox();

@@ -9,6 +9,7 @@ import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/playlists_controller.dart';
 import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
+import 'package:jel_music/helpers/apihelper.dart';
 import 'package:jel_music/helpers/ioclient.dart';
 import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
@@ -44,6 +45,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   SongsHelper songsHelper = SongsHelper();
   ArtistsHelper artistsHelper = ArtistsHelper();
   AlbumsHelper albumsHelper = AlbumsHelper();
+  ApiHelper apiHelper = ApiHelper();
   PlaylistsController playlistController = PlaylistsController();
   bool _isPlaying = false;
 
@@ -613,7 +615,9 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       return "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
       //return "$baseServerUrl/Audio/$id";
     }else if (serverType == "Subsonic"){
-      return "$baseServerUrl/rest/download?id=$id";
+      var headers = apiHelper.returnSubsonicHeaders();
+      print("$baseServerUrl/rest/download?id=$id&$headers");
+      return "$baseServerUrl/rest/download?id=$id&$headers";
     }else if(serverType == "PanAudio"){
       return "$baseServerUrl/api/audio-stream?songId=$id";
     }

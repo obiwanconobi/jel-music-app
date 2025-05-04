@@ -14,7 +14,7 @@ import 'package:get_storage/get_storage.dart';
 
 
 class SongsController {
-    var songs = <Songs>[];
+    var songs = <ModelSongs>[];
     String? albumId;
     String? artistId;
     SongsHelper songsHelper = SongsHelper();
@@ -25,7 +25,7 @@ class SongsController {
     String baseServerUrl = "";
     late IHandler jellyfinHandler;
     String serverType = "";
-  Future<List<Songs>> onInit() async{
+  Future<List<ModelSongs>> onInit() async{
 
     try {
       baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
@@ -62,7 +62,7 @@ class SongsController {
 
     if(serverType == "Jellyfin"){
       jellyfinHandler.updateFavouriteStatus(album.id, !favourite);
-    }else if(serverType == "PanAudio"){
+    }else if(serverType == "PanAudio" || serverType == "Subsonic"){
       jellyfinHandler.updateFavouriteAlbum(album.id, favourite);
     }
 
@@ -86,7 +86,7 @@ class SongsController {
     await jellyfinHandler.addSongToPlaylist(songId, playlistId);
   }
 
-  Future<List<Songs>> returnDownloaded()async{
+  Future<List<ModelSongs>> returnDownloaded()async{
     await songsHelper.openBox();
     return songsHelper.returnDownloadedSongs();
   }
@@ -125,10 +125,10 @@ class SongsController {
     }
    }
 
-  Future<List<Songs>> fetchSongs(String albumId) async{
+  Future<List<ModelSongs>> fetchSongs(String albumId) async{
     var songsRaw = await _getSongsData(albumId);
 
-    List<Songs> songsList = [];
+    List<ModelSongs> songsList = [];
 
     for(var song in songsRaw["Items"]){
         try{
@@ -136,7 +136,7 @@ class SongsController {
           int trackNumber = song["IndexNumber"] ?? 0;
           String length = _ticksToTimestampString(song["RunTimeTicks"] ?? 0);
           var imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
-          songsList.add(Songs(id: song["Id"], trackNumber: trackNumber, artistId: song["ArtistItems"][0]["Id"], title: song["Name"],artist: song["ArtistItems"][0]["Name"], albumPicture: imgUrl, album: song["Album"], albumId: song["AlbumId"], length: length, favourite: song["UserData"]["IsFavorite"]));
+          songsList.add(ModelSongs(id: song["Id"], trackNumber: trackNumber, artistId: song["ArtistItems"][0]["Id"], title: song["Name"],artist: song["ArtistItems"][0]["Name"], albumPicture: imgUrl, album: song["Album"], albumId: song["AlbumId"], length: length, favourite: song["UserData"]["IsFavorite"]));
         }catch(e){
           //log error
         }

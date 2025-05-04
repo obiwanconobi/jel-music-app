@@ -2,9 +2,9 @@ import 'package:get_storage/get_storage.dart';
 
 class ApiHelper{
 
-  Future<String> returnSubsonicHeaders()async {
-    var username = await GetStorage().read('username');
-    var password = await GetStorage().read('password');
+  String returnSubsonicHeaders() {
+    var username =  GetStorage().read('username');
+    var password =  GetStorage().read('password');
     Map<String, String> requestHeaders = {
       'u': username,
       'p': password,

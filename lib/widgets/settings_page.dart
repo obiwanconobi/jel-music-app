@@ -176,7 +176,7 @@ _getVersionNumber()async{
   if(_selectedOption == "Jellyfin"){
    await syncHelper.runSync(true);
   }else if (_selectedOption == "Subsonic"){
-
+    await syncHelper.runSync(true);
   }else if(_selectedOption == "PanAudio"){
     await syncHelper.runSync(true);
     //await panaudioSyncHelper.runSync(true);

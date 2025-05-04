@@ -26,10 +26,10 @@ class PlaylistPage extends StatefulWidget {
 }
 
 class _PlaylistPageState extends State<PlaylistPage> {
-  List<Songs> songsList = [];
+  List<ModelSongs> songsList = [];
   var controller = GetIt.instance<PlaylistController>();
   Mappers mapper = Mappers();
-  late Future<List<Songs>> songsFuture;
+  late Future<List<ModelSongs>> songsFuture;
 
   @override
   void initState() {
@@ -39,16 +39,16 @@ class _PlaylistPageState extends State<PlaylistPage> {
     songsFuture = controller.onInit();
   }
 
-  _addToQueue(Songs song){
+  _addToQueue(ModelSongs song){
     MusicControllerProvider.of(context, listen: false).addToQueue(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title));
   }
 
-  _shuffle(List<Songs> allSongs){
+  _shuffle(List<ModelSongs> allSongs){
     allSongs.shuffle();
     _addAllToQueue(allSongs);
   }
 
-  _addAllToQueue(List<Songs> allSongs){
+  _addAllToQueue(List<ModelSongs> allSongs){
     if(allSongs.isNotEmpty){
         List<StreamModel> playList = [];
         for(var song in allSongs){
@@ -92,7 +92,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
-                child: FutureBuilder<List<Songs>>(
+                child: FutureBuilder<List<ModelSongs>>(
                   future: songsFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -356,7 +356,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                                 ],
                                               ),
                                             ),
-                                            IconButton(icon: const Icon(Icons.delete), color: Colors.red, onPressed: () {_deleteSong(songsList[index].albumId!);},)
+                                            IconButton(icon: const Icon(Icons.delete), color: Colors.red, onPressed: () {_deleteSong(songsList[index].id!);},)
                                           ],
                                         ),
                                       ),

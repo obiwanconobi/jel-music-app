@@ -45,15 +45,15 @@ class _SongsPageState extends State<SongsPage> {
   var downloadController= GetIt.instance<DownloadController>();
   var serverType = GetStorage().read('ServerType');
   late Future<bool> favourite;
-  late Future<List<Songs>> songsFuture;
+  late Future<List<ModelSongs>> songsFuture;
   SongsHelper songsHelper = SongsHelper();
-  List<Songs> songsList = [];
+  List<ModelSongs> songsList = [];
   bool? fave;
   bool android = false;
 
   List<PopupMenuEntry<String>> playlistMenuItems = [];
 
-  StreamModel returnStream(Songs song){
+  StreamModel returnStream(ModelSongs song){
     return StreamModel(id: song.id, composer: song.artist, music: song.id, picture: song.albumPicture, title: song.title, long: song.length, isFavourite: song.favourite, downloaded: song.downloaded, codec: song.codec, bitdepth: song.bitdepth, bitrate: song.bitrate, samplerate: song.samplerate);
   }
 
@@ -101,7 +101,7 @@ class _SongsPageState extends State<SongsPage> {
  //   MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length, downloaded: song.downloaded, codec: song.codec, bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate));
  // }
 
-  _playSong(List<Songs> allSongs, index){
+  _playSong(List<ModelSongs> allSongs, index){
     if(allSongs.isNotEmpty){
       List<StreamModel> playList = [];
       for(var song in allSongs){
@@ -113,7 +113,7 @@ class _SongsPageState extends State<SongsPage> {
   }
 
 
-  _addShuffledToQueue(List<Songs> allSongs){
+  _addShuffledToQueue(List<ModelSongs> allSongs){
       if(allSongs.isNotEmpty){
         List<StreamModel> playList = [];
         for(var song in allSongs){
@@ -125,7 +125,7 @@ class _SongsPageState extends State<SongsPage> {
   }
 
 
-  _addAllToQueue(List<Songs> allSongs){
+  _addAllToQueue(List<ModelSongs> allSongs){
     if(allSongs.isNotEmpty){
         List<StreamModel> playList = [];
         for(var song in allSongs){
@@ -169,7 +169,7 @@ class _SongsPageState extends State<SongsPage> {
     controller.tryGetArt(songsList[0].artist!, songsList[0].album!);
   }
 
-  _downloadAll(List<Songs> songs)async{
+  _downloadAll(List<ModelSongs> songs)async{
     for(var song in songs){
       try{
         bool dl = song.downloaded ?? false;
@@ -207,7 +207,7 @@ class _SongsPageState extends State<SongsPage> {
     return duration.toString().split('.').first.padLeft(8, "0");
   }
 
-  _downloadFile(Songs song)async{
+  _downloadFile(ModelSongs song)async{
     var result = await MusicControllerProvider.of(context, listen: false).downloadSong(song.id!, song.codec!);
     String? title = song.title;
     String? artist = song.artist;
@@ -257,7 +257,7 @@ class _SongsPageState extends State<SongsPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
-                child: FutureBuilder<List<Songs>>(
+                child: FutureBuilder<List<ModelSongs>>(
                   future: songsFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {

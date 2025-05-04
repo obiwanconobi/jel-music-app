@@ -5,7 +5,7 @@ import 'package:jel_music/models/songs.dart';
 
 class PlaylistController{
 
-  var playlistList = <Songs>[];
+  var playlistList = <ModelSongs>[];
   String playlistId = "";
   var serverType = GetStorage().read('ServerType');
   late IHandler handler;
@@ -16,7 +16,7 @@ class PlaylistController{
     playlistList.clear();
   }
 
-  Future<List<Songs>> onInit() async {
+  Future<List<ModelSongs>> onInit() async {
     handler = GetIt.instance<IHandler>(instanceName: serverType);
     try {
       clearList();
@@ -28,7 +28,7 @@ class PlaylistController{
     }
   }
 
-  Future<List<Songs>> getPlaylistData(String playlistId)async{
+  Future<List<ModelSongs>> getPlaylistData(String playlistId)async{
     try {
       clearList();
       playlistList = await handler.returnSongsFromPlaylist(playlistId);

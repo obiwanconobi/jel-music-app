@@ -27,7 +27,7 @@ class _MostPlayedSongsState extends State<MostPlayedSongs> {
   var controller = GetIt.instance<MostPlayedSongsController>();
   var serverType = GetStorage().read('ServerType') ?? "ERROR";
   Mappers mapper = Mappers();
-  late Future<List<Songs>> songsFuture;
+  late Future<List<ModelSongs>> songsFuture;
 
 
   @override
@@ -36,17 +36,17 @@ class _MostPlayedSongsState extends State<MostPlayedSongs> {
     songsFuture = controller.onInit();
   }
 
-  _addToQueue(List<Songs> songs, int index){
+  _addToQueue(List<ModelSongs> songs, int index){
     var sm = mapper.returnStreamModelsList(songs);
     MusicControllerProvider.of(context, listen: false).addPlaylistToQueue(sm, index: index);
   }
 
-  _shuffle(List<Songs> allSongs){
+  _shuffle(List<ModelSongs> allSongs){
     allSongs.shuffle();
     _addAllToQueue(allSongs);
   }
 
-  _addAllToQueue(List<Songs> allSongs){
+  _addAllToQueue(List<ModelSongs> allSongs){
     if(allSongs.isNotEmpty){
       List<StreamModel> playList = [];
       for(var song in allSongs){
@@ -77,7 +77,7 @@ class _MostPlayedSongsState extends State<MostPlayedSongs> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Flexible(
-                    child: FutureBuilder<List<Songs>>(
+                    child: FutureBuilder<List<ModelSongs>>(
                         future: songsFuture,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {

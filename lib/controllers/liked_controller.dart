@@ -5,13 +5,13 @@ import 'package:get_storage/get_storage.dart';
 
 
 class LikedController {
-    var songs = <Songs>[];
+    var songs = <ModelSongs>[];
   
     final int currentArtistIndex = 0;
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
     SongsHelper  songsHelper = SongsHelper();
     Mappers mapper = Mappers();
-     Future<List<Songs>> onInit() async {
+     Future<List<ModelSongs>> onInit() async {
     try {
       songs = await fetchSongs();
       return songs;
@@ -27,7 +27,7 @@ class LikedController {
       return songsHelper.returnFavouriteSongs();
       }
 
-  Future<List<Songs>> fetchSongs() async{
+  Future<List<ModelSongs>> fetchSongs() async{
     var songsRaw = await _getFavouriteSongsFromBox();
    var songsList = await mapper.mapListSongsFromRaw(songsRaw);
   

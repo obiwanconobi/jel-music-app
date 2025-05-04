@@ -18,14 +18,14 @@ class DownloadController{
     Mappers mapper = Mappers();
     LogHandler logger = LogHandler();
     String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
-    var songs = <Songs>[];
+    var songs = <ModelSongs>[];
     late SongsController songsController;
 
   DownloadController(){
     songsController = GetIt.instance<SongsController>();
   }
 
-  Future<List<Songs>> onInit() async {
+  Future<List<ModelSongs>> onInit() async {
     try {
      // songs = await fetchSongs(albumId!);
      songs = await _getSongsFromBox();

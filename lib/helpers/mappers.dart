@@ -1,4 +1,5 @@
 import 'package:get_storage/get_storage.dart';
+import 'package:jel_music/helpers/apihelper.dart';
 import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:jel_music/models/playback_artists.dart';
@@ -12,6 +13,7 @@ class Mappers{
     Conversions conversions = Conversions();
     String baseServerUrl = "";
     String serverType = "";
+    ApiHelper apiHelper = ApiHelper();
 
     getValues(){
       baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
@@ -52,8 +54,11 @@ class Mappers{
         imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
       }else if (serverType == "PanAudio"){
         imgUrl = "$baseServerUrl/api/albumArt?albumId=${song.albumId}";
+      }else if(serverType =="Subsonic"){
+        imgUrl = "$baseServerUrl/rest/getCoverArt?id=${song.albumId}&${apiHelper.returnSubsonicHeaders()}";
       }
-      return Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,
+
+      return ModelSongs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,
           artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length,
           favourite: song.favourite, discNumber: song.discIndex, downloaded: song.downloaded, codec: song.codec,
           bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate
@@ -61,9 +66,9 @@ class Mappers{
 
     }
 
-    Future<List<Songs>> convertHiveSongsToModelSongs(dynamic songsRaw)async{
+    Future<List<ModelSongs>> convertHiveSongsToModelSongs(dynamic songsRaw)async{
       getValues();
-      List<Songs> songsList = [];
+      List<ModelSongs> songsList = [];
       for(var song in songsRaw){
         String songId = song.albumId;
         String imgUrl = "";
@@ -71,10 +76,12 @@ class Mappers{
           imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
         }else if (serverType == "PanAudio"){
           imgUrl = "$baseServerUrl/api/albumArt?albumId=${song.albumId}";
+        }else if(serverType =="Subsonic"){
+          imgUrl = "$baseServerUrl/rest/getCoverArt?id=${song.albumId}&${apiHelper.returnSubsonicHeaders()}";
         }
 
 
-        songsList.add(Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,
+        songsList.add(ModelSongs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,
             artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length,
             favourite: song.favourite, discNumber: song.discIndex, downloaded: song.downloaded, codec: song.codec,
             bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate
@@ -102,12 +109,14 @@ class Mappers{
 
       }else if (serverType == "PanAudio"){
         return "$baseServerUrl/api/albumArt?albumId=$albumId";
+      }else if(serverType =="Subsonic"){
+        return "$baseServerUrl/rest/getCoverArt?id=$albumId&${apiHelper.returnSubsonicHeaders()}";
       }
 
       return "";
     }
 
-    List<StreamModel> returnStreamModelsList(List<Songs> songs){
+    List<StreamModel> returnStreamModelsList(List<ModelSongs> songs){
       List<StreamModel> returnList = [];
       for(var song in songs){
         returnList.add(returnStreamModel(song));
@@ -116,7 +125,7 @@ class Mappers{
     }
 
 
-  StreamModel returnStreamModel(Songs song){
+  StreamModel returnStreamModel(ModelSongs song){
     return StreamModel(id: song.id, composer: song.artist, music: song.id, picture: song.albumPicture, title: song.title, long: song.length, isFavourite: song.favourite, discNumber: song.discNumber, downloaded: song.downloaded, codec: song.codec, bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate);
   }
 
@@ -136,15 +145,15 @@ class Mappers{
     }
 
   
-  Future<List<Songs>> mapListSongsFromRaw(dynamic songs)async{
+  Future<List<ModelSongs>> mapListSongsFromRaw(dynamic songs)async{
     getValues();
-    List<Songs> songsList = [];
+    List<ModelSongs> songsList = [];
       for(var song in songs){
       String songId = song.albumId;
       var imgUrl = getImageUrl(song.albumId);
     //  var imgUrl = "$baseServerUrl/Items/$songId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
       try{
-        songsList.add(Songs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,
+        songsList.add(ModelSongs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,
         artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length,
          favourite: song.favourite, codec: song.codec, bitdepth: song.bitdepth, bitrate: song.bitrate, samplerate: song.samplerate,
          downloaded: song.downloaded, playCount: song.playCount));
@@ -168,9 +177,9 @@ class Mappers{
     return albumsList;
   }
 
-  Future<List<Songs>> mapSongFromRaw(dynamic songs) async {
+  Future<List<ModelSongs>> mapSongFromRaw(dynamic songs) async {
     getValues();
-    List<Songs> songsList = [];
+    List<ModelSongs> songsList = [];
     Conversions conversions = Conversions();
      String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
     
@@ -188,7 +197,7 @@ class Mappers{
       var bitdepth = song["MediaStreams"][0]["BitDepth"];
       var samplerate = song["MediaStreams"][0]["SampleRate"]/1000;
         try{
-          songsList.add(Songs(id: song["Id"], title: song["Name"], artist: song["ArtistItems"][0]["Name"],
+          songsList.add(ModelSongs(id: song["Id"], title: song["Name"], artist: song["ArtistItems"][0]["Name"],
            artistId: song["ArtistItems"][0]["Id"], album: song["Album"], albumId: song["AlbumId"], 
            trackNumber: song["IndexNumber"] ?? 0, length: conversions.returnTicksToTimestampString(song["RunTimeTicks"] ?? 0),
             favourite: song["UserData"]["IsFavorite"], discNumber: song["ParentIndexNumber"] ?? 1,

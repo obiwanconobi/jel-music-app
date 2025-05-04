@@ -1,4 +1,4 @@
-class Songs {
+class ModelSongs {
    String? id;
    int? trackNumber;
    String? title;
@@ -17,7 +17,7 @@ class Songs {
    String? samplerate;
    int? playCount;
 
-  Songs({
+   ModelSongs({
     this.id,
     this.trackNumber,
     this.title,

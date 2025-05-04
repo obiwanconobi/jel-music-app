@@ -24,7 +24,7 @@ class _LikedSongsState extends State<LikedSongs> {
   var controller = GetIt.instance<LikedController>();
   SharedWidgets sharedWidgets = SharedWidgets();
   Mappers mapper = Mappers();
-  late Future<List<Songs>> songsFuture;
+  late Future<List<ModelSongs>> songsFuture;
 
   @override
   void initState() {
@@ -37,12 +37,12 @@ class _LikedSongsState extends State<LikedSongs> {
 
 
 
-  _addToQueue(List<Songs> songs, int index){
+  _addToQueue(List<ModelSongs> songs, int index){
     var sm = mapper.returnStreamModelsList(songs);
     MusicControllerProvider.of(context, listen: false).addPlaylistToQueue(sm, index: index);
   }
 
-  _addAllToQueue(List<Songs> allSongs){
+  _addAllToQueue(List<ModelSongs> allSongs){
     if(allSongs.isNotEmpty){
         List<StreamModel> playList = [];
         for(var song in allSongs){
@@ -72,7 +72,7 @@ class _LikedSongsState extends State<LikedSongs> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
-                child: FutureBuilder<List<Songs>>(
+                child: FutureBuilder<List<ModelSongs>>(
                   future: songsFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {

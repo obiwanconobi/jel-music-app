@@ -5,11 +5,11 @@ import 'package:jel_music/providers/music_controller_provider.dart';
 
 class MostPlayedSongsArtistController{
 
-  var songs = <Songs>[];
+  var songs = <ModelSongs>[];
   Mappers mapper = Mappers();
   SongsHelper  songsHelper = SongsHelper();
   String? artistName;
-  Future<List<Songs>> onInit() async {
+  Future<List<ModelSongs>> onInit() async {
     try {
       songs = await fetchSongs();
       return songs;
@@ -20,7 +20,7 @@ class MostPlayedSongsArtistController{
     }
   }
 
-  mapSongsToStreamModels(List<Songs> songs){
+  mapSongsToStreamModels(List<ModelSongs> songs){
     return mapper.returnStreamModelsList(songs);
   }
 
@@ -29,7 +29,7 @@ class MostPlayedSongsArtistController{
     return await songsHelper.returnMostPlayedSongsArtist(artistName ?? "");
   }
 
-  Future<List<Songs>> fetchSongs() async{
+  Future<List<ModelSongs>> fetchSongs() async{
     var songsRaw = await _getMostPlayedSongsFromBox();
     var songsList = await mapper.mapListSongsFromRaw(songsRaw);
     //  songsList.shuffle();

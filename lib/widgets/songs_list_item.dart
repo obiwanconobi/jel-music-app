@@ -16,7 +16,7 @@ class SongsListItem extends StatefulWidget {
     required this.index,
   });
 
-  final List<Songs> songsList;
+  final List<ModelSongs> songsList;
   final int index;
 
   @override
@@ -57,7 +57,7 @@ class _SongsListItemState extends State<SongsListItem> {
 
   }
 
-  StreamModel returnStream(Songs song){
+  StreamModel returnStream(ModelSongs song){
     return StreamModel(id: song.id, composer: song.artist, music: song.id, picture: song.albumPicture, title: song.title, long: song.length, isFavourite: song.favourite, downloaded: song.downloaded, codec: song.codec, bitdepth: song.bitdepth, bitrate: song.bitrate, samplerate: song.samplerate);
   }
 
@@ -75,7 +75,7 @@ class _SongsListItemState extends State<SongsListItem> {
     }
   }
 
-  _playSong(List<Songs> allSongs, index){
+  _playSong(List<ModelSongs> allSongs, index){
     if(allSongs.isNotEmpty){
       List<StreamModel> playList = [];
       for(var song in allSongs){
@@ -86,7 +86,7 @@ class _SongsListItemState extends State<SongsListItem> {
 
   }
 
-  _downloadFile(Songs song)async{
+  _downloadFile(ModelSongs song)async{
     var result = await MusicControllerProvider.of(context, listen: false).downloadSong(song.id!, song.codec!);
     String? title = song.title;
     String? artist = song.artist;
