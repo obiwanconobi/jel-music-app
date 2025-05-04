@@ -30,7 +30,7 @@ class SubsonicHandler implements IHandler{
   var baseServerUrl = "";
   SubsonicHandler(){
     subsonicRepo = GetIt.instance<SubsonicRepo>();
-    baseServerUrl = GetStorage().read('serverUrl');
+    baseServerUrl = GetStorage().read('serverUrl') ?? "";
     openBox();
   }
 
