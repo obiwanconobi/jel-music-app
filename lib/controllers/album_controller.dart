@@ -78,7 +78,7 @@ class AlbumController {
   Future<List<Album>> returnSimilar()async{
     setServerUrl();
     String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
-    if(serverType == "PanAudio")return [];
+    if(serverType == "PanAudio" || serverType == "Subsonic")return [];
     await albumHelper.openBox();
     var album = albumHelper.returnAlbum(artistId!, albumId!);
     

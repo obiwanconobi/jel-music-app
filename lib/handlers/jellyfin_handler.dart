@@ -147,6 +147,12 @@ class JellyfinHandler implements IHandler{
     throw UnimplementedError();
   }
 
+  @override
+  scan() {
+    // TODO: implement scan
+    throw UnimplementedError();
+  }
+
   
 
 }

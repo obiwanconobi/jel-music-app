@@ -169,6 +169,10 @@ _getVersionNumber()async{
     super.dispose();
   }
 
+
+  void scan()async{
+    await syncHelper.scan();
+  }
   
   void sync()async{
     /* helper.getAllArtists();
@@ -347,6 +351,7 @@ _getVersionNumber()async{
                                 ),
                               ],
                                             ),
+                              TextButton(onPressed: () { scan(); }, child: Text('Scan', style:  Theme.of(context).textTheme.bodySmall),),
                             ],
                           ),
                         ),

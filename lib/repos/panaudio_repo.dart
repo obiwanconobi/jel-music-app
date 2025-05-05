@@ -30,6 +30,19 @@ class PanaudioRepo{
     }
   }
 
+  scan()async{
+    baseServerUrl = GetStorage().read('serverUrl');
+    try {
+      String url = "$baseServerUrl/sync/all";
+      http.Response res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   getPlaybackArtists(DateTime inOldDate, DateTime inCurDate)async{
     baseServerUrl = GetStorage().read('serverUrl');
     try {

@@ -28,10 +28,16 @@ class SubsonicHandler implements IHandler{
   SongsHelper songsHelper = SongsHelper();
   Mappers mappers = Mappers();
   var baseServerUrl = "";
+  String lastLoggedId = "";
   SubsonicHandler(){
     subsonicRepo = GetIt.instance<SubsonicRepo>();
     baseServerUrl = GetStorage().read('serverUrl') ?? "";
     openBox();
+  }
+
+  @override
+  scan()async{
+  await subsonicRepo.scan();
   }
 
   openBox()async{
@@ -46,7 +52,7 @@ class SubsonicHandler implements IHandler{
     for(var songs in songData){
       var title = songs["title"];
         try{
-          songsList.add(Songs(name: songs["title"], id: songs["id"], artist: songs["artist"], artistId: songs["artistId"] ?? "N/A", albumId: id, album: songs["album"], index: songs["track"] ?? 0, year: songs["year"] ?? 1900, length: conversions.returnSecondsToTimestampString(songs["duration"]), favourite: songs["starred"] != null, discIndex: songs["discNumber"] ?? 0, codec: songs["suffix"], playCount: 0));
+          songsList.add(Songs(name: songs["title"], id: songs["id"], artist: songs["artist"], artistId: songs["artistId"] ?? "N/A", albumId: id, album: songs["album"], index: songs["track"] ?? 0, year: songs["year"] ?? 1900, length: conversions.returnSecondsToTimestampString(songs["duration"]), favourite: songs["starred"] != null, discIndex: songs["discNumber"] ?? 0, codec: songs["suffix"], playCount: songs["playCount"] ?? 0));
         }catch(e){
           await logger.openBox();
           await logger.addToLog(LogModel(logType: "Error", logMessage: "Error adding song: $title: $e", logDateTime: DateTime.now()));
@@ -77,6 +83,12 @@ class SubsonicHandler implements IHandler{
 
     for (var index in artistsData) {
       for (var artist in index['artist']) {
+
+        var test = artist['name'].toString();
+        if(test.startsWith("Jack")){
+          print('stp[');
+        }
+
         artistsList.add(Artists(
           id: artist['id'],
           name: artist['name'],
@@ -258,9 +270,13 @@ class SubsonicHandler implements IHandler{
   }
 
   @override
-  updatePlaybackProgress(String songId, String? userId, bool paused, int ticks) {
+  updatePlaybackProgress(String songId, String? userId, bool paused, int ticks) async{
     // TODO: implement updatePlaybackProgress
-
+    var seconds = ticks / 10000000;
+    if(seconds > 40 && songId != lastLoggedId){
+      lastLoggedId = songId;
+      await subsonicRepo.logPlayback(songId);
+    }
   }
 
   @override

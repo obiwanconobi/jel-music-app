@@ -25,4 +25,5 @@ abstract class IHandler {
   getPlaybackByDays(DateTime inOldDate, DateTime inCurDate);
   getPlaybackByArtists(DateTime inOldDate, DateTime inCurDate);
   getPlaybackForDay(DateTime day);
+  scan();
 }

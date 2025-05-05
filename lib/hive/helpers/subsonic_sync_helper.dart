@@ -61,6 +61,9 @@ class SubsonicSyncHelper implements ISyncHelper{
         var songExists = songsHelper.returnSongById(song.id);
         if(songExists.name == "ERROR" && songExists.artist == "ERROR"){
           await songsHelper.addSongToBox(song);
+        }else if(songExists.playCount != song.playCount){
+          songExists.playCount = song.playCount;
+          await songsHelper.updateSong(songExists);
         }
 
       }catch(e){
@@ -86,6 +89,11 @@ class SubsonicSyncHelper implements ISyncHelper{
     await songsHelper.openBox();
     await albumsHelper.openBox();
     await artistsHelper.openBox();
+  }
+
+  @override
+  scan() async{
+    await subsonicHandler.scan();
   }
 
 }

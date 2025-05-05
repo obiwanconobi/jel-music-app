@@ -46,6 +46,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   ArtistsHelper artistsHelper = ArtistsHelper();
   AlbumsHelper albumsHelper = AlbumsHelper();
   ApiHelper apiHelper = ApiHelper();
+  String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
   PlaylistsController playlistController = PlaylistsController();
   bool _isPlaying = false;
 
@@ -305,6 +306,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     _advancedPlayer.positionStream.listen((position) {
       _durationController.add(position);
       currentTicks = position.inMicroseconds * 10;
+      if(serverType == "Subsonic" && position.inSeconds > 40) _playbackPausePlay(false);
+
     });
 
     _advancedPlayer.bufferedPositionStream.listen((position){
@@ -385,7 +388,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     var playbackLog = GetStorage().read('playbackReporting') ?? false;
     if(playbackLog) {
       var userId = await GetStorage().read('userId');
-      String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
+      serverType = GetStorage().read('ServerType') ?? "Jellyfin";
 
       IHandler jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
       String current = currentSource!.tag.id;
@@ -616,8 +619,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       //return "$baseServerUrl/Audio/$id";
     }else if (serverType == "Subsonic"){
       var headers = apiHelper.returnSubsonicHeaders();
-      print("$baseServerUrl/rest/download?id=$id&$headers");
-      return "$baseServerUrl/rest/download?id=$id&$headers";
+      return "$baseServerUrl/rest/stream?id=$id&$headers";
     }else if(serverType == "PanAudio"){
       return "$baseServerUrl/api/audio-stream?songId=$id";
     }

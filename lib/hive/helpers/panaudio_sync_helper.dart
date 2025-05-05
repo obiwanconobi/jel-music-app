@@ -121,5 +121,10 @@ class PanaudioSyncHelper implements ISyncHelper {
     await songsHelper.clearSongs();
   }
 
+  @override
+  scan() async{
+    await panaudioHandler.scan();
+  }
+
 
 }

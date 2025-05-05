@@ -7,7 +7,26 @@ class SubsonicRepo{
   ApiHelper apiHelper = ApiHelper();
   String? baseServerUrl;
   SubsonicRepo(){
+    setUrl();
+  }
+
+  setUrl(){
     baseServerUrl = GetStorage().read('serverUrl') ?? "";
+  }
+
+  scan()async{
+    try{
+      var requestHeaders = apiHelper.returnSubsonicHeaders();
+      String url = "$baseServerUrl/rest/startScan?$requestHeaders";
+
+      http.Response res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        var test = json.decode(res.body);
+        return test;
+      }
+    }catch(e){
+      rethrow;
+    }
   }
 
   getSongsForAlbum(String id)async{
@@ -54,9 +73,10 @@ class SubsonicRepo{
   }
 
   getArtistData()async{
+    setUrl();
     try{
       var requestHeaders = apiHelper.returnSubsonicHeaders();
-      String url = "http://192.168.1.15:4533/rest/getArtists?$requestHeaders";
+      String url = "$baseServerUrl/rest/getArtists?$requestHeaders";
 
       http.Response res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
@@ -71,7 +91,7 @@ class SubsonicRepo{
   getPlaylists()async{
     try{
       var requestHeaders = apiHelper.returnSubsonicHeaders();
-      String url = "http://192.168.1.15:4533/rest/getPlaylists?$requestHeaders";
+      String url = "$baseServerUrl/rest/getPlaylists?$requestHeaders";
 
       http.Response res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
@@ -85,7 +105,7 @@ class SubsonicRepo{
   getPlaylist(String id)async{
     try{
       var requestHeaders = apiHelper.returnSubsonicHeaders();
-      String url = "http://192.168.1.15:4533/rest/getPlaylist?id=$id&$requestHeaders";
+      String url = "$baseServerUrl/rest/getPlaylist?id=$id&$requestHeaders";
 
       http.Response res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
@@ -100,7 +120,7 @@ class SubsonicRepo{
   addToPlaylist(String playlistId, String songId)async{
     try{
       var requestHeaders = apiHelper.returnSubsonicHeaders();
-      String url = "http://192.168.1.15:4533/rest/updatePlaylist?playlistId=$playlistId&songIdToAdd=$songId&$requestHeaders";
+      String url = "$baseServerUrl/rest/updatePlaylist?playlistId=$playlistId&songIdToAdd=$songId&$requestHeaders";
 
       http.Response res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
@@ -115,7 +135,7 @@ class SubsonicRepo{
   deleteFromPlaylist(String playlistId, String index)async{
     try{
       var requestHeaders = apiHelper.returnSubsonicHeaders();
-      String url = "http://192.168.1.15:4533/rest/updatePlaylist?playlistId=$playlistId&songIndexToRemove=$index&$requestHeaders";
+      String url = "$baseServerUrl/rest/updatePlaylist?playlistId=$playlistId&songIndexToRemove=$index&$requestHeaders";
 
       http.Response res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
@@ -130,7 +150,7 @@ class SubsonicRepo{
   getRecentAlbums()async{
     try{
       var requestHeaders = apiHelper.returnSubsonicHeaders();
-      String url = "http://192.168.1.15:4533/rest/getAlbumList?type=recent&$requestHeaders";
+      String url = "$baseServerUrl/rest/getAlbumList?type=recent&$requestHeaders";
 
       http.Response res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
@@ -145,7 +165,7 @@ class SubsonicRepo{
   starItem(String id)async{
     try{
       var requestHeaders = apiHelper.returnSubsonicHeaders();
-      String url = "http://192.168.1.15:4533/rest/star?id=$id&$requestHeaders";
+      String url = "$baseServerUrl/rest/star?id=$id&$requestHeaders";
 
       http.Response res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
@@ -160,7 +180,22 @@ class SubsonicRepo{
   unStarItem(String id)async{
     try{
       var requestHeaders = apiHelper.returnSubsonicHeaders();
-      String url = "http://192.168.1.15:4533/rest/unstar?id=$id&$requestHeaders";
+      String url = "$baseServerUrl/rest/unstar?id=$id&$requestHeaders";
+
+      http.Response res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        var test = json.decode(res.body);
+        return test;
+      }
+    }catch(e){
+      rethrow;
+    }
+  }
+
+  logPlayback(String id)async{
+    try{
+      var requestHeaders = apiHelper.returnSubsonicHeaders();
+      String url = "$baseServerUrl/rest/scrobble?id=$id&$requestHeaders";
 
       http.Response res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {

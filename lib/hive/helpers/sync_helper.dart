@@ -179,5 +179,11 @@ class SyncHelper implements ISyncHelper {
     return imgUrl;
   }
 
+  @override
+  scan() {
+    // TODO: implement scan
+    throw UnimplementedError();
+  }
+
 
 }
