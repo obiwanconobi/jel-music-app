@@ -28,7 +28,7 @@ class AlbumPage extends StatefulWidget {
 class _AlbumPageState extends State<AlbumPage> {
   late Artists artist;
   var controller = GetIt.instance<AlbumController>();
-  var serverType = GetStorage().read('ServerType') ?? "ERROR";
+  var serverType = GetStorage().read('ServerType') ?? "Jellyfin";
   late Future<List<Album>> albumsFuture;
   late Future<Artists> artistInfo;
   bool fav = false;

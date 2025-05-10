@@ -29,7 +29,7 @@ class SongsController {
 
     try {
       baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
-      serverType = GetStorage().read('ServerType') ?? "ERROR";
+      serverType = GetStorage().read('ServerType') ?? "Jellyfin";
       jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
      // songs = await fetchSongs(albumId!);
      songs = await _getSongsFromBox(artistId!, albumId!);

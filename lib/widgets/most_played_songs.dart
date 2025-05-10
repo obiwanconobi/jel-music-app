@@ -25,7 +25,7 @@ class MostPlayedSongs extends StatefulWidget {
 
 class _MostPlayedSongsState extends State<MostPlayedSongs> {
   var controller = GetIt.instance<MostPlayedSongsController>();
-  var serverType = GetStorage().read('ServerType') ?? "ERROR";
+  var serverType = GetStorage().read('ServerType') ?? "Jellyfin";
   Mappers mapper = Mappers();
   late Future<List<ModelSongs>> songsFuture;
 

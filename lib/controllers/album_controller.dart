@@ -65,7 +65,7 @@ class AlbumController {
   }
 
   toggleArtistFavourite(String itemId, bool current)async{
-    var serverType = GetStorage().read('ServerType') ?? "ERROR";
+    var serverType = GetStorage().read('ServerType') ?? "Jellyfin";
     if(serverType == "Jellyfin"){
       jellyfinHandler.updateFavouriteStatus(itemId, !current);
     }else if(serverType == "PanAudio" || serverType == "Subsonic"){

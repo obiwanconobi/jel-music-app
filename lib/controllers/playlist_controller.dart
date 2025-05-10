@@ -17,6 +17,7 @@ class PlaylistController{
   }
 
   Future<List<ModelSongs>> onInit() async {
+    var serverType = GetStorage().read('ServerType');
     handler = GetIt.instance<IHandler>(instanceName: serverType);
     try {
       clearList();

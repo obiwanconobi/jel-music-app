@@ -17,7 +17,7 @@ class Mappers{
 
     getValues(){
       baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
-      serverType = GetStorage().read('ServerType') ?? "ERROR";
+      serverType = GetStorage().read('ServerType') ?? "Jellyfin";
     }
 
     List<PlaybackHistory> convertRawToPlaybackHistory(dynamic raw){

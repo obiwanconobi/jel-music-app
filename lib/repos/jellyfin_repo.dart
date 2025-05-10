@@ -228,6 +228,7 @@ class JellyfinRepo{
 
 
   getSongsDataRaw() async{
+    baseServerUrl =await GetStorage().read('serverUrl');
     var userId = await GetStorage().read('userId');
     var uuid = await androidId.getDeviceId();
     String deviceId = "PanAudio_$uuid";

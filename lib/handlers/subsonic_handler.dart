@@ -62,6 +62,7 @@ class SubsonicHandler implements IHandler{
   }
 
   Future<List<Albums>> getAlbumsForArtist(String id)async{
+    baseServerUrl = GetStorage().read('serverUrl') ?? "";
     List<Albums> albums = [];
     var rawAlbums = await subsonicRepo.getAlbumsForArtist(id);
     final albumData = rawAlbums["subsonic-response"]["artist"]["album"];

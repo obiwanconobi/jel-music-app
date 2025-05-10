@@ -6,24 +6,18 @@ import 'package:jel_music/models/playlists.dart';
 class PlaylistsController{
 
   var playlistsList = <Playlists>[];
-  String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
+  String serverType = "";
 
 
   late IHandler handler;
-  PlaylistsController(){
-    if(serverType == "Roboto"){
-      GetStorage().write('ServerType', "Jellyfin");
-      serverType = "Jellyfin";
-    }
-    handler = GetIt.instance<IHandler>(instanceName: serverType);
-  }
-
 
   clearList(){
     playlistsList.clear();
   }
 
   Future<List<Playlists>> onInit() async {
+    serverType = GetStorage().read('ServerType') ?? "Jellyfin";
+    handler = GetIt.instance<IHandler>(instanceName: serverType);
     try {
      // await artistHelper.openBox();
       clearList();

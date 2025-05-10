@@ -82,12 +82,16 @@ class AlbumsHelper{
 
    _getAlbumData() async{
     var userId =  await GetStorage().read('userId');
+    var baseServerUrl = GetStorage().read('serverUrl') ?? "";
        var requestHeaders = await apiHelper.returnJellyfinHeaders();
       String url = "$baseServerUrl/Users/$userId/Items?recursive=true&includeItemTypes=MusicAlbum&videoTypes=&enableTotalRecordCount=true&enableImages=true&isFavorite=true";
-      http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
-      if (res.statusCode == 200) {
-        return json.decode(res.body);
+      if(baseServerUrl != null){
+        http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
+        if (res.statusCode == 200) {
+          return json.decode(res.body);
+        }
       }
+
    }
 
   Future<List<Albums>> fetchAlbums() async{

@@ -177,6 +177,7 @@ _getVersionNumber()async{
   void sync()async{
     /* helper.getAllArtists();
     albumsHelper.getAllAlbums(); */
+    syncHelper = GetIt.instance<ISyncHelper>(instanceName: _selectedOption);
   if(_selectedOption == "Jellyfin"){
    await syncHelper.runSync(true);
   }else if (_selectedOption == "Subsonic"){

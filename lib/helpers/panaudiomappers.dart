@@ -7,7 +7,7 @@ import 'package:jel_music/models/songs.dart';
 class PanaudioMappers{
 
   String baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
-  String serverType = GetStorage().read('ServerType') ?? "ERROR";
+  String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
   SongsHelper songsHelper = SongsHelper();
 
   PanaudioMappers(){
@@ -39,6 +39,7 @@ class PanaudioMappers{
 
 
   Future<List<ModelSongs>> convertHiveSongsToModelSongs(dynamic songsRaw)async{
+    String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
     List<ModelSongs> songsList = [];
     for(var song in songsRaw){
       String songId = song.albumId;
@@ -82,6 +83,7 @@ class PanaudioMappers{
   }
 
   Future<List<Album>> mapAlbumFromRaw(dynamic albums)async{
+    baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
     List<Album> albumsList = [];
     for(var album in albums){
       String albumId = album["id"];

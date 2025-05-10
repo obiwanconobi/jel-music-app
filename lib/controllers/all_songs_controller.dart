@@ -19,7 +19,7 @@ class AllSongsController {
 
     Future<List<ModelSongs>> onInit() async {
       baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
-      var serverType = GetStorage().read('ServerType') ?? "ERROR";
+      var serverType = GetStorage().read('ServerType') ?? "Jellyfin";
       jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
 
       try {
