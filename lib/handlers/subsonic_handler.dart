@@ -84,12 +84,6 @@ class SubsonicHandler implements IHandler{
 
     for (var index in artistsData) {
       for (var artist in index['artist']) {
-
-        var test = artist['name'].toString();
-        if(test.startsWith("Jack")){
-          print('stp[');
-        }
-
         artistsList.add(Artists(
           id: artist['id'],
           name: artist['name'],
@@ -99,7 +93,7 @@ class SubsonicHandler implements IHandler{
           playCount: 0
         ));
 
-        var album = await getAlbumsForArtist(artist['id']);
+
       }
     }
     return artistsList;
@@ -140,7 +134,6 @@ class SubsonicHandler implements IHandler{
             playCount: 0
         ));
 
-        var album = await getAlbumsForArtist(artist['id']);
       }
     }
     return artistsList;

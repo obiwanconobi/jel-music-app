@@ -257,7 +257,7 @@ class _ControlsState extends State<Controls> {
                                ),
                                ListView.builder(
                                shrinkWrap: true,
-                               itemCount: musicController.playlist.sequence.length,
+                               itemCount: musicController.playlist.length,
                                physics: const BouncingScrollPhysics(),
                                itemBuilder: (context, index) {
                                  return Padding(
@@ -285,7 +285,7 @@ class _ControlsState extends State<Controls> {
                                                  child: ClipRRect(
                                                    borderRadius: BorderRadius.circular(2.w),
                                                    child: CachedNetworkImage(
-                                                     imageUrl: musicController.playlist.sequence[index].tag.artUri.toString(),
+                                                     imageUrl: musicController.playlist[index].tag.artUri.toString(),
                                                      memCacheHeight: 150,
                                                      memCacheWidth: 150,
                                                      errorWidget: (context, url, error) => Container(
@@ -313,7 +313,7 @@ class _ControlsState extends State<Controls> {
                                                              MainAxisAlignment.start,
                                                          children: [
                                                            Flexible(
-                                                             child: Text(musicController.playlist.sequence[index].tag.title!,
+                                                             child: Text(musicController.playlist[index].tag.title!,
                                                                style: Theme.of(context).textTheme.bodyMedium,
                                                                overflow: TextOverflow.ellipsis, // Set overflow property
                                                                maxLines: 1, // Set the maximum number of lines
@@ -323,7 +323,7 @@ class _ControlsState extends State<Controls> {
                                                        ),
                                                        Container(
                                                          alignment: Alignment.centerLeft,
-                                                         child: Text(musicController.playlist.sequence[index].tag.album,
+                                                         child: Text(musicController.playlist[index].tag.album,
                                                           style: Theme.of(context).textTheme.bodySmall,
                                                          overflow: TextOverflow.ellipsis),
                                                        ),
@@ -332,7 +332,7 @@ class _ControlsState extends State<Controls> {
                                                  ],
                                                ),
                                              ),
-                                             if(musicController.currentSource!.tag.title == musicController.playlist.sequence[index].tag.title && musicController.currentSource!.tag.album == musicController.playlist.sequence[index].tag.album)Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0), child: Icon(Icons.music_note, color: Theme.of(context).focusColor, size:30),)
+                                             if(musicController.currentSource!.tag.title == musicController.playlist[index].tag.title && musicController.currentSource!.tag.album == musicController.playlist[index].tag.album)Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0), child: Icon(Icons.music_note, color: Theme.of(context).focusColor, size:30),)
                                            ],
                                          ),
                                        ),

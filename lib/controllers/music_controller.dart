@@ -207,14 +207,15 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   Future<dynamic> customAction(String name, [Map<String, dynamic>? extras]) async {
     switch (name) {
       case 'favourite':
-        return await updateCurrentSongFavStatus();
+      //  return await updateCurrentSongFavStatus();
       default:
         return super.customAction(name, extras);
     }
   }
 
+  List<LockCachingAudioSource> playlist = [];
 
-  var playlist = ConcatenatingAudioSource(
+  var playlist1 = ConcatenatingAudioSource(
     // Start loading next item just before reaching it
     useLazyPreparation: true,
     // Customise the shuffle algorithm
@@ -256,11 +257,15 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       processingState: AudioProcessingState.loading,
     ));
 
-    _advancedPlayer.setAudioSource(playlist).then((_) {
+    _advancedPlayer.setAudioSources(playlist).then((_) {
       // Broadcast that we've finished loading
       playbackState.add(playbackState.value.copyWith(
         processingState: AudioProcessingState.ready,
       ));
+    });
+
+    _advancedPlayer.errorStream.listen((event) async{
+      logger.addToLog(LogModel(logType: "Error",logMessage: event.message, logDateTime: DateTime.now()));
     });
 
     _advancedPlayer.playbackEventStream.listen((event) {}, onError: (Object e, StackTrace st) {
@@ -341,8 +346,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
 
   MediaItem _getQueueItem(int index) {
-    if(playlist.sequence.isNotEmpty){
-      return playlist.sequence[index].tag as MediaItem;
+    if(playlist.isNotEmpty){
+      return playlist[index].tag as MediaItem;
     }
     return const MediaItem(id: "", title: "");
   }
@@ -355,6 +360,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
         if (_advancedPlayer.playing) MediaControl.pause else MediaControl.play,
         MediaControl.stop,
         MediaControl.skipToNext,
+       // MediaControl.custom(androidIcon: 'favourite', label: 'Favourite', name: updateCurrentSongFavStatus())
         //MediaControl.custom(androidIcon: 'favourite', label: 'favourite', name: 'favourite')
       ],
       systemActions: const {
@@ -670,7 +676,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     //AudioSource dd = LockCachingAudioSource(uri)
     if(!ignore){
       if(_advancedPlayer.audioSource == null){
-        _advancedPlayer.setAudioSource(playlist);
+        _advancedPlayer.setAudioSources(playlist);
       }
 
       isPlaying = _advancedPlayer.playing;
@@ -754,7 +760,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
     var documentsDar = await getApplicationDocumentsDirectory();
 
-    AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
+    LockCachingAudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
         cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$tempId.$tempCodec'])),
         tag: MediaItem(
           // Specify a unique ID for each media item:
@@ -774,14 +780,14 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
         ));
 
     try{
-      List<AudioSource> list = [];
+      List<LockCachingAudioSource> list = [];
       list.add(source);
       playlist.addAll(list);
-      if(playlist.children.isNotEmpty){
+      if(playlist.isNotEmpty){
         var countPlaylist = playlist.length;
         //_advancedPlayer.dynamicSet(url: baseUrl);
 
-        _advancedPlayer.setAudioSource(playlist, initialIndex: countPlaylist-1);
+        _advancedPlayer.setAudioSources(list, initialIndex: countPlaylist-1);
         playlistPlay();
         await _updatePlaybackProgress();
 
@@ -891,7 +897,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     //   String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
     String baseUrl = await getSongUrl(id);
 
-    AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
+    LockCachingAudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
       cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.$codec'])),
       tag: MediaItem(
         // Specify a unique ID for each media item:
@@ -937,7 +943,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       //   String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
       String baseUrl = await getSongUrl(id);
       List<String> timeParts = value.long!.split(':');
-      AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
+      LockCachingAudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
         cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.$tempCodec'])),
         tag: MediaItem(
           // Specify a unique ID for each media item:
@@ -997,8 +1003,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   addPlaylistToQueue(List<StreamModel> listOfStreams, {int index = 0}) async{
     clearQueue();
     var documentsDar = await getApplicationDocumentsDirectory();
-    List<AudioSource> sourceList = [];
-    int count = playlist.children.length;
+    List<LockCachingAudioSource> sourceList = [];
+    int count = playlist.length;
 
     if(accessToken == null){
       await getToken();
@@ -1016,7 +1022,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
 
 
-      AudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
+      LockCachingAudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
         cacheFile: File(p.joinAll([documentsDar.path, 'panaudio/cache/', '$id.$codec'])),
         tag: MediaItem(
           // Specify a unique ID for each media item:
@@ -1044,7 +1050,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 //duration: Duration(minutes: int.parse(timeParts[0]), seconds: int.parse(timeParts[1])),
     }
     playlist.addAll(sourceList);
-    _advancedPlayer.setAudioSource(playlist, initialIndex: index, initialPosition: Duration.zero);
+    _advancedPlayer.setAudioSources(playlist, initialIndex: index, initialPosition: Duration.zero);
 
     if(_isPlaying == false){
       _isPlaying = !_isPlaying;
@@ -1056,7 +1062,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   }
 
   void shuffleQueue()async{
-    playlist.children.shuffle();
+    playlist.shuffle();
     setUiElements();
 
   }
