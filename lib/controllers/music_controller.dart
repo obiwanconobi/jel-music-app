@@ -302,7 +302,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
         // Differences in queue index or item id are considered track changes
         if (currentIndex != prevIndex || currentItem.id != prevItem?.id) {
           mediaItem.add(currentItem);
-
+          if(serverType == "PanAudio") _startPlaybackProgress();
           //  onTrackChanged(currentItem, currentState, prevItem, prevState);
         }
       }
@@ -324,7 +324,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       setUiElements();
       setDownloaded(currentSource!.tag.id);
       // _updatePlaybackProgress();
-      _startPlaybackProgress();
+     // _startPlaybackProgress();
     });
 
     _advancedPlayer.playingStream.listen((event){
@@ -425,7 +425,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       bool playing = playbackState.valueOrNull?.playing ?? false;
 
 
-      if(playbackState.valueOrNull?.playing == true){
+      if(playbackState.valueOrNull?.playing == true && serverType != "PanAudio"){
         if(lastUpdateStatus == false || lastUpdateSong != current){
           lastUpdateStatus = true;
           lastUpdateSong = current;
