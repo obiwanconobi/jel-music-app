@@ -10,6 +10,7 @@ import 'package:jel_music/controllers/playlists_controller.dart';
 import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/helpers/apihelper.dart';
+import 'package:jel_music/helpers/cache_helper.dart';
 import 'package:jel_music/helpers/ioclient.dart';
 import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
@@ -22,6 +23,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:path/path.dart' as p;
+import 'package:cached_network_image/cached_network_image.dart';
+
 
 
 
@@ -774,6 +777,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
             "samplerate": tempSampleRate ?? "",
             "codec": tempCodec ?? "",
             "downloaded": tempDownloaded ?? "",
+            "pictureUrl": tempPicture ?? ""
           },
           artUri: Uri.parse(tempPicture!),
           duration: durationParser(tempDuration!),
@@ -828,6 +832,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
           "samplerate": "",
           "codec": "",
           "downloaded": "",
+          "pictureUrl": ""
         },
         artUri: Uri.parse(tempPicture ?? ('https://error.com')),
       ),
@@ -912,6 +917,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
           "samplerate": stream.samplerate.toString(),
           "codec": stream.codec,
           "downloaded": stream.downloaded,
+          "pictureUrl": pictureUrl
         },
         duration: durationParser(stream.long!),
         artUri: Uri.parse(pictureUrl),
@@ -1019,7 +1025,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       //  String baseUrl = "$baseServerUrl/Items/$id/Download?api_key=$accessToken";
 
 
-
+    CacheHelper cacheHelper = CacheHelper();
 
 
       LockCachingAudioSource source = LockCachingAudioSource(Uri.parse(baseUrl),
@@ -1037,12 +1043,12 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
             "samplerate": stream.samplerate.toString(),
             "codec": stream.codec,
             "downloaded": stream.downloaded,
-
+            "pictureUrl": pictureUrl,
           },
 
         //  duration: Duration(seconds: int.parse(stream.long!)),
           duration: durationParser(stream.long!),
-          artUri: Uri.parse(pictureUrl),
+          artUri: await cacheHelper.getCachedImage(pictureUrl)
 
         ),);
 

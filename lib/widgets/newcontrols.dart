@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -183,7 +185,7 @@ class _ControlsState extends State<Controls> {
                                       _changeSongOnSwipe(details);
                                     },
                                      child: Image.network(
-                                       (musicController.currentSource!.tag.artUri.toString()), // this image doesn't exist
+                                       (musicController.currentSource!.tag.extras["pictureUrl"] ?? ""), // this image doesn't exist
                                        fit: BoxFit.cover,
                                        height:100.w,
                                        width: 100.w,
@@ -285,7 +287,7 @@ class _ControlsState extends State<Controls> {
                                                  child: ClipRRect(
                                                    borderRadius: BorderRadius.circular(2.w),
                                                    child: CachedNetworkImage(
-                                                     imageUrl: musicController.playlist[index].tag.artUri.toString(),
+                                                     imageUrl: musicController.playlist[index].tag.extras["pictureUrl"],
                                                      memCacheHeight: 150,
                                                      memCacheWidth: 150,
                                                      errorWidget: (context, url, error) => Container(
