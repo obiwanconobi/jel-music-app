@@ -180,9 +180,9 @@ class SyncHelper implements ISyncHelper {
   }
 
   @override
-  scan() {
+  scan()async {
     // TODO: implement scan
-    throw UnimplementedError();
+    await jellyfinHandler.scan();
   }
 
 

@@ -30,6 +30,10 @@ class PlaylistsController{
     }
   }
 
+  createPlaylist(String playlistName)async{
+    await handler.createPlaylist(playlistName);
+  }
+
   Future<List<Playlists>> getPlaylists()async{
     try {
       // await artistHelper.openBox();

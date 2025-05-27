@@ -12,10 +12,51 @@ class JellyfinRepo{
   AndroidId androidId = const AndroidId();
 
 
+
   getValues()async{
     accessToken = await GetStorage().read('accessToken');
     baseServerUrl =await GetStorage().read('serverUrl');
     userId = await  GetStorage().read('userId');
+  }
+
+  createPlaylist(String playlistName)async{
+    try {
+      var requestHeaders = await apiHelper.returnJellyfinHeaders();
+      var body = {
+        "Name": playlistName,
+        "UserId": userId,
+        "Users": [
+          {
+            "UserId": userId,
+            "CanEdit": true
+          }
+        ],
+        "isPublic": true
+      };
+      var jsonBody = json.encode(body);
+      String url = "$baseServerUrl/Playlists/";
+      http.Response res = await http.post(Uri.parse(url), headers: requestHeaders, body: jsonBody);
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  scan()async{
+    try {
+      //  var userId = GetStorage().read('userId');
+
+      var requestHeaders = await apiHelper.returnJellyfinHeaders();
+      String url = "$baseServerUrl/Library/Refresh";
+      http.Response res = await http.post(Uri.parse(url), headers: requestHeaders);
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
   getArtistBio(String artistName)async{

@@ -279,4 +279,10 @@ class SubsonicHandler implements IHandler{
     throw UnimplementedError();
   }
 
+  @override
+  createPlaylist(String playlistName) async{
+    // TODO: implement createPlaylist
+    await subsonicRepo.createPlaylist(playlistName);
+  }
+
 }

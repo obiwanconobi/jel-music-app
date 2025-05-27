@@ -12,6 +12,7 @@ abstract class IHandler {
   Future<List<Album>>  returnLatestAlbums();
   Future<List<Artists>> fetchArtists();
   returnSongs();
+  createPlaylist(String playlistName);
   returnSongsFromPlaylist(String playlistId);
   addSongToPlaylist(String songId, String playlistId);
   deleteSongFromPlaylist(String songId, String playlistId);

@@ -14,6 +14,18 @@ class PanaudioRepo{
   String baseServerUrl = "";
   var logger = GetIt.instance<LogHandler>();
 
+  createPlaylist(String playlistName)async{
+    try {
+      String url = "$baseServerUrl/api/playlist?playlistName=$playlistName";
+      http.Response res = await http.put(Uri.parse(url));
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   getPlaybackForDay(DateTime day)async{
     baseServerUrl = GetStorage().read('serverUrl');
     try {

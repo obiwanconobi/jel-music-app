@@ -150,4 +150,10 @@ class PanaudioHandler implements IHandler{
     // TODO: implement getPlaybackForDay
     return await repo.getPlaybackForDay(day);
   }
+
+  @override
+  createPlaylist(String playlistName) async{
+    // TODO: implement createPlaylist
+    await repo.createPlaylist(playlistName);
+  }
 }

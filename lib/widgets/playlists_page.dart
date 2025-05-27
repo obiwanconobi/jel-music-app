@@ -42,11 +42,55 @@ class _PlaylistsPageState extends State<PlaylistsPage> with SingleTickerProvider
       });
   }
 
+  void createPlaylist(String playlistName) {
+    if (playlistName.isNotEmpty) {
+      controller.createPlaylist(playlistName);
+      // Add your logic to create the playlist here
+    }
+  }
+
+
+  void showCreatePlaylistDialog(BuildContext context) {
+    TextEditingController playlistController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Create Playlist'),
+          content: TextField(
+            controller: playlistController,
+            decoration: const InputDecoration(
+              labelText: 'Playlist Name',
+              hintText: 'Enter playlist name...',
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Create'),
+              onPressed: () {
+                // Call your create method here
+                createPlaylist(playlistController.text);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(centerTitle: true, title: Text('playlists_title'.localise(), style: Theme.of(context).textTheme.bodyLarge),),
+        appBar: AppBar(centerTitle: true, title: Text('playlists_title'.localise(), style: Theme.of(context).textTheme.bodyLarge), actions: [Padding(padding: const EdgeInsets.fromLTRB(0, 0, 15, 0), child: IconButton(icon: const Icon(Icons.playlist_add), onPressed: () { showCreatePlaylistDialog(context); },))],),
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,
@@ -177,5 +221,5 @@ class _PlaylistsPageState extends State<PlaylistsPage> with SingleTickerProvider
       ),
     );
   }
-}   
+}
 

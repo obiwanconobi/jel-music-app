@@ -14,6 +14,22 @@ class SubsonicRepo{
     baseServerUrl = GetStorage().read('serverUrl') ?? "";
   }
 
+
+  createPlaylist(String playlistName)async{
+    try{
+      var requestHeaders = apiHelper.returnSubsonicHeaders();
+      String url = "$baseServerUrl/rest/createPlaylist?name=$playlistName&$requestHeaders";
+
+      http.Response res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        var test = json.decode(res.body);
+        return test;
+      }
+    }catch(e){
+      rethrow;
+    }
+  }
+
   scan()async{
     try{
       var requestHeaders = apiHelper.returnSubsonicHeaders();

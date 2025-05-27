@@ -148,9 +148,15 @@ class JellyfinHandler implements IHandler{
   }
 
   @override
-  scan() {
+  scan() async{
     // TODO: implement scan
-    throw UnimplementedError();
+    await jellyfinRepo.scan();
+  }
+
+  @override
+  createPlaylist(String playlistName) async{
+    // TODO: implement createPlaylist
+    await jellyfinRepo.createPlaylist(playlistName);
   }
 
   
