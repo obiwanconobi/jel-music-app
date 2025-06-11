@@ -38,7 +38,11 @@ jobs:
         with:
           sdk-platform: 'android-33' # or the appropriate SDK version
           build-tools: '33.0.1' # or the appropriate build tools version
-      
+
+      - name: Verify Android tools
+        run: |
+          ls $ANDROID_SDK_ROOT/build-tools
+          ls $ANDROID_SDK_ROOT/build-tools/33.0.1
       - name: Sign APK
         run: |
           $ANDROID_SDK_ROOT/build-tools/33.0.1/apksigner sign --verbose \
