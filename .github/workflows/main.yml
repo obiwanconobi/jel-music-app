@@ -42,10 +42,10 @@ jobs:
       - name: Verify Android tools
         run: |
           ls $ANDROID_SDK_ROOT/build-tools
-          ls $ANDROID_SDK_ROOT/build-tools/33.0.1
+          ls $ANDROID_SDK_ROOT/build-tools/34.0.0
       - name: Sign APK
         run: |
-          $ANDROID_SDK_ROOT/build-tools/33.0.1/apksigner sign --verbose \
+          $ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner sign --verbose \
             --ks /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks \
             --ks-key-alias nutella \
             --ks-pass env:STORE_PASSWORD \
