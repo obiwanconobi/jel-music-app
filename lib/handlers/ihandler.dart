@@ -25,6 +25,7 @@ abstract class IHandler {
   uploadArt(String albumId, File image);
   getPlaybackByDays(DateTime inOldDate, DateTime inCurDate);
   getPlaybackByArtists(DateTime inOldDate, DateTime inCurDate);
+  getPlaybackSongsMonthly(DateTime inOldDate, DateTime inCurDate);
   getPlaybackForDay(DateTime day);
   scan();
 }

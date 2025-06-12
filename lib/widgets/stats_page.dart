@@ -4,6 +4,7 @@ import 'package:jel_music/widgets/most_played_songs.dart';
 import 'package:jel_music/widgets/playback_by_artist_chart.dart';
 import 'package:jel_music/widgets/playback_days_chart.dart';
 import 'package:jel_music/widgets/playback_history_day_list.dart';
+import 'package:jel_music/widgets/playback_songs_monthly.dart';
 import 'package:page_swiper/page_swiper.dart';
 import 'package:sizer/sizer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -55,8 +56,10 @@ class _StatsPageState extends State<StatsPage> {
       return const PlaybackDaysChart();
     }else if(index == 1){
       return PlaybackHistoryDayList(day: DateTime.now());
-    }else {
+    }else if(index == 2){
       return const PlaybackByArtistChart();
+    }else{
+      return const PlaybackSongsMonthly();
     }
   }
 
@@ -74,7 +77,7 @@ class _StatsPageState extends State<StatsPage> {
         children: [
           SmoothPageIndicator(
               controller: _pageController,  // PageController
-              count:  3,
+              count:  4,
               effect:  WormEffect(),  // your preferred effect
               onDotClicked: (index){
               }
@@ -82,7 +85,7 @@ class _StatsPageState extends State<StatsPage> {
           SizedBox(
             height: 85.h,
             child: PageView.builder(
-              itemCount: 3,
+              itemCount: 4,
               scrollDirection: Axis.horizontal,
               controller: _pageController,
               itemBuilder: (context, index){

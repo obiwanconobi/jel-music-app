@@ -159,6 +159,12 @@ class JellyfinHandler implements IHandler{
     await jellyfinRepo.createPlaylist(playlistName);
   }
 
+  @override
+  getPlaybackSongsMonthly(DateTime inOldDate, DateTime inCurDate) {
+    // TODO: implement getPlaybackSongsMonthly
+    throw UnimplementedError();
+  }
+
   
 
 }

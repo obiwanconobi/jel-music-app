@@ -19,6 +19,7 @@ import 'package:jel_music/controllers/most_played_songs_artist_controller.dart';
 import 'package:jel_music/controllers/most_played_songs_controller.dart';
 import 'package:jel_music/controllers/playback_artists_controller.dart';
 import 'package:jel_music/controllers/playback_history_day_list_controller.dart';
+import 'package:jel_music/controllers/playback_songs_monthly_controller.dart';
 import 'package:jel_music/controllers/playlist_controller.dart';
 import 'package:jel_music/controllers/playlists_controller.dart';
 import 'package:jel_music/controllers/songs_controller.dart';
@@ -127,6 +128,7 @@ Future<void> main() async{
   GetIt.I.registerSingleton<PlaybackHistoryDayListController>(PlaybackHistoryDayListController());
   GetIt.I.registerSingleton<IndividualSongController>(IndividualSongController());
   GetIt.I.registerSingleton<LyricsPageController>(LyricsPageController());
+  GetIt.I.registerSingleton<PlaybackSongsMonthlyController>(PlaybackSongsMonthlyController());
 
 
   const QuickActions quickActions = QuickActions();

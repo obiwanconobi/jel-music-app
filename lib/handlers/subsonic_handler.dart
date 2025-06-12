@@ -285,4 +285,10 @@ class SubsonicHandler implements IHandler{
     await subsonicRepo.createPlaylist(playlistName);
   }
 
+  @override
+  getPlaybackSongsMonthly(DateTime inOldDate, DateTime inCurDate) {
+    // TODO: implement getPlaybackSongsMonthly
+    throw UnimplementedError();
+  }
+
 }

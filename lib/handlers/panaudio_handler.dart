@@ -156,4 +156,10 @@ class PanaudioHandler implements IHandler{
     // TODO: implement createPlaylist
     await repo.createPlaylist(playlistName);
   }
+
+  @override
+  getPlaybackSongsMonthly(DateTime inOldDate, DateTime inCurDate)async {
+    // TODO: implement getPlaybackSongsMonthly
+    return await repo.getPlaybackSongsMonthly(inOldDate, inCurDate);
+  }
 }

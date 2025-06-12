@@ -71,6 +71,23 @@ class PanaudioRepo{
     }
   }
 
+  getPlaybackSongsMonthly(DateTime inOldDate, DateTime inCurDate)async{
+    baseServerUrl = GetStorage().read('serverUrl');
+    try {
+
+      var curDate = inCurDate.formatDate();
+      var oldDate = inOldDate.formatDate();
+      String url = "$baseServerUrl/api/playback/historyByDate?startDate=$oldDate&endDate=$curDate";
+      http.Response res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
   getPlaybackDays(DateTime inOldDate, DateTime inCurDate)async{
     baseServerUrl = GetStorage().read('serverUrl');
     try {

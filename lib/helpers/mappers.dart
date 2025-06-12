@@ -5,6 +5,7 @@ import 'package:jel_music/models/album.dart';
 import 'package:jel_music/models/playback_artists.dart';
 import 'package:jel_music/models/playback_days.dart';
 import 'package:jel_music/models/playback_history.dart';
+import 'package:jel_music/models/playback_songs_monthly.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
 
@@ -42,6 +43,15 @@ class Mappers{
       List<PlaybackDays> returnList = [];
       for(var data in raw){
         returnList.add(PlaybackDays(Day: DateTime.parse(data["day"]), TotalSeconds: data["totalSeconds"]));
+      }
+      return returnList;
+    }
+
+    List<PlaybackSongsMonthlyModel> convertRawToPlaybackSongsMonthly(dynamic raw){
+      List<PlaybackSongsMonthlyModel> returnList = [];
+      for(var data in raw){
+        var song =
+        returnList.add(PlaybackSongsMonthlyModel(SongId: data["songId"],TotalCount: data["playbackCount"],TotalSeconds: data["totalSeconds"]));
       }
       return returnList;
     }
