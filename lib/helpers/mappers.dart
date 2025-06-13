@@ -9,12 +9,15 @@ import 'package:jel_music/models/playback_songs_monthly.dart';
 import 'package:jel_music/models/songs.dart';
 import 'package:jel_music/models/stream.dart';
 
+import '../hive/helpers/songs_hive_helper.dart';
+
 class Mappers{
 
     Conversions conversions = Conversions();
     String baseServerUrl = "";
     String serverType = "";
     ApiHelper apiHelper = ApiHelper();
+    SongsHelper songsHelper = SongsHelper();
 
     getValues(){
       baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
@@ -47,11 +50,12 @@ class Mappers{
       return returnList;
     }
 
-    List<PlaybackSongsMonthlyModel> convertRawToPlaybackSongsMonthly(dynamic raw){
+    Future<List<PlaybackSongsMonthlyModel>> convertRawToPlaybackSongsMonthly(dynamic raw)async{
       List<PlaybackSongsMonthlyModel> returnList = [];
+      await songsHelper.openBox();
       for(var data in raw){
-        var song =
-        returnList.add(PlaybackSongsMonthlyModel(SongId: data["songId"],TotalCount: data["playbackCount"],TotalSeconds: data["totalSeconds"]));
+        var song = songsHelper.returnSongById(data["songId"]);
+        returnList.add(PlaybackSongsMonthlyModel(SongTitle: song.name, Artist: song.artist,SongId: data["songId"],TotalCount: data["playbackCount"],TotalSeconds: data["totalSeconds"]));
       }
       return returnList;
     }

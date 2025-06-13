@@ -17,13 +17,13 @@ class PlaybackSongsMonthlyController{
     }
   }
 
-  fetchData(DateTime oldDate, DateTime curDate)async{
+  Future<List<PlaybackSongsMonthlyModel>> fetchData(DateTime oldDate, DateTime curDate)async{
     var data = await handler.getPlaybackSongsMonthly(oldDate, curDate);
-    var mappedData = mapper.convertRawToPlaybackSongsMonthly(data);
+    var mappedData = await mapper.convertRawToPlaybackSongsMonthly(data);
     return mappedData;
   }
 
-  Future<List<PlaybackDays>> changeDate(int week)async{
+  Future<List<PlaybackSongsMonthlyModel>> changeDate(int week)async{
     var days = (week * 7) - 1;
     var oldDate = DateTime.now().add(Duration( days: -(days) ));
     var curDate = DateTime.now().add(Duration( days: -(days-6)));

@@ -55,7 +55,17 @@ class _PlaybackSongsMonthlyState extends State<PlaybackSongsMonthly> {
     itemCount: days.length,
     physics: const BouncingScrollPhysics(),
     itemBuilder: (context, index) {
-    return Text(days[index].SongTitle!);
+    return Row(
+      children: [
+        Column(
+          children: [
+            Text(days[index].SongTitle!),
+            Text(days[index].Artist!),
+          ],
+        ),
+        Text(days[index].TotalCount.toString()),
+      ],
+    );
     });
           }
         });
