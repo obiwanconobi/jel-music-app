@@ -8,8 +8,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/music_controller.dart';
 import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/quick_actions_handler.dart';
+import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
+import 'package:jel_music/widgets/icon_gradient_color.dart';
 import 'package:jel_music/widgets/lyrics_page.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -27,8 +29,14 @@ class _ControlsState extends State<Controls> {
  // var apiController = GetIt.instance<ApiController>();
   String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
   late IHandler jellyfinHandler;
+  Conversions conversions = Conversions();
+  List<Color> colorList = [];
+
   final QuickActionsHandler _quickActionsHandler = QuickActionsHandler();
   void onInit(){
+    for (var i = 0; i < 10; i++) {
+      colorList.add(conversions.returnColor());
+    }
     jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
     MusicControllerProvider.of(context, listen: true).onInit();
  
@@ -145,11 +153,11 @@ class _ControlsState extends State<Controls> {
                       return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        IconButton(onPressed: () => { _returnHome() }, icon:  Icon(Icons.home, color: Theme.of(context).colorScheme.secondary, size:30)),
-                        IconButton(onPressed: () => { _onItemTapped(0) }, icon: Icon(Icons.skip_previous,color: Theme.of(context).colorScheme.secondary, size:30)),
-                        IconButton(onPressed: () => { _onItemTapped(1) }, icon: Icon((musicController.isPlaying ?? false) ? Icons.pause : Icons.play_arrow, color: Theme.of(context).colorScheme.secondary, size: 30, )),
-                        IconButton(onPressed: () => { _onItemTapped(2) }, icon: Icon(Icons.skip_next, size:30, color: Theme.of(context).colorScheme.secondary)),
-                        IconButton(onPressed: () => { _favouriteSong(musicController.currentSource!.tag.id, musicController.currentSource!.tag.extras["favourite"]) }, icon: Icon(Icons.favorite, color: ((musicController.currentSource!.tag.extras["favourite"]) ? Colors.red : Theme.of(context).colorScheme.secondary), size:30),)
+                        IconGradientColor(color1: colorList[0],color2: colorList[1], child: IconButton(onPressed: () => { _returnHome() }, icon:  Icon(Icons.home, color: Colors.white, size:30))),
+                        IconGradientColor(color1: colorList[2],color2: colorList[3],child: IconButton(onPressed: () => { _onItemTapped(0) }, icon: Icon(Icons.skip_previous,color: Colors.white, size:30))),
+                        IconGradientColor(color1: colorList[4],color2: colorList[5],child: IconButton(onPressed: () => { _onItemTapped(1) }, icon: Icon((musicController.isPlaying ?? false) ? Icons.pause : Icons.play_arrow, color: Colors.white, size: 30, ))),
+                        IconGradientColor(color1: colorList[6],color2: colorList[7],child: IconButton(onPressed: () => { _onItemTapped(2) }, icon: Icon(Icons.skip_next, size:30, color: Colors.white))),
+                        IconGradientColor(color1: colorList[8],color2: colorList[9],child: IconButton(onPressed: () => { _favouriteSong(musicController.currentSource!.tag.id, musicController.currentSource!.tag.extras["favourite"]) }, icon: Icon(Icons.favorite, color: ((musicController.currentSource!.tag.extras["favourite"]) ? Colors.red : Colors.white), size:30),))
                     
                       ],
                     );

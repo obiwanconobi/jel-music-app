@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
+import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/log.dart';
 import 'package:jel_music/widgets/all_albums_page.dart';
@@ -23,6 +24,7 @@ class StartPageButtons extends StatefulWidget {
 class _StartPageButtonsState extends State<StartPageButtons> {
   String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
   LogHandler logger = LogHandler();
+  Conversions conversions = Conversions();
   bool panAudio = false;
   bool visible = true;
   @override
@@ -68,7 +70,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
                           'assets/svg/artist.svg',
                           width: 24,
                           height: 24,
-                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                          color:Theme.of(context).textTheme.bodyLarge!.color!,
                         ),
                       ),
                       Padding(
