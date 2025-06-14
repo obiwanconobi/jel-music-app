@@ -88,7 +88,7 @@ class Conversions{
     switch(randomNumber) {
       case 1: {
         // statements;
-        return const Color(0xFFd0d2ff);
+        return const Color(0xff9a9bc3);
       }
 
 
@@ -116,11 +116,11 @@ class Conversions{
       }
       case 7: {
         //statements;
-        return const Color(0xFFc3f4c7);
+        return const Color(0xffdfffe2);
       }
 
       default: {
-        return const Color(0xFFc3f4c7);
+        return const Color(0xffa3bfff);
         //statements;
       }
     }

@@ -23,11 +23,20 @@ class PlaybackSongsMonthlyController{
     return mappedData;
   }
 
-  Future<List<PlaybackSongsMonthlyModel>> changeDate(int week)async{
-    var days = (week * 7) - 1;
-    var oldDate = DateTime.now().add(Duration( days: -(days) ));
-    var curDate = DateTime.now().add(Duration( days: -(days-6)));
-    return await fetchData(oldDate, curDate);
+  Future<List<PlaybackSongsMonthlyModel>> changeDate(int month)async{
+    var currentMonthInt = DateTime.now().month - month;
+    var currentMonth = currentMonthInt.toString();
+    if(currentMonth.length == 1){
+      currentMonth = "0$currentMonth";
+    }
+    var year = DateTime.now().year.toString();
+    var startOfMonth = DateTime.parse("$year-$currentMonth-01");
+    var EndOfMonth = DateTime.parse("$year-$currentMonth-30");
+
+
+
+
+    return await fetchData(startOfMonth, EndOfMonth);
   }
 
 }

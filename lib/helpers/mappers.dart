@@ -55,7 +55,8 @@ class Mappers{
       await songsHelper.openBox();
       for(var data in raw){
         var song = songsHelper.returnSongById(data["songId"]);
-        returnList.add(PlaybackSongsMonthlyModel(SongTitle: song.name, Artist: song.artist,SongId: data["songId"],TotalCount: data["playbackCount"],TotalSeconds: data["totalSeconds"]));
+       var artUri = getImageUrl(song.albumId);
+        returnList.add(PlaybackSongsMonthlyModel(SongTitle: song.name, Artist: song.artist,SongId: data["songId"],TotalCount: data["playbackCount"],TotalSeconds: data["totalSeconds"], ArtUri: artUri));
       }
       return returnList;
     }
