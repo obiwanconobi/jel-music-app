@@ -5,6 +5,7 @@ import 'package:jel_music/controllers/playback_songs_monthly_controller.dart';
 import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/models/playback_songs_monthly.dart';
+import 'package:jel_music/widgets/songs_page.dart';
 import 'package:sizer/sizer.dart';
 
 class PlaybackSongsMonthly extends StatefulWidget {
@@ -27,7 +28,7 @@ class _PlaybackSongsMonthlyState extends State<PlaybackSongsMonthly> {
     super.initState();
 
     songsFuture = controller.fetchData(
-        DateTime.now().add(new Duration(days: -30)), DateTime.now());
+        DateTime.now().add(new Duration(days: -30)), DateTime.now().add(Duration(days:1)));
   }
 
   lastMonth(){
@@ -80,44 +81,50 @@ class _PlaybackSongsMonthlyState extends State<PlaybackSongsMonthly> {
           itemCount: days.length,
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-            child: Row(
-              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: 95.w,
-                  child: Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(2.w),
-                        child: CachedNetworkImage(
-                          imageUrl: days[index].ArtUri ?? "",
-                          memCacheHeight: 70,
-                          memCacheWidth: 70,
-                          errorWidget: (context, url, error) => Container(
-                            color: const Color(0xFF71B77A),
-                            child: const Center(
-                              child: Text("404"),
+          return InkWell(
+            onTap: ()=>{
+              Navigator.push(context,
+              MaterialPageRoute(maintainState: true, builder: (context) => SongsPage(albumId: days[index].Album!, artistId: days[index].Artist!,)),
+            )},
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: Row(
+                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 95.w,
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(2.w),
+                          child: CachedNetworkImage(
+                            imageUrl: days[index].ArtUri ?? "",
+                            memCacheHeight: 70,
+                            memCacheWidth: 70,
+                            errorWidget: (context, url, error) => Container(
+                              color: const Color(0xFF71B77A),
+                              child: const Center(
+                                child: Text("404"),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(days[index].SongTitle!,style: Theme.of(context).textTheme.bodySmall, overflow: TextOverflow.ellipsis),
-                            Text(days[index].Artist!,style: Theme.of(context).textTheme.bodySmall, overflow: TextOverflow.ellipsis),
-                            Text('${days[index].TotalCount.toString()} plays')
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(days[index].SongTitle!,style: Theme.of(context).textTheme.bodySmall, overflow: TextOverflow.ellipsis),
+                              Text(days[index].Artist!,style: Theme.of(context).textTheme.bodySmall, overflow: TextOverflow.ellipsis),
+                              Text('${days[index].TotalCount.toString()} plays')
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
           });

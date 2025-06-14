@@ -7,6 +7,8 @@ import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/models/playback_artists.dart';
 import 'package:sizer/sizer.dart';
 
+import 'album_page.dart';
+
 class PlaybackByArtistChart extends StatefulWidget {
   const PlaybackByArtistChart({super.key});
 
@@ -151,37 +153,43 @@ class _PlaybackByArtistChartState extends State<PlaybackByArtistChart> with Sing
                         shrinkWrap: true,
                         physics: const RangeMaintainingScrollPhysics(),
                         itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      decoration: BoxDecoration(
-                                        color: ((index < 8) ? colours[index] : colours[8]) ,  // Change this to any color you want
-                                        shape: BoxShape.circle,
+                          return InkWell(
+                            onTap:() => {
+                                Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => AlbumPage(artistId: playbackArtists[index].artistName!)),
+                                )},
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 20,
+                                        height: 20,
+                                        decoration: BoxDecoration(
+                                          color: ((index < 8) ? colours[index] : colours[8]) ,  // Change this to any color you want
+                                          shape: BoxShape.circle,
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                      child: Text(playbackArtists[index].artistName!),
-                                    ),
-                                  ],
-                                ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                        child: Text(playbackArtists[index].artistName!),
+                                      ),
+                                    ],
+                                  ),
 
-                                Row(
-                                  children: [
-                                    Text("${((playbackArtists[index].totalSeconds ?? 0)/60).round()} mins"),
-                                    const Text(" - "),
-                                    Text("${playbackArtists[index].playCount} plays"),
-                                  ],
-                                ),
-                                const Divider(height: 2,)
-                              ],
+                                  Row(
+                                    children: [
+                                      Text("${((playbackArtists[index].totalSeconds ?? 0)/60).round()} mins"),
+                                      const Text(" - "),
+                                      Text("${playbackArtists[index].playCount} plays"),
+                                    ],
+                                  ),
+                                  const Divider(height: 2,)
+                                ],
+                              ),
                             ),
                           );
                         }

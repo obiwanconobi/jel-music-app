@@ -53,9 +53,10 @@ class _StatsPageState extends State<StatsPage> {
 
   Widget returnWidget(int index){
     if(index == 0){
-      return const PlaybackDaysChart();
-    }else if(index == 1){
       return PlaybackHistoryDayList(day: DateTime.now());
+    }else if(index == 1){
+      return const PlaybackDaysChart();
+
     }else if(index == 2){
       return const PlaybackByArtistChart();
     }else{

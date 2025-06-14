@@ -4,7 +4,10 @@ class PlaybackSongsMonthlyModel{
   int? TotalCount;
   String? SongTitle;
   String? Artist;
+  String? ArtistId;
   String? ArtUri;
+  String? AlbumId;
+  String? Album;
 
   PlaybackSongsMonthlyModel({
     this.SongId,
@@ -12,6 +15,9 @@ class PlaybackSongsMonthlyModel{
     this.TotalCount,
     this.SongTitle,
     this.Artist,
-    this.ArtUri
+    this.ArtistId,
+    this.ArtUri,
+    this.AlbumId,
+    this.Album
   });
 }

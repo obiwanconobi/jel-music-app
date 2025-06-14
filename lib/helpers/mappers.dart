@@ -56,7 +56,7 @@ class Mappers{
       for(var data in raw){
         var song = songsHelper.returnSongById(data["songId"]);
        var artUri = getImageUrl(song.albumId);
-        returnList.add(PlaybackSongsMonthlyModel(SongTitle: song.name, Artist: song.artist,SongId: data["songId"],TotalCount: data["playbackCount"],TotalSeconds: data["totalSeconds"], ArtUri: artUri));
+        returnList.add(PlaybackSongsMonthlyModel(SongTitle: song.name, ArtistId: song.artistId,Album: song.album ,AlbumId: song.albumId,Artist: song.artist,SongId: data["songId"],TotalCount: data["playbackCount"],TotalSeconds: data["totalSeconds"], ArtUri: artUri));
       }
       return returnList;
     }
