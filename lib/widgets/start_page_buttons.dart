@@ -122,7 +122,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
               ),
             ),
             Visibility(
-              visible: panAudio,
+              visible: true,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
@@ -156,7 +156,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
               ),
             ),
             Visibility(
-              visible: !panAudio,
+              visible: !true,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(

@@ -142,9 +142,10 @@ class JellyfinHandler implements IHandler{
   }
 
   @override
-  getPlaybackForDay(DateTime day) {
+  getPlaybackForDay(DateTime day) async{
     // TODO: implement getPlaybackForDay
-    throw UnimplementedError();
+    return await jellyfinRepo.getPlaybackForDay(day);
+
   }
 
   @override
@@ -160,9 +161,9 @@ class JellyfinHandler implements IHandler{
   }
 
   @override
-  getPlaybackSongsMonthly(DateTime inOldDate, DateTime inCurDate) {
+  getPlaybackSongsMonthly(DateTime inOldDate, DateTime inCurDate) async{
     // TODO: implement getPlaybackSongsMonthly
-    throw UnimplementedError();
+    return await jellyfinRepo.getSongsPlaybackForMonth(inOldDate, inCurDate);
   }
 
   

@@ -55,12 +55,12 @@ class _StatsPageState extends State<StatsPage> {
     if(index == 0){
       return PlaybackHistoryDayList(day: DateTime.now());
     }else if(index == 1){
-      return const PlaybackDaysChart();
-
+      return const PlaybackSongsMonthly();
     }else if(index == 2){
       return const PlaybackByArtistChart();
     }else{
-      return const PlaybackSongsMonthly();
+      return const PlaybackDaysChart();
+
     }
   }
 

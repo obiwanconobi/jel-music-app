@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/helpers/androidid.dart';
 import 'package:jel_music/helpers/apihelper.dart';
+import 'package:jel_music/helpers/datetime_extensions.dart';
 
 class JellyfinRepo{
   String accessToken = "";
@@ -281,6 +282,58 @@ class JellyfinRepo{
       };
       String url = "$baseServerUrl/Users/$userId/Items?recursive=true&includeItemTypes=Audio&fields=MediaStreams&enableUserData=true&enableTotalRecordCount=true&enableImages=true";
       http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  getPlaybackForDay(DateTime date)async{
+    baseServerUrl =await GetStorage().read('serverUrl');
+    var userId = await GetStorage().read('userId');
+    var uuid = await androidId.getDeviceId();
+    String deviceId = "PanAudio_$uuid";
+
+    try {
+      Map<String, String> requestHeaders = {
+        'Content-type': 'application/json',
+        'X-MediaBrowser-Token': accessToken,
+        'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="$deviceId",Version="10.8.13"'
+      };
+      String url = "$baseServerUrl/user_usage_stats/submit_custom_query?stamp=1749999953659&timezoneOffset=5";
+      var jsonBody = jsonEncode({
+        "CustomQueryString":"SELECT ROWID, * FROM PlaybackActivity WHERE ItemType = 'Audio' and DateCreated like '${date.formatDateJellyfinQuery()}%' ORDER BY rowid DESC ",
+        "ReplaceUserId": false
+      });
+      http.Response res = await http.post(Uri.parse(url), headers: requestHeaders, body: jsonBody);
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  getSongsPlaybackForMonth(DateTime startDate, DateTime endDate)async{
+    baseServerUrl =await GetStorage().read('serverUrl');
+    var userId = await GetStorage().read('userId');
+    var uuid = await androidId.getDeviceId();
+    String deviceId = "PanAudio_$uuid";
+
+    try {
+      Map<String, String> requestHeaders = {
+        'Content-type': 'application/json',
+        'X-MediaBrowser-Token': accessToken,
+        'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="$deviceId",Version="10.8.13"'
+      };
+      String url = "$baseServerUrl/user_usage_stats/submit_custom_query?stamp=1749999953659&timezoneOffset=5";
+      var jsonBody = jsonEncode({
+        "CustomQueryString":"SELECT ROWID, DateCreated, ItemId, ItemName, ItemType, COUNT(*) AS TotalCount, SUM(PlayDuration) AS TotalDuration FROM PlaybackActivity WHERE ItemType = 'Audio' AND DateCreated > '${startDate}' AND DateCreated < '${endDate}' GROUP BY ItemId ORDER BY rowid DESC ",
+        "ReplaceUserId": false
+      });
+      http.Response res = await http.post(Uri.parse(url), headers: requestHeaders, body: jsonBody);
       if (res.statusCode == 200) {
         return json.decode(res.body);
       }

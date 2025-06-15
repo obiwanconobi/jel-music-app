@@ -33,6 +33,16 @@ class Mappers{
       return list;
     }
 
+    List<PlaybackHistory> convertRawToPlaybackHistoryJellyfin(dynamic raw){
+      List<PlaybackHistory> list = [];
+      for(var data in raw["results"]){
+       // var song = songsHelper.returnSongById(data[3]);
+        var rr = PlaybackHistory(SongId: data[3], PlaybackStart: DateTime.parse(data[1]), Seconds: int.parse(data[9]));
+        list.add(rr);
+      }
+      return list;
+    }
+
 
     List<PlaybackArtists> convertRawToPlaybackArtists(dynamic raw){
       List<PlaybackArtists> returnList = [];
@@ -57,6 +67,17 @@ class Mappers{
         var song = songsHelper.returnSongById(data["songId"]);
        var artUri = getImageUrl(song.albumId);
         returnList.add(PlaybackSongsMonthlyModel(SongTitle: song.name, ArtistId: song.artistId,Album: song.album ,AlbumId: song.albumId,Artist: song.artist,SongId: data["songId"],TotalCount: data["playbackCount"],TotalSeconds: data["totalSeconds"], ArtUri: artUri));
+      }
+      return returnList;
+    }
+
+    Future<List<PlaybackSongsMonthlyModel>> convertRawToPlaybackSongsMonthlyJellyfin(dynamic raw)async{
+      List<PlaybackSongsMonthlyModel> returnList = [];
+      await songsHelper.openBox();
+      for(var data in raw["results"]){
+        var song = songsHelper.returnSongById(data[2]);
+        var artUri = getImageUrl(song.albumId);
+        returnList.add(PlaybackSongsMonthlyModel(SongTitle: song.name, ArtistId: song.artistId,Album: song.album ,AlbumId: song.albumId,Artist: song.artist,SongId: data[2],TotalCount: int.parse(data[5]),TotalSeconds: int.parse(data[6]), ArtUri: artUri));
       }
       return returnList;
     }

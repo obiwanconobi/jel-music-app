@@ -1,13 +1,17 @@
 import 'package:get_it/get_it.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/helpers/mappers.dart';
 import 'package:jel_music/models/playback_days.dart';
 import 'package:jel_music/models/playback_songs_monthly.dart';
 
 class PlaybackSongsMonthlyController{
-  var handler = GetIt.instance<IHandler>(instanceName: "PanAudio");
+
   Mappers mapper = Mappers();
+  var serverType = GetStorage().read('ServerType') ?? "Jellyfin";
+  late IHandler handler;
   Future<List<PlaybackSongsMonthlyModel>> onInit() async {
+    handler = GetIt.instance<IHandler>(instanceName: serverType);
     try {
       return  await fetchData(DateTime.now().add(const Duration(days: -6)), DateTime.now());
     } catch (error) {
@@ -18,9 +22,15 @@ class PlaybackSongsMonthlyController{
   }
 
   Future<List<PlaybackSongsMonthlyModel>> fetchData(DateTime oldDate, DateTime curDate)async{
+    handler = GetIt.instance<IHandler>(instanceName: serverType);
     var data = await handler.getPlaybackSongsMonthly(oldDate, curDate);
-    var mappedData = await mapper.convertRawToPlaybackSongsMonthly(data);
+    if(serverType == "PanAudio"){
+      var mappedData = await mapper.convertRawToPlaybackSongsMonthly(data);
+      return mappedData;
+    }
+    var mappedData = await mapper.convertRawToPlaybackSongsMonthlyJellyfin(data);
     return mappedData;
+
   }
 
   Future<List<PlaybackSongsMonthlyModel>> changeDate(int month)async{

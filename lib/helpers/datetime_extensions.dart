@@ -5,6 +5,11 @@ extension DateFormatter on DateTime{
     var formatter = DateFormat('MM-dd-yyyy');
     return formatter.format(this);
   }
+
+  String formatDateJellyfinQuery(){
+    var formatter = DateFormat('yyyy-MM-dd');
+    return formatter.format(this);
+  }
 }
 
 extension IntExtension on int{

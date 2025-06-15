@@ -25,8 +25,15 @@ class PlaybackHistoryDayListController{
 
   fetchData(DateTime day)async{
       var data = await  handler.getPlaybackForDay(day);
-      var mappedData = await mapper.convertRawToPlaybackHistory(data);
-      return mappedData;
+      if(serverType == "PanAudio"){
+        var mappedData = await mapper.convertRawToPlaybackHistory(data);
+        return mappedData;
+      }else{
+        var mappedData = await mapper.convertRawToPlaybackHistoryJellyfin(data);
+        return mappedData;
+      }
+
+
   }
 
 }
