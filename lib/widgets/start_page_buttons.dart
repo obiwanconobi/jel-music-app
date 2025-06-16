@@ -29,7 +29,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
   bool visible = true;
   @override
   void initState() {
-    if(serverType == "PanAudio"){
+    if(serverType == "PanAudio" || serverType == "Jellyfin"){
       panAudio = true;
     }
     super.initState();
@@ -122,7 +122,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
               ),
             ),
             Visibility(
-              visible: true,
+              visible: panAudio,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
@@ -156,7 +156,7 @@ class _StartPageButtonsState extends State<StartPageButtons> {
               ),
             ),
             Visibility(
-              visible: !true,
+              visible: !panAudio,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(

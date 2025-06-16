@@ -130,9 +130,9 @@ class JellyfinHandler implements IHandler{
   }
 
   @override
-  getPlaybackByDays(DateTime inOldDate, DateTime inCurDate) {
+  getPlaybackByDays(DateTime inOldDate, DateTime inCurDate) async {
     // TODO: implement getPlaybackByDays
-    throw UnimplementedError();
+    return await jellyfinRepo.getPlaybackDays(inOldDate, inCurDate);
   }
 
   @override

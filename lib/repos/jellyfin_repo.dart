@@ -342,4 +342,30 @@ class JellyfinRepo{
     }
   }
 
+  getPlaybackDays(DateTime inOldDate, DateTime inCurDate)async{
+    baseServerUrl =await GetStorage().read('serverUrl');
+    var userId = await GetStorage().read('userId');
+    var uuid = await androidId.getDeviceId();
+    String deviceId = "PanAudio_$uuid";
+
+    try {
+      Map<String, String> requestHeaders = {
+        'Content-type': 'application/json',
+        'X-MediaBrowser-Token': accessToken,
+        'X-Emby-Authorization': 'MediaBrowser Client="Jellyfin Web",Device="Chrome",DeviceId="$deviceId",Version="10.8.13"'
+      };
+      String url = "$baseServerUrl/user_usage_stats/submit_custom_query?stamp=1749999953659&timezoneOffset=5";
+      var jsonBody = jsonEncode({
+        "CustomQueryString":"SELECT DATE(DateCreated) AS PlayDate, COUNT(*) AS PlayCount, SUM(PlayDuration) AS TotalDuration FROM PlaybackActivity WHERE DateCreated < '${inCurDate}' AND DateCreated > '${inOldDate}' GROUP BY DATE(DateCreated) ORDER BY PlayDate DESC;",
+        "ReplaceUserId": false
+      });
+      http.Response res = await http.post(Uri.parse(url), headers: requestHeaders, body: jsonBody);
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
 }

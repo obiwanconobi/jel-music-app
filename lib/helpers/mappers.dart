@@ -60,6 +60,55 @@ class Mappers{
       return returnList;
     }
 
+    List<PlaybackDays> convertRawToPlaybackDaysJellyfin(dynamic raw, DateTime startDate, DateTime endDate) {
+      final List<PlaybackDays> returnList = [];
+
+      try {
+        // First, parse all existing data
+        for (var data in raw["results"]) {
+          returnList.add(PlaybackDays(
+            Day: DateTime.parse(data["day"]),
+            TotalSeconds: data["totalSeconds"],
+          ));
+        }
+      } catch (e) {
+        // Handle parsing errors if needed
+      }
+
+      // If we have less than 7 days, fill in the missing ones
+      if (returnList.length < 7) {
+        // Create a set of existing dates for quick lookup
+        final existingDates = returnList.map((e) => e.Day?.toIso8601String().substring(0, 10)).toSet();
+
+        // Generate all dates in the range
+        final allDates = _generateDateRange(startDate, endDate);
+
+        // Clear and rebuild the list with all dates
+        returnList.clear();
+
+        for (final date in allDates) {
+          final dateStr = date.toIso8601String().substring(0, 10);
+          final existingData = raw["results"]?.firstWhere(
+                (item) => DateTime.parse(item["day"]).toIso8601String().substring(0, 10) == dateStr,
+            orElse: () => null,
+          );
+
+          returnList.add(PlaybackDays(
+            Day: date,
+            TotalSeconds: existingData != null ? existingData["totalSeconds"] : 0,
+          ));
+        }
+      }
+
+      return returnList;
+    }
+
+// Helper function to generate all dates in a range
+  List<DateTime> _generateDateRange(DateTime startDate, DateTime endDate) {
+    final days = endDate.difference(startDate).inDays + 1;
+    return List.generate(days, (i) => startDate.add(Duration(days: i)));
+  }
+
     Future<List<PlaybackSongsMonthlyModel>> convertRawToPlaybackSongsMonthly(dynamic raw)async{
       List<PlaybackSongsMonthlyModel> returnList = [];
       await songsHelper.openBox();
