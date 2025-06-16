@@ -87,7 +87,7 @@ class _PlaybackSongsMonthlyState extends State<PlaybackSongsMonthly> {
               MaterialPageRoute(maintainState: true, builder: (context) => SongsPage(albumId: days[index].Album!, artistId: days[index].Artist!,)),
             )},
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+              padding:  EdgeInsets.fromLTRB(0, 2.w, 0, 0),
               child: Row(
                 //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

@@ -22,6 +22,7 @@ class PlaybackSongsMonthlyController{
   }
 
   Future<List<PlaybackSongsMonthlyModel>> fetchData(DateTime oldDate, DateTime curDate)async{
+    serverType = GetStorage().read('ServerType') ?? "Jellyfin";
     handler = GetIt.instance<IHandler>(instanceName: serverType);
     var data = await handler.getPlaybackSongsMonthly(oldDate, curDate);
     if(serverType == "PanAudio"){

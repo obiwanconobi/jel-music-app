@@ -79,6 +79,7 @@ class Mappers{
         var artUri = getImageUrl(song.albumId);
         returnList.add(PlaybackSongsMonthlyModel(SongTitle: song.name, ArtistId: song.artistId,Album: song.album ,AlbumId: song.albumId,Artist: song.artist,SongId: data[2],TotalCount: int.parse(data[5]),TotalSeconds: int.parse(data[6]), ArtUri: artUri));
       }
+    //  returnList.sort((a,b) => a.TotalCount!.compareTo(b.TotalCount!));
       return returnList;
     }
 

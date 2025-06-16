@@ -330,7 +330,7 @@ class JellyfinRepo{
       };
       String url = "$baseServerUrl/user_usage_stats/submit_custom_query?stamp=1749999953659&timezoneOffset=5";
       var jsonBody = jsonEncode({
-        "CustomQueryString":"SELECT ROWID, DateCreated, ItemId, ItemName, ItemType, COUNT(*) AS TotalCount, SUM(PlayDuration) AS TotalDuration FROM PlaybackActivity WHERE ItemType = 'Audio' AND DateCreated > '${startDate}' AND DateCreated < '${endDate}' GROUP BY ItemId ORDER BY rowid DESC ",
+        "CustomQueryString":"SELECT ROWID, DateCreated, ItemId, ItemName, ItemType, COUNT(*) AS TotalCount, SUM(PlayDuration) AS TotalDuration FROM PlaybackActivity WHERE ItemType = 'Audio' AND DateCreated > '${startDate}' AND DateCreated < '${endDate}' GROUP BY ItemId ORDER BY TotalCount DESC ",
         "ReplaceUserId": false
       });
       http.Response res = await http.post(Uri.parse(url), headers: requestHeaders, body: jsonBody);
