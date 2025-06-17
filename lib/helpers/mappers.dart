@@ -89,13 +89,13 @@ class Mappers{
         for (final date in allDates) {
           final dateStr = date.toIso8601String().substring(0, 10);
           final existingData = raw["results"]?.firstWhere(
-                (item) => DateTime.parse(item["day"]).toIso8601String().substring(0, 10) == dateStr,
+                (item) => DateTime.parse(item[0]).toIso8601String().substring(0, 10) == dateStr,
             orElse: () => null,
           );
 
           returnList.add(PlaybackDays(
             Day: date,
-            TotalSeconds: existingData != null ? existingData["totalSeconds"] : 0,
+            TotalSeconds: existingData != null ? int.parse(existingData[2]) : 0,
           ));
         }
       }
