@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:quick_actions/quick_actions.dart';
-
+import 'dart:io' show Platform;
 bool _quickActionHandled = false;
 class QuickActionsHandler {
   final QuickActions _quickActions = const QuickActions();
@@ -11,6 +11,7 @@ class QuickActionsHandler {
   }
 
   void initialize(BuildContext context) {
+  if(Platform.isAndroid){
     _quickActions.initialize((shortcutType) {
 
       if(!_quickActionHandled){
@@ -22,6 +23,9 @@ class QuickActionsHandler {
         }
       }
     });
+  }
+
+
   }
 
   void _navigateToMostPlayedSongs(BuildContext context)async{

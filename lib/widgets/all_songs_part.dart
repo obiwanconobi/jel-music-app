@@ -45,8 +45,6 @@ class _AllSongsPageState extends State<AllSongsPage> {
     _scrollController.addListener(_loadMore);
     songsFuture = controller.onInit();
     _searchController.addListener(_filterAlbums);
-
-
   }
 
    void _filterAlbums() {
@@ -69,7 +67,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
             _filteredSongs.addAll(songsList.sublist((_currentPage*100), ((_currentPage*100)+100)));
           });
         }
-      }
+  }
 
    _playSong(ModelSongs song){
     MusicControllerProvider.of(context, listen: false).playSong(StreamModel(id: song.id, music: song.id, picture: song.albumPicture, composer: song.artist, title: song.title, isFavourite: song.favourite, long: song.length, bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate, codec: song.codec));
@@ -193,7 +191,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
                                       Radius.circular(10.sp),
                                     ),
                                     child: Container(
-                                        height: 55.sp,
+                                        height: 60.sp,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10.sp),
@@ -248,7 +246,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
                                                       ),
                                                       Container(
                                                         alignment: Alignment.centerLeft,
-                                                        child: Text(_filteredSongs[index].artist.toString(), style: Theme.of(context).textTheme.bodySmall),
+                                                        child: Text(_filteredSongs[index].artist.toString(), style: Theme.of(context).textTheme.bodySmall, maxLines: 1, overflow: TextOverflow.clip,),
                                                       ),
                                                     ],
                                                   ),

@@ -295,7 +295,7 @@ class _ControlsState extends State<Controls> {
                                                  child: ClipRRect(
                                                    borderRadius: BorderRadius.circular(2.w),
                                                    child: CachedNetworkImage(
-                                                     imageUrl: musicController.playlist[index].tag.extras["pictureUrl"],
+                                                     imageUrl: musicController.playlist[index].tag.extras["pictureUrl"] ?? musicController.playlist[index].tag.artUri.toString(),
                                                      memCacheHeight: 150,
                                                      memCacheWidth: 150,
                                                      errorWidget: (context, url, error) => Container(

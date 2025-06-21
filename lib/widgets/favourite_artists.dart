@@ -53,7 +53,7 @@ class _FavouriteArtistsState extends State<FavouriteArtists> {
             child: Row(
               children: [
                 SizedBox(
-                  height: 50.w,
+                  height: 20.h,
                   width: MediaQuery.of(context).size.width,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -81,8 +81,8 @@ class _FavouriteArtistsState extends State<FavouriteArtists> {
                                     padding:
                                         const EdgeInsets.fromLTRB(5, 5, 5, 5),
                                     child: SizedBox(
-                                      height:35.w,
-                                      width: 37.w,
+                                      height:15.h,
+                                      width: 15.h,
                                       child: ClipOval(
                                         child: CachedNetworkImage(
                                           fit: BoxFit.fill,

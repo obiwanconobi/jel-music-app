@@ -45,9 +45,11 @@ import 'package:jel_music/repos/panaudio_repo.dart';
 import 'package:jel_music/repos/subsonic_repo.dart';
 import 'package:jel_music/themes/dark_theme.dart';
 import 'package:jel_music/themes/light_theme.dart';
+import 'package:just_audio_media_kit/just_audio_media_kit.dart';
 import 'package:sizer/sizer.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:quick_actions/quick_actions.dart';
+import 'dart:io' show Platform;
 
 
 
@@ -130,7 +132,7 @@ Future<void> main() async{
   GetIt.I.registerSingleton<LyricsPageController>(LyricsPageController());
   GetIt.I.registerSingleton<PlaybackSongsMonthlyController>(PlaybackSongsMonthlyController());
 
-
+if(Platform.isAndroid){
   const QuickActions quickActions = QuickActions();
   quickActions.setShortcutItems(<ShortcutItem>[
     const ShortcutItem(
@@ -142,6 +144,18 @@ Future<void> main() async{
       localizedTitle: 'Play Most Played',
     )
   ]);
+
+}
+
+
+if(Platform.isLinux){
+  JustAudioMediaKit.ensureInitialized(
+    linux: true,
+  );
+  JustAudioMediaKit.title = 'Pan Audio';
+}
+
+
 
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MusicControllerProvider(

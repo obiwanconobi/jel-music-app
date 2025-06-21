@@ -7,7 +7,7 @@ class PlaylistController{
 
   var playlistList = <ModelSongs>[];
   String playlistId = "";
-  var serverType = GetStorage().read('ServerType');
+  var serverType = GetStorage().read('ServerType') ?? "Jellyfin";
   late IHandler handler;
   PlaylistController();
 
@@ -17,7 +17,7 @@ class PlaylistController{
   }
 
   Future<List<ModelSongs>> onInit() async {
-    var serverType = GetStorage().read('ServerType');
+    serverType = GetStorage().read('ServerType') ?? "Jellyfin";
     handler = GetIt.instance<IHandler>(instanceName: serverType);
     try {
       clearList();

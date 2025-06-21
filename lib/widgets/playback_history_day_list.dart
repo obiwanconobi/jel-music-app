@@ -85,7 +85,7 @@ class _PlaybackHistoryDayListState extends State<PlaybackHistoryDayList> {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                   child: SizedBox(
-                    height: 100.h,
+                    height: 90.h,
                     child: GridView.builder(
                         //shrinkWrap: true,
                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(mainAxisSpacing: 0, mainAxisExtent: 12.h, maxCrossAxisExtent:100.w),

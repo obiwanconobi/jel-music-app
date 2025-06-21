@@ -77,10 +77,10 @@ class _IndividualSongState extends State<IndividualSong> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 2.w,),
+                  //  SizedBox(width: 2.w,),
                     Container(
                       padding: EdgeInsets.fromLTRB(0, 1.h, 0, 0),
-                      width: 72.w,
+                      //width: 50.w,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,

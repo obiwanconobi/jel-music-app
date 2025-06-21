@@ -83,8 +83,8 @@ class _StatsPageState extends State<StatsPage> {
               onDotClicked: (index){
               }
           ),
-          SizedBox(
-            height: 85.h,
+          Expanded(
+         //   height:80.h,
             child: PageView.builder(
               itemCount: 4,
               scrollDirection: Axis.horizontal,

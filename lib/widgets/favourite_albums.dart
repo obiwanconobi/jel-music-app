@@ -65,7 +65,7 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
                     Row(
                       children: [
                         SizedBox(
-                          height: 50.w,
+                          height: 22.h,
                           width: MediaQuery.of(context).size.width,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
@@ -82,10 +82,10 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
                                     Radius.circular(10.sp),
                                   ),
                                   child: Container(
-                                      width: 38.w,
+                                      width: 15.h,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(10.sp),
+                                          Radius.circular(2.h),
                                         ),
                                       ),
                                       child: Column(
@@ -94,10 +94,10 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
                                             padding:
                                                 const EdgeInsets.fromLTRB(5, 5, 5, 5),
                                             child: SizedBox(
-                                              height:35.w,
-                                              width: 37.w,
+                                              height:15.h,
+                                              width: 20.h,
                                               child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(4.w),
+                                                borderRadius: BorderRadius.circular(2.h),
                                                 child: CachedNetworkImage(
                                                   fit: BoxFit.fill,
                                                   imageUrl: albumsList[index].picture ?? "",

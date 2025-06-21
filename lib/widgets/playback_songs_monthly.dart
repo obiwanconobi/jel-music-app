@@ -75,7 +75,6 @@ class _PlaybackSongsMonthlyState extends State<PlaybackSongsMonthly> {
                   );
                 } else {
                   days = snapshot.data!;
-      
                   return ListView.builder(
           shrinkWrap: true,
           itemCount: days.length,
@@ -91,37 +90,37 @@ class _PlaybackSongsMonthlyState extends State<PlaybackSongsMonthly> {
               child: Row(
                 //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    width: 95.w,
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(2.w),
-                          child: CachedNetworkImage(
-                            imageUrl: days[index].ArtUri ?? "",
-                            memCacheHeight: 70,
-                            memCacheWidth: 70,
-                            errorWidget: (context, url, error) => Container(
-                              color: const Color(0xFF71B77A),
-                              child: const Center(
-                                child: Text("404"),
-                              ),
+                  Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(2.w),
+                        child: CachedNetworkImage(
+                          imageUrl: days[index].ArtUri ?? "",
+                          memCacheHeight: 70,
+                          memCacheWidth: 70,
+                          errorWidget: (context, url, error) => Container(
+                            color: const Color(0xFF71B77A),
+                            child: const Center(
+                              child: Text("404"),
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: SizedBox(
+                          width:75.w,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(days[index].SongTitle!,style: Theme.of(context).textTheme.bodySmall, overflow: TextOverflow.ellipsis),
-                              Text(days[index].Artist!,style: Theme.of(context).textTheme.bodySmall, overflow: TextOverflow.ellipsis),
+                              Text(days[index].SongTitle!,style: Theme.of(context).textTheme.bodySmall, maxLines:1, overflow: TextOverflow.ellipsis),
+                              Text(days[index].Artist!,style: Theme.of(context).textTheme.bodySmall,maxLines:1, overflow: TextOverflow.ellipsis),
                               Text('${days[index].TotalCount.toString()} plays')
                             ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),

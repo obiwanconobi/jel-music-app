@@ -43,7 +43,7 @@ class _SongsPageState extends State<SongsPage> {
   AlbumsHelper albumHelper = AlbumsHelper();
   var albumController = GetIt.instance<AlbumController>();
   var downloadController= GetIt.instance<DownloadController>();
-  var serverType = GetStorage().read('ServerType');
+  var serverType = GetStorage().read('ServerType') ?? "Jellyfin";
   late Future<bool> favourite;
   late Future<List<ModelSongs>> songsFuture;
   SongsHelper songsHelper = SongsHelper();
