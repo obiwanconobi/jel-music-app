@@ -65,6 +65,9 @@ dependencies:
   package_info_plus: ^8.1.2
   just_audio_media_kit: ^2.1.0
   media_kit_libs_linux: any
+  installed_apps: ^1.6.0
+  flutter_expandable_fab: ^2.5.2
+  external_app_launcher: ^4.0.3
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6

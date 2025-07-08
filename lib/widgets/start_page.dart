@@ -12,6 +12,8 @@ import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/settings_page.dart';
 import 'package:jel_music/widgets/start_page_buttons.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:external_app_launcher/external_app_launcher.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({super.key});
@@ -51,6 +53,70 @@ class _StartPageState extends State<StartPage> {
     // sets theme mode to dark
     return SafeArea(
       child: Scaffold(
+        floatingActionButtonLocation: ExpandableFab.location,
+        floatingActionButton: ExpandableFab(
+          type: ExpandableFabType.up,
+          childrenAnimation: ExpandableFabAnimation.none,
+          distance: 70,
+          overlayStyle: ExpandableFabOverlayStyle(
+            color: Colors.white.withOpacity(0.9),
+          ),
+          children: [
+            Row(
+              children: [
+                Text('Settings'),
+                SizedBox(width: 20),
+                FloatingActionButton.small(
+                  heroTag: null,
+                  onPressed: () async {
+                    await LaunchApp.openApp(
+                      androidPackageName: 'com.android.settings',
+                      // openStore: false
+                    );
+                  },
+                  child: Icon(Icons.settings),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text('Camera'),
+                SizedBox(width: 20),
+                FloatingActionButton.small(
+                  heroTag: null,
+                  onPressed: () async {
+                    await LaunchApp.openApp(
+                      androidPackageName: 'com.google.android.GoogleCamera',
+                      // openStore: false
+                    );
+                  },
+                  child: Icon(Icons.camera),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text('Internet'),
+                SizedBox(width: 20),
+                FloatingActionButton.small(
+                  heroTag: null,
+                  onPressed:  () async {
+                    await LaunchApp.openApp(
+                      androidPackageName: 'com.android.chrome',
+                      // openStore: false
+                    );
+                  },
+                  child: Icon(Icons.web),
+                ),
+              ],
+            ),
+            FloatingActionButton.small(
+              heroTag: null,
+              onPressed: null,
+              child: Icon(Icons.add),
+            ),
+          ],
+        ),
         appBar: AppBar(
                   actions: [Padding(padding: const EdgeInsets.fromLTRB(0, 0, 15, 0), child: IconButton(icon:  const Icon(Icons.settings), 
                   onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage()),);}))],

@@ -318,6 +318,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.0"
+  external_app_launcher:
+    dependency: "direct main"
+    description:
+      name: external_app_launcher
+      sha256: "5657341c5aa7bf7383efdf3e68db80cb3019e80afa9f1df3250c14818e844857"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -403,6 +411,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
+  flutter_expandable_fab:
+    dependency: "direct main"
+    description:
+      name: flutter_expandable_fab
+      sha256: "2a488600924fd2a041679ad889807ee5670414a7a518cf11d4854b9898b3504f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.5.2"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -613,6 +629,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.1+1"
+  installed_apps:
+    dependency: "direct main"
+    description:
+      name: installed_apps
+      sha256: dd2b7c531f91114cd6df447c56567593c9799ca83f057137ae719324ae0afd06
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.6.0"
   intl:
     dependency: "direct main"
     description:
