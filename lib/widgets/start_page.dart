@@ -31,10 +31,11 @@ class _StartPageState extends State<StartPage> {
   late ISyncHelper syncHelper;
   DownloadController downloadsController = DownloadController();
   final QuickActionsHandler _quickActionsHandler = QuickActionsHandler();
-
+  late bool launcher;
   @override
   void initState() {
     String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
+    launcher = GetStorage().read('launcher') ?? false;
     super.initState();
     syncHelper = GetIt.instance<ISyncHelper>(instanceName: serverType);
     _quickActionsHandler.initialize(context);
@@ -48,14 +49,26 @@ class _StartPageState extends State<StartPage> {
     await downloadsController.syncDownloads();
   }
 
+  final _key = GlobalKey<ExpandableFabState>();
+
+  toggleProgramMenu(){
+    final state = _key.currentState;
+    if (state != null) {
+      state.toggle();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // sets theme mode to dark
     return SafeArea(
       child: Scaffold(
         floatingActionButtonLocation: ExpandableFab.location,
-        floatingActionButton: ExpandableFab(
+        floatingActionButton: launcher ? ExpandableFab(
+          key: _key,
           type: ExpandableFabType.up,
+          pos: ExpandableFabPos.right,
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 7.h),
           childrenAnimation: ExpandableFabAnimation.none,
           distance: 70,
           overlayStyle: ExpandableFabOverlayStyle(
@@ -73,6 +86,9 @@ class _StartPageState extends State<StartPage> {
                       androidPackageName: 'com.android.settings',
                       // openStore: false
                     );
+
+                    toggleProgramMenu();
+
                   },
                   child: Icon(Icons.settings),
                 ),
@@ -89,6 +105,7 @@ class _StartPageState extends State<StartPage> {
                       androidPackageName: 'com.google.android.GoogleCamera',
                       // openStore: false
                     );
+                    toggleProgramMenu();
                   },
                   child: Icon(Icons.camera),
                 ),
@@ -105,6 +122,8 @@ class _StartPageState extends State<StartPage> {
                       androidPackageName: 'com.android.chrome',
                       // openStore: false
                     );
+                    toggleProgramMenu();
+
                   },
                   child: Icon(Icons.web),
                 ),
@@ -116,7 +135,7 @@ class _StartPageState extends State<StartPage> {
               child: Icon(Icons.add),
             ),
           ],
-        ),
+        ) : null,
         appBar: AppBar(
                   actions: [Padding(padding: const EdgeInsets.fromLTRB(0, 0, 15, 0), child: IconButton(icon:  const Icon(Icons.settings), 
                   onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage()),);}))],

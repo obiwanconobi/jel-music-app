@@ -59,6 +59,7 @@ class _MyWidgetState extends State<SettingsPage> {
   late String totalCachedFileCount = "";
   late bool playbackReporting;
   late bool autoPlay;
+  late bool launcher;
   List<LogModel> logHistory = [];
 
 
@@ -136,6 +137,7 @@ _getVersionNumber()async{
 
       playbackReporting = getPlaybackReporting();
       autoPlay = getAutoPlay();
+      launcher = getLauncher();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _getVersionNumber();
@@ -225,12 +227,20 @@ _getVersionNumber()async{
     return GetStorage().read('autoPlay') ?? false;
   }
 
+  bool getLauncher(){
+    return GetStorage().read('launcher') ?? false;
+  }
+
     setPlaybackReporting(bool value)async{
       await GetStorage().write('playbackReporting', value);
    }
 
    setAutoPlay(bool value)async{
     await GetStorage().write('autoPlay', value);
+   }
+
+   setLauncher(bool value)async{
+     await GetStorage().write('launcher', value);
    }
 
   getCachedSongs()async{
@@ -433,7 +443,20 @@ _getVersionNumber()async{
                             Text("login_details".localise()),
                             TextField(obscureText: false, style: Theme.of(context).textTheme.bodySmall, controller: _usernameTextController,),
                             TextField(obscureText: true, style:Theme.of(context).textTheme.bodySmall, controller: _passwordTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_login),)),),
-
+                            Row(
+                              children: [
+                                Text("Launcher:",  style: Theme.of(context).textTheme.bodySmall),
+                                Switch(
+                                  value: launcher,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      setLauncher(value);
+                                      launcher = getLauncher();
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       )),
