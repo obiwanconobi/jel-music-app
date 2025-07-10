@@ -96,8 +96,8 @@ class _LatestAlbumsState extends State<LatestAlbums> {
                                       ),
                                     ),
                                   ),
-                                  Text(albumsList[index].title ?? "", overflow: TextOverflow.clip, maxLines: 1, style: Theme.of(context).textTheme.bodySmall),
-                                  Text(albumsList[index].artist ?? "",  overflow: TextOverflow.clip, maxLines: 1 , style: Theme.of(context).textTheme.bodySmall)
+                                  Text(albumsList[index].title ?? "", overflow: TextOverflow.ellipsis, maxLines: 1, style: Theme.of(context).textTheme.bodySmall),
+                                  Text(albumsList[index].artist ?? "",  overflow: TextOverflow.ellipsis, maxLines: 1 , style: Theme.of(context).textTheme.bodySmall)
                                 ],
                               ),
                             ),
