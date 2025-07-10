@@ -121,8 +121,6 @@ class _ArtistPageState extends State<ArtistPage> {
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 3.sp),
                                   child: SizedBox(
-                                    height: 15.h,
-                                    width: 15.h,
                                     child: ClipOval(
                                       child: CachedNetworkImage(
                                         fit: BoxFit.cover,

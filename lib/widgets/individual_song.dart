@@ -55,12 +55,11 @@ class _IndividualSongState extends State<IndividualSong> {
                 )
               },
               child: SizedBox(
-                width:94.w,
                 height: 12.w,
                 child: Row(
                   children: [
                     SizedBox(
-                      height: 8.h,
+                     // height: 8.h,
                       width: 8.h,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(2.w),
@@ -79,14 +78,15 @@ class _IndividualSongState extends State<IndividualSong> {
                     ),
                   //  SizedBox(width: 2.w,),
                     Container(
-                      padding: EdgeInsets.fromLTRB(0, 1.h, 0, 0),
-                      //width: 50.w,
+                      padding: EdgeInsets.fromLTRB(5, 1.h, 0, 0),
+                      width: 75.w,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                        Text(song!.title!, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.bodyMedium,),
-                        Text("${song!.artist!} - ${song!.album!}", maxLines: 1, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.bodySmall,),
+                        Text(song!.title!, style: Theme.of(context).textTheme.bodyMedium, maxLines: 1, overflow: TextOverflow.ellipsis),
+                        Text("${song!.artist!}", style: Theme.of(context).textTheme.bodySmall,maxLines: 1, overflow: TextOverflow.ellipsis),
+                        Text(song!.album!, style: Theme.of(context).textTheme.bodySmall,maxLines: 1, overflow: TextOverflow.ellipsis),
                         Text("${widget.playbackDate.hour.convertMinuteInt()}:${widget.playbackDate.minute.convertMinuteInt()}", overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.labelSmall,),
                       ],),
                     ),

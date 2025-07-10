@@ -16,8 +16,8 @@ class SharedWidgets{
       height: height,
       width:height,
       child: Container(
-        height: 27.w,
-        width: 27.w,
+        height: 15.h,
+        width: 15.h,
         decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topRight,

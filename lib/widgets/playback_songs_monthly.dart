@@ -86,7 +86,7 @@ class _PlaybackSongsMonthlyState extends State<PlaybackSongsMonthly> {
               MaterialPageRoute(maintainState: true, builder: (context) => SongsPage(albumId: days[index].Album!, artistId: days[index].Artist!,)),
             )},
             child: Padding(
-              padding:  EdgeInsets.fromLTRB(0, 2.w, 0, 0),
+              padding:  EdgeInsets.fromLTRB(10, 2.w, 0, 0),
               child: Row(
                 //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -106,10 +106,9 @@ class _PlaybackSongsMonthlyState extends State<PlaybackSongsMonthly> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: SizedBox(
-                          width:75.w,
+                      Container(
+                        padding: EdgeInsets.fromLTRB(5, 1.h, 0, 0),
+                          width:74.w,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -119,7 +118,6 @@ class _PlaybackSongsMonthlyState extends State<PlaybackSongsMonthly> {
                             ],
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ],

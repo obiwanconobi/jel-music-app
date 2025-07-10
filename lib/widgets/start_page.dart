@@ -3,10 +3,12 @@ import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/controllers/download_controller.dart';
 import 'package:jel_music/handlers/quick_actions_handler.dart';
+import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/hive/helpers/isynchelper.dart';
 import 'package:jel_music/widgets/favourite_albums.dart';
 import 'package:jel_music/widgets/favourite_artists.dart';
+import 'package:jel_music/widgets/icon_gradient_color.dart';
 import 'package:jel_music/widgets/latest_albums.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/settings_page.dart';
@@ -32,8 +34,13 @@ class _StartPageState extends State<StartPage> {
   DownloadController downloadsController = DownloadController();
   final QuickActionsHandler _quickActionsHandler = QuickActionsHandler();
   late bool launcher;
+  Conversions conversions = Conversions();
+  List<Color> colorList = [];
   @override
   void initState() {
+    for (var i = 0; i < 10; i++) {
+      colorList.add(conversions.returnColor());
+    }
     String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
     launcher = GetStorage().read('launcher') ?? false;
     super.initState();
@@ -72,15 +79,15 @@ class _StartPageState extends State<StartPage> {
           childrenAnimation: ExpandableFabAnimation.none,
           distance: 70,
           overlayStyle: ExpandableFabOverlayStyle(
-            color: Colors.white.withOpacity(0.9),
+         //   color: Colors.white.withOpacity(0.9),
           ),
           children: [
             Row(
               children: [
-                Text('Settings'),
+               // Text('Settings'),
                 SizedBox(width: 20),
                 FloatingActionButton.small(
-                  heroTag: null,
+                  heroTag: false,
                   onPressed: () async {
                     await LaunchApp.openApp(
                       androidPackageName: 'com.android.settings',
@@ -90,13 +97,13 @@ class _StartPageState extends State<StartPage> {
                     toggleProgramMenu();
 
                   },
-                  child: Icon(Icons.settings),
+                  child: IconGradientColor(color1: colorList[0],color2: colorList[1], child: const Icon(Icons.settings, color: Colors.white, size:30)),
                 ),
               ],
             ),
             Row(
               children: [
-                Text('Camera'),
+             //   Text('Camera'),
                 SizedBox(width: 20),
                 FloatingActionButton.small(
                   heroTag: null,
@@ -107,13 +114,13 @@ class _StartPageState extends State<StartPage> {
                     );
                     toggleProgramMenu();
                   },
-                  child: Icon(Icons.camera),
+                  child: IconGradientColor(color1: colorList[1],color2: colorList[2], child: const Icon(Icons.camera, color: Colors.white, size:30)),
                 ),
               ],
             ),
             Row(
               children: [
-                Text('Internet'),
+              //  Text('Internet'),
                 SizedBox(width: 20),
                 FloatingActionButton.small(
                   heroTag: null,
@@ -125,7 +132,7 @@ class _StartPageState extends State<StartPage> {
                     toggleProgramMenu();
 
                   },
-                  child: Icon(Icons.web),
+                  child: IconGradientColor(color1: colorList[2],color2: colorList[3], child: const Icon(Icons.web, color: Colors.white, size:30)),
                 ),
               ],
             ),

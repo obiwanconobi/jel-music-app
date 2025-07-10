@@ -94,7 +94,7 @@ class _FavouriteAlbumsState extends State<FavouriteAlbums> {
                                             padding:
                                                 const EdgeInsets.fromLTRB(5, 5, 5, 5),
                                             child: SizedBox(
-                                              height:15.h,
+                                             // height:15.h,
                                               width: 20.h,
                                               child: ClipRRect(
                                                 borderRadius: BorderRadius.circular(2.h),
