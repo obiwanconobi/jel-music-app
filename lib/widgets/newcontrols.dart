@@ -192,17 +192,17 @@ class _ControlsState extends State<Controls> {
                                      onHorizontalDragUpdate: (details){
                                       _changeSongOnSwipe(details);
                                     },
-                                     child: Image.network(
-                                       (musicController.currentSource!.tag.extras["pictureUrl"] ?? ""), // this image doesn't exist
+                                     child: CachedNetworkImage(
                                        fit: BoxFit.cover,
-                                       height:100.w,
-                                       width: 100.w,
-                                       errorBuilder: (context, error, stackTrace) {
-                                         return Container(
-                                           alignment: Alignment.center,
-                                           child: Image.asset('assets/images/album.png', height: 100.w),
-                                         );
-                                       },
+                                       imageUrl: musicController.currentSource!.tag.extras["pictureUrl"] ?? "",
+                                       memCacheHeight: 1000,
+                                       memCacheWidth: 1000,
+                                       errorWidget: (context, url, error) => Container(
+                                         color: const Color(0xFF71B77A),
+                                         child: const Center(
+                                           child: Text("404"),
+                                         ),
+                                       ),
                                      ),
                                    ),
                                    Text(musicController.currentSource?.tag.title, style: Theme.of(context).textTheme.bodyMedium),
