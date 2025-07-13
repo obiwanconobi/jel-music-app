@@ -198,9 +198,11 @@ class _ControlsState extends State<Controls> {
                                        memCacheHeight: 1000,
                                        memCacheWidth: 1000,
                                        errorWidget: (context, url, error) => Container(
-                                         color: const Color(0xFF71B77A),
+                                         width: 400,
+                                         height: 400,
+                                         color: Theme.of(context).scaffoldBackgroundColor,
                                          child: const Center(
-                                           child: Text("404"),
+                                           child: Text(""),
                                          ),
                                        ),
                                      ),
@@ -247,7 +249,7 @@ class _ControlsState extends State<Controls> {
                                              Text(musicController.currentSource?.tag.extras["samplerate"], style: Theme.of(context).textTheme.labelSmall),
                                            ],
                                          ),
-
+                                         ((musicController.currentSource!.tag.extras["downloaded"]) ? Icon(Icons.download, color: Colors.green, size:30) : Icon(Icons.stream, color: Theme.of(context).canvasColor, size:30)),
                                        ],
                                      );
                                  }
@@ -262,6 +264,7 @@ class _ControlsState extends State<Controls> {
                                      ElevatedButton(onPressed: () => { Navigator.push(context,
                                        MaterialPageRoute(builder: (context) => LyricsPage(),)),
                                      }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('lyrics'.localise(), style: Theme.of(context).textTheme.bodySmall)),
+
                                      ElevatedButton(onPressed: () => { _clearQueue() }, style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor,), child:  Text('clear'.localise(), style: Theme.of(context).textTheme.bodySmall)),
                                  ],),
                                ),

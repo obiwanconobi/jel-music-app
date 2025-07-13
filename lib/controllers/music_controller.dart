@@ -769,8 +769,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
           // Specify a unique ID for each media item:
           id: tempId!,
           // Metadata to display in the notification:
-          album: tempArtist ?? "Error",
-          title: tempAlbum ?? "Error",
+          album: tempArtist ?? "",
+          title: tempAlbum ?? "",
           extras: {"favourite": tempFavourite ?? false,
             "bitrate": tempBitrate ?? "",
             "bitdepth": tempBitdepth ?? "",
@@ -822,8 +822,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
         // Specify a unique ID for each media item:
         id: "TT",
         // Metadata to display in the notification:
-        album: tempArtist ?? "Error",
-        title: tempAlbum ?? "Error",
+        album: tempArtist ?? "",
+        title: tempAlbum ?? "",
         duration: const Duration(seconds: 0),
         displayDescription: tempPicture ??  ("error"),
         extras: {'favourite': tempFavourite ?? false,
@@ -831,7 +831,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
           "bitdepth": "",
           "samplerate": "",
           "codec": "",
-          "downloaded": "",
+          "downloaded": false ,
           "pictureUrl": ""
         },
         artUri: Uri.parse(tempPicture ?? ('https://error.com')),
