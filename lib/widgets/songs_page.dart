@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -278,17 +279,45 @@ class _SongsPageState extends State<SongsPage> {
                       return SingleChildScrollView(
                         child: Column(
                           children: [
-                            CachedNetworkImage(
-                              fit: BoxFit.cover,
-                              imageUrl: songsList[0].albumPicture ?? "",
-                              memCacheHeight: 1000,
-                              memCacheWidth: 1000,
-                              errorWidget: (context, url, error) => Container(
-                                color: const Color(0xFF71B77A),
-                                child: const Center(
-                                  child: Text("404"),
+                            Stack(
+                              children: <Widget>[
+                                ClipRRect(
+                                  child: ImageFiltered(
+                                    imageFilter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                                    child: ColorFiltered(
+                                      colorFilter: ColorFilter.mode(Colors.white30, BlendMode.color),
+                                      child: CachedNetworkImage(
+                                        fit: BoxFit.cover,
+                                        imageUrl: songsList[0].albumPicture ?? "",
+                                        memCacheHeight: 400,
+                                        memCacheWidth: 500,
+                                        errorWidget: (context, url, error) => Container(
+                                          color: const Color(0xFF71B77A),
+                                          child: const Center(
+                                            child: Text("404"),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
                                 ),
-                              ),
+                                Container(
+                                  padding: const EdgeInsets.fromLTRB(5, 30, 5, 5),
+                                  alignment: Alignment.center,
+                                  child: CachedNetworkImage(
+                                    fit: BoxFit.cover,
+                                    imageUrl: songsList[0].albumPicture ?? "",
+                                    memCacheHeight: 340,
+                                    memCacheWidth: 340,
+                                    errorWidget: (context, url, error) => Container(
+                                      color: const Color(0xFF71B77A),
+                                      child: const Center(
+                                        child: Text("404"),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ]
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

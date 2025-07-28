@@ -240,6 +240,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       config: const AudioServiceConfig(
           androidNotificationOngoing: true,
           androidStopForegroundOnPause: true,
+          androidNotificationIcon: "drawable/launch_background",
           androidNotificationChannelName: "Playback",
           androidNotificationChannelId: "com.pansoft.panaudio.channel.audio"
       ),
