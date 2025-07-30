@@ -187,7 +187,6 @@ class SongsHelper{
             favourite: song["UserData"]["IsFavorite"], discIndex: song["ParentIndexNumber"] ?? 1,
             codec: codec, bitrate: "$bitrate kpbs", bitdepth: "$bitdepth bit",
             samplerate: "$samplerate kHz", playCount: song["UserData"]["PlayCount"] ?? 0));
-          print("added song " + song["Name"]);
 
         }catch(e){
          //log error

@@ -60,6 +60,7 @@ class _MyWidgetState extends State<SettingsPage> {
   late bool playbackReporting;
   late bool autoPlay;
   late bool launcher;
+  late bool largeAlbumArt;
   List<LogModel> logHistory = [];
 
 
@@ -138,6 +139,7 @@ _getVersionNumber()async{
       playbackReporting = getPlaybackReporting();
       autoPlay = getAutoPlay();
       launcher = getLauncher();
+      largeAlbumArt = getLargeAlbumArt();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _getVersionNumber();
@@ -231,6 +233,10 @@ _getVersionNumber()async{
     return GetStorage().read('launcher') ?? false;
   }
 
+  bool getLargeAlbumArt(){
+    return GetStorage().read('largeAlbumArt') ?? false;
+  }
+
     setPlaybackReporting(bool value)async{
       await GetStorage().write('playbackReporting', value);
    }
@@ -242,6 +248,10 @@ _getVersionNumber()async{
    setLauncher(bool value)async{
      await GetStorage().write('launcher', value);
    }
+
+  setLargeAlbumArt(bool value)async{
+    await GetStorage().write('largeAlbumArt', value);
+  }
 
   getCachedSongs()async{
     try{
@@ -513,6 +523,20 @@ _getVersionNumber()async{
                           ]
                       )),
                       )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text("Large album art:",  style: Theme.of(context).textTheme.bodySmall),
+                      Switch(
+                        value: largeAlbumArt,
+                        onChanged: (value) {
+                          setState(() {
+                            setLargeAlbumArt(value);
+                            largeAlbumArt = getLargeAlbumArt();
+                          });
+                        },
+                      ),
                     ],
                   ),
                   Text("Version: ${_packageInfo.version}", style: Theme.of(context).textTheme.bodyMedium),
