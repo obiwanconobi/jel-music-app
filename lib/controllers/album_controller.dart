@@ -7,6 +7,7 @@ import 'package:jel_music/helpers/apihelper.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/helpers/albums_hive_helper.dart';
 import 'package:jel_music/hive/helpers/artists_hive_helper.dart';
+import 'package:jel_music/hive/helpers/songs_hive_helper.dart';
 import 'package:jel_music/models/album.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jel_music/models/artist.dart';
@@ -23,6 +24,7 @@ class AlbumController {
     var apiController = GetIt.instance<ApiController>();
     AlbumsHelper albumHelper = AlbumsHelper();
     ArtistsHelper artistsHelper = ArtistsHelper();
+    SongsHelper songsHelper = SongsHelper();
     late IHandler jellyfinHandler;
 
      Future<List<Album>> onInit() async {
@@ -37,6 +39,35 @@ class AlbumController {
     } catch (error) {
       rethrow; // Rethrow the error if necessary
     }
+  }
+
+  deleteArtist()async{
+
+       await songsHelper.openBox();
+      await artistsHelper.openBox();
+      await albumHelper.openBox();
+    var artistRaw = artistsHelper.returnArtist(artistId!);
+
+    var albums = albumHelper.returnAlbumsForArtistId(artistRaw!.id);
+    List<String> songsToDelete = [];
+    for(var alb in albums){
+      var songs = songsHelper.returnSongsFromAlbum(alb.artist!, alb.name);
+      for(var song in songs){
+        songsToDelete.add(song.id);
+      }
+    }
+
+    for(var son in songsToDelete){
+      songsHelper.deleteSong(son);
+    }
+
+    for(var alb in albums){
+      albumHelper.deleteAlbum(alb.artist!, alb.name);
+    }
+
+    artistsHelper.deleteArtist(artistId!);
+
+
   }
 
   setServerUrl(){

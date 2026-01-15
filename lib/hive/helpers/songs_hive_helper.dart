@@ -55,6 +55,13 @@ class SongsHelper{
     return song ?? Songs(name: 'ERROR', id: 'ERROR', artist: 'ERROR', artistId: 'ERROR', album: 'ERROR', albumId: 'ERROR', index: 0, year: 1000, length: '1', playCount: 0);
   }
 
+  deleteSong(String id){
+    var song = returnSongById(id);
+
+    songsBox.delete(song.key);
+
+  }
+
   returnDownloadedSongs()async{
     return songsBox.values.where((element)=>element.downloaded == true).toList();
   }

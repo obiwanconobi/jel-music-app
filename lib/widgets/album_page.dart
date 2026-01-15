@@ -58,12 +58,42 @@ class _AlbumPageState extends State<AlbumPage> {
     });
   }
 
+  _deleteArtist()async{
+    await controller.deleteArtist();
+  }
+  showAlertDialog(BuildContext context) {  // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed:  () {Navigator.of(context).pop();},
+    );
+    Widget continueButton = TextButton(
+      child: Text("Continue"),
+      onPressed:  () {_deleteArtist();
+      Navigator.of(context).pop();},
+    );  // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Delete Artist"),
+      content: Text("This will delete all albums and songs?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );  // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     controller.artistId = artistIds;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(centerTitle: true, title: Text(artistIds!, style: Theme.of(context).textTheme.bodyLarge),),
+        appBar: AppBar(centerTitle: true, title: Text(artistIds!, style: Theme.of(context).textTheme.bodyLarge),
+            actions: [Padding(padding: const EdgeInsets.fromLTRB(0, 0, 15, 0), child: IconButton(icon: const Icon(Icons.delete), onPressed: () {showAlertDialog(context); },))]),
         body: Padding(
           padding: EdgeInsets.only(
             top: 0.h,

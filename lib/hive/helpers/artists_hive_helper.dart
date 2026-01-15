@@ -74,6 +74,11 @@ class ArtistsHelper{
     return artist;
   }
 
+  deleteArtist(String name){
+     var artist = returnArtist(name);
+     artistBox.delete(artist!.key!);
+  }
+
   Artists? returnArtistById(String id){
     return artistBox.values.where((artists) => artists.id == id).firstOrNull;
   }

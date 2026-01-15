@@ -47,6 +47,19 @@ class AlbumsHelper{
       return albumsBox.values.where((albums) => albums.artist!.toLowerCase() == artist.toLowerCase()).toList();
   }
 
+  List<Albums> returnAlbumsForArtistId(String artistId){
+    //var testx = artistBox.values.where((Artists) => Artists.name == "Jeff Rosenstock");
+    return albumsBox.values.where((albums) => albums.artistId!.toLowerCase() == artistId.toLowerCase()).toList();
+  }
+
+  deleteAlbum(String artist, String album){
+    var albumToDelete = returnAlbum(artist, album);
+
+    albumsBox.delete(albumToDelete!.key);
+
+  }
+
+
   Albums? returnAlbum(String artist, String album){
     return albumsBox.values.where((albums) => albums.artist!.toLowerCase() == artist.toLowerCase() && albums.name.toLowerCase() == album.toLowerCase()).firstOrNull;
   }
