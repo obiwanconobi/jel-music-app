@@ -16,6 +16,13 @@ ThemeData getLightTheme(){
           statusBarColor: Color.fromARGB(255, 204, 204, 204),
         )
     ),
+    pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: ZoomPageTransitionsBuilder(
+              backgroundColor: Colors.transparent
+          )
+        }
+    ),
     cardTheme: const CardThemeData(color: Color.fromARGB(255, 179, 179, 179)),
     scaffoldBackgroundColor:const Color.fromARGB(255, 204, 204, 204),
     primaryColor: Colors.teal, // Your primary color for dark mode
