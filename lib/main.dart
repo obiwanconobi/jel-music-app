@@ -30,6 +30,7 @@ import 'package:jel_music/handlers/logger_handler.dart';
 import 'package:jel_music/handlers/panaudio_handler.dart';
 import 'package:jel_music/handlers/subsonic_handler.dart';
 import 'package:jel_music/helpers/app_translations.dart';
+import 'package:jel_music/helpers/notification_permission_helper.dart';
 import 'package:jel_music/hive/classes/albums.dart';
 import 'package:jel_music/hive/classes/artists.dart';
 import 'package:jel_music/hive/classes/log.dart';
@@ -56,11 +57,12 @@ import 'dart:io' show Platform;
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  await GetStorage.init();
-  Hive.registerAdapter(SongsAdapter());
+  await GetStorage.init();  Hive.registerAdapter(SongsAdapter());
   Hive.registerAdapter(ArtistsAdapter());
   Hive.registerAdapter(AlbumsAdapter());
   Hive.registerAdapter(LogAdapter());
+
+  await requestNotificationPermissionIfNeeded();
 
 
 
