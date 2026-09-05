@@ -38,6 +38,8 @@ class _StartPageState extends State<StartPage> {
   List<Color> colorList = [];
   @override
   void initState() {
+
+
     for (var i = 0; i < 10; i++) {
       colorList.add(conversions.returnColor());
     }
@@ -49,7 +51,19 @@ class _StartPageState extends State<StartPage> {
     syncAsync();
     // You could also try forcing a rebuild here
     // WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      urlChecker();
+    });
+
+}
+
+  urlChecker(){
+    var baseServerUrl = GetStorage().read('serverUrl');
+    if(baseServerUrl == "") {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage()));
+    }
   }
+
 
   syncAsync()async{
     await syncHelper.runSync(false);

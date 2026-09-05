@@ -75,6 +75,7 @@ class PanaudioMappers{
 
   Future<List<String>> mapArtistIdsFromRaw(dynamic artists)async{
     List<String> artistsList = [];
+    if(baseServerUrl == "")return artistsList;
     for(var artist in artists){
       String artistId = artist["id"];
       artistsList.add(artistId);
@@ -83,16 +84,14 @@ class PanaudioMappers{
   }
 
   Future<List<Album>> mapAlbumFromRaw(dynamic albums)async{
-    baseServerUrl = GetStorage().read('serverUrl') ?? "ERROR";
+    baseServerUrl = GetStorage().read('serverUrl') ?? "";
     List<Album> albumsList = [];
-    for(var album in albums){
-      String albumId = album["id"];
-      String picture =  "$baseServerUrl/api/albumArt?albumId=$albumId";
-
-      //  Albums? albumGot = albumHelper.returnAlbum(artist, title);
-      //    var imgUrl = "$baseServerUrl/Items/$albumId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
-      albumsList.add(Album(id: album["id"], title: album["title"],artist: album["artist"], year: album["year"] ?? 1900, picture: picture));
-
+    if(baseServerUrl != ""){
+      for(var album in albums){
+        String albumId = album["id"];
+        String picture =  "$baseServerUrl/api/albumArt?albumId=$albumId";
+        albumsList.add(Album(id: album["id"], title: album["title"],artist: album["artist"], year: album["year"] ?? 1900, picture: picture));
+      }
     }
     return albumsList;
   }

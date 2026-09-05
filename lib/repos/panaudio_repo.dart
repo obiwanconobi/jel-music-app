@@ -22,7 +22,7 @@ class PanaudioRepo{
         return json.decode(res.body);
       }
     } catch (e) {
-      rethrow;
+
     }
   }
 
@@ -38,7 +38,7 @@ class PanaudioRepo{
         return json.decode(res.body);
       }
     } catch (e) {
-      rethrow;
+
     }
   }
 
@@ -51,7 +51,7 @@ class PanaudioRepo{
         return json.decode(res.body);
       }
     } catch (e) {
-      rethrow;
+
     }
   }
 
@@ -126,7 +126,6 @@ class PanaudioRepo{
         return json.decode(res.body);
       }
     } catch (e) {
-      rethrow;
     }
   }
   getFavouriteArtists()async{
@@ -138,7 +137,6 @@ class PanaudioRepo{
         return json.decode(res.body);
       }
     } catch (e) {
-      rethrow;
     }
   }
 

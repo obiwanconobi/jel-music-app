@@ -414,7 +414,7 @@ _getVersionNumber()async{
                         child: Column(
                           children: [
                             Text('Server URL', style: Theme.of(context).textTheme.bodySmall),
-                            TextField(obscureText: false, style: Theme.of(context).textTheme.bodySmall, controller: _serverUrlTextController, decoration: InputDecoration( suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_saveUrl),)),),
+                            TextField(obscureText: false, style: Theme.of(context).textTheme.bodySmall, controller: _serverUrlTextController, decoration: InputDecoration(suffixIcon: IconButton(icon: const Icon(Icons.save), onPressed: (_saveUrl),)),),
                             DropdownButton<String>(
                               value: _font,
                               onChanged: (String? newValue) {

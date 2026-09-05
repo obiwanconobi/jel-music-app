@@ -45,16 +45,16 @@ class _PlaylistPageState extends State<PlaylistPage> {
 
   _shuffle(List<ModelSongs> allSongs){
     allSongs.shuffle();
-    _addAllToQueue(allSongs);
+    _addAllToQueue(allSongs, 0);
   }
 
-  _addAllToQueue(List<ModelSongs> allSongs){
+  _addAllToQueue(List<ModelSongs> allSongs, int index){
     if(allSongs.isNotEmpty){
         List<StreamModel> playList = [];
         for(var song in allSongs){
           playList.add(mapper.returnStreamModel(song));
         }
-        MusicControllerProvider.of(context, listen: false).addPlaylistToQueue(playList);
+        MusicControllerProvider.of(context, listen: false).addPlaylistToQueue(playList, index: index);
     }
     
   }
@@ -272,7 +272,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      OutlinedButton(onPressed: () => _addAllToQueue(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor, foregroundColor: Theme.of(context).canvasColor), child: Text('play'.localise(), style: Theme.of(context).textTheme.bodySmall)),
+                                      OutlinedButton(onPressed: () => _addAllToQueue(songsList, 0), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor, foregroundColor: Theme.of(context).canvasColor), child: Text('play'.localise(), style: Theme.of(context).textTheme.bodySmall)),
                                       OutlinedButton(onPressed: () => _shuffle(songsList), style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).canvasColor, foregroundColor: Theme.of(context).canvasColor), child: Text('Shuffle', style: Theme.of(context).textTheme.bodySmall)),
                                     ],
                                   ),
@@ -289,7 +289,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                 return Padding(
                                   padding: EdgeInsets.symmetric(vertical: 8.sp),
                                   child: InkWell(
-                                    onTap:() => _addToQueue(songsList[index]),
+                                    onTap:() => _addAllToQueue(songsList, index),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.sp),
                                     ),

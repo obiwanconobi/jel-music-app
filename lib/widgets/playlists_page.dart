@@ -190,16 +190,6 @@ class _PlaylistsPageState extends State<PlaylistsPage> with SingleTickerProvider
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                        child: Text(
-                                          _filteredPlaylists[index].runtime!,
-                                          style: Theme.of(context).textTheme.bodyMedium,
-                                          overflow: TextOverflow.ellipsis, // Set overflow property
-                                          maxLines: 2, 
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
                                     ],
                                   ),
                                 )
