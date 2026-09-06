@@ -40,7 +40,6 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   );
   final StreamController<Duration> _durationController = BehaviorSubject();
   final StreamController<Duration> _bufferController = BehaviorSubject();
-
   var logger = GetIt.instance<LogHandler>();
   Mappers mapper = Mappers();
 

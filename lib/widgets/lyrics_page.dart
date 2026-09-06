@@ -1,3 +1,4 @@
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jel_music/controllers/lyrics_page_controller.dart';
@@ -5,6 +6,7 @@ import 'package:jel_music/controllers/music_controller.dart';
 import 'package:jel_music/helpers/conversions.dart';
 import 'package:jel_music/models/synced_lyrics.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -23,6 +25,7 @@ class _LyricsPageState extends State<LyricsPage> {
   Conversions conversions = Conversions();
   Duration? currentDuration;
   String lyricsFuture = "";
+  String songTitle = "";
 
   List<SyncedLyrics> syncedLyrics = [];
   bool synced = false;
@@ -71,10 +74,31 @@ class _LyricsPageState extends State<LyricsPage> {
     MusicControllerProvider.of(context, listen: false).seek(duration);
   }
 
+
+  IndexedAudioSource? _lastSource;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final current = MusicControllerProvider.of(context).currentSource;
+    if (!identical(current, _lastSource)) {
+      _lastSource = current;
+      _getData();
+    }
+  }
+
+
   _getData()async{
+    final current = MusicControllerProvider.of(context, listen: false).currentSource;
     final regex = RegExp(r'^\[\d{2}:\d{2}\.\d{2}\]\s*');
-    controller.track = MusicControllerProvider.of(context, listen:false).currentSource?.tag.title;
-    controller.artist = MusicControllerProvider.of(context, listen:false).currentSource?.tag.album;
+    controller.track = current?.tag.title;
+    songTitle = controller.track;
+    controller.artist = current?.tag.album;
+    setState(() {
+      synced = false;
+      syncedLyrics.clear();
+      lyricsFuture = "";
+    });
+
     var test = await controller.onInit();
     setState(() {
       if(test.startsWith("[")){
@@ -86,7 +110,6 @@ class _LyricsPageState extends State<LyricsPage> {
           syncedLyrics.add(SyncedLyrics(index: counter, timeStamp: timestamp, value: value, active: false));
           counter++;
         }
-
       }
       lyricsFuture = test;
     });
@@ -107,38 +130,50 @@ class _LyricsPageState extends State<LyricsPage> {
     Text(lyricsFuture) :
     Consumer<MusicController>(
         builder: (context, musicController, snapshot) {
-      if (musicController.currentQueue == null) {
-        return const Center(
-          child: Text('no_data_error'),
-        );
-      } else {
-        return StreamBuilder<Duration>(
-          stream: musicController.durationStream,
-          builder: (context, snapshot){
-            if(snapshot.hasData){
-              currentDuration = snapshot.data;
-              _updateLyrics(currentDuration!);
-            }
-            return SizedBox(
-                height:90.h,
-                child: ListView.builder(
-                  itemCount: syncedLyrics.length,
-                  itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0),
-                    child: InkWell(
-                      onTap: () => {setSongPosition(conversions.parseTimeStamp(syncedLyrics[index].timeStamp!))},
-                      child: Text(
-                        syncedLyrics[index].value!,
-                        style: syncedLyrics[index].active! ? TextStyle(color: Colors.blue) : Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    ),
-                  ),
-                ));
+          if (musicController.currentQueue == null) {
+            return const Center(
+              child: Text('no_data_error'),
+            );
+          } else {
+            return StreamBuilder<Duration>(
+                stream: musicController.durationStream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    currentDuration = snapshot.data;
+                    _updateLyrics(currentDuration!);
+                  }
+                  return SizedBox(
+                      height: 90.h,
+                      child: ListView.builder(
+                        itemCount: syncedLyrics.length,
+                        itemBuilder: (context, index) =>
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  bottom: 12.0),
+                              child: InkWell(
+                                onTap: () => {
+                                  setSongPosition(
+                                      conversions.parseTimeStamp(
+                                          syncedLyrics[index].timeStamp!))
+                                },
+                                child: Text(
+                                  syncedLyrics[index].value!,
+                                  style: syncedLyrics[index].active!
+                                      ? TextStyle(color: Colors.blue)
+                                      : Theme
+                                      .of(context)
+                                      .textTheme
+                                      .bodyMedium,
+                                ),
+                              ),
+                            ),
+                      ));
+                }
+            );
           }
-        );
-      }
-    }
-    ))
+        }
+    )
+      )
     );
   }
 }
