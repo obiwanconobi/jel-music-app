@@ -10,7 +10,7 @@ import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/widgets/newcontrols.dart';
 import 'package:jel_music/widgets/songs_page.dart';
 import 'package:sizer/sizer.dart';
-
+import 'package:jel_music/helpers/mappers.dart';
 
 class AllSongsPage extends StatefulWidget {
   const AllSongsPage({super.key});
@@ -29,6 +29,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
   SongsHelper songsHelper = SongsHelper();
   List<ModelSongs> _filteredSongs = []; // List to hold filtered albums
   List<ModelSongs> songsList = [];
+  Mappers mapper = Mappers();
   int _currentPage = 1;
   SortOptions sortOptionsView = SortOptions.random;
  
@@ -67,6 +68,11 @@ class _AllSongsPageState extends State<AllSongsPage> {
             _filteredSongs.addAll(songsList.sublist((_currentPage*100), ((_currentPage*100)+100)));
           });
         }
+  }
+
+  _playSongs(List<ModelSongs> songs, int index){
+    var sm = mapper.returnStreamModelsList(songs);
+    MusicControllerProvider.of(context, listen: false).addPlaylistToQueue(sm, index: index);
   }
 
    _playSong(ModelSongs song){
@@ -186,7 +192,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
                                 return Padding(
                                   padding: EdgeInsets.symmetric(vertical: 8.sp),
                                   child: InkWell(
-                                    onTap:() => _playSong(_filteredSongs[index]),
+                                    onTap:() => _playSongs(_filteredSongs.sublist(index), index),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.sp),
                                     ),
