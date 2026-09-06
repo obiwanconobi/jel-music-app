@@ -13,6 +13,7 @@ import 'package:jel_music/helpers/localisation.dart';
 import 'package:jel_music/providers/music_controller_provider.dart';
 import 'package:jel_music/widgets/icon_gradient_color.dart';
 import 'package:jel_music/widgets/lyrics_page.dart';
+import 'package:jel_music/widgets/mini_music_visualizer.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
@@ -98,6 +99,13 @@ class _ControlsState extends State<Controls> {
   _goToSong(int index){
     MusicControllerProvider.of(context, listen:false).seekSong(index);
   }
+
+  final List<Color> _colors = [
+    Colors.red[900]!,
+    Colors.green[900]!,
+    Colors.blue[900]!,
+    Colors.brown[900]!
+  ];
 
   _sampleRateFormat(String input){
       if(input == "44100"){
@@ -363,7 +371,7 @@ class _ControlsState extends State<Controls> {
                                                  ],
                                                ),
                                              ),
-                                             if(musicController.currentSource!.tag.title == musicController.playlist[index].tag.title && musicController.currentSource!.tag.album == musicController.playlist[index].tag.album)Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0), child: Icon(Icons.music_note, color: Theme.of(context).focusColor, size:30),)
+                                             if(musicController.currentSource!.tag.title == musicController.playlist[index].tag.title && musicController.currentSource!.tag.album == musicController.playlist[index].tag.album)Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0), child:MiniMusicVisualizer(color: Colors.red, width: 4, height: 30, radius: 2, animate: musicController.isPlaying ?? false) ,)
                                            ],
                                          ),
                                        ),
