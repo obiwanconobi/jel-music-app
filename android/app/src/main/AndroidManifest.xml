@@ -39,6 +39,12 @@
             </intent-filter>
         </service>
 
+        <provider
+            android:name="com.pansoft.jel_music.ArtworkContentProvider"
+            android:authorities="com.pansoft.jel_music.artwork"
+            android:exported="true"
+            android:grantUriPermissions="true" />
+
         <receiver android:name="com.ryanheise.audioservice.MediaButtonReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />

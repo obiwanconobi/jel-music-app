@@ -1048,7 +1048,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
         //  duration: Duration(seconds: int.parse(stream.long!)),
           duration: durationParser(stream.long!),
-          artUri: await cacheHelper.getCachedImage(pictureUrl)
+          artUri: await cacheHelper.getCachedImage(pictureUrl) ?? Uri.parse(pictureUrl)
 
         ),);
 
