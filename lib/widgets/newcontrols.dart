@@ -99,6 +99,21 @@ class _ControlsState extends State<Controls> {
     MusicControllerProvider.of(context, listen:false).seekSong(index);
   }
 
+  _sampleRateFormat(String input){
+      if(input == "44100"){
+        return "44.1 KHz";
+      }
+
+      if(input == "48000"){
+        return "48.0 KHz";
+      }
+
+      if(input == "96000"){
+        return "96.0 KHz";
+      }
+
+      return input;
+  }
 
   void _changeSongOnSwipe(DragUpdateDetails details) {
     if (details.delta.dx > 20) {
@@ -245,10 +260,10 @@ class _ControlsState extends State<Controls> {
                                            child: Row(
                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                              children: [
-                                               Container(width: 10.w,decoration: BoxDecoration(border: Border.all(color: Colors.white10), borderRadius: BorderRadiusGeometry.circular(3)),child: Center(child: Text(musicController.currentSource?.tag.extras["codec"], style:  Theme.of(context).textTheme.labelSmall))),
-                                               Container(width: 10.w,decoration: BoxDecoration(border: Border.all(color: Colors.white10), borderRadius: BorderRadiusGeometry.circular(3)),child: Center(child: Text(musicController.currentSource?.tag.extras["bitrate"] + "kbps", style: Theme.of(context).textTheme.labelSmall))),
-                                               Container(width: 10.w,decoration: BoxDecoration(border: Border.all(color: Colors.white10), borderRadius: BorderRadiusGeometry.circular(3)),child: Center(child: Text(musicController.currentSource?.tag.extras["bitdepth"] + "bit", style: Theme.of(context).textTheme.labelSmall))),
-                                               Container(width: 10.w,decoration: BoxDecoration(border: Border.all(color: Colors.white10), borderRadius: BorderRadiusGeometry.circular(3)),child: Center(child: Text(musicController.currentSource?.tag.extras["samplerate"], style: Theme.of(context).textTheme.labelSmall))),
+                                               Container(width: 15.w,decoration: BoxDecoration(border: Border.all(color: Colors.white10), borderRadius: BorderRadiusGeometry.circular(3)),child: Center(child: Text(musicController.currentSource?.tag.extras["codec"], style:  Theme.of(context).textTheme.labelSmall))),
+                                               Container(width: 15.w,decoration: BoxDecoration(border: Border.all(color: Colors.white10), borderRadius: BorderRadiusGeometry.circular(3)),child: Center(child: Text(musicController.currentSource?.tag.extras["bitrate"] + "kbps", style: Theme.of(context).textTheme.labelSmall))),
+                                               Container(width: 15.w,decoration: BoxDecoration(border: Border.all(color: Colors.white10), borderRadius: BorderRadiusGeometry.circular(3)),child: Center(child: Text(musicController.currentSource?.tag.extras["bitdepth"] + "bit", style: Theme.of(context).textTheme.labelSmall))),
+                                               Container(width: 15.w,decoration: BoxDecoration(border: Border.all(color: Colors.white10), borderRadius: BorderRadiusGeometry.circular(3)),child: Center(child: Text(_sampleRateFormat(musicController.currentSource?.tag.extras["samplerate"]), style: Theme.of(context).textTheme.labelSmall))),
                                              ],
                                            ),
                                          ),
