@@ -240,14 +240,17 @@ class _ControlsState extends State<Controls> {
                                                ),
 
                                          ),
-                                         Row(
-                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                           children: [
-                                             Text(musicController.currentSource?.tag.extras["codec"], style:  Theme.of(context).textTheme.labelSmall),
-                                             Text(musicController.currentSource?.tag.extras["bitrate"] + "kbps", style: Theme.of(context).textTheme.labelSmall),
-                                             Text(musicController.currentSource?.tag.extras["bitdepth"] + "bit", style: Theme.of(context).textTheme.labelSmall),
-                                             Text(musicController.currentSource?.tag.extras["samplerate"], style: Theme.of(context).textTheme.labelSmall),
-                                           ],
+                                         Padding(
+                                           padding: const EdgeInsets.fromLTRB(20,0,0,0),
+                                           child: Row(
+                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                             children: [
+                                               Container(width: 10.w,decoration: BoxDecoration(border: Border.all(color: Colors.white10), borderRadius: BorderRadiusGeometry.circular(3)),child: Center(child: Text(musicController.currentSource?.tag.extras["codec"], style:  Theme.of(context).textTheme.labelSmall))),
+                                               Container(width: 10.w,decoration: BoxDecoration(border: Border.all(color: Colors.white10), borderRadius: BorderRadiusGeometry.circular(3)),child: Center(child: Text(musicController.currentSource?.tag.extras["bitrate"] + "kbps", style: Theme.of(context).textTheme.labelSmall))),
+                                               Container(width: 10.w,decoration: BoxDecoration(border: Border.all(color: Colors.white10), borderRadius: BorderRadiusGeometry.circular(3)),child: Center(child: Text(musicController.currentSource?.tag.extras["bitdepth"] + "bit", style: Theme.of(context).textTheme.labelSmall))),
+                                               Container(width: 10.w,decoration: BoxDecoration(border: Border.all(color: Colors.white10), borderRadius: BorderRadiusGeometry.circular(3)),child: Center(child: Text(musicController.currentSource?.tag.extras["samplerate"], style: Theme.of(context).textTheme.labelSmall))),
+                                             ],
+                                           ),
                                          ),
                                          ((musicController.currentSource!.tag.extras["downloaded"]) ? Icon(Icons.download, color: Colors.green, size:30) : Icon(Icons.stream, color: Theme.of(context).canvasColor, size:30)),
                                        ],

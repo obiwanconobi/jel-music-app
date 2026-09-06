@@ -777,7 +777,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
             "bitdepth": tempBitdepth ?? "",
             "samplerate": tempSampleRate ?? "",
             "codec": tempCodec ?? "",
-            "downloaded": tempDownloaded ?? "",
+            "downloaded": tempDownloaded ?? false,
             "pictureUrl": tempPicture ?? ""
           },
           artUri: Uri.parse(tempPicture!),
@@ -832,7 +832,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
           "bitdepth": "",
           "samplerate": "",
           "codec": "",
-          "downloaded": false ,
+          "downloaded": false,
           "pictureUrl": ""
         },
         artUri: Uri.parse(tempPicture ?? ('https://error.com')),

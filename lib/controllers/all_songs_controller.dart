@@ -62,19 +62,14 @@ class AllSongsController {
 
       List<Songs> songsRaw = [];
       songsRaw = songsHelper.returnAllSongs();
-      
-      
+
       List<ModelSongs> songsList = [];
       for(var songRaw in songsRaw){
         var imgUrl = mappers.getImageUrl(songRaw.albumId);
-        //songsList.add(Songs(id: song.id, name: ))
-        songsList.add(ModelSongs(id: songRaw.id, trackNumber: songRaw.index, title: songRaw.name, album: songRaw.album, artist: songRaw.artist, artistId: songRaw.artistId, albumPicture: imgUrl, favourite: songRaw.favourite, length: songRaw.length, bitrate: songRaw.bitrate, bitdepth: songRaw.bitdepth, samplerate: songRaw.samplerate, codec: songRaw.codec));
-     //   songsList.add(Songs(index: song.index, id: song.id, name: song.name,artist: song.artist, year:song.year, albumId: imgUrl, artistId: song.artistId, album: song.album, length: song.length));
-    
+        var dlBool = songRaw.downloaded ?? false;
+        songsList.add(ModelSongs(id: songRaw.id, trackNumber: songRaw.index, title: songRaw.name, album: songRaw.album, artist: songRaw.artist, artistId: songRaw.artistId, albumPicture: imgUrl, favourite: songRaw.favourite, length: songRaw.length, bitrate: songRaw.bitrate, bitdepth: songRaw.bitdepth, samplerate: songRaw.samplerate, codec: songRaw.codec, downloaded: dlBool));
       }
-
       songsList.shuffle();
-    //  songsList.sort((a, b) => a.title!.compareTo(b.title!));
       return songsList;
   }
 

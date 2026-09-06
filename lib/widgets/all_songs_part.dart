@@ -71,6 +71,11 @@ class _AllSongsPageState extends State<AllSongsPage> {
   }
 
   _playSongs(List<ModelSongs> songs, int index){
+    if(songs.length > 100){
+      songs = songs.sublist(index, index + 100);
+      index = 0;
+    }
+
     var sm = mapper.returnStreamModelsList(songs);
     MusicControllerProvider.of(context, listen: false).addPlaylistToQueue(sm, index: index);
   }
@@ -192,7 +197,7 @@ class _AllSongsPageState extends State<AllSongsPage> {
                                 return Padding(
                                   padding: EdgeInsets.symmetric(vertical: 8.sp),
                                   child: InkWell(
-                                    onTap:() => _playSongs(_filteredSongs.sublist(index), index),
+                                    onTap:() => _playSongs(_filteredSongs, index),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.sp),
                                     ),

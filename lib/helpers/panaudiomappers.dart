@@ -50,10 +50,11 @@ class PanaudioMappers{
         imgUrl = "$baseServerUrl/api/albumArt?albumId=${song.albumId}";
       }
 
+      bool dlBool = song.downloaded ?? false;
 
       songsList.add(ModelSongs(id: song.id, trackNumber: song.index, artistId: song.artistId, title: song.name,
           artist: song.artist, albumPicture: imgUrl, album: song.album, albumId: song.albumId, length: song.length,
-          favourite: song.favourite, discNumber: song.discIndex, downloaded: song.downloaded, codec: song.codec,
+          favourite: song.favourite, discNumber: song.discIndex, downloaded: dlBool, codec: song.codec,
           bitrate: song.bitrate, bitdepth: song.bitdepth, samplerate: song.samplerate
       ));
     }
