@@ -21,7 +21,6 @@ class PlaylistsController{
     try {
      // await artistHelper.openBox();
       clearList();
-    
       playlistsList = await handler.returnPlaylists();
       return playlistsList;
     } catch (error) {

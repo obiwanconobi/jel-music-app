@@ -30,6 +30,8 @@ class PlaylistController{
   }
 
   Future<List<ModelSongs>> getPlaylistData(String playlistId)async{
+    serverType = GetStorage().read('ServerType') ?? "Jellyfin";
+    handler = GetIt.instance<IHandler>(instanceName: serverType);
     try {
       clearList();
       playlistList = await handler.returnSongsFromPlaylist(playlistId);

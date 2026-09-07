@@ -90,9 +90,6 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   @override
   Future<List<MediaItem>> getChildren(String parentMediaId,
       [Map<String, dynamic>? options]) async {
-    await loadArtists();
-    await loadAlbums();
-    await loadPlaylists();
     // This is where you define your menu structure
     switch (parentMediaId) {
       case AudioService.browsableRootId:
@@ -116,10 +113,13 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
         ];
       case 'songs':
+        await loadPlaylists();
         return playlistMediaItemList;
       case 'artists':
+        await loadArtists();
         return artistMediaItemList;
       case 'albums':
+        await loadAlbums();
         return albumsMediaItemList;
       default:
         return [];
@@ -562,7 +562,6 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       for(var playlist in playlists){
         playlistList.add(MediaItem(id: "playlist|${playlist.id}", title: playlist.name!));
       }
-
       playlistMediaItemList.addAll(playlistList);
     }catch(e){
       await logger.addToLog(LogModel(logType: "Error", logMessage: "Error Loading playlist", logDateTime: DateTime.now()));
