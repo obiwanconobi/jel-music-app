@@ -59,7 +59,7 @@ class _StartPageState extends State<StartPage> {
 
   urlChecker(){
     var baseServerUrl = GetStorage().read('serverUrl');
-    if(baseServerUrl == "") {
+    if(baseServerUrl == null || baseServerUrl == "No Server Set") {
       Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage()));
     }
   }

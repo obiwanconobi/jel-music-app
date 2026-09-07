@@ -87,9 +87,9 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   @override
   Future<List<MediaItem>> getChildren(String parentMediaId,
       [Map<String, dynamic>? options]) async {
-    loadArtists();
-    loadAlbums();
-    loadPlaylists();
+    await loadArtists();
+    await loadAlbums();
+    await loadPlaylists();
     // This is where you define your menu structure
     switch (parentMediaId) {
       case AudioService.browsableRootId:
