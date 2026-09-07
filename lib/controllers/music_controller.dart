@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:jel_music/controllers/playlist_controller.dart';
 import 'package:jel_music/controllers/playlists_controller.dart';
 import 'package:jel_music/handlers/ihandler.dart';
 import 'package:jel_music/handlers/logger_handler.dart';
@@ -50,6 +51,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   ApiHelper apiHelper = ApiHelper();
   String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
   PlaylistsController playlistController = PlaylistsController();
+  var playlistItemsControllers = GetIt.instance<PlaylistController>();
+
   bool _isPlaying = false;
 
   // List<StreamModel> queue = [];
@@ -149,7 +152,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
       //play playlist
       logger.addToLog(LogModel(logType: "Log",logMessage: "Trying to play Playlist. Playlist Id To be played: ${mediaItem.title}", logDateTime: DateTime.now()));
       //get playlist songs
-
+      await playSongsInPlaylist(mediaItem.title);
       //play songs
     }else{
       var idAlbumArtist = mediaId.split('|');
@@ -575,6 +578,17 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     for(var album in albumsList){
       albumsMediaItemList.add(MediaItem(id: 'album|${album.artist}|${album.name}',artist: album.artist, title: album.name, artUri: Uri.parse(album.picture), playable: true));
     }
+  }
+
+  playSongsInPlaylist(String playlistId)async{
+    try{
+      var songs = await playlistItemsControllers.getPlaylistData(playlistId);
+      var mappedSongs = mapper.returnStreamModelsList(songs);
+      await addPlaylistToQueue(mappedSongs);
+    }catch(e){
+      logger.addToLog(LogModel(logType: "Error",logMessage: e.toString(), logDateTime: DateTime.now()));
+    }
+
   }
 
   playSongsInAlbum(String artist, String album)async{
