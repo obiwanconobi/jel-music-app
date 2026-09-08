@@ -134,7 +134,6 @@ class AlbumController {
      
       List<Album> albumsList = [];
       for(var album in albumsRaw){
-        String albumId = album.id;
         albumsList.add(Album(id: album.id, title: album.name,artist: album.artist, year: int.parse(album.year!), picture: album.picture));
       }
 
