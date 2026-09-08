@@ -32,7 +32,6 @@ class AlbumController {
        jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
     try {
       setServerUrl();
-      await getArtistInfo();
       await albumHelper.openBox();
       albums =  _getAlbumsFromBox(artistId!);
       return albums;
@@ -136,7 +135,6 @@ class AlbumController {
       List<Album> albumsList = [];
       for(var album in albumsRaw){
         String albumId = album.id;
-        var imgUrl = "$baseServerUrl/Items/$albumId/Images/Primary?fillHeight=480&fillWidth=480&quality=96";
         albumsList.add(Album(id: album.id, title: album.name,artist: album.artist, year: int.parse(album.year!), picture: album.picture));
       }
 
@@ -149,10 +147,7 @@ class AlbumController {
       try {
 
         String artistId = artistIdVal;
-        var accessToken =await GetStorage().read('accessToken');
         var userId =await  GetStorage().read('userId');
-        var deviceId = await GetStorage().read('deviceId');
-        
           var requestHeaders = await apiHelper.returnJellyfinHeaders();
       String url = "$baseServerUrl/Users/$userId/Items?recursive=true&includeItemTypes=MusicAlbum&artistIds=$artistId&videoTypes=&enableTotalRecordCount=true&enableImages=true";
       http.Response res = await http.get(Uri.parse(url), headers: requestHeaders);
