@@ -98,6 +98,12 @@ class SongsHelper{
       songsBox.put(song.key,song);
   }
 
+  likeSongById(String id, bool value){
+    var song = returnSongById(id);
+    song!.favourite = value;
+    songsBox.put(song.key,song);
+  }
+
   clearSongs()async{
     await songsBox.clear();
   }

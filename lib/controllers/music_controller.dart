@@ -66,7 +66,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   String? tempArtist;
   String? tempAlbum;
   String? tempPicture;
-  bool? tempFavourite;
+  bool? tempFavourite = false;
   String? tempCodec;
   String? tempBitrate;
   String? tempBitdepth;
@@ -212,7 +212,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   Future<dynamic> customAction(String name, [Map<String, dynamic>? extras]) async {
     switch (name) {
       case 'favourite':
-      //  return await updateCurrentSongFavStatus();
+        return await updateCurrentSongFavStatus();
       default:
         return super.customAction(name, extras);
     }
@@ -366,7 +366,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
         if (_advancedPlayer.playing) MediaControl.pause else MediaControl.play,
         MediaControl.stop,
         MediaControl.skipToNext,
-       // MediaControl.custom(androidIcon: 'favourite', label: 'Favourite', name: updateCurrentSongFavStatus())
+        MediaControl.custom(androidIcon: 'drawable/${tempFavourite! ? "favourite_border" : "favourite_fill"}', label: tempFavourite! ? "Like" : "Unlike", name: 'favourite')
         //MediaControl.custom(androidIcon: 'favourite', label: 'favourite', name: 'favourite')
       ],
       systemActions: const {
@@ -725,6 +725,8 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   }
 
   updateCurrentSongFavStatus(){
+    jellyfinHandler.updateFavouriteStatus(_advancedPlayer.sequenceState?.currentSource!.tag.id, !_advancedPlayer.sequenceState?.currentSource!.tag.extras["favourite"]);
+    songsHelper.likeSongById(_advancedPlayer.sequenceState?.currentSource!.tag.id, !_advancedPlayer.sequenceState?.currentSource!.tag.extras["favourite"]);
     _advancedPlayer.sequenceState?.currentSource!.tag.extras["favourite"] = !_advancedPlayer.sequenceState?.currentSource!.tag.extras["favourite"];
     setUiElements();
   }
@@ -734,6 +736,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
     npChange = !npChange;
     isPlaying = _advancedPlayer.playing;
     await Future.delayed(const Duration(milliseconds: 60));
+    playbackState;
     notifyListeners();
   }
 
