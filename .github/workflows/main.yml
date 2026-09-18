@@ -3,92 +3,75 @@ on:
   push:
     branches:
       - main
-env:
-  STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-  KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-  # Define other environment variables here
-      
+
 jobs:
   build_android:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
       - name: Setup Java to compile Android project
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+
       - name: Install and set Flutter version
         uses: subosito/flutter-action@v2
         with:
-          channel: stable # or: beta, master (or main)
+          channel: stable
+
       - name: Restore packages
         run: flutter pub get
-      - name: Set environment variables
-        run: |
-          echo "STORE_PASSWORD=${{ secrets.STORE_PASSWORD }}" >> $GITHUB_ENV
-      
+
       - name: Save keystore to file
-        run: echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks
+        run: echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > "$GITHUB_WORKSPACE/android/app/keystore.jks"
+
       - name: Build Android Apk
         run: flutter build apk --release
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v2
-        with:
-          sdk-platform: 'android-33' # or the appropriate SDK version
-          build-tools: '33.0.1' # or the appropriate build tools version
 
-      - name: Verify Android tools
-        run: |
-          ls $ANDROID_SDK_ROOT/build-tools
-          ls $ANDROID_SDK_ROOT/build-tools/34.0.0
+      # The `android-actions/setup-android` action is no longer needed (and is
+      # currently broken: it tries to install the removed `tools` package and
+      # the since-deleted android-33 / build-tools;33.0.1). The ubuntu-latest
+      # runner already ships a full Android SDK, so just locate `apksigner`
+      # from the pre-installed build-tools dynamically.
       - name: Sign APK
         run: |
-          $ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner sign --verbose \
-            --ks /home/runner/work/jel-music-app/jel-music-app/android/app/keystore.jks \
+          SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-/usr/local/lib/android/sdk}}"
+          APKSIGNER=$(find "$SDK_ROOT/build-tools" -name apksigner -type f | sort -V | tail -n 1)
+          echo "Using apksigner: $APKSIGNER"
+          "$APKSIGNER" sign --verbose \
+            --ks "$GITHUB_WORKSPACE/android/app/keystore.jks" \
             --ks-key-alias nutella \
             --ks-pass env:STORE_PASSWORD \
             --key-pass env:KEY_PASSWORD \
-            --out build/app/outputs/flutter-apk/app-release-signed.apk \
-            build/app/outputs/flutter-apk/app-release.apk
+            --out "$GITHUB_WORKSPACE/build/app/outputs/flutter-apk/app-release-signed.apk" \
+            "$GITHUB_WORKSPACE/build/app/outputs/flutter-apk/app-release.apk"
         env:
           STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-          JAVA_HOME_12.0.2_x64: /opt/hostedtoolcache/jdk/12.0.2/x64
-          JAVA_HOME: /opt/hostedtoolcache/jdk/12.0.2/x64
-          JAVA_HOME_12_0_2_X64: /opt/hostedtoolcache/jdk/12.0.2/x64
-          FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.19.5-x64
-          PUB_CACHE: /home/runner/.pub-cache
-          
+
       - name: Publish Android Artefacts
         uses: actions/upload-artifact@v4
         with:
           name: release-apk-signed
           path: build/app/outputs/flutter-apk/app-release-signed.apk
-      
+
+      - name: Rename APK for release
+        run: cp build/app/outputs/flutter-apk/app-release-signed.apk build/app/outputs/flutter-apk/panaudio.apk
+
       - name: Set tag to current date and time
         id: set_tag
-        run: echo "tag=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_OUTPUT
-      
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
+        run: echo "tag=$(date +'%Y-%m-%d_%H-%M-%S')" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release and upload APK
+        uses: softprops/action-gh-release@v2
         with:
+          token: ${{ secrets.PANAUDIO_SECRET }}
           tag_name: ${{ steps.set_tag.outputs.tag }}
-          release_name: Android ${{ steps.set_tag.outputs.tag }}
+          name: Android ${{ steps.set_tag.outputs.tag }}
           draft: false
           prerelease: false
-      
-      - name: Upload artifact to release
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.PANAUDIO_SECRET }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /home/runner/work/jel-music-app/jel-music-app/build/app/outputs/flutter-apk/app-release-signed.apk
-          asset_name: panaudio.apk
-          asset_content_type: application/octet-stream
+          files: |
+            build/app/outputs/flutter-apk/panaudio.apk
