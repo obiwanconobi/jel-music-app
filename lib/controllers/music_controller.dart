@@ -76,7 +76,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   bool? isShuffle;
   bool npChange = true;
   IndexedAudioSource? currentSource;
-  String baseServerUrl = "";
+  String baseServerUrl = GetStorage().read('serverUrl') ?? "";
   List<IndexedAudioSource>? currentQueue = [];
   int currentIndexSource = 0;
   String lastUpdateSong = "";
@@ -233,11 +233,20 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
   int? currentTicks;
   AudioHandler? _audioHandler;
 
-  Future<void> initAudioService() async {
+  Future<void>? _audioServiceInitFuture;
+
+  /// Initialises the audio service and registers this handler. Safe to call
+  /// multiple times (concurrently or otherwise) — the underlying
+  /// [AudioService.init] is only invoked once.
+  Future<void> initAudioService() {
+    return _audioServiceInitFuture ??= _initAudioService();
+  }
+
+  Future<void> _initAudioService() async {
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.music());
 
-    _audioHandler ??= await AudioService.init(
+    _audioHandler = await AudioService.init(
       builder: () => this,
       config: const AudioServiceConfig(
           androidNotificationOngoing: true,
@@ -254,6 +263,7 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
   MusicController(){
     logger.openBox();
+    _loadServerConfig();
     // final _cache = JustAudioCache();
 
     initAudioService();
@@ -519,11 +529,17 @@ class MusicController extends BaseAudioHandler with ChangeNotifier {
 
   void onInit()async{
     currentSource = getCurrentSong();
-
-    baseServerUrl = GetStorage().read('serverUrl') ?? "";
-    String serverType = GetStorage().read('ServerType') ?? "Jellyfin";
-    jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
+    _loadServerConfig();
     await loadAlbums();
+  }
+
+  /// (Re)loads the server configuration from storage and resolves the active
+  /// server handler. Called from the constructor (so the Android Auto browse
+  /// tree works on a cold start) and again from [onInit].
+  void _loadServerConfig() {
+    serverType = GetStorage().read('ServerType') ?? "Jellyfin";
+    baseServerUrl = GetStorage().read('serverUrl') ?? "";
+    jellyfinHandler = GetIt.instance<IHandler>(instanceName: serverType);
   }
 
   loadArtists()async{

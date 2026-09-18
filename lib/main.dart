@@ -15,6 +15,7 @@ import 'package:jel_music/controllers/latest_albums_controller.dart';
 import 'package:jel_music/controllers/liked_controller.dart';
 import 'package:jel_music/controllers/log_box_controller.dart';
 import 'package:jel_music/controllers/lyrics_page_controller.dart';
+import 'package:jel_music/controllers/music_controller.dart';
 import 'package:jel_music/controllers/most_played_songs_artist_controller.dart';
 import 'package:jel_music/controllers/most_played_songs_controller.dart';
 import 'package:jel_music/controllers/playback_artists_controller.dart';
@@ -62,7 +63,13 @@ Future<void> main() async{
   Hive.registerAdapter(AlbumsAdapter());
   Hive.registerAdapter(LogAdapter());
 
-  await requestNotificationPermissionIfNeeded();
+  try {
+    await requestNotificationPermissionIfNeeded();
+  } catch (e) {
+    // Not fatal — on an Android Auto cold start there may be no Activity yet
+    // to host the permission dialog, so we must not block app startup.
+    debugPrint('Notification permission request skipped: $e');
+  }
 
 
 
@@ -135,17 +142,22 @@ Future<void> main() async{
   GetIt.I.registerSingleton<PlaybackSongsMonthlyController>(PlaybackSongsMonthlyController());
 
 if(Platform.isAndroid){
-  const QuickActions quickActions = QuickActions();
-  quickActions.setShortcutItems(<ShortcutItem>[
-    const ShortcutItem(
-      type: 'play_liked_songs',
-      localizedTitle: 'Play Liked Songs',
-    ),
-    const ShortcutItem(
-      type: 'play_most_played',
-      localizedTitle: 'Play Most Played',
-    )
-  ]);
+  try {
+    const QuickActions quickActions = QuickActions();
+    quickActions.setShortcutItems(<ShortcutItem>[
+      const ShortcutItem(
+        type: 'play_liked_songs',
+        localizedTitle: 'Play Liked Songs',
+      ),
+      const ShortcutItem(
+        type: 'play_most_played',
+        localizedTitle: 'Play Most Played',
+      )
+    ]);
+  } catch (e) {
+    // Not fatal — ignore shortcut registration failures during cold start.
+    debugPrint('Quick actions registration skipped: $e');
+  }
 
 }
 
@@ -160,9 +172,18 @@ if(Platform.isLinux){
 
 
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MusicControllerProvider(
-    child:MyApp(),
-    ));
+
+  // Initialise the audio service and register the audio handler before
+  // runApp. This must happen early so the handler is ready if Android Auto,
+  // a media notification or a headset connects while the app is not already
+  // running in the foreground (e.g. a cold start from Android Auto).
+  final musicController = MusicController();
+  await musicController.initAudioService();
+
+  runApp(MusicControllerProvider(
+    controller: musicController,
+    child: const MyApp(),
+  ));
 }
 
 
